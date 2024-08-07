@@ -1,4 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+import Router from "./share/Router";
+
 import "./App.css";
 
 function App() {
@@ -6,7 +9,7 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div>test</div>
+      <Router />
     </QueryClientProvider>
   );
 }
