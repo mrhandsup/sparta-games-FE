@@ -1,9 +1,9 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Home from "../page/Home";
-import GameDetail from "../page/GameDetail";
-import NonAuthLayout from "../components/layout/NonAuthLayout";
-import AuthLayout from "../components/layout/AuthLayout";
-import MyPage from "../page/MyPage";
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Home from '../page/Home';
+import GameDetail from '../page/GameDetail';
+import NonAuthLayout from '../components/layout/NonAuthLayout';
+import AuthLayout from '../components/layout/AuthLayout';
+import MyPage from '../page/MyPage';
 
 const Router = () => {
   return (
