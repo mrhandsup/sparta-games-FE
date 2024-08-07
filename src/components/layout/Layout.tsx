@@ -5,10 +5,10 @@ import Footer from "../Footer";
 
 const Layout = () => {
   return (
-    <div className="relative mx-auto max-w-[1440px] min-h-screen border border-solid border-black">
+    <div className="relative mx-auto max-w-[1440px] min-h-screen">
       <Header />
       <Outlet />
-      <div className="absolute bottom-0">
+      <div className="absolute bottom-0 w-full">
         <Footer />
       </div>
     </div>
