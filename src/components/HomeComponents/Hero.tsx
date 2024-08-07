@@ -1,6 +1,6 @@
 const Hero = () => {
   return (
-    <section className="flex justify-center items-center gap-[60px] w-full h-[418px] border border-solid border-black">
+    <section className="flex justify-center items-center gap-[60px] w-full h-[418px]">
       {/* 아래 div크기로 이미지가 들어감 */}
       <div className="w-[580px] h-[298px] bg-gray-200" />
       <div className="flex flex-col justify-center gap-6">
