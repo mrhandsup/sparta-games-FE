@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 
 import { IoIosArrowForward } from "react-icons/io";
 
 import GameCard from "./GameCard";
-import { getGameList } from "../../api/game";
+// import { getGameList } from "../../api/game";
 
 export type GameData = {
   pk: number;
