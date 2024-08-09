@@ -63,7 +63,13 @@ const LoginModal = () => {
 
           <div className="w-[1px] bg-[#D1D1D1] h-[100%]"></div>
 
-          <form className="w-[350px] flex flex-col gap-[28px]">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              closeModal();
+            }}
+            className="w-[350px] flex flex-col gap-[28px]"
+          >
             <h2 className="text-center font-bold text-xl text-custom-red">이메일 로그인</h2>
             <div className="flex flex-col gap-[12px]">
               <div className="flex flex-col">
@@ -82,10 +88,7 @@ const LoginModal = () => {
               </div>
               <h3 className="text-center underline text-custom-red cursor-pointer">아직 회원이 아니세요?</h3>
             </div>
-            <button
-              type="button"
-              className="w-[100%] h-[52px] rounded-[12px] py-[16px] px-[20px] bg-custom-red text-white"
-            >
+            <button className="w-[100%] h-[52px] rounded-[12px] py-[16px] px-[20px] bg-custom-red text-white">
               로그인
             </button>
           </form>
