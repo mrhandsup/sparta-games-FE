@@ -7,6 +7,7 @@ export default {
         secondary: {
           100: "#F2F2F2",
         },
+        "custom-red": "#FF7171",
       },
     },
   },
