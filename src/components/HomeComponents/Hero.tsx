@@ -1,4 +1,8 @@
+import useLoginModalStore from "../../share/store/modalStore";
+
 const Hero = () => {
+  const { openModal } = useLoginModalStore();
+
   return (
     <section className="flex justify-center items-center gap-[60px] w-full h-[418px]">
       {/* 아래 div크기로 이미지가 들어감 */}
@@ -12,7 +16,9 @@ const Hero = () => {
         </div>
 
         <div className="flex gap-6">
-          <button className="w-64 h-12 rounded-lg bg-black text-white">로그인</button>
+          <button className="w-64 h-12 rounded-lg bg-black text-white" onClick={() => openModal()}>
+            로그인
+          </button>
           <button className="w-64 h-12 rounded-lg border border-solid border-black">회원가입</button>
         </div>
       </div>
