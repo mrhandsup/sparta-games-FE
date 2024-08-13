@@ -1,9 +1,9 @@
-// import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { IoIosArrowForward } from "react-icons/io";
 
 import GameCard from "./GameCard";
-// import { getGameList } from "../../api/game";
+import { getGameList } from "../../api/game";
 
 export type GameData = {
   pk: number;
@@ -12,16 +12,16 @@ export type GameData = {
 };
 
 const GameCardList = ({ text }: { text: string }) => {
-  // const [data, setData] = useState<GameData[]>([]);
+  const [data, setData] = useState<GameData[]>([]);
 
-  // useEffect(() => {
-  //   const gameList = async () => {
-  //     const res = await getGameList();
-  //     setData(res);
-  //     return res;
-  //   };
-  //   gameList();
-  // }, []);
+  useEffect(() => {
+    const gameList = async () => {
+      const res = await getGameList();
+      setData(res);
+      return res;
+    };
+    gameList();
+  }, []);
 
   return (
     <div className="flex flex-col justify-evenly items-center w-full h-[536px]">
@@ -30,17 +30,17 @@ const GameCardList = ({ text }: { text: string }) => {
         <IoIosArrowForward />
       </p>
       <div className="flex justify-between w-[1180px] h-[408px]">
-        {/* {data.map((item, idx) => {
+        {data.map((item, idx) => {
           if (idx < 4) {
             return <GameCard item={item} />;
           } else {
             false;
           }
-        })} */}
+        })}
+        {/* <GameCard />
         <GameCard />
         <GameCard />
-        <GameCard />
-        <GameCard />
+        <GameCard /> */}
       </div>
     </div>
   );

@@ -22,9 +22,7 @@ const LoginModal = () => {
       <div
         ref={modalOutside}
         onClick={clickOutside}
-        className={`${
-          openLoginModal ? "flex" : "none"
-        } position: fixed top-80px w-[1440px] h-[100%] bg-black bg-opacity-40 z-10`}
+        className={`${openLoginModal ? "flex" : "none"} fixed top-0 left-0 w-full h-[100%] bg-black bg-opacity-80 z-50`}
       >
         <div className="h-[494px] w-[861px] bg-white fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 p-10 rounded-[20px] flex gap-10">
           <div className="w-[350px]">
