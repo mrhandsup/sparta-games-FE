@@ -30,17 +30,22 @@ const GameCardList = ({ text }: { text: string }) => {
         <IoIosArrowForward />
       </p>
       <div className="flex justify-between w-[1180px] h-[408px]">
-        {data.map((item, idx) => {
-          if (idx < 4) {
-            return <GameCard item={item} />;
-          } else {
-            false;
-          }
-        })}
-        {/* <GameCard />
-        <GameCard />
-        <GameCard />
-        <GameCard /> */}
+        {data.length ? (
+          data.map((item, idx) => {
+            if (idx < 4) {
+              return <GameCard item={item} />;
+            } else {
+              false;
+            }
+          })
+        ) : (
+          <>
+            <GameCard />
+            <GameCard />
+            <GameCard />
+            <GameCard />{" "}
+          </>
+        )}
       </div>
     </div>
   );
