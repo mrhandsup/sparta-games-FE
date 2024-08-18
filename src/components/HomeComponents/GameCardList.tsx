@@ -24,7 +24,7 @@ const GameCardList = ({ text }: { text: string }) => {
   }, []);
 
   return (
-    <div className="flex flex-col justify-evenly items-center w-full h-[536px]">
+    <div className="flex flex-col justify-evenly items-center w-full h-[536px] bg-black">
       <p className="flex mx-auto w-[1180px] h-12 text-5xl font-bold">
         {text}
         <IoIosArrowForward />
