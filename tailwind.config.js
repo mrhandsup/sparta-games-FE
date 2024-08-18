@@ -4,10 +4,113 @@ export default {
   theme: {
     extend: {
       colors: {
-        secondary: {
-          100: "#F2F2F2",
+        gray: {
+          50: "#D9D9D9",
+          100: "#BFBFBF",
+          200: "#A6A6A6",
+          300: "#BCBCBC",
+          400: "#737373",
+          500: "#595959",
+          600: "#404040",
+          700: "#262626",
+          800: "#171717",
+          900: "#000000",
         },
-        "custom-red": "#FF7171",
+        primary: {
+          50: "#F5FFF5",
+          100: "#C3FFC2",
+          200: "#91FF8F",
+          300: "#5FFF5C",
+          400: "#2DFF29",
+          500: "#05F500",
+          600: "#04C200",
+          700: "#038F00",
+          800: "#025C00",
+          900: "#012900",
+          950: "#011A00",
+        },
+      },
+      fontFamily: {
+        sans: ["Pretendard", "sans-serif"],
+      },
+      fontSize: {
+        "heading-40": [
+          "40px",
+          {
+            lineHeight: "48px",
+            fontWeight: "700",
+          },
+        ],
+        "heading-32": [
+          "32px",
+          {
+            lineHeight: "auto",
+            fontWeight: "700",
+          },
+        ],
+        "heading-28": [
+          "28px",
+          {
+            lineHeight: "auto",
+            fontWeight: "700",
+          },
+        ],
+        "heading-24": [
+          "24px",
+          {
+            lineHeight: "auto",
+            fontWeight: "700",
+          },
+        ],
+        "heading-20": [
+          "20px",
+          {
+            lineHeight: "auto",
+            fontWeight: "700",
+          },
+        ],
+        "title-22": [
+          "22px",
+          {
+            lineHeight: "auto",
+            fontWeight: "700",
+          },
+        ],
+        "title-18": [
+          "18px",
+          {
+            lineHeight: "auto",
+            fontWeight: "700",
+          },
+        ],
+        "title-14": [
+          "14px",
+          {
+            lineHeight: "auto",
+            fontWeight: "700",
+          },
+        ],
+        "body-22": [
+          "22px",
+          {
+            lineHeight: "auto",
+            fontWeight: "400",
+          },
+        ],
+        "body-18": [
+          "18px",
+          {
+            lineHeight: "auto",
+            fontWeight: "400",
+          },
+        ],
+        "body-14": [
+          "14px",
+          {
+            lineHeight: "auto",
+            fontWeight: "400",
+          },
+        ],
       },
     },
   },
