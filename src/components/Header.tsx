@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 import searchIcon from "../assets/common/search.svg";
 import alert from "../assets/common/alert.svg";
 
@@ -13,7 +15,7 @@ const Header = () => {
         <img src={alert} alt="알림 아이콘" />
         <p>카테고리</p>
         <p>게임 업로드</p>
-        <p>커뮤니티</p>
+        <Link to={"/community"}>커뮤니티</Link>
         <p>로그인/회원가입</p>
       </section>
     </header>

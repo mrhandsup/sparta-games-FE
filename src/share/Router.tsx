@@ -6,6 +6,7 @@ import NonAuthLayout from "../components/layout/NonAuthLayout";
 import AuthLayout from "../components/layout/AuthLayout";
 import MyPage from "../page/MyPage";
 import Layout from "../components/layout/Layout";
+import Community from "../page/Community";
 
 const Router = () => {
   return (
@@ -15,7 +16,9 @@ const Router = () => {
           <Route path="/" element={<Home />} />
           <Route path="/game-detail" element={<GameDetail />} />
 
-          <Route element={<NonAuthLayout />}></Route>
+          <Route element={<NonAuthLayout />}>
+            <Route path="/community" element={<Community />} />
+          </Route>
 
           <Route element={<AuthLayout />}>
             <Route path="my-page" element={<MyPage />} />
