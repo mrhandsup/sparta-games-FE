@@ -11,7 +11,6 @@ const LoginModal = () => {
   const modalOutside = useRef<HTMLDivElement>(null);
 
   const clickOutside = (e: React.MouseEvent<HTMLDivElement>) => {
-    console.log(modalOutside);
     if (modalOutside.current === e.target) {
       closeModal();
     }
@@ -29,6 +28,9 @@ const LoginModal = () => {
             <h2 className="text-center font-bold text-xl text-custom-red">간편 로그인</h2>
             <div className="mt-[61px] flex flex-col gap-[8px]">
               <SocialLoginBtn
+                loginUrl={`https://accounts.google.com/o/oauth2/v2/auth?client_id=${
+                  import.meta.env.VITE_CLIENT_ID
+                }&redirect_uri=${import.meta.env.VITE_REDIRECT_URI}&response_type=code&scope=email+profile`}
                 icon={googleIcon}
                 altText="구글 아이콘"
                 bgColor="bg-white"
@@ -36,6 +38,7 @@ const LoginModal = () => {
                 loginSpan="Google"
               />
               <SocialLoginBtn
+                loginUrl="/"
                 icon={discordIcon}
                 altText="디스코드 아이콘"
                 bgColor="bg-[#5662F6]"
@@ -43,6 +46,7 @@ const LoginModal = () => {
                 loginSpan="Discord"
               />
               <SocialLoginBtn
+                loginUrl="/"
                 icon={naverIcon}
                 altText="네이버 아이콘"
                 bgColor="bg-[#03C75A]"
@@ -50,6 +54,7 @@ const LoginModal = () => {
                 loginSpan="Naver"
               />
               <SocialLoginBtn
+                loginUrl="/"
                 icon={kakaoIcon}
                 altText="카카오 아이콘"
                 bgColor="bg-[#FEE500]"
