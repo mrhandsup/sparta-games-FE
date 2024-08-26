@@ -9,6 +9,7 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
+  "proxy": "http://127.0.0.1:8000",
   "dependencies": {
     "@tanstack/react-query": "^5.51.11",
     "autoprefixer": "^10.4.19",
