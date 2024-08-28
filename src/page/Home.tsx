@@ -3,13 +3,27 @@ import LoginModal from "../components/modal/login/LoginModal";
 import GameCardList from "../components/HomeComponents/GameCardList";
 
 import useLoginModalStore from "../share/store/modalStore";
+import { useEffect } from "react";
+import { getUserInfo } from "../api/login";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const { openLoginModal } = useLoginModalStore();
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get("code");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (code) {
+      console.log(code);
+      getUserInfo(code);
+      navigate("/");
+    }
+  }, [code, navigate]);
 
   return (
     <main>
-      {openLoginModal ? <LoginModal /> : null}
+      {openLoginModal && <LoginModal />}
       <Hero />
       <GameCardList text="지금 가장 인기있는 게임" />
       <GameCardList text="최신등록된 게임" />
