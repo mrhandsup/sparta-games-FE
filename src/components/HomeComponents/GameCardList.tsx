@@ -30,7 +30,7 @@ const GameCardList = ({ text }: { text: string }) => {
         <IoIosArrowForward />
       </p>
       <div className="flex justify-between w-[1180px] h-[408px]">
-        {data.length ? (
+        {data ? (
           data.map((item, idx) => {
             if (idx < 4) {
               return <GameCard item={item} />;
@@ -43,7 +43,7 @@ const GameCardList = ({ text }: { text: string }) => {
             <GameCard />
             <GameCard />
             <GameCard />
-            <GameCard />{" "}
+            <GameCard />
           </>
         )}
       </div>

@@ -14,10 +14,17 @@ const Home = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const fetch = async (code: string) => {
+      try {
+        const res = await getUserInfo(code);
+        console.log(res);
+      } catch (error) {
+        console.log(error);
+      }
+    };
     if (code) {
       console.log(code);
-      getUserInfo(code);
-      navigate("/");
+      fetch(code);
     }
   }, [code, navigate]);
 

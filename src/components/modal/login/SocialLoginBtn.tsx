@@ -8,6 +8,7 @@ type ButtonTypes = {
 };
 
 const SocialLoginBtn = ({ icon, altText, bgColor, textColor, loginSpan, loginUrl }: ButtonTypes) => {
+  console.log(loginUrl);
   return (
     <button
       onClick={() => (window.location.href = loginUrl)}
