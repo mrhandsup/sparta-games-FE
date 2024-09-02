@@ -31,7 +31,8 @@ export default {
         },
       },
       fontFamily: {
-        sans: ["Pretendard", "sans-serif"],
+        Pretendard: ["Pretendard", "sans-serif"],
+        DungGeunMo: ["DungGeunMo", "sans-serif"],
       },
       fontSize: {
         "heading-40": [
