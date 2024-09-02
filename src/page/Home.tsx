@@ -1,39 +1,15 @@
-import { useEffect } from "react";
-
-import { useNavigate } from "react-router-dom";
-
 import Hero from "../components/HomeComponents/Hero";
 import LoginModal from "../components/modal/login/LoginModal";
 import GameCardList from "../components/HomeComponents/GameCardList";
 
-import useLoginModalStore from "../share/store/modalStore";
-
-import { getUserInfo } from "../api/login";
+import useHome from "../hook/useHome";
 
 import pixelMeteor from "../assets/homeImage/pixelMeteor.svg";
 import pixelPaperPlane from "../assets/homeImage/pixelPaperPlane.svg";
 import pixelGame from "../assets/homeImage/pixelGame.svg";
 
 const Home = () => {
-  const { openLoginModal } = useLoginModalStore();
-  const params = new URLSearchParams(window.location.search);
-  const code = params.get("code");
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetch = async (code: string) => {
-      try {
-        const res = await getUserInfo(code);
-        console.log(res);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    if (code) {
-      console.log(code);
-      fetch(code);
-    }
-  }, [code, navigate]);
+  const { openLoginModal } = useHome();
 
   return (
     <main>
