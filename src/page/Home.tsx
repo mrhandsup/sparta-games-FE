@@ -11,6 +11,8 @@ import useLoginModalStore from "../share/store/modalStore";
 import { getUserInfo } from "../api/login";
 
 import pixelMeteor from "../assets/homeImage/pixelMeteor.svg";
+import pixelPaperPlane from "../assets/homeImage/pixelPaperPlane.svg";
+import pixelGame from "../assets/homeImage/pixelGame.svg";
 
 const Home = () => {
   const { openLoginModal } = useLoginModalStore();
@@ -43,9 +45,24 @@ const Home = () => {
           <p className="font-DungGeunMo text-heading-32 text-white">인기 급상승</p>
         </div>
       </GameCardList>
-      <GameCardList>인기 급상승</GameCardList>
-      <GameCardList>인기 급상승</GameCardList>
-      <GameCardList>인기 급상승</GameCardList>
+      <GameCardList>
+        <div className="flex items-center gap-3">
+          <img src={pixelPaperPlane} />
+          <p className="font-DungGeunMo text-heading-32 text-white">새롭게 등록된 게임</p>
+        </div>
+      </GameCardList>
+      <GameCardList>
+        <div className="flex items-center gap-3">
+          <img src={pixelGame} />
+          <p className="font-DungGeunMo text-heading-32 text-white">[랜덤 카테고리]</p>
+        </div>
+      </GameCardList>
+      <GameCardList>
+        <div className="flex items-center gap-3">
+          <img src={pixelGame} />
+          <p className="font-DungGeunMo text-heading-32 text-white">[랜덤 카테고리]</p>
+        </div>
+      </GameCardList>
     </main>
   );
 };
