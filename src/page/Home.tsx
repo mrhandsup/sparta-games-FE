@@ -32,10 +32,10 @@ const Home = () => {
     <main>
       {openLoginModal && <LoginModal />}
       <Hero />
-      <GameCardList text="지금 가장 인기있는 게임" />
-      <GameCardList text="최신등록된 게임" />
-      <GameCardList text="랜덤 카테고리 추천" />
-      <GameCardList text="랜덤 카테고리 추천" />
+      <GameCardList>인기 급상승</GameCardList>
+      <GameCardList>인기 급상승</GameCardList>
+      <GameCardList>인기 급상승</GameCardList>
+      <GameCardList>인기 급상승</GameCardList>
     </main>
   );
 };
