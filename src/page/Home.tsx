@@ -1,11 +1,16 @@
+import { useEffect } from "react";
+
+import { useNavigate } from "react-router-dom";
+
 import Hero from "../components/HomeComponents/Hero";
 import LoginModal from "../components/modal/login/LoginModal";
 import GameCardList from "../components/HomeComponents/GameCardList";
 
 import useLoginModalStore from "../share/store/modalStore";
-import { useEffect } from "react";
+
 import { getUserInfo } from "../api/login";
-import { useNavigate } from "react-router-dom";
+
+import pixelMeteor from "../assets/homeImage/pixelMeteor.svg";
 
 const Home = () => {
   const { openLoginModal } = useLoginModalStore();
@@ -32,7 +37,12 @@ const Home = () => {
     <main>
       {openLoginModal && <LoginModal />}
       <Hero />
-      <GameCardList>인기 급상승</GameCardList>
+      <GameCardList>
+        <div className="flex items-center gap-3">
+          <img src={pixelMeteor} />
+          <p className="font-DungGeunMo text-heading-32 text-white">인기 급상승</p>
+        </div>
+      </GameCardList>
       <GameCardList>인기 급상승</GameCardList>
       <GameCardList>인기 급상승</GameCardList>
       <GameCardList>인기 급상승</GameCardList>
