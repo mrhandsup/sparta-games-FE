@@ -17,7 +17,9 @@ const Header = () => {
         <img src={balloon} alt="검색 아이콘" />
         <img src={speaker} alt="알림 아이콘" />
         <div className="relative">
-          <p onClick={onClickModalToggleHandler}>카테고리</p>
+          <p onClick={onClickModalToggleHandler} className="cursor-pointer">
+            카테고리
+          </p>
           {modalToggle && <Category modalRef={modalRef} onClickModalToggleHandler={onClickModalToggleHandler} />}
         </div>
         <p>게임 업로드</p>
