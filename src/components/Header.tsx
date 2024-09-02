@@ -5,7 +5,7 @@ import speaker from "../assets/headerImage/speaker.svg";
 import Category from "./headerComponents/Category";
 
 const Header = () => {
-  const { modalToggle, onClickModalToggleHandler } = useModalToggle();
+  const { modalToggle, modalRef, onClickModalToggleHandler } = useModalToggle();
 
   return (
     <header className="flex justify-between items-center py-5 px-[30px] w-full h-20 bg-gray-800 font-DungGeunMo text-white">
@@ -18,7 +18,7 @@ const Header = () => {
         <img src={speaker} alt="알림 아이콘" />
         <div className="relative">
           <p onClick={onClickModalToggleHandler}>카테고리</p>
-          {modalToggle && <Category onClickModalToggleHandler={onClickModalToggleHandler} />}
+          {modalToggle && <Category modalRef={modalRef} onClickModalToggleHandler={onClickModalToggleHandler} />}
         </div>
         <p>게임 업로드</p>
         <p>커뮤니티</p>
