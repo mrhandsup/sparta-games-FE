@@ -19,7 +19,7 @@ const useHome = () => {
         const res = await getUserInfo(code);
         console.log(res);
       } catch (error) {
-        console.log(error);
+        alert("소셜로그인에 실패하였습니다.");
       }
     };
     if (code) {
