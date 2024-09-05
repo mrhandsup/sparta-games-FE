@@ -31,83 +31,84 @@ export default {
         },
       },
       fontFamily: {
-        sans: ["Pretendard", "sans-serif"],
+        Pretendard: ["Pretendard", "sans-serif"],
+        DungGeunMo: ["DungGeunMo", "sans-serif"],
       },
       fontSize: {
         "heading-40": [
           "40px",
           {
-            lineHeight: "48px",
+            lineHeight: "100%",
             fontWeight: "700",
           },
         ],
         "heading-32": [
           "32px",
           {
-            lineHeight: "auto",
+            lineHeight: "100%",
             fontWeight: "700",
           },
         ],
         "heading-28": [
           "28px",
           {
-            lineHeight: "auto",
+            lineHeight: "100%",
             fontWeight: "700",
           },
         ],
         "heading-24": [
           "24px",
           {
-            lineHeight: "auto",
+            lineHeight: "100%",
             fontWeight: "700",
           },
         ],
         "heading-20": [
           "20px",
           {
-            lineHeight: "auto",
+            lineHeight: "100%",
             fontWeight: "700",
           },
         ],
         "title-22": [
           "22px",
           {
-            lineHeight: "auto",
+            lineHeight: "100%",
             fontWeight: "700",
           },
         ],
         "title-18": [
           "18px",
           {
-            lineHeight: "auto",
+            lineHeight: "100%",
             fontWeight: "700",
           },
         ],
         "title-14": [
           "14px",
           {
-            lineHeight: "auto",
+            lineHeight: "100%",
             fontWeight: "700",
           },
         ],
         "body-22": [
           "22px",
           {
-            lineHeight: "auto",
+            lineHeight: "130%",
             fontWeight: "400",
           },
         ],
         "body-18": [
           "18px",
           {
-            lineHeight: "auto",
+            lineHeight: "130%",
             fontWeight: "400",
           },
         ],
         "body-14": [
           "14px",
           {
-            lineHeight: "auto",
+            lineHeight: "130%",
             fontWeight: "400",
           },
         ],

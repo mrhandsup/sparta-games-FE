@@ -8,9 +8,11 @@ function App() {
   const queryClient = new QueryClient();
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <Router />
-    </QueryClientProvider>
+    <div className="bg-gray-700">
+      <QueryClientProvider client={queryClient}>
+        <Router />
+      </QueryClientProvider>
+    </div>
   );
 }
 

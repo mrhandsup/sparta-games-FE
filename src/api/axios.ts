@@ -12,4 +12,4 @@ export async function getUser() {
   }
 }
 
-export const sparta_games = axios.create({ baseURL: "/api/" });
+export const sparta_games = axios.create({ baseURL: "/api/", headers: { "Content-Type": "application/json" } });

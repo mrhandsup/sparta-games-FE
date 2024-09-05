@@ -8,7 +8,7 @@ const GameCard = ({ item }: { item?: GameData }) => {
         alt="게임 썸네일"
         className="relative flex justify-center items-center w-[279px] h-[245px] bg-gray-50"
       />
-      <div className="p-3 w-[279px] h-[163px] bg-black text-white">
+      <div className="p-3 w-[279px] h-[163px] bg-gray-800 text-white">
         <div className="flex justify-between items-center">
           <p className="text-xl font-bold">{item?.title ? item?.title : "test"}</p>
           <p>⭐⭐⭐⭐⭐</p>

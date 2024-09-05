@@ -2,6 +2,76 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 900;
+  font-display: swap;
+  src: url(../public/font/pretendard/Pretendard-Black.woff2);
+}
+
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 800;
+  font-display: swap;
+  src: url(../public/font/pretendard/Pretendard-ExtraBold.woff2);
+}
+
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 700;
+  font-display: swap;
+  src: url(../public/font/pretendard/Pretendard-Bold.woff2);
+}
+
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 600;
+  font-display: swap;
+  src: url(../public/font/pretendard/Pretendard-SemiBold.woff2);
+}
+
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 500;
+  font-display: swap;
+  src: url(../public/font/pretendard/Pretendard-Medium.woff2);
+}
+
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 400;
+  font-display: swap;
+  src: url(../public/font/pretendard/Pretendard-Regular.woff2);
+}
+
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 300;
+  font-display: swap;
+  src: url(../public/font/pretendard/Pretendard-Light.woff2);
+}
+
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 200;
+  font-display: swap;
+  src: url(../public/font/pretendard/Pretendard-ExtraLight.woff2);
+}
+
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 100;
+  font-display: swap;
+  src: url(../public/font/pretendard/Pretendard-Thin.woff2);
+}
+
+@font-face {
+  font-family: "DungGeunMo";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/DungGeunMo.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
 html,
 body,
 div,
