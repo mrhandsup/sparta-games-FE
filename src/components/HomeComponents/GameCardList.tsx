@@ -11,7 +11,7 @@ export type GameData = {
   title: string;
 };
 
-const GameCardList = ({ children }: { children: React.ReactNode }) => {
+const GameCardList = ({ children }: { children?: React.ReactNode }) => {
   const [data, setData] = useState<GameData[]>([]);
 
   useEffect(() => {
@@ -25,10 +25,13 @@ const GameCardList = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div className="flex flex-col justify-evenly items-center w-full h-[536px] bg-gray-700">
-      <p className="flex justify-between items-center mx-auto w-[1180px] h-12 text-5xl font-bold">
-        {children}
-        <AiFillCaretRight className="w-8 h-8 text-white" />
-      </p>
+      {children && (
+        <p className="flex justify-between items-center mx-auto w-[1180px] h-12 text-5xl font-bold">
+          {children}
+          <AiFillCaretRight className="w-8 h-8 text-white" />
+        </p>
+      )}
+
       <div className="flex justify-between w-[1180px] h-[408px]">
         {data && data.length ? (
           data.map((item, idx) => {
