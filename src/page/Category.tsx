@@ -1,8 +1,12 @@
-import Title from "../components/categoryComponents/Title";
+import { useSearchParams } from "react-router-dom";
 
+import Title from "../components/categoryComponents/Title";
 import GameCardList from "../components/HomeComponents/GameCardList";
 
 const Category = () => {
+  const [searchParams] = useSearchParams();
+  console.log(searchParams.get("category"));
+
   return (
     <main className="w-full">
       <Title />
