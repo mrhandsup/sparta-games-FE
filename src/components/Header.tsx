@@ -3,7 +3,7 @@ import useModalToggle from "../hook/useModalToggle";
 import titleImage from "../assets/titleImage.svg";
 import balloon from "../assets/headerImage/balloon.svg";
 import speaker from "../assets/headerImage/speaker.svg";
-import Category from "./headerComponents/Category";
+import CategoryModal from "./headerComponents/CategoryModal";
 
 const Header = () => {
   const { modalToggle, modalRef, onClickModalToggleHandler } = useModalToggle();
@@ -23,7 +23,7 @@ const Header = () => {
           <p onClick={onClickModalToggleHandler} className="cursor-pointer">
             카테고리
           </p>
-          {modalToggle && <Category modalRef={modalRef} onClickModalToggleHandler={onClickModalToggleHandler} />}
+          {modalToggle && <CategoryModal modalRef={modalRef} onClickModalToggleHandler={onClickModalToggleHandler} />}
         </div>
         <p>게임 업로드</p>
         <p>커뮤니티</p>

@@ -5,7 +5,7 @@ type props = {
   modalRef: React.RefObject<HTMLDivElement>;
 };
 
-const Category = ({ modalRef, onClickModalToggleHandler }: props) => {
+const CategoryModal = ({ modalRef, onClickModalToggleHandler }: props) => {
   return (
     <div
       ref={modalRef}
@@ -56,4 +56,4 @@ const Category = ({ modalRef, onClickModalToggleHandler }: props) => {
   );
 };
 
-export default Category;
+export default CategoryModal;
