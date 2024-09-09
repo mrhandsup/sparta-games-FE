@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const Title = () => {
+const Title = ({ category }: { category: string }) => {
   const [isScrollActive, setIsScrollActive] = useState(false);
 
   useEffect(() => {
@@ -17,9 +17,9 @@ const Title = () => {
     <section
       className={`sticky top-20 z-10 flex w-full pb-5 ${
         isScrollActive ? "justify-start items-center mb-[325px] h-[150px]" : "justify-center items-end  h-[475px]"
-      } bg-gray-200 ease-in-out duration-200`}
+      } ease-in-out duration-200 [background:linear-gradient(180deg,rgba(23,23,23,0)_0%,rgb(23,23,23)_100%)] bg-cover bg-[50%_50%]`}
     >
-      <div className="text-[64px] text-white">[카테고리명]</div>
+      <div className="font-DungGeunMo text-[64px] text-white">[{category}]</div>
     </section>
   );
 };
