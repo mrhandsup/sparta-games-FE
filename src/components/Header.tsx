@@ -1,9 +1,11 @@
-import useModalToggle from "../hook/useModalToggle";
+import { Link } from "react-router-dom";
 
 import titleImage from "../assets/titleImage.svg";
 import balloon from "../assets/headerImage/balloon.svg";
 import speaker from "../assets/headerImage/speaker.svg";
 import CategoryModal from "./headerComponents/CategoryModal";
+
+import useModalToggle from "../hook/useModalToggle";
 
 const Header = () => {
   const { modalToggle, modalRef, onClickModalToggleHandler } = useModalToggle();
@@ -26,7 +28,9 @@ const Header = () => {
           {modalToggle && <CategoryModal modalRef={modalRef} onClickModalToggleHandler={onClickModalToggleHandler} />}
         </div>
         <p>게임 업로드</p>
-        <p>커뮤니티</p>
+        <Link to={"/community"}>
+          <p>커뮤니티</p>
+        </Link>
         <p>로그인/회원가입</p>
       </section>
     </header>

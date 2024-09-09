@@ -7,6 +7,7 @@ import Home from "../page/Home";
 import Category from "../page/Category";
 import GameDetail from "../page/GameDetail";
 import MyPage from "../page/MyPage";
+import Community from "../page/Community";
 
 const Router = () => {
   return (
@@ -16,6 +17,7 @@ const Router = () => {
           <Route path="/" element={<Home />} />
           <Route path="/game-detail" element={<GameDetail />} />
           <Route path="/category" element={<Category />} />
+          <Route path="/community" element={<Community />} />
 
           <Route element={<NonAuthLayout />}></Route>
 
