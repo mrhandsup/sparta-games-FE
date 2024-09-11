@@ -1,7 +1,7 @@
 const CommunityCard = () => {
   return (
     <div className="flex w-[580px]">
-      <img className="w-[190px] h-[152px]" />
+      <img className="w-[190px] h-[152px] bg-gray-200" />
       <div className="flex flex-col gap-3 p-4 w-[389px]">
         <div className="flex justify-between">
           <p className="text-title-14 text-gray-200">자유로운 이야기</p>
