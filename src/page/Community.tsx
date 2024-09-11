@@ -1,4 +1,5 @@
 import CardList from "../components/communityComponents/CardList";
+import CommunityList from "../components/communityComponents/CommunityList";
 import Navigation from "../components/communityComponents/Navigation";
 import SearchFilter from "../components/communityComponents/SearchFilter";
 
@@ -8,6 +9,7 @@ const Community = () => {
       <CardList />
       <Navigation />
       <SearchFilter />
+      <CommunityList />
     </main>
   );
 };
