@@ -14,9 +14,11 @@ const Header = () => {
     <header className="flex justify-between items-center py-5 px-[30px] w-full h-20 bg-gray-800 font-DungGeunMo text-white">
       <section className="flex items-center gap-4">
         <img src="" alt="스파르타 게임 아이콘" className="w-12 h-12 rounded-full" />
-        <h1>
-          <img src={titleImage} />
-        </h1>
+        <Link to={"/"}>
+          <h1>
+            <img src={titleImage} />
+          </h1>
+        </Link>
       </section>
       <section className="flex items-center gap-10 text-heading-24 font-normal">
         <img src={balloon} alt="검색 아이콘" />
