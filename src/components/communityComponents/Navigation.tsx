@@ -9,7 +9,7 @@ const Navigation = () => {
     <nav className="flex px-[130px] mt-[94px]">
       <div
         onClick={() => onClickNavHandler("전체보기")}
-        className={`flex justify-center items-center w-[181px] h-[61px] text-[22px] font-bold text-white rounded ${
+        className={`flex justify-center items-center w-[181px] h-[61px] text-[22px] font-bold text-white rounded cursor-pointer ${
           nav === "전체보기" && "bg-gray-600"
         }`}
       >
@@ -17,7 +17,7 @@ const Navigation = () => {
       </div>
       <div
         onClick={() => onClickNavHandler("디자인")}
-        className={`flex justify-center items-center w-[181px] h-[61px] text-[22px] font-bold text-white rounded ${
+        className={`flex justify-center items-center w-[181px] h-[61px] text-[22px] font-bold text-white rounded cursor-pointer ${
           nav === "디자인" && "bg-gray-600"
         }`}
       >
@@ -25,7 +25,7 @@ const Navigation = () => {
       </div>
       <div
         onClick={() => onClickNavHandler("개발")}
-        className={`flex justify-center items-center w-[181px] h-[61px] text-[22px] font-bold text-white rounded ${
+        className={`flex justify-center items-center w-[181px] h-[61px] text-[22px] font-bold text-white rounded cursor-pointer ${
           nav === "개발" && "bg-gray-600"
         }`}
       >
@@ -33,7 +33,7 @@ const Navigation = () => {
       </div>
       <div
         onClick={() => onClickNavHandler("자유로운 이야기")}
-        className={`flex justify-center items-center w-[181px] h-[61px] text-[22px] font-bold text-white rounded ${
+        className={`flex justify-center items-center w-[181px] h-[61px] text-[22px] font-bold text-white rounded cursor-pointer ${
           nav === "자유로운 이야기" && "bg-gray-600"
         }`}
       >
