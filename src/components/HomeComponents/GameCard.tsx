@@ -11,7 +11,7 @@ const GameCard = ({ item }: { item?: GameData }) => {
       <div className="p-3 w-[279px] h-[163px] bg-gray-800 text-white">
         <div className="flex justify-between items-center">
           <p className="text-xl font-bold">{item?.title ? item?.title : "test"}</p>
-          <p>⭐⭐⭐⭐⭐</p>
+          <p>⭐⭐⭐⭐⭐ </p>
         </div>
         <div className="text-sm font-normal">제작자</div>
         <div className="text-sm font-medium">
