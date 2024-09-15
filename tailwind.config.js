@@ -114,6 +114,9 @@ export default {
         ],
       },
     },
+    listStyleType: {
+      alpha: "lower-alpha",
+    },
   },
   plugins: [],
 };
