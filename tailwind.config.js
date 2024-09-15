@@ -115,6 +115,8 @@ export default {
       },
     },
     listStyleType: {
+      disc: "disc",
+      decimal: "decimal",
       alpha: "lower-alpha",
     },
   },
