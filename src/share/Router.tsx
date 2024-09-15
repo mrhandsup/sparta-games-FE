@@ -8,6 +8,7 @@ import Category from "../page/Category";
 import GameDetail from "../page/GameDetail";
 import MyPage from "../page/MyPage";
 import Community from "../page/Community";
+import GameUpload from "../page/GameUpload";
 
 const Router = () => {
   return (
@@ -23,6 +24,7 @@ const Router = () => {
 
           <Route element={<AuthLayout />}>
             <Route path="my-page" element={<MyPage />} />
+            <Route path="game-upload" element={<GameUpload />} />
           </Route>
         </Route>
       </Routes>

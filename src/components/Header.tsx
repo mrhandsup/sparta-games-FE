@@ -29,7 +29,11 @@ const Header = () => {
           </p>
           {modalToggle && <CategoryModal modalRef={modalRef} onClickModalToggleHandler={onClickModalToggleHandler} />}
         </div>
-        <p>게임 업로드</p>
+
+        <Link to={"/game-upload"}>
+          <p>게임 업로드</p>
+        </Link>
+
         <Link to={"/community"}>
           <p>커뮤니티</p>
         </Link>
