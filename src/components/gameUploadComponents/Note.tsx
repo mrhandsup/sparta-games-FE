@@ -1,6 +1,15 @@
-import nonCheckBox from "../../assets/nonCheckBox.svg";
+import CheckBox from "../common/CheckBox";
 
-const Note = () => {
+type Props = {
+  state: {
+    1: boolean;
+    2: boolean;
+    3: boolean;
+  };
+  onClickHandler: (arg: 1 | 2 | 3) => void;
+};
+
+const Note = ({ onClickHandler, state }: Props) => {
   return (
     <section className="mx-[130px]">
       <div className="flex flex-col gap-3 py-5 px-10 bg-[#171717] rounded-[20px]">
@@ -15,7 +24,7 @@ const Note = () => {
                 디벨롭 할 수 있게 합니다.
               </li>
             </ol>
-            <img src={nonCheckBox} alt="checkBox" className="absolute right-0 bottom-0 z-10" />
+            <CheckBox check={state[1]} onClickHandler={() => onClickHandler(1)} />
           </li>
           <hr className="w-full h-[1px] bg-gray-500 my-2" />
           <li className="relative">
@@ -29,7 +38,7 @@ const Note = () => {
               <li>실제 현금성 도박 또는 사기와 비슷한 컨텐츠를 만드는 경우</li>
               <li>오해의 소지가 있는 컨텐츠를 업로드 하는 경우</li>
             </ol>
-            <img src={nonCheckBox} alt="checkBox" className="absolute right-0 bottom-0 z-10" />
+            <CheckBox check={state[2]} onClickHandler={() => onClickHandler(2)} />
           </li>
           <hr className="w-full h-[1px] bg-gray-500 my-2" />
           <li className="relative">
@@ -41,7 +50,7 @@ const Note = () => {
                 진행될 수 있습니다.
               </li>
             </ol>
-            <img src={nonCheckBox} alt="checkBox" className="absolute right-0 bottom-0 z-10" />
+            <CheckBox check={state[3]} onClickHandler={() => onClickHandler(3)} />
           </li>
         </ol>
       </div>
