@@ -1,8 +1,21 @@
 import CATEGORY from "../../util/constance/category";
 
-const Form = () => {
+import type { GameUploadInput, GameUploadInputForm } from "../../types";
+import type { SubmitHandler } from "react-hook-form";
+
+type Props = {
+  form: GameUploadInputForm;
+  note: {
+    1: boolean;
+    2: boolean;
+    3: boolean;
+  };
+  onSubmitHandler: SubmitHandler<GameUploadInput>;
+};
+
+const Form = ({ form, note, onSubmitHandler }: Props) => {
   return (
-    <form className="mx-[130px]">
+    <form onSubmit={form.handleSubmit(onSubmitHandler)} className="mx-[130px]">
       <div className="flex gap-10 my-10 text-gray-300 text-body-22">
         <div className="flex flex-col gap-[26px] w-[760px]">
           <div className="flex flex-col gap-[10px]">
@@ -12,6 +25,7 @@ const Form = () => {
             <input
               type="text"
               placeholder="Sparta Games"
+              {...form.register("title", { required: "필수" })}
               className="py-3 px-4 w-full bg-gray-700 border border-solid border-white rounded-md"
             />
           </div>
@@ -19,7 +33,10 @@ const Form = () => {
             <div className="flex items-end gap-2 text-heading-24 text-white">
               장르선택 <span className="text-body-14 text-primary-500">*필수</span>
             </div>
-            <select className="py-3 px-4 w-full bg-gray-700 border border-solid border-white rounded-md appearance-none">
+            <select
+              {...form.register("category", { required: "필수" })}
+              className="py-3 px-4 w-full bg-gray-700 border border-solid border-white rounded-md appearance-none"
+            >
               <option value="">장르를 선택해주세요</option>
               {CATEGORY.map((item, idx) => (
                 <option key={idx} value={item}>
@@ -34,6 +51,7 @@ const Form = () => {
             </div>
             <textarea
               placeholder="게임 설명을 입력해주세요"
+              {...form.register("content", { required: "필수" })}
               className="py-3 px-4 w-full h-[436px] bg-gray-700 border border-solid border-white rounded-md resize-none"
             />
           </div>
@@ -52,7 +70,7 @@ const Form = () => {
                 업로드
               </label>
             </div>
-            <input id="gameFile" type="file" className="hidden" />
+            <input id="gameFile" type="file" {...form.register("gameFile", { required: "필수" })} className="hidden" />
           </div>
         </div>
 
@@ -72,7 +90,7 @@ const Form = () => {
               >
                 업로드
               </label>
-              <input id="game-thumbnail" type="file" className="hidden" />
+              <input id="game-thumbnail" type="file" {...form.register("thumbnail")} className="hidden" />
             </div>
           </div>
           <div className="flex flex-col gap-[10px]">
@@ -90,7 +108,7 @@ const Form = () => {
               >
                 업로드
               </label>
-              <input id="still-cut" type="file" className="hidden" />
+              <input id="still-cut" type="file" {...form.register("stillCut")} className="hidden" />
             </div>
           </div>
           <div className="flex flex-col gap-[10px]">
@@ -106,14 +124,25 @@ const Form = () => {
             <input
               type="text"
               placeholder="https://youtube.com"
+              {...form.register("video")}
               className="py-3 px-4 border border-solid border-white bg-gray-700 rounded-md"
             />
           </div>
         </div>
       </div>
-      <button type="submit" className="mb-10 w-full h-14 text-title-18 text-primary-950 bg-primary-500 rounded-lg">
-        게임승인 요청하기
-      </button>
+      {!((note[1] && note[2] && note[3]) || !form.formState.isValid) ? (
+        <button
+          type="submit"
+          disabled={!(note[1] && note[2] && note[3]) || !form.formState.isValid}
+          className={`mb-10 w-full h-14 text-title-18 text-primary-950 bg-gray-400 rounded-lg`}
+        >
+          게임승인 요청하기
+        </button>
+      ) : (
+        <button type="submit" className={`mb-10 w-full h-14 text-title-18 text-primary-950 bg-primary-500 rounded-lg`}>
+          게임승인 요청하기
+        </button>
+      )}
     </form>
   );
 };
