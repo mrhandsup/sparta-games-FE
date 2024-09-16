@@ -6,9 +6,9 @@ const Form = () => {
       <div className="flex gap-10 my-10 text-gray-300 text-body-22">
         <div className="flex flex-col gap-[26px] w-[760px]">
           <div className="flex flex-col gap-[10px]">
-            <p className="flex items-end gap-2 text-heading-24 text-white">
-              제목 <p className="text-body-14 text-primary-500">*필수</p>
-            </p>
+            <div className="flex items-end gap-2 text-heading-24 text-white">
+              제목 <span className="text-body-14 text-primary-500">*필수</span>
+            </div>
             <input
               type="text"
               placeholder="Sparta Games"
@@ -16,9 +16,9 @@ const Form = () => {
             />
           </div>
           <div className="flex flex-col gap-[10px]">
-            <p className="flex items-end gap-2 text-heading-24 text-white">
-              장르선택 <p className="text-body-14 text-primary-500">*필수</p>
-            </p>
+            <div className="flex items-end gap-2 text-heading-24 text-white">
+              장르선택 <span className="text-body-14 text-primary-500">*필수</span>
+            </div>
             <select className="py-3 px-4 w-full bg-gray-700 border border-solid border-white rounded-md appearance-none">
               <option value="">장르를 선택해주세요</option>
               {CATEGORY.map((item, idx) => (
@@ -29,18 +29,18 @@ const Form = () => {
             </select>
           </div>
           <div className="flex flex-col gap-[10px]">
-            <p className="flex items-end gap-2 text-heading-24 text-white">
+            <div className="flex items-end gap-2 text-heading-24 text-white">
               게임설명 <p className="text-body-14 text-primary-500">*필수</p>
-            </p>
+            </div>
             <textarea
               placeholder="게임 설명을 입력해주세요"
               className="py-3 px-4 w-full h-[436px] bg-gray-700 border border-solid border-white rounded-md resize-none"
             />
           </div>
           <div className="flex flex-col gap-[10px]">
-            <p className="flex items-end gap-2 text-heading-24 text-white">
-              게임파일 업로드 <p className="text-body-14 text-primary-500">*필수</p>
-            </p>
+            <div className="flex items-end gap-2 text-heading-24 text-white">
+              게임파일 업로드 <span className="text-body-14 text-primary-500">*필수</span>
+            </div>
             <div className="flex gap-4">
               <div className="flex items-center py-3 px-4 w-full bg-gray-700 border border-solid border-white rounded-md resize-none">
                 게임명
@@ -58,9 +58,9 @@ const Form = () => {
 
         <div className="flex flex-col gap-[26px] w-[380px]">
           <div className="flex flex-col gap-[10px]">
-            <p className="flex items-end gap-2 text-heading-24 text-white">
-              섬네일 업로드<p className="text-body-14">*선택</p>
-            </p>
+            <div className="flex items-end gap-2 text-heading-24 text-white">
+              섬네일 업로드<span className="text-body-14">*선택</span>
+            </div>
             <p className="text-body-14">
               게임 메인에 노출되는 썸네일 이미지 입니다.
               <br /> 1920*1080px (16:9) 비율의 이미지에 최적화 되어있습니다.
@@ -76,9 +76,9 @@ const Form = () => {
             </div>
           </div>
           <div className="flex flex-col gap-[10px]">
-            <p className="flex items-end gap-2 text-heading-24 text-white">
-              스틸컷 업로드<p className="text-body-14">*선택</p>
-            </p>
+            <div className="flex items-end gap-2 text-heading-24 text-white">
+              스틸컷 업로드<span className="text-body-14">*선택</span>
+            </div>
             <p className="text-body-14">
               게임 플레이 화면에 노출되는 이미지 입니다.
               <br /> 1920*1080px (16:9) 비율의 이미지에 최적화 되어있습니다.
@@ -94,9 +94,9 @@ const Form = () => {
             </div>
           </div>
           <div className="flex flex-col gap-[10px]">
-            <p className="flex items-end gap-2 text-heading-24 text-white">
-              게임영상 업로드<p className="text-body-14">*선택</p>
-            </p>
+            <div className="flex items-end gap-2 text-heading-24 text-white">
+              게임영상 업로드<span className="text-body-14">*선택</span>
+            </div>
             <p className="text-body-14">
               게임 소개영사 및 플레이 영상을 업로드 할 수 있습니다.
               <br /> 유튜브에서 전첵공개 또는 링크공개(일부 공개)설정 후,
