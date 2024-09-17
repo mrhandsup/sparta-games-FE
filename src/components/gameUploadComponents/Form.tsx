@@ -101,6 +101,7 @@ const Form = ({ form, note, onSubmitHandler }: Props) => {
                 id="game-thumbnail"
                 type="file"
                 accept="image/*"
+                multiple
                 {...form.register("thumbnail")}
                 className="hidden"
               />
@@ -121,7 +122,14 @@ const Form = ({ form, note, onSubmitHandler }: Props) => {
               >
                 업로드
               </label>
-              <input id="still-cut" type="file" accept="image/*" {...form.register("stillCut")} className="hidden" />
+              <input
+                id="still-cut"
+                type="file"
+                accept="image/*"
+                multiple
+                {...form.register("stillCut")}
+                className="hidden"
+              />
             </div>
           </div>
           <div className="flex flex-col gap-[10px]">
