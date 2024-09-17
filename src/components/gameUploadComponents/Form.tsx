@@ -70,7 +70,13 @@ const Form = ({ form, note, onSubmitHandler }: Props) => {
                 업로드
               </label>
             </div>
-            <input id="gameFile" type="file" {...form.register("gameFile", { required: "필수" })} className="hidden" />
+            <input
+              id="gameFile"
+              type="file"
+              accept=".zip, .7z"
+              {...form.register("gameFile", { required: "필수" })}
+              className="hidden"
+            />
           </div>
         </div>
 
@@ -90,7 +96,13 @@ const Form = ({ form, note, onSubmitHandler }: Props) => {
               >
                 업로드
               </label>
-              <input id="game-thumbnail" type="file" {...form.register("thumbnail")} className="hidden" />
+              <input
+                id="game-thumbnail"
+                type="file"
+                accept="image/*"
+                {...form.register("thumbnail")}
+                className="hidden"
+              />
             </div>
           </div>
           <div className="flex flex-col gap-[10px]">
@@ -108,7 +120,7 @@ const Form = ({ form, note, onSubmitHandler }: Props) => {
               >
                 업로드
               </label>
-              <input id="still-cut" type="file" {...form.register("stillCut")} className="hidden" />
+              <input id="still-cut" type="file" accept="image/*" {...form.register("stillCut")} className="hidden" />
             </div>
           </div>
           <div className="flex flex-col gap-[10px]">
