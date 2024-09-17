@@ -14,6 +14,7 @@ type Props = {
 };
 
 const Form = ({ form, note, onSubmitHandler }: Props) => {
+  console.log(!(note[1] && note[2] && note[3]) || !form.formState.isValid);
   return (
     <form onSubmit={form.handleSubmit(onSubmitHandler)} className="mx-[130px]">
       <div className="flex gap-10 my-10 text-gray-300 text-body-22">
@@ -142,7 +143,7 @@ const Form = ({ form, note, onSubmitHandler }: Props) => {
           </div>
         </div>
       </div>
-      {!((note[1] && note[2] && note[3]) || !form.formState.isValid) ? (
+      {!(note[1] && note[2] && note[3]) || !form.formState.isValid ? (
         <button
           type="submit"
           disabled={!(note[1] && note[2] && note[3]) || !form.formState.isValid}
