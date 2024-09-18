@@ -20,8 +20,9 @@ const GameUpload = () => {
         note={note}
         previewThumbnail={previewThumbnail}
         previewStillCut={previewStillCut}
-        onSubmitHandler={eventHandler.onSubmitHandler}
         onChangeHandler={eventHandler.onChangeImageHandler}
+        onClickHandler={eventHandler.onClickImageDeleteHandler}
+        onSubmitHandler={eventHandler.onSubmitHandler}
       />
     </main>
   );

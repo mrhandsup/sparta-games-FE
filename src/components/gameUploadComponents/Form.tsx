@@ -1,5 +1,7 @@
 import CATEGORY from "../../util/constance/category";
 
+import CloseCircle from "../../assets/CloseCircle";
+
 import type { GameUploadInput, GameUploadInputForm } from "../../types";
 import type { SubmitHandler } from "react-hook-form";
 
@@ -12,11 +14,20 @@ type Props = {
   };
   previewThumbnail: string[];
   previewStillCut: string[];
-  onSubmitHandler: SubmitHandler<GameUploadInput>;
   onChangeHandler: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onClickHandler: (type: "thumbnail" | "stillCut", arg: number) => void;
+  onSubmitHandler: SubmitHandler<GameUploadInput>;
 };
 
-const Form = ({ form, note, previewThumbnail, previewStillCut, onChangeHandler, onSubmitHandler }: Props) => {
+const Form = ({
+  form,
+  note,
+  previewThumbnail,
+  previewStillCut,
+  onChangeHandler,
+  onClickHandler,
+  onSubmitHandler,
+}: Props) => {
   return (
     <form onSubmit={form.handleSubmit(onSubmitHandler)} className="mx-[130px]">
       <div className="flex gap-10 my-10 text-gray-300 text-body-22">
@@ -94,14 +105,14 @@ const Form = ({ form, note, previewThumbnail, previewStillCut, onChangeHandler, 
             </p>
             <div className="flex flex-col items-center gap-3 p-2 h-[214px] border border-solid border-white rounded-md overflow-scroll scrollbar-hide">
               {previewThumbnail && (
-                <div className="w-full">
+                <div className="w-4/5">
                   {previewThumbnail.map((item, idx) => (
-                    <img
-                      key={idx}
-                      src={item}
-                      alt="섬네일 미리보기"
-                      className="w-full border border-solid border-black"
-                    />
+                    <div key={idx} className="relative">
+                      <img src={item} alt="섬네일 미리보기" className="w-full border border-solid border-black" />
+                      <div onClick={() => onClickHandler("thumbnail", idx)} className="absolute -top-2 -right-2">
+                        <CloseCircle />
+                      </div>
+                    </div>
                   ))}
                 </div>
               )}
@@ -128,11 +139,16 @@ const Form = ({ form, note, previewThumbnail, previewStillCut, onChangeHandler, 
               게임 플레이 화면에 노출되는 이미지 입니다.
               <br /> 1920*1080px (16:9) 비율의 이미지에 최적화 되어있습니다.
             </p>
-            <div className="flex flex-col items-center gap-3 h-[214px] border border-solid border-white rounded-md overflow-scroll scrollbar-hide">
+            <div className="flex flex-col items-center gap-3 p-2 h-[214px] border border-solid border-white rounded-md overflow-scroll scrollbar-hide">
               {previewStillCut && (
                 <div className="grid grid-cols-2 gap-3 w-full">
                   {previewStillCut.map((item, idx) => (
-                    <img key={idx} src={item} alt="섬네일 미리보기" className="w-44 border border-solid border-black" />
+                    <div key={idx} className="relative">
+                      <img src={item} alt="섬네일 미리보기" className="w-full border border-solid border-black" />
+                      <div onClick={() => onClickHandler("stillCut", idx)} className="absolute -top-2 -right-2">
+                        <CloseCircle />
+                      </div>
+                    </div>
                   ))}
                 </div>
               )}

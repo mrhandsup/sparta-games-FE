@@ -12,23 +12,6 @@ const useGameUpload = () => {
   const [previewThumbnail, setPreviewThumbnail] = useState<string[]>([]);
   const [previewStillCut, setPreviewStillCut] = useState<string[]>([]);
 
-  const onClickNoteToggleHandler = (arg: 1 | 2 | 3) => {
-    if (arg === 1) {
-      setNote({ ...note, 1: !note[1] });
-      return;
-    }
-
-    if (arg === 2) {
-      setNote({ ...note, 2: !note[2] });
-      return;
-    }
-
-    if (arg === 3) {
-      setNote({ ...note, 3: !note[3] });
-      return;
-    }
-  };
-
   //이미지 미리보기용 onChangeHandler
   const onChangeImageHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const inputId = e.target.id;
@@ -45,7 +28,42 @@ const useGameUpload = () => {
     }
 
     if (inputId === "still-cut") {
-      setPreviewStillCut(urlArr);
+      setPreviewStillCut([...previewStillCut, ...urlArr]);
+    }
+  };
+
+  const onClickImageDeleteHandler = (type: "thumbnail" | "stillCut", arg: number) => {
+    if (type === "thumbnail") {
+      setPreviewThumbnail([]);
+      setValue("thumbnail", []);
+    }
+
+    if (type === "stillCut") {
+      const previewArr = [...previewStillCut];
+      const fileArr = [...watch("stillCut")];
+
+      previewArr.splice(arg, 1);
+      fileArr.splice(arg, 1);
+
+      setPreviewStillCut([...previewArr]);
+      setValue("stillCut", [...fileArr]);
+    }
+  };
+
+  const onClickNoteToggleHandler = (arg: 1 | 2 | 3) => {
+    if (arg === 1) {
+      setNote({ ...note, 1: !note[1] });
+      return;
+    }
+
+    if (arg === 2) {
+      setNote({ ...note, 2: !note[2] });
+      return;
+    }
+
+    if (arg === 3) {
+      setNote({ ...note, 3: !note[3] });
+      return;
     }
   };
 
@@ -64,6 +82,7 @@ const useGameUpload = () => {
 
   const eventHandler = {
     onChangeImageHandler,
+    onClickImageDeleteHandler,
     onClickNoteToggleHandler,
     onSubmitHandler,
   };
