@@ -154,7 +154,7 @@ const Form = ({ form, note, onSubmitHandler }: Props) => {
         <button
           type="submit"
           disabled={!(note[1] && note[2] && note[3]) || !form.formState.isValid}
-          className={`mb-10 w-full h-14 text-title-18 text-primary-950 bg-gray-400 rounded-lg`}
+          className={`mb-10 w-full h-14 text-title-18 text-gray-900 bg-gray-400 rounded-lg`}
         >
           게임승인 요청하기
         </button>
