@@ -10,10 +10,13 @@ type Props = {
     2: boolean;
     3: boolean;
   };
+  previewThumbnail: string[];
+  previewStillCut: string[];
   onSubmitHandler: SubmitHandler<GameUploadInput>;
+  onChangeHandler: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const Form = ({ form, note, onSubmitHandler }: Props) => {
+const Form = ({ form, note, previewThumbnail, previewStillCut, onChangeHandler, onSubmitHandler }: Props) => {
   return (
     <form onSubmit={form.handleSubmit(onSubmitHandler)} className="mx-[130px]">
       <div className="flex gap-10 my-10 text-gray-300 text-body-22">
@@ -89,10 +92,17 @@ const Form = ({ form, note, onSubmitHandler }: Props) => {
               게임 메인에 노출되는 썸네일 이미지 입니다.
               <br /> 1920*1080px (16:9) 비율의 이미지에 최적화 되어있습니다.
             </p>
-            <div className="flex justify-center items-center h-[214px] border border-solid border-white rounded-md ">
+            <div className="flex flex-col items-center gap-3 p-2 h-[214px] border border-solid border-white rounded-md overflow-scroll scrollbar-hide">
+              {previewThumbnail && (
+                <div className="grid grid-cols-2 gap-3 w-full">
+                  {previewThumbnail.map((item, idx) => (
+                    <img key={idx} src={item} alt="섬네일 미리보기" className="w-44 border border-solid border-black" />
+                  ))}
+                </div>
+              )}
               <label
                 htmlFor="game-thumbnail"
-                className="py-3 px-6 w-24 whitespace-nowrap text-title-18 text-primary-500 border border-solid border-primary-500 rounded-lg cursor-pointer"
+                className="my-auto py-3 px-6 w-24 whitespace-nowrap text-title-18 text-primary-500 border border-solid border-primary-500 rounded-lg cursor-pointer"
               >
                 업로드
               </label>
@@ -101,7 +111,7 @@ const Form = ({ form, note, onSubmitHandler }: Props) => {
                 type="file"
                 accept="image/*"
                 multiple
-                {...form.register("thumbnail")}
+                {...form.register("thumbnail", { onChange: onChangeHandler })}
                 className="hidden"
               />
             </div>
@@ -114,10 +124,17 @@ const Form = ({ form, note, onSubmitHandler }: Props) => {
               게임 플레이 화면에 노출되는 이미지 입니다.
               <br /> 1920*1080px (16:9) 비율의 이미지에 최적화 되어있습니다.
             </p>
-            <div className="flex justify-center items-center h-[214px] border border-solid border-white rounded-md ">
+            <div className="flex flex-col items-center gap-3 h-[214px] border border-solid border-white rounded-md overflow-scroll scrollbar-hide">
+              {previewStillCut && (
+                <div className="grid grid-cols-2 gap-3 w-full">
+                  {previewStillCut.map((item, idx) => (
+                    <img key={idx} src={item} alt="섬네일 미리보기" className="w-44 border border-solid border-black" />
+                  ))}
+                </div>
+              )}
               <label
                 htmlFor="still-cut"
-                className="py-3 px-6 w-24 whitespace-nowrap text-title-18 text-primary-500 border border-solid border-primary-500 rounded-lg cursor-pointer"
+                className="my-auto py-3 px-6 w-24 whitespace-nowrap text-title-18 text-primary-500 border border-solid border-primary-500 rounded-lg cursor-pointer"
               >
                 업로드
               </label>
@@ -126,7 +143,7 @@ const Form = ({ form, note, onSubmitHandler }: Props) => {
                 type="file"
                 accept="image/*"
                 multiple
-                {...form.register("stillCut")}
+                {...form.register("stillCut", { onChange: onChangeHandler })}
                 className="hidden"
               />
             </div>

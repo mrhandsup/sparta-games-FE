@@ -6,7 +6,7 @@ import useGameUpload from "../hook/gameUploadHook/useGameUpload";
 import pixelMeteor from "../assets/homeImage/pixelMeteor.svg";
 
 const GameUpload = () => {
-  const { note, form, eventHandler } = useGameUpload();
+  const { note, form, previewThumbnail, previewStillCut, eventHandler } = useGameUpload();
 
   return (
     <main>
@@ -15,7 +15,14 @@ const GameUpload = () => {
         <p>게임을 업로드 합니다.</p>
       </div>
       <Note state={note} onClickHandler={eventHandler.onClickNoteToggleHandler} />
-      <Form form={form} note={note} onSubmitHandler={eventHandler.onSubmitHandler} />
+      <Form
+        form={form}
+        note={note}
+        previewThumbnail={previewThumbnail}
+        previewStillCut={previewStillCut}
+        onSubmitHandler={eventHandler.onSubmitHandler}
+        onChangeHandler={eventHandler.onChangeImageHandler}
+      />
     </main>
   );
 };
