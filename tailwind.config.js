@@ -120,5 +120,5 @@ export default {
       alpha: "lower-alpha",
     },
   },
-  plugins: [],
+  plugins: [require("tailwind-scrollbar-hide")],
 };
