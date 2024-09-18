@@ -16,14 +16,14 @@ const CategoryModal = ({ modalRef, onClickModalToggleHandler }: props) => {
     >
       <div className="flex flex-col items-center gap-4">
         {CATEGORY.slice(0, 6).map((item, idx) => (
-          <Link key={idx} to={"/category?category=Action"}>
+          <Link key={idx} to={`/category?category=${item}`}>
             <p className="hover:text-primary-500">{item}</p>
           </Link>
         ))}
       </div>
       <div className="flex flex-col items-center gap-4">
         {CATEGORY.slice(6).map((item, idx) => (
-          <Link key={idx} to={"/category?category=Action"}>
+          <Link key={idx} to={`/category?category=${item}`}>
             <p className="hover:text-primary-500">{item}</p>
           </Link>
         ))}
