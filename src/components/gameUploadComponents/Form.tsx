@@ -75,7 +75,7 @@ const Form = ({
             </div>
             <div className="flex gap-4">
               <div className="flex items-center py-3 px-4 w-full bg-gray-700 border border-solid border-white rounded-md resize-none">
-                게임명
+                {form.watch("gameFile") ? form.watch("gameFile")[0].name : "게임명"}
               </div>
               <label
                 htmlFor="gameFile"
