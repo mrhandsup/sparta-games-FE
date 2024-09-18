@@ -4,6 +4,7 @@ import { AiFillCaretRight } from "react-icons/ai";
 
 import GameCard from "./GameCard";
 import { getGameList } from "../../api/game";
+import { Link } from "react-router-dom";
 
 export type GameData = {
   pk: number;
@@ -36,17 +37,29 @@ const GameCardList = ({ children }: { children?: React.ReactNode }) => {
         {data && data.length ? (
           data.map((item, idx) => {
             if (idx < 4) {
-              return <GameCard item={item} />;
+              return (
+                <Link to={`/game-detail?id=${item.pk}`}>
+                  <GameCard item={item} />
+                </Link>
+              );
             } else {
               false;
             }
           })
         ) : (
           <>
-            <GameCard />
-            <GameCard />
-            <GameCard />
-            <GameCard />
+            <Link to={"/game-detail"}>
+              <GameCard />
+            </Link>
+            <Link to={"/game-detail"}>
+              <GameCard />
+            </Link>
+            <Link to={"/game-detail"}>
+              <GameCard />
+            </Link>
+            <Link to={"/game-detail"}>
+              <GameCard />
+            </Link>
           </>
         )}
       </div>
