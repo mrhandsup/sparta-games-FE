@@ -94,9 +94,14 @@ const Form = ({ form, note, previewThumbnail, previewStillCut, onChangeHandler, 
             </p>
             <div className="flex flex-col items-center gap-3 p-2 h-[214px] border border-solid border-white rounded-md overflow-scroll scrollbar-hide">
               {previewThumbnail && (
-                <div className="grid grid-cols-2 gap-3 w-full">
+                <div className="w-full">
                   {previewThumbnail.map((item, idx) => (
-                    <img key={idx} src={item} alt="섬네일 미리보기" className="w-44 border border-solid border-black" />
+                    <img
+                      key={idx}
+                      src={item}
+                      alt="섬네일 미리보기"
+                      className="w-full border border-solid border-black"
+                    />
                   ))}
                 </div>
               )}
@@ -110,7 +115,6 @@ const Form = ({ form, note, previewThumbnail, previewStillCut, onChangeHandler, 
                 id="game-thumbnail"
                 type="file"
                 accept="image/*"
-                multiple
                 {...form.register("thumbnail", { onChange: onChangeHandler })}
                 className="hidden"
               />
