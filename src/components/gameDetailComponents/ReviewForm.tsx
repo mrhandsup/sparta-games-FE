@@ -1,3 +1,6 @@
+import Easy from "../common/chipComponents/Easy";
+import Hard from "../common/chipComponents/Hard";
+
 import star from "../../assets/star.svg";
 import ellipse from "../../assets/ellipse.svg";
 
@@ -41,8 +44,8 @@ const ReviewForm = () => {
           </div>
           <img src={ellipse} />
           <div className="flex items-center gap-[15px] text-[26.4px] font-bold text-white">
-            <div className="flex items-center p-[8px] h-12 bg-gray-600 rounded-lg">🎲 EASY</div>
-            <div className="flex items-center p-[8px] h-12 bg-gray-600 rounded-lg">🎮 HARD</div>
+            <Easy gap={8} />
+            <Hard gap={8} />
           </div>
           <img src={ellipse} />
           <button className="w-40 h-12 bg-primary-500 text-title-18 rounded-lg">리뷰입력</button>
