@@ -1,4 +1,4 @@
-import star from "../../assets/gameDetail/star.svg";
+import star from "../../assets/star.svg";
 import ellipse from "../../assets/ellipse.svg";
 
 const ReviewForm = () => {
