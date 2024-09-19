@@ -62,7 +62,6 @@ const ReviewForm = () => {
               <img src={state.star === 10 ? fillStar : star} className="w-6 h-6" />
               <img src={state.star === 10 ? fillStar : star} className="w-6 h-6" />
             </div>
-            <input type="text" {...form.register("star", { required: "필수" })} className="hidden" />
           </div>
           <img src={ellipse} />
           <div className="flex items-center gap-[15px] text-[26.4px] font-bold text-white">
@@ -72,10 +71,14 @@ const ReviewForm = () => {
             <div onClick={() => eventHandler.onClickDifficultyLevelHandler("hard")}>
               <Hard gap={8} bg={state.difficultyLevel === "hard"} />
             </div>
-            <input type="text" {...form.register("difficultyLevel", { required: "필수" })} className="hidden" />
           </div>
           <img src={ellipse} />
-          <button className="w-40 h-12 bg-primary-500 text-title-18 rounded-lg">리뷰입력</button>
+          <button
+            disabled={!form.formState.isValid || state.star === 0 || state.difficultyLevel === ""}
+            className="w-40 h-12 bg-primary-500 text-title-18 rounded-lg"
+          >
+            리뷰입력
+          </button>
         </div>
       </div>
     </form>
