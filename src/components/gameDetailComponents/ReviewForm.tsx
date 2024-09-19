@@ -14,29 +14,29 @@ const ReviewForm = () => {
         <div className="flex gap-[15px] h-12">
           <div className="flex gap-3">
             <div className="flex gap-1 p-3 w-fit bg-gray-600 rounded-lg">
-              <img src={star} />
+              <img src={star} className="w-6 h-6" />
             </div>
             <div className="flex gap-1 p-3 w-fit bg-gray-600 rounded-lg">
-              <img src={star} />
-              <img src={star} />
+              <img src={star} className="w-6 h-6" />
+              <img src={star} className="w-6 h-6" />
             </div>
             <div className="flex gap-1 p-3 w-fit bg-gray-600 rounded-lg">
-              <img src={star} />
-              <img src={star} />
-              <img src={star} />
+              <img src={star} className="w-6 h-6" />
+              <img src={star} className="w-6 h-6" />
+              <img src={star} className="w-6 h-6" />
             </div>
             <div className="flex gap-1 p-3 w-fit bg-gray-600 rounded-lg">
-              <img src={star} />
-              <img src={star} />
-              <img src={star} />
-              <img src={star} />
+              <img src={star} className="w-6 h-6" />
+              <img src={star} className="w-6 h-6" />
+              <img src={star} className="w-6 h-6" />
+              <img src={star} className="w-6 h-6" />
             </div>
             <div className="flex gap-1 p-3 w-fit bg-gray-600 rounded-lg">
-              <img src={star} />
-              <img src={star} />
-              <img src={star} />
-              <img src={star} />
-              <img src={star} />
+              <img src={star} className="w-6 h-6" />
+              <img src={star} className="w-6 h-6" />
+              <img src={star} className="w-6 h-6" />
+              <img src={star} className="w-6 h-6" />
+              <img src={star} className="w-6 h-6" />
             </div>
           </div>
           <img src={ellipse} />
