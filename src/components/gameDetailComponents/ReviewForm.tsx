@@ -14,12 +14,16 @@ const ReviewForm = () => {
     <form onSubmit={form.handleSubmit(eventHandler.onSubmitHandler)} className="flex gap-5 mt-5">
       <div className="w-20 h-20 bg-white rounded-lg"></div>
       <div className="flex flex-col gap-3 w-full">
-        <textarea
-          maxLength={300}
-          placeholder="별점과 난이도를 선택한 후, 리뷰를 입력해주세요"
-          {...form.register("comment", { required: "필수" })}
-          className="p-5 w-full h-28 rounded-lg bg-gray-700 border border-solid border-white resize-none text-white text-[20px] font-medium"
-        />
+        <div className="relative">
+          <textarea
+            maxLength={299}
+            placeholder="별점과 난이도를 선택한 후, 리뷰를 입력해주세요"
+            {...form.register("comment", { required: "필수" })}
+            className="p-5 w-full h-28 rounded-lg bg-gray-700 border border-solid border-white resize-none text-white text-[20px] font-medium scrollbar-hide"
+          />
+          <p className="absolute bottom-3 right-2 text-body-14 text-gray-200">{form.watch("comment").length}/300</p>
+        </div>
+
         <div className="flex gap-[15px] h-12">
           <div className="flex gap-3">
             <div
