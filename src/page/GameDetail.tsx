@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 import GamePlay from "../components/gameDetailComponents/GamePlay";
+import Review from "../components/gameDetailComponents/Review";
 
 import useGameDetail from "../hook/gameDetailHook/useGameDetail";
 
@@ -19,6 +20,7 @@ const GameDetail = () => {
         </div>
       </Link>
       <GamePlay text={text} more={more} onClickMoreToggleHandler={onClickMoreToggleHandler} />
+      <Review />
     </main>
   );
 };

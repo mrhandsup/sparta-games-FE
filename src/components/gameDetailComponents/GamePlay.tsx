@@ -10,7 +10,7 @@ type Props = {
 
 const GamePlay = ({ more, text, onClickMoreToggleHandler }: Props) => {
   return (
-    <div className="flex gap-5 mt-6">
+    <section className="flex gap-5 mt-6">
       <div className="w-[880px]">
         <div className="flex flex-col gap-2 font-DungGeunMo text-[32px] text-white">
           <p>[게임명]</p>
@@ -70,7 +70,7 @@ const GamePlay = ({ more, text, onClickMoreToggleHandler }: Props) => {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

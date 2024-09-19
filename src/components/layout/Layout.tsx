@@ -12,7 +12,7 @@ const Layout = () => {
   }, [pathname]);
 
   return (
-    <div className="flex flex-col mx-auto max-w-[1440px] h-full font-Pretendard">
+    <div className="flex flex-col mx-auto max-w-[1440px] min-w-[1440px] h-full font-Pretendard">
       <div className="sticky top-0 z-20">
         <Header />
       </div>
