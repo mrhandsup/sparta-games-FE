@@ -2,7 +2,7 @@ import titleImage from "../assets/footerTitleImage.svg";
 
 const Footer = () => {
   return (
-    <footer className="flex justify-center py-8 px-[130px] w-full bg-black text-gray-200">
+    <footer className="flex justify-center mx-auto py-8 px-[130px] w-[1440px] bg-black text-gray-200">
       <div className="flex flex-col items-center gap-4">
         <p>
           <img src={titleImage} />

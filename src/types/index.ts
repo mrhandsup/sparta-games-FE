@@ -18,3 +18,9 @@ export type GameUploadInputForm = {
   formState: FormState<GameUploadInput>;
   handleSubmit: UseFormHandleSubmit<GameUploadInput>;
 };
+
+export type ReviewInputForm = {
+  comment: string;
+  star: number;
+  difficultyLevel: "easy" | "hard" | "";
+};
