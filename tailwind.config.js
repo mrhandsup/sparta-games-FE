@@ -114,6 +114,11 @@ export default {
         ],
       },
     },
+    listStyleType: {
+      disc: "disc",
+      decimal: "decimal",
+      alpha: "lower-alpha",
+    },
   },
-  plugins: [],
+  plugins: [require("tailwind-scrollbar-hide")],
 };
