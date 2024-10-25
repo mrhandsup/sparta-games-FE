@@ -15,24 +15,15 @@ export type GameData = {
   maker_name: string;
 };
 
-const GameCardList = ({ children }: { children?: React.ReactNode }) => {
-  // const [data, setData] = useState<GameData[]>([]);
+type Props = {
+  data: GameData[] | undefined;
+  maxNum?: number;
+  children?: React.ReactNode;
+  simple?: boolean;
+};
 
-  // useEffect(() => {
-  //   const gameList = async () => {
-  //     const res = await getGameList();
-  //     setData(res);
-  //     return res;
-  //   };
-  //   gameList();
-  // }, []);
-
-  const { data } = useQuery<GameData[]>({
-    queryKey: ["gameList"],
-    queryFn: getGameList,
-  });
-
-  console.log(data);
+const GameCardList = ({ data, children, maxNum = 4, simple }: Props) => {
+  const slicingData = data?.slice(0, maxNum);
 
   return (
     <div className="flex flex-col justify-evenly items-center w-full h-[536px] bg-gray-700">
@@ -43,19 +34,13 @@ const GameCardList = ({ children }: { children?: React.ReactNode }) => {
         </p>
       )}
 
-      <div className="flex justify-between w-[1180px] h-[408px]">
-        {data && data.length ? (
-          data.map((item, idx) => {
-            if (idx < 4) {
-              return (
-                <Link to={`/game-detail?id=${item.pk}`}>
-                  <GameCard item={item} />
-                </Link>
-              );
-            } else {
-              false;
-            }
-          })
+      <div className="flex justify-evenly w-[1180px] h-[408px]">
+        {slicingData && slicingData.length ? (
+          slicingData.map((item, idx) => (
+            <Link to={`/game-detail?id=${item.pk}`}>
+              <GameCard item={item} simple={simple} />
+            </Link>
+          ))
         ) : (
           <>
             <Link to={"/game-detail"}>

@@ -3,6 +3,9 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      backgroundImage: {
+        'hero-image': "url('/src/assets/homeImage/heroImage.svg')"
+      },
       colors: {
         gray: {
           50: "#D9D9D9",

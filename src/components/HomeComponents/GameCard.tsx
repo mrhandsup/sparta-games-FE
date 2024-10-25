@@ -2,7 +2,12 @@ import Easy from "../common/chipComponents/Easy";
 import StarRating from "../common/StarRating";
 import { GameData } from "./GameCardList";
 
-const GameCard = ({ item }: { item?: GameData }) => {
+type Props = {
+  item?: GameData;
+  simple?: boolean;
+};
+
+const GameCard = ({ item, simple }: Props) => {
   return (
     <section key={item?.pk} className="relative">
       <img
@@ -13,7 +18,7 @@ const GameCard = ({ item }: { item?: GameData }) => {
       <div className="absolute top-0 left-0 bg-black rounded-tl-lg rounded-br-lg font-DungGeunMo text-white py-1.5 px-4 w-fit font-light">
         Rhythm
       </div>
-      <div className="p-3 w-[280px] h-[173px] bg-gray-800 text-white pt-4 rounded-b-lg">
+      <div className={`p-3 w-[280px] ${!simple && "h-[173px]"} bg-gray-800 text-white pt-4 rounded-b-lg`}>
         <div className="text-heading-20 font-bold text-ellipsis overflow-hidden truncate">
           {item?.title ? item?.title : "test"}
         </div>
@@ -24,14 +29,16 @@ const GameCard = ({ item }: { item?: GameData }) => {
             {item && <StarRating score={item.star} />}
           </div>
         </div>
-        <div className="flex flex-col justify-between min-h-[60%] ">
-          <div className="text-body-14 mt-2 overflow-hidden display-webkit-box line-clamp-3 webkit-box-orient-vertical tracking-wider">
-            세줄설명까지
+        {!simple && (
+          <div className="flex flex-col justify-between min-h-[60%] ">
+            <div className="text-body-14 mt-2 overflow-hidden display-webkit-box line-clamp-3 webkit-box-orient-vertical tracking-wider">
+              세줄설명까지
+            </div>
+            <div className="flex gap-1">
+              <Easy />
+            </div>
           </div>
-          <div className="flex gap-1">
-            <Easy />
-          </div>
-        </div>
+        )}
       </div>
     </section>
   );
