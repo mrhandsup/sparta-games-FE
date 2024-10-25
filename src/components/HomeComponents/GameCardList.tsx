@@ -20,9 +20,10 @@ type Props = {
   maxNum?: number;
   children?: React.ReactNode;
   simple?: boolean;
+  noNavigation?: boolean;
 };
 
-const GameCardList = ({ data, children, maxNum = 4, simple }: Props) => {
+const GameCardList = ({ data, children, maxNum = 4, simple, noNavigation }: Props) => {
   const slicingData = data?.slice(0, maxNum);
 
   return (
@@ -30,7 +31,7 @@ const GameCardList = ({ data, children, maxNum = 4, simple }: Props) => {
       {children && (
         <p className="flex justify-between items-center mx-auto w-[1180px] h-12 text-5xl font-bold">
           {children}
-          <AiFillCaretRight className="w-8 h-8 text-white" />
+          {!noNavigation && <AiFillCaretRight className="w-8 h-8 text-white" />}
         </p>
       )}
 

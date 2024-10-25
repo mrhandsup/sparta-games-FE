@@ -22,13 +22,13 @@ const Home = () => {
     <main>
       {openLoginModal && <LoginModal />}
       <Hero />
-      <GameCardList data={data} maxNum={4}>
+      <GameCardList data={data} noNavigation>
         <div className="flex items-center gap-3">
           <img src={pixelMeteor} />
           <p className="font-DungGeunMo text-heading-32 text-white">인기 급상승</p>
         </div>
       </GameCardList>
-      <GameCardList data={data}>
+      <GameCardList data={data} noNavigation>
         <div className="flex items-center gap-3">
           <img src={pixelPaperPlane} />
           <p className="font-DungGeunMo text-heading-32 text-white">새롭게 등록된 게임</p>
