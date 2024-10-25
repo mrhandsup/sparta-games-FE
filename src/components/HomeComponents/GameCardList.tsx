@@ -11,6 +11,8 @@ export type GameData = {
   pk: number;
   thumbnail: string;
   title: string;
+  star: number;
+  maker_name: string;
 };
 
 const GameCardList = ({ children }: { children?: React.ReactNode }) => {

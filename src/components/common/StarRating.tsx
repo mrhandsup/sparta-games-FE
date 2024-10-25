@@ -8,8 +8,10 @@ const StarRating = ({ score }: { score: number }) => {
   const halfStar = score % 2 !== 0; // 반만 찬 별 여부
   const emptyStars = 5 - fullStars - (halfStar ? 1 : 0); // 나머지는 빈 별
 
+  console.log(score, fullStars, halfStar, emptyStars);
+
   return (
-    <div className="flex gap-[2px]">
+    <div className="flex gap-[2px] items-center">
       {/* 꽉 찬 별 렌더링 */}
       {Array.from({ length: fullStars }, (_, index) => (
         <img key={index} src={fillStar} />
