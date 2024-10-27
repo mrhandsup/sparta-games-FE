@@ -16,7 +16,8 @@ export async function getUser() {
 // v1 코드 보고 만든 코드라 확실하지 않습니다!
 // accessToken갱신 함수
 const retrieveAccessToken = async () => {
-  const { refreshToken, setToken } = userStore();
+  const refreshToken = sessionStorage.getItem("refreshToken");
+
   try {
     const response = await sparta_games.post("/accounts/api/refresh/", {
       refresh: refreshToken,
@@ -26,7 +27,9 @@ const retrieveAccessToken = async () => {
       refreshToken: response.data.refresh,
     };
   } catch (error) {
-    setToken();
+    sessionStorage.removeItem("refreshToken");
+    sessionStorage.removeItem("accessToken");
+    return null;
   }
 };
 
@@ -44,7 +47,7 @@ export const sparta_games_auth = axios.create({
 
 sparta_games_auth.interceptors.request.use(
   (config) => {
-    const { accessToken } = userStore();
+    const accessToken = sessionStorage.getItem("accessToken");
     config.headers.Authorization = `Bearer ${accessToken}`;
     return config;
   },
@@ -59,12 +62,12 @@ sparta_games_auth.interceptors.response.use(
   },
   async (error) => {
     const originalRequest = error.config;
-    const { setToken } = userStore.getState();
+    const { setUser } = userStore();
 
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       const token = await retrieveAccessToken();
-      setToken(token?.accessToken, token?.refreshToken);
+      setUser(token?.accessToken);
       originalRequest.headers.Authorization = `Bearer ${token?.accessToken}`;
       return sparta_games(originalRequest);
     }
