@@ -9,6 +9,8 @@ import GameDetail from "../page/GameDetail";
 import MyPage from "../page/MyPage";
 import Community from "../page/Community";
 import GameUpload from "../page/GameUpload";
+import AdminAuthLayout from "../components/layout/AdminAuthLayout";
+import Admin from "../page/Admin";
 
 const Router = () => {
   return (
@@ -25,6 +27,10 @@ const Router = () => {
           <Route element={<AuthLayout />}>
             <Route path="my-page" element={<MyPage />} />
             <Route path="game-upload" element={<GameUpload />} />
+          </Route>
+
+          <Route element={<AdminAuthLayout />}>
+            <Route path="admin" element={<Admin />} />
           </Route>
         </Route>
       </Routes>
