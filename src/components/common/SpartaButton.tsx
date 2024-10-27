@@ -5,11 +5,11 @@ type Props = {
   onClick: () => void;
 };
 
-const ButtonComponent = ({ disabled = false, content, type = "standard", onClick }: Props) => {
+const SpartaButton = ({ disabled = false, content, type = "standard", onClick }: Props) => {
   // 동적 스타일을 적용하기 위한 함수
   const getButtonStyles = (): string => {
     // 기본 스타일
-    const baseStyles = "w-full h-14 text-title-18 rounded-lg mb-10 transition-colors duration-200";
+    const baseStyles = "w-full h-14 text-title-18 rounded-lg transition-colors duration-200";
 
     // disabled 상태일 때의 스타일
     const disableStyles = {
@@ -38,4 +38,4 @@ const ButtonComponent = ({ disabled = false, content, type = "standard", onClick
   );
 };
 
-export default ButtonComponent;
+export default SpartaButton;
