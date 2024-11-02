@@ -11,9 +11,9 @@ export const getGameList = async () => {
 };
 
 export const getMyBookmarkList = async () => {
-  const { userId } = userStore();
+  const { userData } = userStore();
   try {
-    const res = await sparta_games_auth.get(`/user/api/${userId}/likes/`);
+    const res = await sparta_games_auth.get(`/user/api/${userData?.user_pk}/likes/`);
     return res.data;
   } catch (error) {
     console.error(error);
