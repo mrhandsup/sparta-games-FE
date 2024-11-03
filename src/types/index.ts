@@ -24,3 +24,16 @@ export type ReviewInputForm = {
   star: number;
   difficultyLevel: "easy" | "hard" | "";
 };
+
+export type User = {
+  user_pk: number;
+  nickname: string;
+  email: string;
+  profile_image: string;
+  is_staff: boolean;
+  is_maker: boolean;
+  introduce: string;
+  login_type: string;
+  user_tech: string;
+  game_category: any[];
+};

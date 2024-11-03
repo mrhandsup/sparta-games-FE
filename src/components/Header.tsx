@@ -6,9 +6,11 @@ import speaker from "../assets/headerImage/speaker.svg";
 import CategoryModal from "./headerComponents/CategoryModal";
 
 import useModalToggle from "../hook/useModalToggle";
+import { userStore } from "../share/store/userStore";
 
 const Header = () => {
   const { modalToggle, modalRef, onClickModalToggleHandler } = useModalToggle();
+  const { userData } = userStore();
 
   return (
     <header className="flex justify-between items-center py-5 px-[30px] w-full h-20 bg-gray-800 font-DungGeunMo text-white">
@@ -37,7 +39,13 @@ const Header = () => {
         <Link to={"/community"}>
           <p>커뮤니티</p>
         </Link>
-        <p>로그인/회원가입</p>
+        {userData ? (
+          <Link to={"/mypage"}>
+            <p>마이페이지</p>
+          </Link>
+        ) : (
+          <p>로그인/회원가입</p>
+        )}
       </section>
     </header>
   );
