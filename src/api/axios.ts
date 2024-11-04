@@ -35,13 +35,13 @@ const retrieveAccessToken = async () => {
 
 // 토큰이 필요없는 요청
 export const sparta_games = axios.create({
-  baseURL: "https://sparta-games.net/",
+  baseURL: import.meta.env.VITE_PROXY_HOST,
   headers: { "Content-Type": "application/json" },
 });
 
 // 토큰이 필요한 요청
 export const sparta_games_auth = axios.create({
-  baseURL: "https://sparta-games.net/",
+  baseURL: import.meta.env.VITE_PROXY_HOST,
   headers: { "Content-Type": "application/json" },
 });
 
