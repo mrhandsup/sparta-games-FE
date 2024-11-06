@@ -10,21 +10,21 @@ type Store = {
 };
 
 export const userStore = create<Store>()((set) => ({
-  setUser: (accessToken?: string) => {
+  setUser: async (accessToken?: string) => {
     if (!accessToken) {
       set({ userData: undefined });
       return;
     }
-    if (accessToken) {
+    try {
+      console.log("accessToken", accessToken);
       const decoded_jwt = jwtDecode<{ user_id: number }>(accessToken);
-
-      const { data } = useQuery({
-        queryKey: ["gameList"],
-        queryFn: () => getUserData(decoded_jwt.user_id),
-      });
-
-      //** 추가: data 타입에 따라 유저 정보 저장 부분 추가 */
-      set({ userData: data });
+      console.log("decoded_jwt", decoded_jwt);
+      const userData = await getUserData(decoded_jwt.user_id);
+      console.log("userData", userData);
+      set({ userData: userData });
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      set({ userData: undefined });
     }
   },
 }));

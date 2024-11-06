@@ -1,8 +1,11 @@
 import log from "../../assets/Log.svg";
+import { User } from "../../types";
 
-type Props = {};
+type TSettingProps = {
+  user: User;
+};
 
-const Settting = (props: Props) => {
+const Setting = (props: TSettingProps) => {
   return (
     <div className="flex flex-col gap-10">
       {/* 계정 정보 수정 */}
@@ -29,4 +32,4 @@ const Settting = (props: Props) => {
   );
 };
 
-export default Settting;
+export default Setting;

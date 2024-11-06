@@ -3,10 +3,13 @@ import GameCardList, { GameData } from "../HomeComponents/GameCardList";
 import { useQuery } from "@tanstack/react-query";
 import { getGameList } from "../../api/game";
 import log from "../../assets/Log.svg";
+import { User } from "../../types";
 
-type Props = {};
+type TLogsProps = {
+  user: User;
+};
 
-const Logs = (props: Props) => {
+const Logs = (props: TLogsProps) => {
   const { data } = useQuery<GameData[]>({
     queryKey: ["gameList"],
     queryFn: getGameList,
@@ -16,28 +19,28 @@ const Logs = (props: Props) => {
 
   return (
     <div className="flex flex-col gap-10">
-      <GameCardList data={data} maxNum={3} containerClassName={LogsClassName}>
+      <GameCardList data={data} maxNum={3} containerClassName={LogsClassName} noNavigation={(data?.length ?? 0) < 4}>
         <div className="flex items-center gap-4 justify-start ">
           <img src={log} />
-          <p className="font-DungGeunMo text-heading-32 text-white">[User name]의 개발중인 게임</p>
+          <p className="font-DungGeunMo text-heading-32 text-white">[{props.user.nickname}]의 개발중인 게임</p>
         </div>
       </GameCardList>
-      <GameCardList data={data} maxNum={3} containerClassName={LogsClassName}>
+      <GameCardList data={data} maxNum={3} containerClassName={LogsClassName} noNavigation={(data?.length ?? 0) < 4}>
         <div className="flex items-center gap-4 justify-start ">
           <img src={log} />
-          <p className="font-DungGeunMo text-heading-32 text-white">[User name]의 개발중인 게임</p>
+          <p className="font-DungGeunMo text-heading-32 text-white">[{props.user.nickname}]의 개발중인 게임</p>
         </div>
       </GameCardList>
-      <GameCardList data={data} maxNum={3} containerClassName={LogsClassName}>
+      <GameCardList data={data} maxNum={3} containerClassName={LogsClassName} noNavigation={(data?.length ?? 0) < 4}>
         <div className="flex items-center gap-4 justify-start ">
           <img src={log} />
-          <p className="font-DungGeunMo text-heading-32 text-white">[User name]의 개발중인 게임</p>
+          <p className="font-DungGeunMo text-heading-32 text-white">[{props.user.nickname}]의 개발중인 게임</p>
         </div>
       </GameCardList>
-      <GameCardList data={data} maxNum={3} containerClassName={LogsClassName}>
+      <GameCardList data={data} maxNum={3} containerClassName={LogsClassName} noNavigation={(data?.length ?? 0) < 4}>
         <div className="flex items-center gap-4 justify-start ">
           <img src={log} />
-          <p className="font-DungGeunMo text-heading-32 text-white">[User name]의 개발중인 게임</p>
+          <p className="font-DungGeunMo text-heading-32 text-white">[{props.user.nickname}]의 개발중인 게임</p>
         </div>
       </GameCardList>
     </div>
