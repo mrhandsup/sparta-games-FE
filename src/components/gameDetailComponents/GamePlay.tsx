@@ -2,20 +2,31 @@ import expand from "../../assets/gameDetail/interface-essential-signin-expand.sv
 import share from "../../assets/gameDetail/interface-essential-share-1.svg";
 import bookmark from "../../assets/gameDetail/content-files-close-book-bookmark.svg";
 
+export type GamePlayData = {
+  maker_name: string;
+  title: string;
+  thumnail: ImageData | null;
+  youtube_url: string;
+  content: string;
+  base_control: string;
+  screenshot: ImageData[];
+};
+
 type Props = {
+  data: GamePlayData | undefined;
   more: boolean;
   text: string;
   onClickMoreToggleHandler: () => void;
 };
 
-const GamePlay = ({ more, text, onClickMoreToggleHandler }: Props) => {
+const GamePlay = ({ data, more, text, onClickMoreToggleHandler }: Props) => {
   return (
     <section className="flex gap-5 mt-6">
       <div className="w-[880px]">
         <div className="flex flex-col gap-2 font-DungGeunMo text-[32px] text-white">
-          <p>[게임명]</p>
+          <p>[{data?.title}]</p>
           <div className="flex justify-between">
-            <p className="text-gray-100 text-[28px]">[제작자명]</p>
+            <p className="text-gray-100 text-[28px]">[{data?.maker_name}]</p>
             <div className="flex gap-6">
               <img src={expand} alt="" />
               <img src={share} alt="" />
@@ -28,18 +39,24 @@ const GamePlay = ({ more, text, onClickMoreToggleHandler }: Props) => {
           <p className="font-DungGeunMo text-[24px] text-white">게임설명</p>
           {more ? (
             <p className="flex flex-col font-Pretendard text-[14px] text-white leading-[130%]">
-              {text}
+              {data?.content}
               <p onClick={onClickMoreToggleHandler} className="ml-auto font-bold text-primary-100 cursor-pointer">
                 더보기
               </p>
             </p>
           ) : (
             <p className="flex flex-col h-[90px] font-Pretendard text-[14px] text-white leading-[130%] overflow-hidden">
-              {text.length > 450 ? text.slice(0, 400) + ". . ." : text}
-              {text.length > 450 && (
-                <p onClick={onClickMoreToggleHandler} className="ml-auto font-bold text-primary-100 cursor-pointer">
-                  더보기
-                </p>
+              {data?.content ? (
+                <>
+                  {data?.content.length > 450 ? text.slice(0, 400) + ". . ." : data?.content}
+                  {data?.content.length > 450 && (
+                    <p onClick={onClickMoreToggleHandler} className="ml-auto font-bold text-primary-100 cursor-pointer">
+                      더보기
+                    </p>
+                  )}
+                </>
+              ) : (
+                <p>Loading</p>
               )}
             </p>
           )}

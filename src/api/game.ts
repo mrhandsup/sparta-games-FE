@@ -10,6 +10,15 @@ export const getGameList = async () => {
   }
 };
 
+export const getGameDetail = async (id: string | null) => {
+  try {
+    const res = await sparta_games.get(`/games/api/list/${id}`);
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const getMyBookmarkList = async () => {
   const { userData } = userStore();
   try {

@@ -1,14 +1,24 @@
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
-import GamePlay from "../components/gameDetailComponents/GamePlay";
+import GamePlay, { GamePlayData } from "../components/gameDetailComponents/GamePlay";
 import Review from "../components/gameDetailComponents/Review";
 
 import useGameDetail from "../hook/gameDetailHook/useGameDetail";
 
 import CaretLeft from "../assets/CaretLeft";
+import { useQuery } from "@tanstack/react-query";
+import { getGameDetail } from "../api/game";
 
 const GameDetail = () => {
   const { text, more, onClickMoreToggleHandler } = useGameDetail();
+
+  const [searchParams] = useSearchParams();
+  const gameDetailId = searchParams.get("id");
+
+  const { data } = useQuery<GamePlayData>({
+    queryKey: ["gameList"],
+    queryFn: () => getGameDetail(gameDetailId),
+  });
 
   return (
     <main className="mx-[130px]">
@@ -19,7 +29,7 @@ const GameDetail = () => {
           <p>Action</p>
         </div>
       </Link>
-      <GamePlay text={text} more={more} onClickMoreToggleHandler={onClickMoreToggleHandler} />
+      <GamePlay data={data} text={text} more={more} onClickMoreToggleHandler={onClickMoreToggleHandler} />
       <Review />
     </main>
   );
