@@ -1,11 +1,7 @@
-import { useEffect, useState } from "react";
-
 import { AiFillCaretRight } from "react-icons/ai";
 
 import GameCard from "./GameCard";
-import { getGameList } from "../../api/game";
 import { Link } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
 
 export type GameData = {
   pk: number;
@@ -24,7 +20,7 @@ type Props = {
 };
 
 const GameCardList = ({ data, children, maxNum = 4, simple, noNavigation }: Props) => {
-  const slicingData = data?.slice(0, maxNum);
+  const slicingData = Array.isArray(data) ? data.slice(0, maxNum) : [];
 
   return (
     <div className="flex flex-col justify-evenly items-center w-full h-[536px] bg-gray-700">
@@ -35,9 +31,9 @@ const GameCardList = ({ data, children, maxNum = 4, simple, noNavigation }: Prop
         </p>
       )}
 
-      <div className="flex justify-evenly w-[1180px] h-[408px]">
+      <div className="flex gap-5 w-[1180px] h-[408px]">
         {slicingData && slicingData.length ? (
-          slicingData.map((item, idx) => (
+          slicingData.map((item) => (
             <Link to={`/game-detail?id=${item.pk}`}>
               <GameCard item={item} simple={simple} />
             </Link>
