@@ -41,18 +41,18 @@ const GamePlay = ({ data, more, onClickMoreToggleHandler }: Props) => {
           <p className="font-DungGeunMo text-[24px] text-white">게임설명</p>
           {more ? (
             <p className="flex flex-col gap-2 font-Pretendard text-[14px] text-white leading-[130%]">
-              <p className="line-clamp-5">{data?.content}</p>
+              <p>{data?.content}</p>
               <p onClick={onClickMoreToggleHandler} className="ml-auto font-bold text-primary-100 cursor-pointer">
-                더보기
+                간략히
               </p>
             </p>
           ) : (
             <p className="flex flex-col gap-2 font-Pretendard text-[14px] text-white leading-[130%] overflow-hidden">
               {data?.content && data?.content.length > 450 && (
                 <>
-                  <p>{data?.content}</p>
+                  <p className="line-clamp-5">{data?.content}</p>
                   <p onClick={onClickMoreToggleHandler} className="ml-auto font-bold text-primary-100 cursor-pointer">
-                    간략히
+                    더보기
                   </p>
                 </>
               )}
