@@ -10,7 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getGameDetail } from "../api/game";
 
 const GameDetail = () => {
-  const { text, more, onClickMoreToggleHandler } = useGameDetail();
+  const { more, onClickMoreToggleHandler } = useGameDetail();
 
   const [searchParams] = useSearchParams();
   const gameDetailId = searchParams.get("id");
@@ -29,7 +29,7 @@ const GameDetail = () => {
           <p>Action</p>
         </div>
       </Link>
-      <GamePlay data={data} text={text} more={more} onClickMoreToggleHandler={onClickMoreToggleHandler} />
+      <GamePlay data={data} more={more} onClickMoreToggleHandler={onClickMoreToggleHandler} />
       <Review />
     </main>
   );

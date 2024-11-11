@@ -15,11 +15,10 @@ export type GamePlayData = {
 type Props = {
   data: GamePlayData | undefined;
   more: boolean;
-  text: string;
   onClickMoreToggleHandler: () => void;
 };
 
-const GamePlay = ({ data, more, text, onClickMoreToggleHandler }: Props) => {
+const GamePlay = ({ data, more, onClickMoreToggleHandler }: Props) => {
   return (
     <section className="flex gap-5 mt-6">
       <div className="w-[880px]">
@@ -38,25 +37,21 @@ const GamePlay = ({ data, more, text, onClickMoreToggleHandler }: Props) => {
         <div className="flex flex-col gap-3 p-4 bg-gray-800">
           <p className="font-DungGeunMo text-[24px] text-white">게임설명</p>
           {more ? (
-            <p className="flex flex-col font-Pretendard text-[14px] text-white leading-[130%]">
-              {data?.content}
+            <p className="flex flex-col gap-2 font-Pretendard text-[14px] text-white leading-[130%]">
+              <p className="line-clamp-5">{data?.content}</p>
               <p onClick={onClickMoreToggleHandler} className="ml-auto font-bold text-primary-100 cursor-pointer">
                 더보기
               </p>
             </p>
           ) : (
-            <p className="flex flex-col h-[90px] font-Pretendard text-[14px] text-white leading-[130%] overflow-hidden">
-              {data?.content ? (
+            <p className="flex flex-col gap-2 font-Pretendard text-[14px] text-white leading-[130%] overflow-hidden">
+              {data?.content && data?.content.length > 450 && (
                 <>
-                  {data?.content.length > 450 ? text.slice(0, 400) + ". . ." : data?.content}
-                  {data?.content.length > 450 && (
-                    <p onClick={onClickMoreToggleHandler} className="ml-auto font-bold text-primary-100 cursor-pointer">
-                      더보기
-                    </p>
-                  )}
+                  <p>{data?.content}</p>
+                  <p onClick={onClickMoreToggleHandler} className="ml-auto font-bold text-primary-100 cursor-pointer">
+                    간략히
+                  </p>
                 </>
-              ) : (
-                <p>Loading</p>
               )}
             </p>
           )}
