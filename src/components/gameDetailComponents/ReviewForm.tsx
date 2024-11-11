@@ -21,7 +21,7 @@ const ReviewForm = () => {
             {...form.register("comment", { required: "필수" })}
             className="p-5 w-full h-28 rounded-lg bg-gray-700 border border-solid border-white resize-none text-white text-[20px] font-medium scrollbar-hide"
           />
-          <p className="absolute bottom-3 right-2 text-body-14 text-gray-200">{form.watch("comment").length}/300</p>
+          <p className="absolute bottom-3 right-2 text-body-14 text-gray-200">{form.watch("comment")?.length}/300</p>
         </div>
 
         <div className="flex gap-[15px] h-12">
