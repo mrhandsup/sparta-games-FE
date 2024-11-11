@@ -9,7 +9,10 @@ export type GamePlayData = {
   youtube_url: string;
   content: string;
   base_control: string;
-  screenshot: ImageData[];
+  screenshot: {
+    id: number;
+    src: string;
+  }[];
 };
 
 type Props = {
@@ -60,13 +63,12 @@ const GamePlay = ({ data, more, onClickMoreToggleHandler }: Props) => {
       <div className="flex flex-col gap-5 w-[280px]">
         <div className="flex flex-col gap-3 p-4 w-full bg-gray-800 rounded-2xl">
           <p className="font-DungGeunMo text-[24px] text-white">기본 조작법</p>
-          <div className="whitespace-pre text-[14px] text-white leading-[130%]">{`이동:키보드
-조작: 마우스`}</div>
+          <div className="whitespace-pre text-[14px] text-white leading-[130%]">{data?.base_control}</div>
         </div>
         <div className="flex flex-col gap-3 p-4 w-full bg-gray-800 rounded-2xl">
           <p className="font-DungGeunMo text-[24px] text-white">게임플레이 영상</p>
-          <div className="h-[140px] bg-gray-400 rounded-lg">
-            {/* 여기에 게임플레이 영상을 재생되게 변경 iframe이 들어가야 됨 */}
+          <div className="relative p-20  rounded-lg  border border-solid border-white overflow-hidden">
+            <iframe src={data?.youtube_url} className="absolute top-0 left-0 w-full h-full" />
           </div>
         </div>
         <div className="flex flex-col gap-3 p-4 w-full bg-gray-800 rounded-2xl">
@@ -74,10 +76,17 @@ const GamePlay = ({ data, more, onClickMoreToggleHandler }: Props) => {
           <div className="relative w-[248px] h-[304px]">
             <div className="relative h-[304px]">
               <div className="absolute w-[198px] h-[304px] top-0 left-[25px]">
-                <div className="absolute top-0 left-0 w-[198px] h-28 opacity-80 rounded-lg bg-gray-400 border border-solid border-white" />
-                <div className="absolute top-48 left-0 w-[198px] h-28 opacity-80 rounded-lg bg-gray-400 border border-solid border-white" />
+                {/* 라이브러리 사용 확정되면 수정 예정 */}
+                <div className="absolute top-0 left-0 w-[198px] h-28 opacity-80 rounded-lg bg-gray-400 border border-solid border-white">
+                  <img src={import.meta.env.VITE_PROXY_HOST + data?.screenshot[1].src} />
+                </div>
+                <div className="absolute top-48 left-0 w-[198px] h-28 opacity-80 rounded-lg bg-gray-400 border border-solid border-white">
+                  <img src={import.meta.env.VITE_PROXY_HOST + data?.screenshot[2].src} />
+                </div>
               </div>
-              <div className="absolute top-[82px] left-0 w-[248px] h-[140px] rounded-lg bg-gray-400 border border-solid border-white" />
+              <div className="absolute top-[82px] left-0 w-[248px] h-[140px] rounded-lg bg-gray-400 border border-solid border-white">
+                <img src={import.meta.env.VITE_PROXY_HOST + data?.screenshot[0].src} />
+              </div>
             </div>
           </div>
         </div>
