@@ -48,14 +48,16 @@ const GamePlay = ({ data, more, onClickMoreToggleHandler }: Props) => {
             </p>
           ) : (
             <p className="flex flex-col gap-2 font-Pretendard text-[14px] text-white leading-[130%] overflow-hidden">
-              {data?.content && data?.content.length > 450 && (
+              {
                 <>
                   <p className="line-clamp-5">{data?.content}</p>
-                  <p onClick={onClickMoreToggleHandler} className="ml-auto font-bold text-primary-100 cursor-pointer">
-                    더보기
-                  </p>
+                  {data?.content && data?.content.length > 450 && (
+                    <p onClick={onClickMoreToggleHandler} className="ml-auto font-bold text-primary-100 cursor-pointer">
+                      더보기
+                    </p>
+                  )}
                 </>
-              )}
+              }
             </p>
           )}
         </div>
