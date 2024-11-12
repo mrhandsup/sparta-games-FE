@@ -75,18 +75,22 @@ const GamePlay = ({ data, more, onClickMoreToggleHandler }: Props) => {
           <p className="font-DungGeunMo text-[24px] text-white">스틸컷</p>
           <div className="relative w-[248px] h-[304px]">
             <div className="relative h-[304px]">
-              <div className="absolute w-[198px] h-[304px] top-0 left-[25px]">
-                {/* 라이브러리 사용 확정되면 수정 예정 */}
-                <div className="absolute top-0 left-0 w-[198px] h-28 opacity-80 rounded-lg bg-gray-400 border border-solid border-white">
-                  <img src={import.meta.env.VITE_PROXY_HOST + data?.screenshot[1].src} />
-                </div>
-                <div className="absolute top-48 left-0 w-[198px] h-28 opacity-80 rounded-lg bg-gray-400 border border-solid border-white">
-                  <img src={import.meta.env.VITE_PROXY_HOST + data?.screenshot[2].src} />
-                </div>
-              </div>
-              <div className="absolute top-[82px] left-0 w-[248px] h-[140px] rounded-lg bg-gray-400 border border-solid border-white">
-                <img src={import.meta.env.VITE_PROXY_HOST + data?.screenshot[0].src} />
-              </div>
+              {/* 라이브러리 사용 확정되면 수정 예정 */}
+              {data?.screenshot && data?.screenshot.length > 0 && (
+                <>
+                  <div className="absolute w-[198px] h-[304px] top-0 left-[25px]">
+                    <div className="absolute top-0 left-0 w-[198px] h-28 opacity-80 rounded-lg bg-gray-400 border border-solid border-white">
+                      <img src={import.meta.env.VITE_PROXY_HOST + data?.screenshot[1].src} />
+                    </div>
+                    <div className="absolute top-48 left-0 w-[198px] h-28 opacity-80 rounded-lg bg-gray-400 border border-solid border-white">
+                      <img src={import.meta.env.VITE_PROXY_HOST + data?.screenshot[2].src} />
+                    </div>
+                  </div>
+                  <div className="absolute top-[82px] left-0 w-[248px] h-[140px] rounded-lg bg-gray-400 border border-solid border-white">
+                    <img src={import.meta.env.VITE_PROXY_HOST + data?.screenshot[0].src} />
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>
