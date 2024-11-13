@@ -3,11 +3,13 @@ import share from "../../assets/gameDetail/interface-essential-share-1.svg";
 import bookmark from "../../assets/gameDetail/content-files-close-book-bookmark.svg";
 
 export type GamePlayData = {
+  id: number;
   maker_name: string;
   title: string;
-  thumnail: ImageData | null;
+  thumnail: null;
   youtube_url: string;
   content: string;
+  gamepath: string;
   base_control: string;
   screenshot: {
     id: number;
@@ -22,6 +24,8 @@ type Props = {
 };
 
 const GamePlay = ({ data, more, onClickMoreToggleHandler }: Props) => {
+  const gameUrl = `${import.meta.env.VITE_PROXY_HOST}${data?.gamepath}/index.html`;
+
   return (
     <section className="flex gap-5 mt-6">
       <div className="w-[880px]">
@@ -36,7 +40,9 @@ const GamePlay = ({ data, more, onClickMoreToggleHandler }: Props) => {
             </div>
           </div>
         </div>
-        <div className="mt-5 w-full h-[495px] bg-gray-400 rounded-t-lg">{/* 게임들어갈 부분 */}</div>
+        <div className="mt-5 w-full h-[495px] bg-gray-400 rounded-t-lg">
+          <iframe src={gameUrl} width="100%" height="100%" />
+        </div>
         <div className="flex flex-col gap-3 p-4 bg-gray-800">
           <p className="font-DungGeunMo text-[24px] text-white">게임설명</p>
           {more ? (
