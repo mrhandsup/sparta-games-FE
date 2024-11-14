@@ -1,11 +1,16 @@
 import React from "react";
 import { User } from "../../types";
+import { convertToConfigObjects } from "../../util/convertToConfigObjects";
+import { USER_TECH } from "../../util/constance/selectConfig";
 
 type TProfileProps = {
   user: User;
 };
 
 const ProfileHeader = (props: TProfileProps) => {
+  //* Utils
+  const userTech = convertToConfigObjects(USER_TECH, [props.user.user_tech]);
+
   return (
     <div className="bg-gray-800 h-[176px] px-32 py-3 flex items-center">
       <div className="bg-white w-[80px] h-[80px] rounded-md" />
@@ -14,7 +19,7 @@ const ProfileHeader = (props: TProfileProps) => {
           [{props.user.nickname}]
           <span className="font-DungGeunMo  text-heading-20 text-white">
             {" "}
-            [{props.user.is_maker ? "Maker" : "Player"}({props.user.user_tech})]
+            [{props.user.is_maker ? "Maker" : "Player"}({userTech[0].label})]
           </span>
         </p>
         {/* 관심 게임 분야 */}

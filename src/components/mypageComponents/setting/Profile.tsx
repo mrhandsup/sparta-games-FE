@@ -17,9 +17,14 @@ const Profile = (props: Props) => {
   const [gameCategory, setGameCategory] = React.useState<selectConfig[]>([]);
   const [userTech, setUserTech] = React.useState<string>("");
   const [userType, setUserType] = React.useState<selectConfig[]>([]);
+  const [isUpdate, setIsUpdate] = React.useState<boolean>(false);
 
   //* Function
   const onClickUpdateProfile = async () => {
+    if (!isUpdate) {
+      setIsUpdate(true);
+      return;
+    }
     if (userData) {
       await updateUserData(userData?.user_pk, {
         nickname,
@@ -28,6 +33,7 @@ const Profile = (props: Props) => {
         is_maker: userType[0].value as boolean,
       }).then((res) => {
         setUser(sessionStorage.getItem("accessToken") as string);
+        setIsUpdate(false);
       });
     }
   };
@@ -54,10 +60,12 @@ const Profile = (props: Props) => {
           <p className="font-DungGeunMo text-heading-32 text-white">프로필 수정</p>
         </div>
         <button
-          className="border-gray-400 border-2 w-[20%] h-10 rounded-md text-gray-400 font-bold"
+          className={`${isUpdate ? "border-primary-500" : "border-gray-400"} border-2 w-[20%] h-10 rounded-md ${
+            isUpdate ? "text-primary-500" : "text-gray-400"
+          } font-bold hover:bg-gray-700 transition-colors`}
           onClick={onClickUpdateProfile}
         >
-          수정하기
+          {isUpdate ? "저장하기" : "수정하기"}
         </button>
       </div>
       <div className="w-full flex flex-col gap-5">
@@ -68,6 +76,7 @@ const Profile = (props: Props) => {
             onChange={(e) => setNickname(e.target.value)}
             placeholder="spartagames"
             className="py-3 px-4 bg-gray-700 border border-solid border-white rounded-md w-[50%] text-white"
+            disabled={!isUpdate}
           />
         </div>
         <div className="flex justify-between ">
@@ -79,6 +88,7 @@ const Profile = (props: Props) => {
               initialSelectedData={gameCategory}
               isResetButton
               isMultipleSelect
+              disabled={!isUpdate}
             />
           </div>
         </div>
@@ -88,6 +98,7 @@ const Profile = (props: Props) => {
             value={userTech}
             onChange={(e) => setUserTech(e.target.value)}
             className="py-3 px-4 w-[50%] bg-gray-700 border border-solid border-white rounded-md appearance-none  text-white"
+            disabled={!isUpdate}
           >
             <option value="">장르를 선택해주세요</option>
             {USER_TECH.map((tech, idx) => (
@@ -104,6 +115,7 @@ const Profile = (props: Props) => {
               selectableData={USER_TYPE}
               onChangeSelectedData={(selectedData) => setUserType(selectedData)}
               initialSelectedData={userType}
+              disabled={!isUpdate}
             />
           </div>
         </div>

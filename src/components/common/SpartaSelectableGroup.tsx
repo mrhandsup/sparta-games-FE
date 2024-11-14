@@ -21,6 +21,10 @@ type TSpartaSelectableGroupProps = {
    * 초기화 버튼 유무
    */
   isResetButton?: boolean;
+  /**
+   * disabled 여부
+   */
+  disabled?: boolean;
 };
 
 const SpartaSelectableGroup = (props: TSpartaSelectableGroupProps) => {
@@ -32,6 +36,7 @@ const SpartaSelectableGroup = (props: TSpartaSelectableGroupProps) => {
    * 선택 시 호출되는 함수
    */
   const onSelect = (data: { label: string; value: any }) => {
+    if (props.disabled) return;
     if (props.isMultipleSelect) {
       // 다중 선택
       if (selectedData.find((item) => item.value === data.value)) {
@@ -53,6 +58,7 @@ const SpartaSelectableGroup = (props: TSpartaSelectableGroupProps) => {
    * 리셋 버튼 클릭 시
    */
   const onClickResetButton = () => {
+    if (props.disabled) return;
     setSelectedData([]);
     props.onChangeSelectedData([]);
   };

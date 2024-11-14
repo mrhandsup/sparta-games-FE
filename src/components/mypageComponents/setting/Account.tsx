@@ -3,7 +3,7 @@ import log from "../../../assets/Log.svg";
 import { useForm } from "react-hook-form";
 import { UserInformationInputForm } from "../../../types";
 import { userStore } from "../../../share/store/userStore";
-import { updateUserData } from "../../../api/user";
+import { deleteUser, updateUserData } from "../../../api/user";
 
 type TAccountProps = {};
 
@@ -28,9 +28,14 @@ const Account = (props: TAccountProps) => {
   // 비밀번호 값 감시
   const password = watch("password");
 
+  //* State
+  const [isUpdate, setIsUpdate] = React.useState<boolean>(false);
   //* Function
+  /**
+   * 회원정보 수정
+   */
   const onSubmit = async (data: Partial<UserInformationInputForm>) => {
-    console.log(data);
+    if (!isUpdate) return;
     if (userData) {
       await updateUserData(userData?.user_pk, {
         email: data.email,
@@ -38,9 +43,28 @@ const Account = (props: TAccountProps) => {
         password_check: data.password_check,
       }).then((res) => {
         setUser(sessionStorage.getItem("accessToken") as string);
+        setIsUpdate(false);
       });
     }
   };
+  /**
+   * 수정하기 버튼 클릭
+   */
+  const handleEditClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsUpdate(true);
+  };
+  /**
+   * 회원탈퇴 버튼 클릭
+   */
+  const handleDeleteClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    // 회원탈퇴
+    // TODO: 회원 탈퇴 모달에 붙이기
+    // deleteUser(userData?.user_pk as number);
+  };
+  // TODO : 회원탈퇴 모달 구현
+  // TODO : 소셜 로그인 계정정보 수정 불가능하게 하기
 
   return (
     <div className="bg-gray-800 rounded-xl px-7 py-5 flex flex-col gap-4 justify-start items-start">
@@ -52,26 +76,22 @@ const Account = (props: TAccountProps) => {
           </div>
           <button
             type="submit"
-            className="border-gray-400 border-2 w-[20%] h-10 rounded-md text-gray-400 font-bold hover:bg-gray-700 transition-colors"
+            className={`${isUpdate ? "border-primary-500" : "border-gray-400"} border-2 w-[20%] h-10 rounded-md ${
+              isUpdate ? "text-primary-500" : "text-gray-400"
+            } font-bold hover:bg-gray-700 transition-colors`}
+            onClick={!isUpdate ? handleEditClick : undefined}
           >
-            수정하기
+            {isUpdate ? "저장하기" : "수정하기"}
           </button>
         </div>
         <div className="flex flex-col gap-2">
           <div className="flex justify-between items-center">
             <label className="text-gray-100">아이디</label>
             <input
-              {...register("email", {
-                required: "이메일은 필수 입력입니다.",
-                pattern: {
-                  value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g,
-                  message: "이메일 형식이 아닙니다.",
-                },
-              })}
+              {...register("email")}
+              disabled
               placeholder="spartagames@sparta.com"
-              className={`py-3 px-4 bg-gray-700 border border-solid rounded-md w-[50%] text-white ${
-                errors.email ? "border-red-500" : "border-white"
-              }`}
+              className={`py-3 px-4 bg-gray-700 border border-solid rounded-md w-[50%] text-white `}
             />
           </div>
           {errors.email && <p className="text-red-500 text-sm text-right w-full">{errors.email.message}</p>}
@@ -92,6 +112,7 @@ const Account = (props: TAccountProps) => {
                   message: "비밀번호는 문자, 숫자, 특수문자를 포함해야 합니다.",
                 },
               })}
+              disabled={!isUpdate}
               type="password"
               placeholder="Password"
               className={`py-3 px-4 bg-gray-700 border border-solid rounded-md w-[50%] text-white ${
@@ -111,6 +132,7 @@ const Account = (props: TAccountProps) => {
                 validate: (value) => value === password || "비밀번호가 일치하지 않습니다.",
               })}
               type="password"
+              disabled={!isUpdate}
               placeholder="Password Check"
               className={`py-3 px-4 bg-gray-700 border border-solid rounded-md w-[50%] text-white ${
                 errors.password_check ? "border-red-500" : "border-white"
@@ -122,7 +144,7 @@ const Account = (props: TAccountProps) => {
           )}
         </div>
       </form>
-      <div className="flex w-full justify-end text-gray-200 underline">
+      <div className="flex w-full justify-end text-gray-200 underline cursor-pointer" onClick={handleDeleteClick}>
         <p>회원탈퇴 신청하기</p>
       </div>
     </div>

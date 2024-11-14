@@ -46,20 +46,9 @@ const GameCardList = ({ data, children, maxNum = 4, simple, noNavigation, contai
             </Link>
           ))
         ) : (
-          <>
-            <Link to={"/game-detail"}>
-              <GameCard />
-            </Link>
-            <Link to={"/game-detail"}>
-              <GameCard />
-            </Link>
-            <Link to={"/game-detail"}>
-              <GameCard />
-            </Link>
-            <Link to={"/game-detail"}>
-              <GameCard />
-            </Link>
-          </>
+          <div className="h-[108px] min-w-[880px] flex items-center justify-center ">
+            <p className="text-white text-heading-20">게임이 없습니다.</p>
+          </div>
         )}
       </div>
     </div>

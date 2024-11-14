@@ -14,8 +14,11 @@ import { sparta_games } from "../api/axios";
 const Header = () => {
   const { modalToggle, modalRef, onClickModalToggleHandler } = useModalToggle();
   const { userData, setUser } = userStore();
+
+  //임시 로그인
+  //TODO : 여기 지우고 로그인 페이지 만들어서 로그인 처리하기
   const fetchLogin = async () => {
-    const logindata = await login("example1@example.com", "examplepasswordA11");
+    const logindata = await login("example@example.com", "examplepasswordA1");
     console.log(logindata);
     sessionStorage.setItem("accessToken", logindata?.data.access);
     sessionStorage.setItem("refreshToken", logindata?.data.refresh);

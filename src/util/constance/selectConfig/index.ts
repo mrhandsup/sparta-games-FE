@@ -52,47 +52,47 @@ const GAME_CATEGORY: selectConfig[] = [
 const USER_TECH: selectConfig[] = [
   {
     label: "Director(PM/PO)",
-    value: "director",
+    value: "DIR",
   },
   {
     label: "2D Graphic",
-    value: "2d_graphic",
+    value: "2DG",
   },
   {
     label: "Concept Art",
-    value: "concept_art",
+    value: "CA",
   },
   {
     label: "UX/UI",
-    value: "ux_ui",
+    value: "UXUI",
   },
   {
     label: "Artist",
-    value: "artist",
+    value: "ART",
   },
   {
     label: "3D Graphic",
-    value: "3d_graphic",
+    value: "3DG",
   },
   {
     label: "Modeler",
-    value: "modeler",
+    value: "MDL",
   },
   {
     label: "Frontend",
-    value: "frontend",
+    value: "FE",
   },
   {
     label: "Backend",
-    value: "backend",
+    value: "BE",
   },
   {
     label: "All",
-    value: "all",
+    value: "All",
   },
   {
     label: "관심분야 없음",
-    value: "none",
+    value: "NONE",
   },
 ];
 
