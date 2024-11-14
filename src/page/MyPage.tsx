@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Profile from "../components/mypageComponents/Profile";
+import Profile from "../components/mypageComponents/ProfileHeader";
 import log from "../assets/Log.svg";
 import GameCardList, { GameData } from "../components/HomeComponents/GameCardList";
 import { useQuery } from "@tanstack/react-query";
@@ -7,6 +7,7 @@ import { getGameList } from "../api/game";
 import Logs from "../components/mypageComponents/Logs";
 import Setting from "../components/mypageComponents/Settting";
 import { userStore } from "../share/store/userStore";
+import ProfileHeader from "../components/mypageComponents/ProfileHeader";
 
 const MyPage = () => {
   const [navigation, setNavigation] = useState<"log" | "setting">("log");
@@ -22,7 +23,7 @@ const MyPage = () => {
     userData && (
       <div className="w-full">
         {/* 헤더 */}
-        <Profile user={userData} />
+        <ProfileHeader user={userData} />
         <div className="flex gap-9 py-11 w-[83%] mx-auto">
           {/* 네비게이션 */}
           <div className="bg-gray-800 w-[13%] p-2 rounded-md h-fit">

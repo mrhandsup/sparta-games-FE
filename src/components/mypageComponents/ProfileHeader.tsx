@@ -5,7 +5,7 @@ type TProfileProps = {
   user: User;
 };
 
-const Profile = (props: TProfileProps) => {
+const ProfileHeader = (props: TProfileProps) => {
   return (
     <div className="bg-gray-800 h-[176px] px-32 py-3 flex items-center">
       <div className="bg-white w-[80px] h-[80px] rounded-md" />
@@ -30,4 +30,4 @@ const Profile = (props: TProfileProps) => {
   );
 };
 
-export default Profile;
+export default ProfileHeader;

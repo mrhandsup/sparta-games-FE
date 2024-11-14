@@ -1,14 +1,12 @@
-import star from "../../assets/star.svg"; // 빈 별 컴포넌트
-import halfFillStar from "../../assets/halfFillStar.svg"; // 반만 채워진 별 컴포넌트
-import fillStar from "../../assets/fillStar.svg"; // 꽉 채워진 별 컴포넌트
+import star from "../../assets/star.svg";
+import halfFillStar from "../../assets/halfFillStar.svg";
+import fillStar from "../../assets/fillStar.svg";
 
 const StarRating = ({ score }: { score: number }) => {
-  // 별점 계산 (10점 만점 -> 5개의 별로 변환)
-  const fullStars = Math.floor(score / 2); // 꽉 찬 별 개수
-  const halfStar = score % 2 !== 0; // 반만 찬 별 여부
+  // 별점 계산 (5점 만점)
+  const fullStars = Math.floor(score); // 꽉 찬 별 개수
+  const halfStar = score % 1 !== 0; // 반만 찬 별 여부
   const emptyStars = 5 - fullStars - (halfStar ? 1 : 0); // 나머지는 빈 별
-
-  console.log(score, fullStars, halfStar, emptyStars);
 
   return (
     <div className="flex gap-[2px] items-center">
