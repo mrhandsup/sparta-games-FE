@@ -7,10 +7,23 @@ import CategoryModal from "./headerComponents/CategoryModal";
 
 import useModalToggle from "../hook/useModalToggle";
 import { userStore } from "../share/store/userStore";
+import { useQuery } from "@tanstack/react-query";
+import { login } from "../api/login";
+import { sparta_games } from "../api/axios";
 
 const Header = () => {
   const { modalToggle, modalRef, onClickModalToggleHandler } = useModalToggle();
-  const { userData } = userStore();
+  const { userData, setUser } = userStore();
+
+  //임시 로그인
+  //TODO : 여기 지우고 로그인 페이지 만들어서 로그인 처리하기
+  const fetchLogin = async () => {
+    const logindata = await login("example@example.com", "examplepasswordA1");
+    console.log(logindata);
+    sessionStorage.setItem("accessToken", logindata?.data.access);
+    sessionStorage.setItem("refreshToken", logindata?.data.refresh);
+    setUser(logindata?.data.access);
+  };
 
   return (
     <header className="flex justify-between items-center py-5 px-[30px] w-full h-20 bg-gray-800 font-DungGeunMo text-white">
@@ -36,15 +49,17 @@ const Header = () => {
           <p>게임 업로드</p>
         </Link>
 
-        <Link to={"/community"}>
+        <Link to={"/my-page"}>
           <p>커뮤니티</p>
         </Link>
         {userData ? (
-          <Link to={"/mypage"}>
+          <Link to={"/my-page"}>
             <p>마이페이지</p>
           </Link>
         ) : (
-          <p>로그인/회원가입</p>
+          <div onClick={() => fetchLogin()} className="cursor-pointer">
+            로그인/회원가입
+          </div>
         )}
       </section>
     </header>

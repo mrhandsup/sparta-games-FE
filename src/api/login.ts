@@ -15,3 +15,16 @@ export const getUserInfo = async (code: string) => {
     console.log(error);
   }
 };
+
+export const login = async (email: string, password: string) => {
+  try {
+    const response = await sparta_games.post("/accounts/api/login/", {
+      email,
+      password,
+    });
+
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
