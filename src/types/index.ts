@@ -25,6 +25,16 @@ export type ReviewInputForm = {
   difficultyLevel: "easy" | "hard" | "";
 };
 
+export type UserInformationInputForm = {
+  email: string;
+  nickname: string;
+  password: string;
+  password_check: string;
+  game_category: string[];
+  user_tech: string;
+  is_maker: boolean;
+};
+
 export type User = {
   user_pk: number;
   nickname: string;
@@ -36,4 +46,6 @@ export type User = {
   login_type: string;
   user_tech: string;
   game_category: any[];
+  password: string;
+  password_check: string;
 };

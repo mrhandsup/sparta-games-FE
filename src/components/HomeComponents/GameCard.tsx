@@ -15,7 +15,7 @@ const GameCard = ({ item, simple }: Props) => {
         alt="게임 썸네일"
         className="relative flex justify-center items-center w-[280px] h-[224px] bg-gray-50 rounded-t-lg"
       />
-      <div className="absolute top-0 left-0 bg-black rounded-tl-lg rounded-br-lg font-DungGeunMo text-white py-1.5 px-4 w-fit font-light">
+      <div className="absolute top-0 left-0 bg-black rounded-tl-md rounded-br-lg font-DungGeunMo text-white py-1.5 px-4 w-fit font-light">
         Rhythm
       </div>
       <div className={`p-3 w-[280px] ${!simple && "h-[173px]"} bg-gray-800 text-white pt-4 rounded-b-lg`}>
