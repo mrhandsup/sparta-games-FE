@@ -1,8 +1,9 @@
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import expand from "../../assets/gameDetail/interface-essential-signin-expand.svg";
 import share from "../../assets/gameDetail/interface-essential-share-1.svg";
 import bookmark from "../../assets/gameDetail/content-files-close-book-bookmark.svg";
+import { Swiper, SwiperSlide } from "swiper/react";
+
+import "./GamePlaySwiper.css";
 
 export type GamePlayData = {
   id: number;
@@ -77,31 +78,36 @@ const GamePlay = ({ data, more, onClickMoreToggleHandler }: Props) => {
         </div>
         <div className="flex flex-col gap-3 p-4 w-full bg-gray-800 rounded-2xl">
           <p className="font-DungGeunMo text-[24px] text-white">게임플레이 영상</p>
-          <div className="relative p-20  rounded-lg  border border-solid border-white overflow-hidden">
+          <div className="relative p-20 rounded-lg border border-solid border-white overflow-hidden">
             <iframe src={data?.youtube_url} className="absolute top-0 left-0 w-full h-full" />
           </div>
         </div>
-        <div className="flex flex-col gap-3 p-4 w-full bg-gray-800 rounded-2xl">
+        <div className="flex flex-col gap-3 p-4 w-full bg-gray-800 rounded-2xl overflow-hidden">
           <p className="font-DungGeunMo text-[24px] text-white">스틸컷</p>
-          <div className="relative w-[248px] h-[304px]">
-            <div className="relative h-[304px]">
-              {/* 라이브러리 사용 확정되면 수정 예정 */}
-              {data?.screenshot && data?.screenshot.length > 0 && (
-                <>
-                  <div className="absolute w-[198px] h-[304px] top-0 left-[25px]">
-                    <div className="absolute top-0 left-0 w-[198px] h-28 opacity-80 rounded-lg bg-gray-400 border border-solid border-white">
-                      <img src={import.meta.env.VITE_PROXY_HOST + data?.screenshot[1].src} />
+          <div className="h-[336px] overflow-hidden">
+            <Swiper
+              direction={"vertical"}
+              loop={true}
+              centeredSlides={true}
+              slidesPerView={3}
+              pagination={{
+                clickable: true,
+              }}
+              className="mySwiper"
+            >
+              {data?.screenshot &&
+                data.screenshot.map((image, index) => (
+                  <SwiperSlide key={index}>
+                    <div className="flex justify-center">
+                      <img
+                        className="w-[198px] h-[112px] border border-solid border-white rounded-lg"
+                        src={import.meta.env.VITE_PROXY_HOST + image.src}
+                        alt={`carousel-img-${index}`}
+                      />
                     </div>
-                    <div className="absolute top-48 left-0 w-[198px] h-28 opacity-80 rounded-lg bg-gray-400 border border-solid border-white">
-                      <img src={import.meta.env.VITE_PROXY_HOST + data?.screenshot[2].src} />
-                    </div>
-                  </div>
-                  <div className="absolute top-[82px] left-0 w-[248px] h-[140px] rounded-lg bg-gray-400 border border-solid border-white">
-                    <img src={import.meta.env.VITE_PROXY_HOST + data?.screenshot[0].src} />
-                  </div>
-                </>
-              )}
-            </div>
+                  </SwiperSlide>
+                ))}
+            </Swiper>
           </div>
         </div>
       </div>
