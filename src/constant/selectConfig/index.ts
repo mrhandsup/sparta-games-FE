@@ -1,10 +1,10 @@
-type selectConfig = {
+type selectType = {
   label: string;
   value: string | boolean;
   [key: string]: any;
 };
 
-const GAME_CATEGORY: selectConfig[] = [
+const GAME_CATEGORY: selectType[] = [
   {
     label: "Action",
     value: "Action",
@@ -49,7 +49,7 @@ const GAME_CATEGORY: selectConfig[] = [
   },
 ];
 
-const USER_TECH: selectConfig[] = [
+const USER_TECH: selectType[] = [
   {
     label: "Director(PM/PO)",
     value: "DIR",
@@ -96,7 +96,7 @@ const USER_TECH: selectConfig[] = [
   },
 ];
 
-const USER_TYPE: selectConfig[] = [
+const USER_TYPE: selectType[] = [
   {
     label: "플레이어",
     value: false,
@@ -108,4 +108,4 @@ const USER_TYPE: selectConfig[] = [
 ];
 
 export { USER_TECH, GAME_CATEGORY, USER_TYPE };
-export type { selectConfig };
+export type { selectType };

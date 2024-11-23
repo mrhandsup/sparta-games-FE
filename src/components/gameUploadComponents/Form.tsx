@@ -1,4 +1,4 @@
-import CATEGORY from "../../util/constance/category";
+import { CATEGORY } from "../../constant";
 
 import CloseCircle from "../../assets/CloseCircle";
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { User } from "../../types";
 import { convertToConfigObjects } from "../../util/convertToConfigObjects";
-import { USER_TECH } from "../../util/constance/selectConfig";
+import { USER_TECH } from "../../constant/selectConfig";
 
 type TProfileProps = {
   user: User;

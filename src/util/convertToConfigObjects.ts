@@ -1,9 +1,9 @@
-import { selectConfig } from "./constance/selectConfig";
+import { selectType } from "../constant/selectConfig";
 
-export const convertToConfigObjects = <T extends selectConfig>(configList: T[], selectedValues: string[]): T[] => {
+export const convertToConfigObjects = <T extends selectType>(configList: T[], selectedValues: string[]): T[] => {
   return configList.filter((config) => selectedValues.includes(config.value as any));
 };
 
-export const convertToConfigValues = <T extends selectConfig>(configList: T[]): string[] => {
+export const convertToConfigValues = <T extends selectType>(configList: T[]): string[] => {
   return configList.map((config) => config.value as string);
 };

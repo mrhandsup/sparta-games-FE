@@ -18,9 +18,10 @@ type Props = {
   simple?: boolean;
   noNavigation?: boolean;
   containerClassName?: string;
+  row?: boolean;
 };
 
-const GameCardList = ({ data, children, maxNum = 4, simple, noNavigation, containerClassName }: Props) => {
+const GameCardList = ({ data, children, maxNum = 4, simple, noNavigation, containerClassName, row }: Props) => {
   const slicingData = data?.slice(0, maxNum);
 
   const baseClassName = "flex flex-col justify-evenly items-center w-full h-[536px] bg-gray-700";
@@ -42,7 +43,7 @@ const GameCardList = ({ data, children, maxNum = 4, simple, noNavigation, contai
         {slicingData && slicingData.length ? (
           slicingData.map((item) => (
             <Link to={`/game-detail?id=${item.pk}`}>
-              <GameCard item={item} simple={simple} />
+              <GameCard item={item} simple={simple} row={row} />
             </Link>
           ))
         ) : (

@@ -1,6 +1,6 @@
 import React from "react";
 import log from "../../../assets/Log.svg";
-import { GAME_CATEGORY, selectConfig, USER_TECH, USER_TYPE } from "../../../util/constance/selectConfig";
+import { GAME_CATEGORY, selectType, USER_TECH, USER_TYPE } from "../../../constant/selectConfig";
 import SpartaSelectableGroup from "../../common/SpartaSelectableGroup";
 import { userStore } from "../../../share/store/userStore";
 import { convertToConfigObjects, convertToConfigValues } from "../../../util/convertToConfigObjects";
@@ -14,9 +14,9 @@ const Profile = (props: Props) => {
 
   //* State
   const [nickname, setNickname] = React.useState<string>("");
-  const [gameCategory, setGameCategory] = React.useState<selectConfig[]>([]);
+  const [gameCategory, setGameCategory] = React.useState<selectType[]>([]);
   const [userTech, setUserTech] = React.useState<string>("");
-  const [userType, setUserType] = React.useState<selectConfig[]>([]);
+  const [userType, setUserType] = React.useState<selectType[]>([]);
   const [isUpdate, setIsUpdate] = React.useState<boolean>(false);
 
   //* Function

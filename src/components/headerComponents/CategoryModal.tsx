@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-import CATEGORY from "../../util/constance/category";
+import { CATEGORY } from "../../constant";
 
 type props = {
   onClickModalToggleHandler: () => void;

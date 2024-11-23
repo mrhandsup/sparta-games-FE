@@ -13,4 +13,4 @@ const CATEGORY = [
   "Test",
 ];
 
-export default CATEGORY;
+export { CATEGORY };
