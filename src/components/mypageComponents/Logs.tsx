@@ -3,11 +3,11 @@ import GameCardList, { GameData } from "../HomeComponents/GameCardList";
 import { useQuery } from "@tanstack/react-query";
 import { getGameList } from "../../api/game";
 import log from "../../assets/Log.svg";
-import { User } from "../../types";
+import { TUser } from "../../types";
 import { getUserGameMadeList, getUserLikedGameList } from "../../api/user";
 
 type TLogsProps = {
-  user: User;
+  user: TUser;
 };
 
 type TListData = {

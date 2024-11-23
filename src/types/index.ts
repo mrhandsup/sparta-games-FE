@@ -1,7 +1,7 @@
 import type { FormState, UseFormHandleSubmit, UseFormRegister, UseFormSetValue, UseFormWatch } from "react-hook-form";
 
 //공용으로 쓰는 타입의 경우 이 파일의 작성 그렇지 않을경우 분리해서 작성
-export type GameUploadInput = {
+export type TGameUploadInput = {
   title: string;
   category: string;
   content: string;
@@ -11,21 +11,21 @@ export type GameUploadInput = {
   video: string;
 };
 
-export type GameUploadInputForm = {
-  register: UseFormRegister<GameUploadInput>;
-  watch: UseFormWatch<GameUploadInput>;
-  setValue: UseFormSetValue<GameUploadInput>;
-  formState: FormState<GameUploadInput>;
-  handleSubmit: UseFormHandleSubmit<GameUploadInput>;
+export type TGameUploadInputForm = {
+  register: UseFormRegister<TGameUploadInput>;
+  watch: UseFormWatch<TGameUploadInput>;
+  setValue: UseFormSetValue<TGameUploadInput>;
+  formState: FormState<TGameUploadInput>;
+  handleSubmit: UseFormHandleSubmit<TGameUploadInput>;
 };
 
-export type ReviewInputForm = {
+export type TReviewInputForm = {
   comment: string;
   star: number;
   difficultyLevel: "easy" | "hard" | "";
 };
 
-export type UserInformationInputForm = {
+export type TUserInformationInputForm = {
   email: string;
   nickname: string;
   password: string;
@@ -35,7 +35,7 @@ export type UserInformationInputForm = {
   is_maker: boolean;
 };
 
-export type User = {
+export type TUser = {
   user_pk: number;
   nickname: string;
   email: string;

@@ -1,7 +1,7 @@
 import React from "react";
 import log from "../../../assets/Log.svg";
 import { useForm } from "react-hook-form";
-import { UserInformationInputForm } from "../../../types";
+import { TUserInformationInputForm } from "../../../types";
 import { userStore } from "../../../share/store/userStore";
 import { deleteUser, updateUserData } from "../../../api/user";
 
@@ -16,7 +16,7 @@ const Account = (props: TAccountProps) => {
     handleSubmit,
     formState: { errors },
     watch,
-  } = useForm<Partial<UserInformationInputForm>>({
+  } = useForm<Partial<TUserInformationInputForm>>({
     mode: "onChange", // 입력값이 변경될 때마다 유효성 검사
     defaultValues: {
       email: userData?.email,
@@ -34,7 +34,7 @@ const Account = (props: TAccountProps) => {
   /**
    * 회원정보 수정
    */
-  const onSubmit = async (data: Partial<UserInformationInputForm>) => {
+  const onSubmit = async (data: Partial<TUserInformationInputForm>) => {
     if (!isUpdate) return;
     if (userData) {
       await updateUserData(userData?.user_pk, {
