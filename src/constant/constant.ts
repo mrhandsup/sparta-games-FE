@@ -1,3 +1,18 @@
+const CATEGORY = [
+  "Action",
+  "Arcade",
+  "FPS",
+  "Platform",
+  "Rhythm",
+  "Survival",
+  "Adventure",
+  "Casual",
+  "Horror",
+  "Puzzle",
+  "RPG",
+  "Test",
+];
+
 type selectConfig = {
   label: string;
   value: string | boolean;
@@ -107,5 +122,5 @@ const USER_TYPE: selectConfig[] = [
   },
 ];
 
-export { USER_TECH, GAME_CATEGORY, USER_TYPE };
+export { CATEGORY, USER_TECH, GAME_CATEGORY, USER_TYPE };
 export type { selectConfig };

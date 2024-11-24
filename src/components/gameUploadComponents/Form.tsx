@@ -1,12 +1,11 @@
-import CATEGORY from "../../util/constance/category";
-
 import CloseCircle from "../../assets/CloseCircle";
+import { CATEGORY } from "../../constant/constant";
 
-import type { GameUploadInput, GameUploadInputForm } from "../../types";
+import type { TGameUploadInput, TGameUploadInputForm } from "../../types";
 import type { SubmitHandler } from "react-hook-form";
 
 type Props = {
-  form: GameUploadInputForm;
+  form: TGameUploadInputForm;
   note: {
     1: boolean;
     2: boolean;
@@ -16,7 +15,7 @@ type Props = {
   previewStillCut: string[];
   onChangeHandler: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onClickHandler: (type: "thumbnail" | "stillCut", arg: number) => void;
-  onSubmitHandler: SubmitHandler<GameUploadInput>;
+  onSubmitHandler: SubmitHandler<TGameUploadInput>;
 };
 
 const Form = ({
