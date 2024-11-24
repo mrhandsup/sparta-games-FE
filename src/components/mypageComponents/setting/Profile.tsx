@@ -1,6 +1,6 @@
 import React from "react";
 import log from "../../../assets/Log.svg";
-import { GAME_CATEGORY, selectConfig, USER_TECH, USER_TYPE } from "../../../constant/selectConfig";
+import { GAME_CATEGORY, selectConfig, USER_TECH, USER_TYPE } from "../../../constant/constant.ts";
 import SpartaSelectableGroup from "../../common/SpartaSelectableGroup";
 import { userStore } from "../../../share/store/userStore";
 import { convertToConfigObjects, convertToConfigValues } from "../../../util/convertToConfigObjects";
