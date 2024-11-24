@@ -3,7 +3,7 @@ import log from "../../../assets/Log.svg";
 import { useForm } from "react-hook-form";
 import { TUserInformationInputForm } from "../../../types";
 import { userStore } from "../../../share/store/userStore";
-import { deleteUser, updateUserData } from "../../../api/user";
+import { updateUserData } from "../../../api/user";
 
 type TAccountProps = {};
 

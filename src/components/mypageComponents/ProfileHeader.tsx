@@ -1,10 +1,9 @@
-import React from "react";
-import { User } from "../../types";
+import { TUser } from "../../types/index.ts";
 import { convertToConfigObjects } from "../../util/convertToConfigObjects";
-import { USER_TECH } from "../../constant/selectConfig";
+import { USER_TECH } from "../../constant/constant.ts";
 
 type TProfileProps = {
-  user: User;
+  user: TUser;
 };
 
 const ProfileHeader = (props: TProfileProps) => {

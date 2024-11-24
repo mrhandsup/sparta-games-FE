@@ -1,7 +1,5 @@
-import React from "react";
-import GameCardList, { GameData } from "../HomeComponents/GameCardList";
+import GameCardList from "../HomeComponents/GameCardList";
 import { useQuery } from "@tanstack/react-query";
-import { getGameList } from "../../api/game";
 import log from "../../assets/Log.svg";
 import { TUser } from "../../types";
 import { getUserGameMadeList, getUserLikedGameList } from "../../api/user";
