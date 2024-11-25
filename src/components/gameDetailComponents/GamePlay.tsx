@@ -2,8 +2,8 @@ import expand from "../../assets/gameDetail/interface-essential-signin-expand.sv
 import share from "../../assets/gameDetail/interface-essential-share-1.svg";
 import bookmark from "../../assets/gameDetail/content-files-close-book-bookmark.svg";
 import { Swiper, SwiperSlide } from "swiper/react";
-
 import "./GamePlaySwiper.css";
+import { useRef } from "react";
 
 export type GamePlayData = {
   id: number;
@@ -28,6 +28,11 @@ type Props = {
 
 const GamePlay = ({ data, more, onClickMoreToggleHandler }: Props) => {
   const gameUrl = `${import.meta.env.VITE_PROXY_HOST}${data?.gamepath}/index.html`;
+  const fullScreenRef = useRef<HTMLDivElement>(null);
+
+  const handleFullscreen = () => {
+    fullScreenRef.current?.requestFullscreen();
+  };
 
   return (
     <section className="flex gap-5 mt-6">
@@ -37,13 +42,13 @@ const GamePlay = ({ data, more, onClickMoreToggleHandler }: Props) => {
           <div className="flex justify-between">
             <p className="text-gray-100 text-[28px]">[{data?.maker_name}]</p>
             <div className="flex gap-6">
-              <img src={expand} alt="" />
-              <img src={share} alt="" />
-              <img src={bookmark} alt="" />
+              <img src={expand} onClick={handleFullscreen} alt="" className="cursor-pointer" />
+              <img src={share} alt="" className="cursor-pointer" />
+              <img src={bookmark} alt="" className="cursor-pointer" />
             </div>
           </div>
         </div>
-        <div className="mt-5 w-full h-[495px] bg-gray-400 rounded-t-lg">
+        <div className="mt-5 w-full h-[495px] bg-gray-400 rounded-t-lg" ref={fullScreenRef}>
           <iframe src={gameUrl} width="100%" height="100%" />
         </div>
         <div className="flex flex-col gap-3 p-4 bg-gray-800">
