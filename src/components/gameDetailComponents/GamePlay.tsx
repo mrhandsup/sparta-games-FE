@@ -1,9 +1,12 @@
+import { useRef } from "react";
+
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay } from "swiper/modules";
+import "./GamePlaySwiper.css";
+
 import expand from "../../assets/gameDetail/interface-essential-signin-expand.svg";
 import share from "../../assets/gameDetail/interface-essential-share-1.svg";
 import bookmark from "../../assets/gameDetail/content-files-close-book-bookmark.svg";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "./GamePlaySwiper.css";
-import { useRef } from "react";
 
 export type GamePlayData = {
   id: number;
@@ -90,18 +93,19 @@ const GamePlay = ({ data, more, onClickMoreToggleHandler }: Props) => {
         <div className="flex flex-col gap-3 p-4 w-full bg-gray-800 rounded-2xl overflow-hidden">
           <p className="font-DungGeunMo text-[24px] text-white">스틸컷</p>
           <div className="h-[336px] overflow-hidden">
-            <Swiper
-              direction={"vertical"}
-              loop={true}
-              centeredSlides={true}
-              slidesPerView={3}
-              pagination={{
-                clickable: true,
-              }}
-              className="mySwiper"
-            >
-              {data?.screenshot &&
-                data.screenshot.map((image, index) => (
+            {data?.screenshot && (
+              <Swiper
+                direction={"vertical"}
+                loop={true}
+                centeredSlides={true}
+                slidesPerView={3}
+                pagination={{
+                  clickable: true,
+                }}
+                autoplay={{ delay: 2000, disableOnInteraction: false }}
+                modules={[Autoplay]}
+              >
+                {data.screenshot.map((image, index) => (
                   <SwiperSlide key={index}>
                     <div className="flex justify-center">
                       <img
@@ -112,7 +116,8 @@ const GamePlay = ({ data, more, onClickMoreToggleHandler }: Props) => {
                     </div>
                   </SwiperSlide>
                 ))}
-            </Swiper>
+              </Swiper>
+            )}
           </div>
         </div>
       </div>
