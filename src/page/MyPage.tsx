@@ -1,9 +1,4 @@
 import { useState } from "react";
-import Profile from "../components/mypageComponents/ProfileHeader";
-import log from "../assets/Log.svg";
-import GameCardList, { GameData } from "../components/HomeComponents/GameCardList";
-import { useQuery } from "@tanstack/react-query";
-import { getGameList } from "../api/game";
 import Logs from "../components/mypageComponents/Logs";
 import Setting from "../components/mypageComponents/Settting";
 import { userStore } from "../share/store/userStore";
@@ -45,7 +40,7 @@ const MyPage = () => {
             </button>
           </div>
           {/* 내용 */}
-          <div className="w-[79%]">{navigation === "log" ? <Logs user={userData} /> : <Setting user={userData} />}</div>
+          <div className="w-[79%]">{navigation === "log" ? <Logs user={userData} /> : <Setting />}</div>
         </div>
       </div>
     )

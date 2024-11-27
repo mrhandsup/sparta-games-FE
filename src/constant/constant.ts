@@ -1,10 +1,25 @@
-type selectType = {
+const CATEGORY = [
+  "Action",
+  "Arcade",
+  "FPS",
+  "Platform",
+  "Rhythm",
+  "Survival",
+  "Adventure",
+  "Casual",
+  "Horror",
+  "Puzzle",
+  "RPG",
+  "Test",
+];
+
+type selectConfig = {
   label: string;
   value: string | boolean;
   [key: string]: any;
 };
 
-const GAME_CATEGORY: selectType[] = [
+const GAME_CATEGORY: selectConfig[] = [
   {
     label: "Action",
     value: "Action",
@@ -49,7 +64,7 @@ const GAME_CATEGORY: selectType[] = [
   },
 ];
 
-const USER_TECH: selectType[] = [
+const USER_TECH: selectConfig[] = [
   {
     label: "Director(PM/PO)",
     value: "DIR",
@@ -96,7 +111,7 @@ const USER_TECH: selectType[] = [
   },
 ];
 
-const USER_TYPE: selectType[] = [
+const USER_TYPE: selectConfig[] = [
   {
     label: "플레이어",
     value: false,
@@ -107,5 +122,5 @@ const USER_TYPE: selectType[] = [
   },
 ];
 
-export { USER_TECH, GAME_CATEGORY, USER_TYPE };
-export type { selectType };
+export { CATEGORY, USER_TECH, GAME_CATEGORY, USER_TYPE };
+export type { selectConfig };

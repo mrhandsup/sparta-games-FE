@@ -1,10 +1,10 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 
-import type { ReviewInputForm } from "../../types";
+import type { TReviewInputForm } from "../../types";
 import { useState } from "react";
 
 const useReview = () => {
-  const { register, watch, setValue, formState, handleSubmit } = useForm<ReviewInputForm>();
+  const { register, watch, setValue, formState, handleSubmit } = useForm<TReviewInputForm>();
 
   const [star, setStar] = useState(0);
   const [difficultyLevel, setDifficultyLevel] = useState("");
@@ -29,7 +29,7 @@ const useReview = () => {
     setValue("difficultyLevel", arg);
   };
 
-  const onSubmitHandler: SubmitHandler<ReviewInputForm> = (data) => {
+  const onSubmitHandler: SubmitHandler<TReviewInputForm> = (data) => {
     console.log(data);
     // 여기에 등록 api 작성
   };

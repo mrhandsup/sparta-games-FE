@@ -1,12 +1,7 @@
-import log from "../../assets/Log.svg";
-import { userStore } from "../../share/store/userStore";
-import { User } from "../../types";
 import Account from "./setting/Account";
 import Profile from "./setting/Profile";
 
-type TSettingProps = {
-  user: User;
-};
+type TSettingProps = {};
 
 const Setting = (props: TSettingProps) => {
   return (
