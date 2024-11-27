@@ -5,10 +5,13 @@ import { Link } from "react-router-dom";
 
 export type GameData = {
   pk: number;
-  thumbnail: string;
   title: string;
+  maker: number;
+  thumbnail: string;
   star: number;
   maker_name: string;
+  content: string;
+  chip: number[];
 };
 
 type Props = {

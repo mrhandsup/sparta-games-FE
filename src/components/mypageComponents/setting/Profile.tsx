@@ -1,6 +1,5 @@
 import React from "react";
 import log from "../../../assets/Log.svg";
-
 import SpartaSelectableGroup from "../../common/SpartaSelectableGroup";
 import { userStore } from "../../../share/store/userStore";
 import { convertToConfigObjects, convertToConfigValues } from "../../../util/convertToConfigObjects";
