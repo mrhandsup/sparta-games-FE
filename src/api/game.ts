@@ -7,6 +7,7 @@ export const getGameList = async () => {
     return res.data;
   } catch (error) {
     console.error(error);
+    throw error;
   }
 };
 
@@ -16,6 +17,7 @@ export const getGameDetail = async (id: string | null) => {
     return res.data;
   } catch (error) {
     console.error(error);
+    throw error;
   }
 };
 
@@ -26,5 +28,6 @@ export const getMyBookmarkList = async () => {
     return res.data;
   } catch (error) {
     console.error(error);
+    throw error;
   }
 };

@@ -3,68 +3,86 @@ import log from "../../../assets/Log.svg";
 import { useForm } from "react-hook-form";
 import { TUserInformationInputForm } from "../../../types";
 import { userStore } from "../../../share/store/userStore";
-import { updateUserData } from "../../../api/user";
+import { updatePassword } from "../../../api/user";
+import { useMutation } from "@tanstack/react-query";
 
 type TAccountProps = {};
 
 const Account = (props: TAccountProps) => {
   //* Hooks
   const { userData, setUser } = userStore();
+  const [isUpdate, setIsUpdate] = React.useState<boolean>(false);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
+    reset,
   } = useForm<Partial<TUserInformationInputForm>>({
-    mode: "onChange", // 입력값이 변경될 때마다 유효성 검사
+    mode: "onChange",
     defaultValues: {
       email: userData?.email,
       password: "",
-      password_check: "",
+      new_password: "",
+      new_password_check: "",
     },
   });
 
   // 비밀번호 값 감시
-  const password = watch("password");
+  const password = watch("new_password");
 
-  //* State
-  const [isUpdate, setIsUpdate] = React.useState<boolean>(false);
-  //* Function
-  /**
-   * 회원정보 수정
-   */
+  // 비밀번호 변경 mutation
+  const passwordMutation = useMutation({
+    mutationFn: ({
+      userId,
+      password,
+      new_password,
+      new_password_check,
+    }: {
+      userId: number;
+      password: string;
+      new_password: string;
+      new_password_check: string;
+    }) => updatePassword(userId, password, new_password, new_password_check),
+    onSuccess: () => {
+      setIsUpdate(false);
+      reset({ password: "", new_password: "", new_password_check: "" }); // 폼 초기화
+      // TODO: 성공 토스트 메시지 표시
+    },
+    onError: (error) => {
+      // TODO: 에러 토스트 메시지 표시
+      console.error(error);
+    },
+  });
+
   const onSubmit = async (data: Partial<TUserInformationInputForm>) => {
-    if (!isUpdate) return;
-    if (userData) {
-      await updateUserData(userData?.user_pk, {
-        email: data.email,
-        password: data.password,
-        password_check: data.password_check,
-      }).then((res) => {
-        setUser(sessionStorage.getItem("accessToken") as string);
-        setIsUpdate(false);
-      });
-    }
+    if (!isUpdate || !userData?.user_pk) return;
+
+    passwordMutation.mutate({
+      userId: userData.user_pk,
+      password: data.password!,
+      new_password: data.new_password!,
+      new_password_check: data.new_password_check!,
+    });
   };
-  /**
-   * 수정하기 버튼 클릭
-   */
+
   const handleEditClick = (e: React.MouseEvent) => {
     e.preventDefault();
     setIsUpdate(true);
   };
-  /**
-   * 회원탈퇴 버튼 클릭
-   */
+
   const handleDeleteClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    // 회원탈퇴
     // TODO: 회원 탈퇴 모달에 붙이기
-    // deleteUser(userData?.user_pk as number);
   };
-  // TODO : 회원탈퇴 모달 구현
-  // TODO : 소셜 로그인 계정정보 수정 불가능하게 하기
+
+  React.useEffect(() => {
+    const accessToken = sessionStorage.getItem("accessToken");
+    if (accessToken) {
+      setUser(accessToken);
+    }
+  }, []);
 
   return (
     <div className="bg-gray-800 rounded-xl px-7 py-5 flex flex-col gap-4 justify-start items-start">
@@ -76,12 +94,15 @@ const Account = (props: TAccountProps) => {
           </div>
           <button
             type="submit"
+            disabled={passwordMutation.isPending}
             className={`${isUpdate ? "border-primary-500" : "border-gray-400"} border-2 w-[20%] h-10 rounded-md ${
               isUpdate ? "text-primary-500" : "text-gray-400"
-            } font-bold hover:bg-gray-700 transition-colors`}
+            } font-bold hover:bg-gray-700 transition-colors ${
+              passwordMutation.isPending ? "opacity-50 cursor-not-allowed" : ""
+            }`}
             onClick={!isUpdate ? handleEditClick : undefined}
           >
-            {isUpdate ? "저장하기" : "수정하기"}
+            {passwordMutation.isPending ? "처리중" : isUpdate ? "저장하기" : "수정하기"}
           </button>
         </div>
         <div className="flex flex-col gap-2">
@@ -91,7 +112,7 @@ const Account = (props: TAccountProps) => {
               {...register("email")}
               disabled
               placeholder="spartagames@sparta.com"
-              className={`py-3 px-4 bg-gray-700 border border-solid rounded-md w-[50%] text-white `}
+              className={`py-3 px-4 bg-gray-700 border border-solid rounded-md w-[50%] text-gray-200`}
             />
           </div>
           {errors.email && <p className="text-red-500 text-sm text-right w-full">{errors.email.message}</p>}
@@ -102,7 +123,7 @@ const Account = (props: TAccountProps) => {
             <label className="text-gray-100">현재 비밀번호</label>
             <input
               {...register("password", {
-                required: "비밀번호는 필수 입력입니다.",
+                required: "기존 비밀번호는 필수 입력입니다.",
                 minLength: {
                   value: 8,
                   message: "비밀번호는 8자 이상이어야 합니다.",
@@ -122,27 +143,57 @@ const Account = (props: TAccountProps) => {
           </div>
           {errors.password && <p className="text-red-500 text-sm text-right w-full">{errors.password.message}</p>}
         </div>
-
-        <div className="flex flex-col gap-2">
-          <div className="flex justify-between items-center">
-            <label className="text-gray-100">비밀번호 확인</label>
-            <input
-              {...register("password_check", {
-                required: "비밀번호 확인은 필수 입력입니다.",
-                validate: (value) => value === password || "비밀번호가 일치하지 않습니다.",
-              })}
-              type="password"
-              disabled={!isUpdate}
-              placeholder="Password Check"
-              className={`py-3 px-4 bg-gray-700 border border-solid rounded-md w-[50%] text-white ${
-                errors.password_check ? "border-red-500" : "border-white"
-              }`}
-            />
-          </div>
-          {errors.password_check && (
-            <p className="text-red-500 text-sm text-right w-full">{errors.password_check.message}</p>
-          )}
-        </div>
+        {isUpdate && (
+          <React.Fragment>
+            <div className="flex flex-col gap-2">
+              <div className="flex justify-between items-center">
+                <label className="text-gray-100">새 비밀번호</label>
+                <input
+                  {...register("new_password", {
+                    required: "새 비밀번호는 필수 입력입니다.",
+                    minLength: {
+                      value: 8,
+                      message: "비밀번호는 8자 이상이어야 합니다.",
+                    },
+                    pattern: {
+                      value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+                      message: "비밀번호는 문자, 숫자, 특수문자를 포함해야 합니다.",
+                    },
+                  })}
+                  disabled={!isUpdate}
+                  type="password"
+                  placeholder="New Password"
+                  className={`py-3 px-4 bg-gray-700 border border-solid rounded-md w-[50%] text-white ${
+                    errors.new_password ? "border-red-500" : "border-white"
+                  }`}
+                />
+              </div>
+              {errors.new_password && (
+                <p className="text-red-500 text-sm text-right w-full">{errors.new_password.message}</p>
+              )}
+            </div>
+            <div className="flex flex-col gap-2">
+              <div className="flex justify-between items-center">
+                <label className="text-gray-100">새 비밀번호 확인</label>
+                <input
+                  {...register("new_password_check", {
+                    required: "새 비밀번호 확인은 필수 입력입니다.",
+                    validate: (value) => value === password || "비밀번호가 일치하지 않습니다.",
+                  })}
+                  type="password"
+                  disabled={!isUpdate}
+                  placeholder="New Password Check"
+                  className={`py-3 px-4 bg-gray-700 border border-solid rounded-md w-[50%] text-white ${
+                    errors.new_password_check ? "border-red-500" : "border-white"
+                  }`}
+                />
+              </div>
+              {errors.new_password_check && (
+                <p className="text-red-500 text-sm text-right w-full">{errors.new_password_check.message}</p>
+              )}
+            </div>
+          </React.Fragment>
+        )}
       </form>
       <div className="flex w-full justify-end text-gray-200 underline cursor-pointer" onClick={handleDeleteClick}>
         <p>회원탈퇴 신청하기</p>

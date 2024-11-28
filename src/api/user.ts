@@ -1,4 +1,4 @@
-import { User } from "../types";
+import { TUser } from "../types";
 import { sparta_games, sparta_games_auth } from "./axios";
 
 /**
@@ -10,20 +10,20 @@ export const getUserData = async (userId: number) => {
     return res.data;
   } catch (error) {
     console.error(error);
-    return null;
+    throw error;
   }
 };
 
 /**
  * 유저 정보 수정
  */
-export const updateUserData = async (userId: number, data: Partial<User>) => {
+export const updateUserData = async (userId: number, data: Partial<TUser>) => {
   try {
     const res = await sparta_games_auth.put(`/users/api/${userId}/`, data);
     return res.data;
   } catch (error) {
     console.error(error);
-    return null;
+    throw error;
   }
 };
 
@@ -36,7 +36,7 @@ export const deleteUser = async (userId: number) => {
     return res.data;
   } catch (error) {
     console.error(error);
-    return null;
+    throw error;
   }
 };
 
@@ -49,7 +49,7 @@ export const getUserGameMadeList = async (userId: number) => {
     return res.data;
   } catch (error) {
     console.error(error);
-    return null;
+    throw error;
   }
 };
 
@@ -62,6 +62,28 @@ export const getUserLikedGameList = async (userId: number) => {
     return res.data;
   } catch (error) {
     console.error(error);
-    return null;
+    throw error;
+  }
+};
+
+/**
+ * 패스워드 수정
+ */
+export const updatePassword = async (
+  userId: number,
+  password: string,
+  new_password: string,
+  new_password_check: string,
+) => {
+  try {
+    const res = await sparta_games_auth.put(`/users/api/${userId}/password/`, {
+      password,
+      new_password,
+      new_password_check,
+    });
+    return res.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
 };
