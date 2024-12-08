@@ -1,9 +1,10 @@
+import { FaBookmark } from "react-icons/fa";
 import Easy from "../common/chipComponents/Easy";
 import StarRating from "../common/StarRating";
-import { GameData } from "./GameCardList";
+import { TGameData } from "../../types";
 
 type Props = {
-  item?: GameData;
+  item?: TGameData;
   simple?: boolean;
   row?: boolean;
 };
@@ -18,8 +19,13 @@ const GameCard = ({ item, simple, row }: Props) => {
           row ? "round-l-lg w-[190px] h-[152px]" : "rounded-t-lg w-[280px] h-[224px]"
         }`}
       />
+      {/* 카테고리 */}
       <div className="absolute top-0 left-0 bg-black rounded-tl-md rounded-br-lg font-DungGeunMo text-white py-1.5 px-4 w-fit font-light">
-        Rhythm
+        {item?.category_name[0]}
+      </div>
+      {/* 북마크 */}
+      <div className="absolute top-0 right-4  rounded-tl-md rounded-br-lg font-DungGeunMo text-white w-fit font-light">
+        {item?.is_liked && <FaBookmark className="text-green-400 text-3xl" />}
       </div>
       <div className={`p-3 w-[280px] ${!simple && "h-[173px]"} bg-gray-800 text-white pt-4 rounded-b-lg`}>
         <div className="text-heading-20 font-bold text-ellipsis overflow-hidden truncate">

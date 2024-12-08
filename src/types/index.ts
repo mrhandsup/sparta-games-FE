@@ -49,3 +49,16 @@ export type TUser = {
   password: string;
   password_check: string;
 };
+
+export type TGameData = {
+  pk: number;
+  title: string;
+  maker: number;
+  thumbnail: string;
+  star: number;
+  maker_name: string;
+  content: string;
+  chip: number[];
+  category_name: string[];
+  is_liked: boolean;
+};
