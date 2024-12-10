@@ -122,5 +122,13 @@ const USER_TYPE: selectConfig[] = [
   },
 ];
 
-export { CATEGORY, USER_TECH, GAME_CATEGORY, USER_TYPE };
+const GAME_CHIP = {
+  "Daily Top": "🔥 인기 급상승",
+  "Review Top": "💬 평가가 많은",
+  "Bookmark Top": "🔖 북마크 많은",
+  "Long Play": "🕹️ 오래 플레이",
+  "New Game": "🆕 새로 등록된",
+};
+
+export { CATEGORY, USER_TECH, GAME_CATEGORY, USER_TYPE, GAME_CHIP };
 export type { selectConfig };

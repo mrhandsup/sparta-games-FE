@@ -2,15 +2,16 @@ import useLoginModalStore from "../../share/store/modalStore";
 
 import heroImage from "../../assets/homeImage/heroImage.svg";
 import { userStore } from "../../share/store/userStore";
-import GameCardList, { GameData } from "./GameCardList";
+import GameCardList from "./GameCardList";
 import { useQuery } from "@tanstack/react-query";
 import { getMyBookmarkList } from "../../api/game";
+import { TGameData } from "../../types";
 
 const Hero = () => {
   const { openModal } = useLoginModalStore();
   const { userData } = userStore();
 
-  const { data } = useQuery<GameData[]>({
+  const { data } = useQuery<TGameData[]>({
     queryKey: ["myBookmarkList"],
     queryFn: getMyBookmarkList,
   });

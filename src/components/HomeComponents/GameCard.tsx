@@ -2,6 +2,7 @@ import { FaBookmark } from "react-icons/fa";
 import Easy from "../common/chipComponents/Easy";
 import StarRating from "../common/StarRating";
 import { TGameData } from "../../types";
+import GameChip from "../common/chipComponents/GameChip";
 
 type Props = {
   item?: TGameData;
@@ -48,7 +49,10 @@ const GameCard = ({ item, simple, row }: Props) => {
               세줄설명까지
             </div>
             <div className="flex gap-1">
-              <Easy />
+              {/* <Easy /> */}
+              {item?.chip_names.map((chip) => (
+                <GameChip key={chip} chipName={chip} />
+              ))}
             </div>
           </div>
         )}

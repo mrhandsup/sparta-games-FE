@@ -58,7 +58,9 @@ export type TGameData = {
   star: number;
   maker_name: string;
   content: string;
-  chip: number[];
+  chip_names: TGameChip[];
   category_name: string[];
   is_liked: boolean;
 };
+
+export type TGameChip = "Daily Top" | "Review Top" | "Bookmark Top" | "Long Play" | "New Game";

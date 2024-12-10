@@ -51,13 +51,13 @@ const GameCardList = ({
 }: TGameCardListProps) => {
   const slicingData = data?.slice(0, maxNum);
 
-  const baseClassName = "flex flex-col justify-evenly items-center w-full h-[536px] bg-gray-700";
+  const baseClassName = "flex flex-col justify-evenly w-full h-[536px] item-center ";
 
   return (
     <div className={containerClassName ? containerClassName : baseClassName}>
       {children && (
         <p
-          className={`flex justify-between items-center mx-auto ${
+          className={`flex justify-between items-center mx-auto  ${
             !containerClassName ? "w-[1180px]" : "w-full"
           } h-12 text-5xl font-bold`}
         >
@@ -66,7 +66,7 @@ const GameCardList = ({
         </p>
       )}
 
-      <div className={`flex ${!containerClassName ? "justify-evenly w-[1180px] h-[408px]" : "gap-4 mt-2"}`}>
+      <div className={`flex mt-2 gap-4 ${!containerClassName && "w-[1180px] h-[408px] mx-auto"}`}>
         {slicingData?.length != 0 && slicingData ? (
           slicingData.map((item) => (
             <Link to={`/game-detail?id=${item.pk}`}>
@@ -74,7 +74,7 @@ const GameCardList = ({
             </Link>
           ))
         ) : (
-          <div className="h-[108px] min-w-[880px] flex items-center justify-center ">
+          <div className="h-[208px] min-w-[880px] flex items-center justify-center mx-auto">
             <p className="text-white text-heading-20">{emptyText}</p>
           </div>
         )}
