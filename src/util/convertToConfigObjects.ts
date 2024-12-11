@@ -1,4 +1,4 @@
-import { selectConfig } from "../constant/selectConfig";
+import { selectConfig } from "../constant/constant";
 
 export const convertToConfigObjects = <T extends selectConfig>(configList: T[], selectedValues: string[]): T[] => {
   return configList.filter((config) => selectedValues.includes(config.value as any));
