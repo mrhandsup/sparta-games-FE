@@ -5,14 +5,13 @@ import balloon from "../assets/headerImage/balloon.svg";
 import speaker from "../assets/headerImage/speaker.svg";
 import CategoryModal from "./headerComponents/CategoryModal";
 
-import useModalToggle from "../hook/useModalToggle";
 import { userStore } from "../share/store/userStore";
-import { useQuery } from "@tanstack/react-query";
 import { login } from "../api/login";
-import { sparta_games } from "../api/axios";
+import useModalToggles from "../hook/useModalToggles";
+import UserStatusPopover from "./headerComponents/UserStatusPopover";
 
 const Header = () => {
-  const { modalToggle, modalRef, onClickModalToggleHandler } = useModalToggle();
+  const { modalToggles, modalRefs, onClickModalToggleHandlers } = useModalToggles(["category", "userStatus"]);
   const { userData, setUser } = userStore();
 
   //임시 로그인
@@ -25,8 +24,10 @@ const Header = () => {
     setUser(logindata?.data.access);
   };
 
+  console.log(modalToggles);
+
   return (
-    <header className="flex justify-between items-center py-5 px-[30px] w-full h-20 bg-gray-800 font-DungGeunMo text-white">
+    <header className="flex justify-between items-center py-5 px-[30px] w-[100%] h-20 bg-gray-800 font-DungGeunMo text-white">
       <section className="flex items-center gap-4">
         <img src="" alt="스파르타 게임 아이콘" className="w-12 h-12 rounded-full" />
         <Link to={"/"}>
@@ -37,30 +38,37 @@ const Header = () => {
       </section>
       <section className="flex items-center gap-10 text-heading-24 font-normal">
         <img src={balloon} alt="검색 아이콘" />
-        <img src={speaker} alt="알림 아이콘" />
+        {/* <img src={speaker} alt="알림 아이콘" /> */}
         <div className="relative">
-          <p onClick={onClickModalToggleHandler} className="cursor-pointer">
+          <p onClick={onClickModalToggleHandlers.category} className="cursor-pointer">
             카테고리
           </p>
-          {modalToggle && <CategoryModal modalRef={modalRef} onClickModalToggleHandler={onClickModalToggleHandler} />}
+          {modalToggles.category && (
+            <CategoryModal
+              modalRef={modalRefs.category}
+              onClickModalToggleHandler={onClickModalToggleHandlers.category}
+            />
+          )}
         </div>
 
         <Link to={"/game-upload"}>
           <p>게임 업로드</p>
         </Link>
 
-        <Link to={"/my-page"}>
+        {/* <Link to={"/my-page"}>
           <p>커뮤니티</p>
-        </Link>
-        {userData ? (
-          <Link to={"/my-page"}>
-            <p>마이페이지</p>
-          </Link>
-        ) : (
-          <div onClick={() => fetchLogin()} className="cursor-pointer">
-            로그인/회원가입
-          </div>
-        )}
+        </Link> */}
+        <div onClick={onClickModalToggleHandlers.userStatus} className="cursor-pointer">
+          {userData ? <p>마이페이지</p> : <p>로그인/회원가입</p>}
+          {modalToggles.userStatus && (
+            <UserStatusPopover
+              isLogin={userData}
+              modalRef={modalRefs.userStatus}
+              onClickModalToggleHandler={onClickModalToggleHandlers.userStatus}
+              loginHandler={fetchLogin}
+            />
+          )}
+        </div>
       </section>
     </header>
   );

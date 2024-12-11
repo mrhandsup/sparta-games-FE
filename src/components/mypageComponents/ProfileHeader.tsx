@@ -1,6 +1,7 @@
-import { TUser } from "../../types/index.ts";
+import React from "react";
+import { TUser } from "../../types";
 import { convertToConfigObjects } from "../../util/convertToConfigObjects";
-import { USER_TECH } from "../../constant/constant.ts";
+import { USER_TECH } from "../../constant/constant";
 
 type TProfileProps = {
   user: TUser;
