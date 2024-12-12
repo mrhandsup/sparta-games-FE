@@ -17,6 +17,12 @@ type Props = {
 
 const GamePlay = ({ data, more, onClickMoreToggleHandler }: Props) => {
   const gameUrl = `${import.meta.env.VITE_PROXY_HOST}${data?.gamepath}/index.html`;
+
+  const videoId = data?.youtube_url.split("v=")[1].split("&")[0];
+  const embedUrl = `https://www.youtube.com/embed/${videoId}`;
+
+  console.log("embedUrlembedUrlembedUrlembedUrlembedUrlembedUrlembedUrlembedUrl", embedUrl);
+
   const fullScreenRef = useRef<HTMLDivElement>(null);
 
   const handleFullscreen = () => {
@@ -73,7 +79,7 @@ const GamePlay = ({ data, more, onClickMoreToggleHandler }: Props) => {
         <div className="flex flex-col gap-3 p-4 w-full bg-gray-800 rounded-2xl">
           <p className="font-DungGeunMo text-[24px] text-white">게임플레이 영상</p>
           <div className="relative p-20 rounded-lg border border-solid border-white overflow-hidden">
-            <iframe src={data?.youtube_url} className="absolute top-0 left-0 w-full h-full" allowFullScreen />
+            <iframe src={embedUrl} className="absolute top-0 left-0 w-full h-full" allowFullScreen />
           </div>
         </div>
         <div className="flex flex-col gap-3 p-4 w-full bg-gray-800 rounded-2xl overflow-hidden">
