@@ -13,7 +13,7 @@ const GameDetail = () => {
   const { more, onClickMoreToggleHandler } = useGameDetail();
 
   const [searchParams] = useSearchParams();
-  const gameDetailId = searchParams.get("id");
+  const gameDetailId = Number(searchParams.get("id"));
 
   const { data } = useQuery<GamePlayData>({
     queryKey: ["gameList"],
@@ -30,7 +30,7 @@ const GameDetail = () => {
         </div>
       </Link>
       <GamePlay data={data} more={more} onClickMoreToggleHandler={onClickMoreToggleHandler} />
-      <Review />
+      <Review gameDetailId={gameDetailId} />
     </main>
   );
 };

@@ -39,7 +39,7 @@ export const getGameListByCategory = async (category: string, page?: number, lim
 /**
  * 게임 상세 조회
  */
-export const getGameDetail = async (id: string | null) => {
+export const getGameDetail = async (id: number) => {
   try {
     const res = await sparta_games.get(`/games/api/list/${id}`);
     return res.data;

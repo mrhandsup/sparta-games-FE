@@ -20,9 +20,9 @@ export type TGameUploadInputForm = {
 };
 
 export type TReviewInputForm = {
-  comment: string;
+  content: string;
   star: number;
-  difficultyLevel: "easy" | "hard" | "";
+  difficulty: "easy" | "normal" | "hard" | "";
 };
 
 export type TUserInformationInputForm = {
@@ -61,6 +61,21 @@ export type TGameData = {
   chip_names: TGameChip[];
   category_name: string[];
   is_liked: boolean;
+};
+
+export type TGamePlayData = {
+  id: number;
+  maker_name: string;
+  title: string;
+  thumnail: null;
+  youtube_url: string;
+  content: string;
+  gamepath: string;
+  base_control: string;
+  screenshot: {
+    id: number;
+    src: string;
+  }[];
 };
 
 export type TGameChip = "Daily Top" | "Review Top" | "Bookmark Top" | "Long Play" | "New Game";

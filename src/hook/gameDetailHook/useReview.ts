@@ -1,7 +1,8 @@
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 import type { TReviewInputForm } from "../../types";
 import { useState } from "react";
+import { postGameReviews } from "../../api/review";
 
 const useReview = () => {
   const { register, watch, setValue, formState, handleSubmit } = useForm<TReviewInputForm>();
@@ -19,19 +20,23 @@ const useReview = () => {
     setValue("star", arg);
   };
 
-  const onClickDifficultyLevelHandler = (arg: "easy" | "hard") => {
+  const onClickDifficultyLevelHandler = (arg: "easy" | "normal" | "hard") => {
     if (difficultyLevel === arg) {
       setDifficultyLevel("");
-      setValue("difficultyLevel", "");
+      setValue("difficulty", "");
       return;
     }
     setDifficultyLevel(arg);
-    setValue("difficultyLevel", arg);
+    setValue("difficulty", arg);
   };
 
-  const onSubmitHandler: SubmitHandler<TReviewInputForm> = (data) => {
-    console.log(data);
-    // 여기에 등록 api 작성
+  const onSubmitHandler: (id: number, data: TReviewInputForm, accessToken: string | null) => void = async (
+    id,
+    data,
+    accessToken,
+  ) => {
+    // difficulty 데이터 유형 integer로 인한 오류 수정 필요
+    await postGameReviews(id, data, accessToken);
   };
 
   const form = {

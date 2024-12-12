@@ -7,24 +7,10 @@ import "./GamePlaySwiper.css";
 import expand from "../../assets/gameDetail/interface-essential-signin-expand.svg";
 import share from "../../assets/gameDetail/interface-essential-share-1.svg";
 import bookmark from "../../assets/gameDetail/content-files-close-book-bookmark.svg";
-
-export type GamePlayData = {
-  id: number;
-  maker_name: string;
-  title: string;
-  thumnail: null;
-  youtube_url: string;
-  content: string;
-  gamepath: string;
-  base_control: string;
-  screenshot: {
-    id: number;
-    src: string;
-  }[];
-};
+import { TGamePlayData } from "../../types";
 
 type Props = {
-  data: GamePlayData | undefined;
+  data: TGamePlayData | undefined;
   more: boolean;
   onClickMoreToggleHandler: () => void;
 };
@@ -87,7 +73,7 @@ const GamePlay = ({ data, more, onClickMoreToggleHandler }: Props) => {
         <div className="flex flex-col gap-3 p-4 w-full bg-gray-800 rounded-2xl">
           <p className="font-DungGeunMo text-[24px] text-white">게임플레이 영상</p>
           <div className="relative p-20 rounded-lg border border-solid border-white overflow-hidden">
-            <iframe src={data?.youtube_url} className="absolute top-0 left-0 w-full h-full" />
+            <iframe src={data?.youtube_url} className="absolute top-0 left-0 w-full h-full" allowFullScreen />
           </div>
         </div>
         <div className="flex flex-col gap-3 p-4 w-full bg-gray-800 rounded-2xl overflow-hidden">
