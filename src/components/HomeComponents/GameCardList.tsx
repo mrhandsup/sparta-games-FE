@@ -50,7 +50,6 @@ const GameCardList = ({
   emptyText = "데이터가 없습니다.",
 }: TGameCardListProps) => {
   const slicingData = data?.slice(0, maxNum);
-
   const baseClassName = "flex flex-col justify-evenly w-full h-[536px] item-center ";
 
   return (
