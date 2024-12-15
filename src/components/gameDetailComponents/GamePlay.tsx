@@ -1,6 +1,6 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
-import { Swiper, SwiperSlide } from "swiper/react";
+import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "./GamePlaySwiper.css";
 
@@ -8,6 +8,9 @@ import expand from "../../assets/gameDetail/interface-essential-signin-expand.sv
 import share from "../../assets/gameDetail/interface-essential-share-1.svg";
 import bookmark from "../../assets/gameDetail/content-files-close-book-bookmark.svg";
 import { TGamePlayData } from "../../types";
+
+import Box from "@mui/material/Box";
+import Modal from "@mui/material/Modal";
 
 type Props = {
   data: TGamePlayData | undefined;
@@ -18,10 +21,8 @@ type Props = {
 const GamePlay = ({ data, more, onClickMoreToggleHandler }: Props) => {
   const gameUrl = `${import.meta.env.VITE_PROXY_HOST}${data?.gamepath}/index.html`;
 
-  const videoId = data?.youtube_url.split("v=")[1].split("&")[0];
+  const videoId = data?.youtube_url?.split("v=")[1].split("&")[0];
   const embedUrl = `https://www.youtube.com/embed/${videoId}`;
-
-  console.log("embedUrlembedUrlembedUrlembedUrlembedUrlembedUrlembedUrlembedUrl", embedUrl);
 
   const fullScreenRef = useRef<HTMLDivElement>(null);
 
@@ -29,6 +30,47 @@ const GamePlay = ({ data, more, onClickMoreToggleHandler }: Props) => {
     fullScreenRef.current?.requestFullscreen();
   };
 
+  const [open, setOpen] = useState(false);
+  const [modalImage, setModalImage] = useState<string | null>(null);
+
+  const handleOpen = (image: string) => {
+    setModalImage(image);
+    setOpen(true);
+  };
+
+  const handleClose = () => setOpen(false);
+
+  const swiperRef = useRef(null);
+
+  useEffect(() => {
+    if (swiperRef.current) {
+      const swiperInstance = (swiperRef.current as SwiperRef).swiper;
+
+      const handleSlideClick = (e: MouseEvent) => {
+        const slideElement = (e.target as HTMLElement).closest(".swiper-slide");
+
+        if (slideElement) {
+          const slideIndex = slideElement.getAttribute("data-swiper-slide-index");
+
+          if (slideIndex !== null && data) {
+            const imageSrc = data.screenshot[Number(slideIndex)].src;
+
+            handleOpen(import.meta.env.VITE_PROXY_HOST + imageSrc);
+          }
+        }
+      };
+
+      swiperInstance.slides.forEach((slide: HTMLElement) => {
+        slide.addEventListener("click", handleSlideClick);
+      });
+
+      return () => {
+        swiperInstance.slides.forEach((slide: HTMLElement) => {
+          slide.removeEventListener("click", handleSlideClick);
+        });
+      };
+    }
+  }, [data]);
   return (
     <section className="flex gap-5 mt-6">
       <div className="w-[880px]">
@@ -78,7 +120,7 @@ const GamePlay = ({ data, more, onClickMoreToggleHandler }: Props) => {
         </div>
         <div className="flex flex-col gap-3 p-4 w-full bg-gray-800 rounded-2xl">
           <p className="font-DungGeunMo text-[24px] text-white">게임플레이 영상</p>
-          <div className="relative p-20 rounded-lg border border-solid border-white overflow-hidden">
+          <div className="relative p-20 rounded-lg overflow-hidden">
             <iframe src={embedUrl} className="absolute top-0 left-0 w-full h-full" allowFullScreen />
           </div>
         </div>
@@ -87,6 +129,7 @@ const GamePlay = ({ data, more, onClickMoreToggleHandler }: Props) => {
           <div className="h-[336px] overflow-hidden">
             {data?.screenshot && (
               <Swiper
+                ref={swiperRef}
                 direction={"vertical"}
                 loop={true}
                 centeredSlides={true}
@@ -101,7 +144,7 @@ const GamePlay = ({ data, more, onClickMoreToggleHandler }: Props) => {
                   <SwiperSlide key={index}>
                     <div className="flex justify-center">
                       <img
-                        className="w-[198px] h-[112px] border border-solid border-white rounded-lg"
+                        className="w-[198px] h-[112px] rounded-lg"
                         src={import.meta.env.VITE_PROXY_HOST + image.src}
                         alt={`carousel-img-${index}`}
                       />
@@ -113,6 +156,14 @@ const GamePlay = ({ data, more, onClickMoreToggleHandler }: Props) => {
           </div>
         </div>
       </div>
+
+      <Modal open={open} onClose={handleClose}>
+        <Box className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-3xl outline-none border-[1px] border-solid border-[#05F500] bg-gray-800 p-8">
+          {modalImage && (
+            <img src={modalImage} className="w-[60rem] h-[30rem] object-cover rounded-3xl" alt="modalImage" />
+          )}
+        </Box>
+      </Modal>
     </section>
   );
 };

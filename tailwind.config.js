@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       backgroundImage: {
-        'hero-image': "url('/src/assets/homeImage/heroImage.svg')"
+        "hero-image": "url('/src/assets/homeImage/heroImage.svg')",
       },
       colors: {
         gray: {
