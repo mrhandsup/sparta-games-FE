@@ -32,6 +32,8 @@ export default {
           900: "#012900",
           950: "#011A00",
         },
+        error: { default: '#FF5C5C', hover: '#FF8F8F' },
+        alert: { default: '#FFCB5C', hover: '#FFDB8F' }
       },
       fontFamily: {
         Pretendard: ["Pretendard", "sans-serif"],
