@@ -1,5 +1,5 @@
-import ReviewForm from "./ReviewForm";
 import ReviewComents from "./ReviewComents";
+import ReviewForm from "./ReviewForm";
 
 const Review = ({ gameDetailId }: { gameDetailId: number }) => {
   return (

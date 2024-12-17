@@ -1,12 +1,12 @@
-import Easy from "../common/chipComponents/Easy";
-import Hard from "../common/chipComponents/Hard";
+import Easy from "../../common/chipComponents/Easy";
+import Hard from "../../common/chipComponents/Hard";
 
-import useReview from "../../hook/gameDetailHook/useReview";
+import useReview from "../../../hook/gameDetailHook/useReview";
 
-import star from "../../assets/star.svg";
-import fillStar from "../../assets/fillStar.svg";
-import ellipse from "../../assets/ellipse.svg";
-import { TReviewInputForm } from "../../types";
+import star from "../../../assets/star.svg";
+import fillStar from "../../../assets/fillStar.svg";
+import ellipse from "../../../assets/ellipse.svg";
+import { TReviewInputForm } from "../../../types";
 
 const ReviewForm = ({ gameDetailId }: { gameDetailId: number }) => {
   const { form, state, eventHandler } = useReview();

@@ -1,5 +1,5 @@
-import Easy from "../common/chipComponents/Easy";
-import StarRating from "../common/StarRating";
+import Easy from "../../common/chipComponents/Easy";
+import StarRating from "../../common/StarRating";
 
 const ReviewCard = () => {
   return (
