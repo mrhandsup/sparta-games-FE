@@ -45,7 +45,14 @@ const MyGameCard = ({ item }: Props) => {
             </div>
           </div>
         </div>
-        <SpartaButton content="으으" onClick={() => {}} />
+        <div className="flex items-center justify-between w-full">
+          <div className="w-[30%]">
+            <SpartaButton content="으으" onClick={() => {}} size="medium" colorType="alert" type="filled" />
+          </div>
+          <div className="w-[68%]">
+            <SpartaButton content="으으" onClick={() => {}} size="medium" />
+          </div>
+        </div>
       </div>
     </section>
   );
