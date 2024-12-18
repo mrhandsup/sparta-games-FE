@@ -2,17 +2,41 @@ import React from "react";
 import { IoCloseCircleOutline } from "react-icons/io5";
 
 type Props = {
+  /**
+   * 텍스트필드의 라벨
+   */
   label: string;
+  /**
+   * input 태그의 속성
+   */
   inputProps: any;
+  /**
+   * react-hook-form의 register
+   */
   register?: any;
+  /**
+   * 텍스트필드의 크기
+   */
   type: "large" | "medium" | "small";
+  /**
+   * 서브라벨
+   */
   subLabel?: {
     default: string;
     error: string;
     pass: string;
   };
+  /**
+   * 에러 상태
+   */
   error?: boolean;
+  /**
+   * 패스 상태
+   */
   pass?: boolean;
+  /**
+   * 클리어 버튼 클릭 시
+   */
   onClear?: () => void;
 };
 
