@@ -117,6 +117,20 @@ export default {
             fontWeight: "400",
           },
         ],
+        "caption-16": [
+          "16px",
+          {
+            lineHeight: "130%",
+            fontWeight: "400",
+          },
+        ],
+        "caption-14": [
+          "14px",
+          {
+            lineHeight: "130%",
+            fontWeight: "400",
+          },
+        ],
       },
     },
     listStyleType: {
