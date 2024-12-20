@@ -1,12 +1,10 @@
-import Easy from "../../common/chipComponents/Easy";
-import Hard from "../../common/chipComponents/Hard";
-
 import useReview from "../../../hook/gameDetailHook/useReview";
 
 import star from "../../../assets/star.svg";
 import fillStar from "../../../assets/fillStar.svg";
 import ellipse from "../../../assets/ellipse.svg";
 import { TReviewInputForm } from "../../../types";
+import DifficultyChip from "../../common/chipComponents/DifficultyChip";
 
 const ReviewForm = ({ gameDetailId }: { gameDetailId: number }) => {
   const { form, state, eventHandler } = useReview();
@@ -77,11 +75,11 @@ const ReviewForm = ({ gameDetailId }: { gameDetailId: number }) => {
           <img src={ellipse} />
           <div className="flex items-center gap-[15px] text-[26.4px] font-bold text-white">
             <div onClick={() => eventHandler.onClickDifficultyLevelHandler("easy")}>
-              <Easy gap={8} bg={state.difficultyLevel === "easy"} />
+              <DifficultyChip chipSize={"big"} difficultyLevel={"EASY"} />
             </div>
 
             <div onClick={() => eventHandler.onClickDifficultyLevelHandler("hard")}>
-              <Hard gap={8} bg={state.difficultyLevel === "hard"} />
+              <DifficultyChip chipSize={"big"} difficultyLevel={"HARD"} />
             </div>
           </div>
           <img src={ellipse} />

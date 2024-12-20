@@ -19,15 +19,15 @@ const StarRating = ({ score }: Props) => {
     <div className="flex gap-[2px] items-center">
       {/* 꽉 찬 별 렌더링 */}
       {Array.from({ length: fullStars }, (_, index) => (
-        <img key={index} src={fillStar} />
+        <img key={index} src={fillStar} className="w-4" />
       ))}
 
       {/* 반만 찬 별 렌더링 */}
-      {halfStar && <img src={halfFillStar} />}
+      {halfStar && <img src={halfFillStar} className="w-4" />}
 
       {/* 빈 별 렌더링 */}
       {Array.from({ length: emptyStars }, (_, index) => (
-        <img key={index} src={star} />
+        <img key={index} src={star} className="w-4" />
       ))}
     </div>
   );
