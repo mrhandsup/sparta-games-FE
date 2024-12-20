@@ -11,7 +11,7 @@ type Props = {
   onClickMoreToggleHandler: () => void;
 };
 
-const GamePlaySection = ({ gamePlayData, more, onClickMoreToggleHandler }: Props) => {
+const GamePlaySection = ({ gamePlayData }: Props) => {
   const { title, maker_name, gamepath, youtube_url, screenshot, content } = gamePlayData || {};
 
   return (
@@ -20,7 +20,7 @@ const GamePlaySection = ({ gamePlayData, more, onClickMoreToggleHandler }: Props
         <GamePlay title={title} makerNmae={maker_name} gamePath={gamepath} />
         <GameMedia youtubeUrl={youtube_url} screenShot={screenshot} />
       </div>
-      <GameDescription more={more} moreToggle={onClickMoreToggleHandler} content={content} />
+      <GameDescription title={title} content={content} screenshot={screenshot} />
     </section>
   );
 };

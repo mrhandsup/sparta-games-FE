@@ -1,13 +1,34 @@
 import DifficultyChip from "../../common/chipComponents/DifficultyChip";
 import StarRating from "../../common/StarRating";
+import reviewDetail from "../../../assets/gameDetail/ReviewDetail.svg";
+import reviewEdit from "../../../assets/gameDetail/ReviewEdit.svg";
+import reviewDelete from "../../../assets/gameDetail/ReviewDelete.svg";
+import exampleProfile from "../../../assets/gameDetail/example_profile.png";
 
-const ReviewCard = () => {
+const ReviewCard = ({ myReview }: { myReview: boolean }) => {
   return (
-    <div className="flex flex-col gap-2 p-4 w-[342px] bg-gray-800 text-white rounded-lg">
-      <div className="flex gap-[6px]">
-        <div className="w-10 h-10 bg-white rounded-full"></div>
-        <div className="flex flex-col gap-[6px]">
-          <p className="text-title-18">[user name]</p>
+    <div
+      className={`relative flex flex-col gap-2 p-4 bg-gray-800 text-white rounded-xl ${
+        myReview ? "border border-solid border-primary-500" : ""
+      }`}
+    >
+      <div className="flex gap-2">
+        <img src={exampleProfile} />
+        <div className="flex flex-col gap-[2px]">
+          <div className="flex items-center justify-between">
+            {myReview ? (
+              <>
+                <p className="font-DungGeunMo text-lg text-primary-500">[user_name]</p>
+                <img className="absolute right-12 cursor-pointer" src={reviewEdit} />
+                <img className="absolute right-4 cursor-pointer" src={reviewDelete} />
+              </>
+            ) : (
+              <>
+                <p className="font-DungGeunMo text-lg">다른유저입니다</p>
+                <img className="absolute right-4 cursor-pointer" src={reviewDetail} />
+              </>
+            )}
+          </div>
           <div className="flex gap-2">
             <DifficultyChip chipSize="small" difficultyLevel="EASY" />
             <StarRating score={0} />

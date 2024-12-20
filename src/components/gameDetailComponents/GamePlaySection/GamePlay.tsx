@@ -1,8 +1,9 @@
 import { useRef } from "react";
 
-import expand from "../../../assets/gameDetail/interface-essential-signin-expand.svg";
-import share from "../../../assets/gameDetail/interface-essential-share-1.svg";
-import bookmark from "../../../assets/gameDetail/content-files-close-book-bookmark.svg";
+import expand from "../../../assets/gameDetail/expand.svg";
+import share from "../../../assets/gameDetail/linkshare.svg";
+import bookmark from "../../../assets/gameDetail/bookmark.svg";
+import randomgame from "../../../assets/gameDetail/randomgame.svg";
 
 type Props = {
   title?: string;
@@ -25,14 +26,15 @@ const GamePlay = ({ title, makerNmae, gamePath }: Props) => {
         <div className="flex justify-between">
           <p className="text-gray-100 text-[28px]">[{makerNmae}]</p>
           <div className="flex gap-6">
-            <img src={expand} onClick={handleFullscreen} alt="" className="cursor-pointer" />
-            <img src={share} alt="" className="cursor-pointer" />
-            <img src={bookmark} alt="" className="cursor-pointer" />
+            <img src={bookmark} alt="즐겨찾기" className="cursor-pointer" />
+            <img src={share} alt="링크 공유" className="cursor-pointer" />
+            <img src={randomgame} alt="랜덤 게임 추천" className="cursor-pointer" />
+            <img src={expand} onClick={handleFullscreen} alt="전체화면" className="cursor-pointer" />
           </div>
         </div>
       </div>
-      <div className="mt-5 w-full h-[560px] bg-gray-400 rounded-t-lg" ref={fullScreenRef}>
-        <iframe src={gameUrl} width="100%" height="100%" />
+      <div className="mt-5 w-full h-[560px] bg-gray-400 rounded-xl" ref={fullScreenRef}>
+        <iframe src={gameUrl} width="100%" height="100%" className="rounded-xl" />
       </div>
     </div>
   );
