@@ -52,7 +52,7 @@ const ScreenShotModal = ({ screenShotList, swiperRef }: Props) => {
 
   return (
     <Modal open={modalOpen} onClose={handleModalClose}>
-      <Box className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-3xl outline-none border-[1px] border-solid border-[#05F500] bg-gray-800 p-8">
+      <Box className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-3xl outline-none border border-solid border-primary-500 bg-gray-800 p-8">
         {modalImage && (
           <img src={modalImage} className="w-[60rem] h-[40rem] object-cover rounded-3xl" alt="modalImage" />
         )}

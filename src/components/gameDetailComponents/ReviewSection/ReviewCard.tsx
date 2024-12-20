@@ -8,7 +8,7 @@ const ReviewCard = () => {
         <div className="w-10 h-10 bg-white rounded-full"></div>
         <div className="flex flex-col gap-[6px]">
           <p className="text-title-18">[user name]</p>
-          <StarRating score={8} />
+          <StarRating score={0} />
         </div>
       </div>
       <div className="w-full h-[72px] text-body-14 line-clamp-4 text-ellipsis">
