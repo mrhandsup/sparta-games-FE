@@ -1,9 +1,7 @@
 import { useState } from "react";
 import ReviewComents from "./ReviewComents";
-import ReviewForm from "./ReviewForm";
-import ReviewRegisterModal from "./ReviewRegisterModal";
 
-const Review = ({ gameDetailId }: { gameDetailId: number }) => {
+const Review = () => {
   const [page, setPage] = useState(1);
 
   const onClickPageHandler = (arg: number) => {
@@ -51,8 +49,6 @@ const Review = ({ gameDetailId }: { gameDetailId: number }) => {
           {">"}
         </div>
       </div>
-
-      <ReviewRegisterModal />
     </section>
   );
 };

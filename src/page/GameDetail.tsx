@@ -31,7 +31,7 @@ const GameDetail = () => {
         </div>
       </Link>
       <GamePlaySection gamePlayData={gamePlayData} more={more} onClickMoreToggleHandler={onClickMoreToggleHandler} />
-      <Review gameDetailId={gameDetailId} />
+      <Review />
     </main>
   );
 };
