@@ -14,7 +14,7 @@ const GameCard = ({ item, simple, row }: Props) => {
   return (
     <section key={item?.pk} className={`relative flex ${row ? "flex-row" : "flex-col"}`}>
       <img
-        src={item?.thumbnail}
+        src={import.meta.env.VITE_PROXY_HOST + item?.thumbnail}
         alt="게임 썸네일"
         className={`relative flex justify-center items-center bg-gray-50 ${
           row ? "round-l-lg w-[190px] h-[152px]" : "rounded-t-lg w-[280px] h-[224px]"
@@ -46,11 +46,11 @@ const GameCard = ({ item, simple, row }: Props) => {
                 row ? "line-clamp-2" : "line-clamp-3"
               } webkit-box-orient-vertical tracking-wider`}
             >
-              세줄설명까지
+              {item?.content}
             </div>
             <div className="flex gap-1">
               {/* <Easy /> */}
-              {item?.chip_names.map((chip) => (
+              {item?.chip_names?.map((chip) => (
                 <GameChip key={chip} chipName={chip} />
               ))}
             </div>

@@ -9,24 +9,28 @@ type TLogsProps = {
 };
 
 type TListData = {
-  item_list: any[];
+  data: {
+    results: any[];
+  };
 };
 
 const Logs = (props: TLogsProps) => {
   //* Hooks
-  const myGameData = useQuery<TListData>({
+  const myGameData = useQuery<any>({
     queryKey: ["myGameList", props.user.user_pk],
     queryFn: () => getUserGameMadeList(props.user.user_pk),
   });
 
-  const myLikedData = useQuery<TListData>({
+  const myLikedData = useQuery<any>({
     queryKey: ["myLikesList", props.user.user_pk],
     queryFn: () => getUserLikedGameList(props.user.user_pk),
   });
 
-  const gameData = myGameData.data && myGameData.data.item_list;
+  const gameData = myGameData.data && myGameData.data.results;
 
-  const likedData = myLikedData.data && myLikedData.data.item_list;
+  console.log(gameData);
+
+  const likedData = myLikedData.data && myLikedData.data.results;
 
   //* Styles
   const LogsClassName = "bg-gray-800 rounded-xl px-7 py-5 flex flex-col gap-4 justify-start items-start w-full";
@@ -34,29 +38,33 @@ const Logs = (props: TLogsProps) => {
   return (
     <div className="flex flex-col gap-10">
       {/* 만든 게임 */}
-      <GameCardList
-        data={gameData}
-        maxNum={3}
-        containerClassName={LogsClassName}
-        noNavigation={(gameData?.length ?? 0) < 4}
-      >
-        <div className="flex items-center gap-4 justify-start ">
-          <img src={log} />
-          <p className="font-DungGeunMo text-heading-32 text-white">[{props.user.nickname}]의 개발중인 게임</p>
-        </div>
-      </GameCardList>
+      {
+        <GameCardList
+          data={gameData}
+          maxNum={3}
+          containerClassName={LogsClassName}
+          noNavigation={(gameData?.length ?? 0) < 4}
+        >
+          <div className="flex items-center gap-4 justify-start ">
+            <img src={log} />
+            <p className="font-DungGeunMo text-heading-32 text-white">[{props.user.nickname}]의 개발중인 게임</p>
+          </div>
+        </GameCardList>
+      }
       {/* 즐겨찾는 게임 */}
-      <GameCardList
-        data={likedData}
-        maxNum={3}
-        containerClassName={LogsClassName}
-        noNavigation={(likedData?.length ?? 0) < 4}
-      >
-        <div className="flex items-center gap-4 justify-start ">
-          <img src={log} />
-          <p className="font-DungGeunMo text-heading-32 text-white">[{props.user.nickname}]이 즐겨찾는 게임</p>
-        </div>
-      </GameCardList>
+      {
+        <GameCardList
+          data={likedData}
+          maxNum={3}
+          containerClassName={LogsClassName}
+          noNavigation={(likedData?.length ?? 0) < 4}
+        >
+          <div className="flex items-center gap-4 justify-start ">
+            <img src={log} />
+            <p className="font-DungGeunMo text-heading-32 text-white">[{props.user.nickname}]이 즐겨찾는 게임</p>
+          </div>
+        </GameCardList>
+      }
       {/* 플레이한 게임 */}
       {/* <GameCardList data={data} maxNum={3} containerClassName={LogsClassName} noNavigation={(data?.length ?? 0) < 4}>
         <div className="flex items-center gap-4 justify-start ">
