@@ -3,6 +3,9 @@ import { Autoplay } from "swiper/modules";
 import { useRef } from "react";
 import ScreenShotModal from "./ScreenShotModal";
 
+import "swiper/css";
+import "./GamePlaySwiper.css";
+
 type Props = {
   youtubeUrl?: string;
   screenShot?: {
@@ -28,7 +31,7 @@ const GameMedia = ({ youtubeUrl, screenShot }: Props) => {
 
       <div className="flex flex-col gap-3 p-4 w-full bg-gray-800 rounded-2xl overflow-hidden">
         <p className="font-DungGeunMo text-[24px] text-white">스틸컷</p>
-        <div className="h-[336px] overflow-hidden cursor-pointer">
+        <div className="h-[340px] overflow-hidden cursor-pointer">
           {screenShot && (
             <Swiper
               ref={swiperRef}

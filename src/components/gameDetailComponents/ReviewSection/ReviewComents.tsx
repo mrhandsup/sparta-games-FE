@@ -31,7 +31,7 @@ const ReviewComents = () => {
             <p className="text-white font-DungGeunMo text-2xl">내 리뷰 등록하기</p>
           </div>
 
-          <div className="flex items-center justify-center gap-6 px-11 bg-gray-800 rounded-xl cursor-pointer">
+          <div className="flex items-center justify-center gap-6 px-11 bg-gray-800 rounded-xl">
             <img src={reviewRegister} />
             <p className="text-white font-DungGeunMo text-2xl text-center leading-none">
               비회원은 리뷰등록이 불가능합니다.
