@@ -5,6 +5,7 @@ import { userStore } from "../../../share/store/userStore";
 import { convertToConfigObjects, convertToConfigValues } from "../../../util/convertToConfigObjects";
 import { updateUserData } from "../../../api/user";
 import { GAME_CATEGORY, selectConfig, USER_TECH, USER_TYPE } from "../../../constant/constant";
+import { useMutation } from "@tanstack/react-query";
 
 type Props = {};
 
@@ -20,20 +21,44 @@ const Profile = (props: Props) => {
   const [isUpdate, setIsUpdate] = React.useState<boolean>(false);
 
   //* Function
+  const profileMutation = useMutation({
+    mutationFn: ({
+      user_pk,
+      data,
+    }: {
+      user_pk: number;
+      data: {
+        nickname: string;
+        user_tech: string;
+        game_category: string[];
+        is_maker: boolean;
+      };
+    }) => updateUserData(userData?.user_pk, data),
+    onSuccess: () => {
+      setIsUpdate(false);
+      setUser(sessionStorage.getItem("accessToken") as string);
+      // TODO: 성공 토스트 메시지 표시
+    },
+    onError: (error) => {
+      console.error(error);
+      // TODO: 에러 토스트 메시지 표시
+    },
+  });
+
   const onClickUpdateProfile = async () => {
     if (!isUpdate) {
       setIsUpdate(true);
       return;
     }
     if (userData) {
-      await updateUserData(userData?.user_pk, {
-        nickname,
-        user_tech: userTech,
-        game_category: convertToConfigValues(gameCategory),
-        is_maker: userType[0].value as boolean,
-      }).then((res) => {
-        setUser(sessionStorage.getItem("accessToken") as string);
-        setIsUpdate(false);
+      profileMutation.mutate({
+        user_pk: userData.user_pk,
+        data: {
+          nickname,
+          user_tech: userTech,
+          game_category: convertToConfigValues(gameCategory),
+          is_maker: userType[0].value as boolean,
+        },
       });
     }
   };
@@ -65,7 +90,7 @@ const Profile = (props: Props) => {
           } font-bold hover:bg-gray-700 transition-colors`}
           onClick={onClickUpdateProfile}
         >
-          {isUpdate ? "저장하기" : "수정하기"}
+          {profileMutation.isPending ? "처리중" : isUpdate ? "저장하기" : "수정하기"}
         </button>
       </div>
       <div className="w-full flex flex-col gap-5">

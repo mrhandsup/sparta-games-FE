@@ -22,6 +22,8 @@ const retrieveAccessToken = async () => {
     const response = await sparta_games.post("/accounts/api/refresh/", {
       refresh: refreshToken,
     });
+    sessionStorage.setItem("accessToken", response.data.access);
+    sessionStorage.setItem("refreshToken", response.data.refresh);
     return {
       accessToken: response.data.access,
       refreshToken: response.data.refresh,
@@ -62,13 +64,16 @@ sparta_games_auth.interceptors.response.use(
   },
   async (error) => {
     const originalRequest = error.config;
-    const { setUser } = userStore();
 
-    if (error.response.status === 401 && !originalRequest._retry) {
+    if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       const token = await retrieveAccessToken();
-      setUser(token?.accessToken);
-      originalRequest.headers.Authorization = `Bearer ${token?.accessToken}`;
+
+      if (!token) {
+        return Promise.reject(error);
+      }
+
+      originalRequest.headers.Authorization = `Bearer ${token.accessToken}`;
       return sparta_games(originalRequest);
     }
     return Promise.reject(error);
