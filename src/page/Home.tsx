@@ -1,8 +1,5 @@
 import Hero from "../components/HomeComponents/Hero";
-import LoginModal from "../components/modal/login/LoginModal";
 import GameCardList from "../components/HomeComponents/GameCardList";
-
-import useHome from "../hook/useHome";
 
 import pixelMeteor from "../assets/homeImage/pixelMeteor.svg";
 import pixelPaperPlane from "../assets/homeImage/pixelPaperPlane.svg";
@@ -25,8 +22,6 @@ type TMainHttpResponse = {
 };
 
 const Home = () => {
-  const { openLoginModal } = useHome();
-
   const { data } = useQuery<TMainHttpResponse>({
     queryKey: ["gameList"],
     queryFn: getGameList,
@@ -35,7 +30,6 @@ const Home = () => {
   return (
     data && (
       <main>
-        {openLoginModal && <LoginModal />}
         <Hero />
         <GameCardList data={data?.trending_games} noNavigation>
           <div className="flex items-center gap-3">

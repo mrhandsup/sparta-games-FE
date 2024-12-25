@@ -3,6 +3,20 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      keyframes: {
+        modalSlideIn: {
+          '0%': { transform: 'translateY(-1rem)', opacity: 0 },
+          '100%': { transform: 'translateY(0)', opacity: 1 },
+        },
+      },
+      animation: {
+        modalSlideIn: 'modalSlideIn 0.3s ease-out',
+      },
+      boxShadow: {
+        'primary': '0 0 24px rgba(5,245,0,0.32)',
+        'alert': '0 0 24px rgba(245,204,0,0.32)',
+        'error': '0 0 24px rgba(255,92,92,0.32)',
+      },
       backgroundImage: {
         'hero-image': "url('/src/assets/homeImage/heroImage.svg')"
       },

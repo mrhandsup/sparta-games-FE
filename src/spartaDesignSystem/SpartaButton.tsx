@@ -3,7 +3,7 @@ type Props = {
   disabled?: boolean;
   type?: "standard" | "filled";
   size?: "small" | "medium" | "large";
-  colorType?: "main" | "alert" | "error" | "grey";
+  colorType?: "primary" | "alert" | "error" | "grey";
   onClick: () => void;
 };
 
@@ -12,7 +12,7 @@ const SpartaButton = ({
   content,
   type = "standard",
   size = "large",
-  colorType = "main",
+  colorType = "primary",
   onClick,
 }: Props) => {
   const getButtonStyles = (): string => {
@@ -34,7 +34,7 @@ const SpartaButton = ({
     }
 
     const colorDict = {
-      main: {
+      primary: {
         filled: "bg-primary-500 hover:bg-primary-300",
         standard: "border-2 border-primary-500 text-primary-500 hover:text-primary-300 hover:border-primary-300",
       },
