@@ -6,15 +6,23 @@ import GameCardList from "./GameCardList";
 import { useQuery } from "@tanstack/react-query";
 import { getMyBookmarkList } from "../../api/game";
 import { TGameData } from "../../types";
+import useModalToggles from "../../hook/useModalToggles";
+import SpartaModal from "../../spartaDesignSystem/SpartaModal";
+import SpartaReactionModal from "../../spartaDesignSystem/SpartaReactionModal";
 
 const Hero = () => {
   const { openModal } = useLoginModalStore();
+
   const { userData } = userStore();
 
   const { data } = useQuery<TGameData[]>({
     queryKey: ["myBookmarkList"],
     queryFn: getMyBookmarkList,
   });
+
+  const LOGIN_MODAL_ID = "loginModal";
+  const LOG_OUT_MODAL_ID = "logOutModal";
+  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([LOGIN_MODAL_ID, LOG_OUT_MODAL_ID]);
 
   return (
     <>
@@ -33,10 +41,16 @@ const Hero = () => {
             </div>
 
             <div className="flex gap-6">
-              <button className="w-64 h-12 rounded-lg bg-primary-500 text-primary-950" onClick={() => openModal()}>
+              <button
+                className="w-64 h-12 rounded-lg bg-primary-500 text-primary-950"
+                onClick={() => onClickModalToggleHandlers[LOGIN_MODAL_ID]()}
+              >
                 로그인
               </button>
-              <button className="w-64 h-12 rounded-lg border border-solid border-primary-500 text-primary-500">
+              <button
+                className="w-64 h-12 rounded-lg border border-solid border-primary-500 text-primary-500"
+                onClick={() => onClickModalToggleHandlers[LOG_OUT_MODAL_ID]()}
+              >
                 회원가입
               </button>
             </div>
@@ -61,6 +75,28 @@ const Hero = () => {
           <GameCardList data={data} maxNum={4} simple={true} />
         </section>
       )}
+      <SpartaModal
+        isOpen={modalToggles[LOGIN_MODAL_ID]}
+        onClose={onClickModalToggleHandlers[LOGIN_MODAL_ID]}
+        modalId={LOGIN_MODAL_ID}
+        title="로그인"
+        type="alert"
+      >
+        <div className="min-w-80 min-h-[100vh]">모달 내용</div>
+      </SpartaModal>
+      <SpartaReactionModal
+        isOpen={modalToggles[LOG_OUT_MODAL_ID]}
+        onClose={onClickModalToggleHandlers[LOG_OUT_MODAL_ID]}
+        modalId={LOG_OUT_MODAL_ID}
+        title="로그아웃"
+        content="정말 로그아웃 하시겠습니까?"
+        btn1={{
+          text: "로그아웃",
+          onClick: () => {
+            console.log("로그아웃");
+          },
+        }}
+      />
     </>
   );
 };
