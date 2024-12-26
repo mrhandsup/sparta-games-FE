@@ -2,24 +2,20 @@ type ButtonTypes = {
   icon: string;
   altText: string;
   bgColor: string;
-  textColor: string;
-  loginSpan: string;
   loginUrl: string;
 };
 
-const SocialLoginBtn = ({ icon, altText, bgColor, textColor, loginSpan, loginUrl }: ButtonTypes) => {
+const SocialLoginBtn = ({ icon, altText, bgColor, loginUrl }: ButtonTypes) => {
   console.log(loginUrl);
+
+  const bgImage = `bg-[url(${icon})]`;
   return (
-    <button
+    <div
       onClick={() => (window.location.href = loginUrl)}
-      type="button"
-      className={`h-[40px] flex items-center px-[12px] rounded-[2px] shadow-[0_1px_2px_0_rgba(0,0,0,0.25)] ${bgColor}`}
+      className={`h-[48px] w-[48px] flex items-center justify-center px-[12px] rounded-full shadow-[0_1px_2px_0_rgba(0,0,0,0.25)] ${bgColor} w-fit ${bgImage}`}
     >
       <img src={icon} alt={altText} />
-      <div className={`w-[100%] text-center text-[14px] h-[16px] font-medium ${textColor}`}>
-        <span>{loginSpan}</span>
-      </div>
-    </button>
+    </div>
   );
 };
 

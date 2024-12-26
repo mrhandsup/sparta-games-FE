@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { CATEGORY } from "../../constant/constant";
 
 type props = {
   isLogin: boolean;
@@ -9,7 +8,7 @@ type props = {
   logoutHandler?: () => void;
 };
 
-const UserStatusPopover = ({ isLogin, modalRef, onClickModalToggleHandler, loginHandler }: props) => {
+const UserStatusPopover = ({ isLogin, modalRef, onClickModalToggleHandler, loginHandler, logoutHandler }: props) => {
   return (
     <div
       ref={modalRef}
@@ -23,9 +22,9 @@ const UserStatusPopover = ({ isLogin, modalRef, onClickModalToggleHandler, login
           <Link to={`/my-page`}>
             <p className="hover:text-primary-500 w-fit">마이페이지</p>
           </Link>
-          <Link to={`/`}>
+          <div onClick={logoutHandler}>
             <p className="hover:text-primary-500 w-fit">로그아웃</p>
-          </Link>
+          </div>
         </div>
       ) : (
         <div className="flex flex-col items-center gap-6">

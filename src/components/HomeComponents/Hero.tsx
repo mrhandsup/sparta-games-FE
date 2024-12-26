@@ -1,23 +1,21 @@
-import useLoginModalStore from "../../share/store/modalStore";
-
 import heroImage from "../../assets/homeImage/heroImage.svg";
 import { userStore } from "../../share/store/userStore";
 import GameCardList from "./GameCardList";
 import { useQuery } from "@tanstack/react-query";
-import { getMyBookmarkList } from "../../api/game";
-import { TGameData } from "../../types";
+import type { TListResponse } from "../../types";
 import useModalToggles from "../../hook/useModalToggles";
 import SpartaModal from "../../spartaDesignSystem/SpartaModal";
-import SpartaReactionModal from "../../spartaDesignSystem/SpartaReactionModal";
+
+import Login from "./Login";
+import { getUserGamePackList } from "../../api/user";
 
 const Hero = () => {
-  const { openModal } = useLoginModalStore();
-
   const { userData } = userStore();
 
-  const { data } = useQuery<TGameData[]>({
-    queryKey: ["myBookmarkList"],
-    queryFn: getMyBookmarkList,
+  const { data } = useQuery<TListResponse>({
+    queryKey: ["userGamePackList", userData],
+    queryFn: () => getUserGamePackList(userData?.user_pk || 0),
+    enabled: !!userData?.user_pk,
   });
 
   const LOGIN_MODAL_ID = "loginModal";
@@ -58,7 +56,7 @@ const Hero = () => {
         </section>
       )}
       {/* 로그인 후 && 북마크 게임 x */}
-      {userData && data?.length == 0 && (
+      {userData && data?.results.length == 0 && (
         <section className="flex flex-col items-center  w-full h-[475px]  text-white  justify-center relative gap-4 ">
           <div className="absolute bg-hero-image bg-cover bg-center opacity-20 justify-center w-full h-full"></div>
           <p className="font-DungGeunMo text-heading-28 text-primary-400 mb-24">[User Name]의 Game Pack</p>
@@ -68,35 +66,20 @@ const Hero = () => {
         </section>
       )}
       {/* 로그인 후 && 북마크 게임 o */}
-      {userData && data?.length !== 0 && (
+      {userData && data?.results.length !== 0 && (
         <section className="flex flex-col items-center w-full h-[475px]  text-white  justify-center relative gap-4 pt-14 mb-10">
           <div className="absolute bg-hero-image bg-cover bg-center opacity-20 justify-center w-full h-full"></div>
-          <p className="font-DungGeunMo text-heading-28 text-primary-400 mb-8">[User Name]의 Game Pack</p>
-          <GameCardList data={data} maxNum={4} simple={true} />
+          <p className="font-DungGeunMo text-heading-28 text-primary-400 mb-8">[{userData.nickname}]의 Game Pack</p>
+          <GameCardList data={data?.results} maxNum={4} simple={true} />
         </section>
       )}
       <SpartaModal
         isOpen={modalToggles[LOGIN_MODAL_ID]}
         onClose={onClickModalToggleHandlers[LOGIN_MODAL_ID]}
         modalId={LOGIN_MODAL_ID}
-        title="로그인"
-        type="alert"
       >
-        <div className="min-w-80 min-h-[100vh]">모달 내용</div>
+        <Login onClose={onClickModalToggleHandlers[LOGIN_MODAL_ID]} />
       </SpartaModal>
-      <SpartaReactionModal
-        isOpen={modalToggles[LOG_OUT_MODAL_ID]}
-        onClose={onClickModalToggleHandlers[LOG_OUT_MODAL_ID]}
-        modalId={LOG_OUT_MODAL_ID}
-        title="로그아웃"
-        content="정말 로그아웃 하시겠습니까?"
-        btn1={{
-          text: "로그아웃",
-          onClick: () => {
-            console.log("로그아웃");
-          },
-        }}
-      />
     </>
   );
 };

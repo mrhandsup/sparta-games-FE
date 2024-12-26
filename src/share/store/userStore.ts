@@ -1,11 +1,12 @@
 import { create } from "zustand";
 import { jwtDecode } from "jwt-decode";
 import { getUserData } from "../../api/user";
-import { User } from "../../types";
+import { TUser } from "../../types";
 
 type Store = {
-  userData?: User;
+  userData?: TUser;
   setUser: (accessToken?: string) => void;
+  logout: () => void;
 };
 
 export const userStore = create<Store>()((set) => ({
@@ -22,5 +23,8 @@ export const userStore = create<Store>()((set) => ({
       console.error("Error fetching user data:", error);
       set({ userData: undefined });
     }
+  },
+  logout: () => {
+    set({ userData: undefined });
   },
 }));

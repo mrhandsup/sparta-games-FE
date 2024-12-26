@@ -87,3 +87,16 @@ export const updatePassword = async (
     throw error;
   }
 };
+
+/**
+ * 유저 게임팩 조회
+ */
+export const getUserGamePackList = async (userId: number) => {
+  try {
+    const res = await sparta_games_auth.get(`/users/api/${userId}/gamepacks/`);
+    return res.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
