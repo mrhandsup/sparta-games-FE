@@ -1,0 +1,30 @@
+.descriptionSwiper {
+  @apply relative w-full h-full;
+}
+
+.descriptionSwiper .swiper-wrapper {
+  @apply flex items-center h-[450px];
+}
+
+.descriptionSwiper .swiper-slide {
+  @apply w-auto;
+}
+
+.descriptionSwiper .swiper-slide img {
+  @apply w-[800px] h-[400px] object-cover;
+}
+
+.descriptionSwiper .swiper-slide-active img {
+  @apply w-[900px] h-[450px] rounded-lg z-10;
+}
+
+.descriptionSwiper .swiper-pagination {
+  @apply !static mt-6;
+}
+
+.descriptionSwiper .swiper-pagination-bullet {
+  @apply !mr-2 w-4 h-4 bg-gray-100 opacity-100;
+}
+.descriptionSwiper .swiper-pagination-bullet-active {
+  @apply w-4 h-4 bg-primary-500;
+}

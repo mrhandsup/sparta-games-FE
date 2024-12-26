@@ -18,7 +18,7 @@ export default {
         'error': '0 0 24px rgba(255,92,92,0.32)',
       },
       backgroundImage: {
-        'hero-image': "url('/src/assets/homeImage/heroImage.svg')"
+        "hero-image": "url('/src/assets/homeImage/heroImage.svg')",
       },
       colors: {
         gray: {
