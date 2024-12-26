@@ -3,13 +3,10 @@ import halfFillStar from "../../assets/halfFillStar.svg";
 import fillStar from "../../assets/fillStar.svg";
 
 type Props = {
-  score: 0 | 1 | 2 | 3 | 4 | 5;
+  score: number;
 };
 
 const StarRating = ({ score }: Props) => {
-  if (score < 0 || score > 5) {
-    return <div>별점은 0에서 5 사이어야 합니다.</div>;
-  }
   // 별점 계산 (5점 만점)
   const fullStars = Math.floor(score); // 꽉 찬 별 개수
   const halfStar = score % 1 !== 0; // 반만 찬 별 여부
