@@ -88,3 +88,8 @@ export type TGamePlayData = {
 };
 
 export type TGameChip = "Daily Top" | "Review Top" | "Bookmark Top" | "Long Play" | "New Game";
+
+export type TCategoryListResponse = {
+  pk: number;
+  name: string;
+}[];

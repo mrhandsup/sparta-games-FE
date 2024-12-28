@@ -1,7 +1,7 @@
 import { AiFillCaretRight } from "react-icons/ai";
 
 import GameCard from "./GameCard";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { TGameData } from "../../types";
 
 type TGameCardListProps = {
@@ -26,6 +26,10 @@ type TGameCardListProps = {
    */
   noNavigation?: boolean;
   /**
+   * 네비게이션 이동 경로
+   */
+  to?: string;
+  /**
    * 컨테이너 클래스명
    */
   containerClassName?: string;
@@ -45,6 +49,7 @@ const GameCardList = ({
   maxNum = 4,
   simple,
   noNavigation,
+  to,
   containerClassName,
   row,
   emptyText = "데이터가 없습니다.",
@@ -52,20 +57,25 @@ const GameCardList = ({
   const slicingData = data?.slice(0, maxNum);
   const baseClassName = "flex flex-col justify-evenly w-full h-[536px] item-center ";
 
+  const navigate = useNavigate();
+
   return (
     <div className={containerClassName ? containerClassName : baseClassName}>
       {children && (
         <p
           className={`flex justify-between items-center mx-auto  ${
             !containerClassName ? "w-[1180px]" : "w-full"
-          } h-12 text-5xl font-bold`}
+          } h-12 text-5xl font-bold
+          ${to ? "cursor-pointer" : ""}
+          `}
+          onClick={to ? () => navigate(to) : undefined}
         >
           {children}
           {!noNavigation && <AiFillCaretRight className="w-8 h-8 text-white" />}
         </p>
       )}
 
-      <div className={`flex mt-2 gap-4 ${!containerClassName && "w-[1180px] h-[408px] mx-auto"}`}>
+      <div className={`flex ${row && "flex-col"}  ${!containerClassName && "w-[1180px] h-[408px] mx-auto gap-4 mt-2"}`}>
         {slicingData?.length != 0 && slicingData ? (
           slicingData.map((item) => (
             <Link to={`/game-detail?id=${item.pk}`}>

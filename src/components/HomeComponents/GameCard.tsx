@@ -1,5 +1,4 @@
 import { FaBookmark } from "react-icons/fa";
-import Easy from "../common/chipComponents/Easy";
 import StarRating from "../common/StarRating";
 import { TGameData } from "../../types";
 import GameChip from "../common/chipComponents/GameChip";
@@ -12,12 +11,17 @@ type Props = {
 
 const GameCard = ({ item, simple, row }: Props) => {
   return (
-    <section key={item?.pk} className={`relative flex ${row ? "flex-row" : "flex-col"}`}>
+    <section
+      key={item?.pk}
+      className={`relative flex ${
+        row ? "flex-row border-gray-100 border-[1px] rounded-lg border-solid h-[152px]" : "flex-col"
+      }`}
+    >
       <img
         src={import.meta.env.VITE_PROXY_HOST + item?.thumbnail}
         alt="게임 썸네일"
         className={`relative flex justify-center items-center bg-gray-50 ${
-          row ? "round-l-lg w-[190px] h-[152px]" : "rounded-t-lg w-[280px] h-[224px]"
+          row ? "rounded-l-lg w-[190px] h-[152px]" : "rounded-t-lg w-[280px] h-[224px]"
         }`}
       />
       {/* 카테고리 */}
@@ -28,7 +32,11 @@ const GameCard = ({ item, simple, row }: Props) => {
       <div className="absolute top-0 right-4  rounded-tl-md rounded-br-lg font-DungGeunMo text-white w-fit font-light">
         {item?.is_liked && <FaBookmark className="text-green-400 text-3xl" />}
       </div>
-      <div className={`p-3 w-[280px] ${!simple && "h-[173px]"} bg-gray-800 text-white pt-4 rounded-b-lg`}>
+      <div
+        className={`p-3 bg-gray-800 text-white pt-4 rounded-b-lg ${
+          row ? "h-[150px] w-[300px]" : "h-[173px] w-[280px]"
+        }`}
+      >
         <div className="text-heading-20 font-bold text-ellipsis overflow-hidden truncate">
           {item?.title ? item?.title : "test"}
         </div>
@@ -40,7 +48,7 @@ const GameCard = ({ item, simple, row }: Props) => {
           </div>
         </div>
         {!simple && (
-          <div className="flex flex-col justify-between min-h-[60%] ">
+          <div className={`flex flex-col justify-between  ${row ? "min-h-[53%]" : "min-h-[60%]"}  `}>
             <div
               className={`text-body-14 mt-2 overflow-hidden display-webkit-box ${
                 row ? "line-clamp-2" : "line-clamp-3"

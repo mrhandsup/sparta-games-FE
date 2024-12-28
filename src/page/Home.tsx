@@ -5,8 +5,9 @@ import pixelMeteor from "../assets/homeImage/pixelMeteor.svg";
 import pixelPaperPlane from "../assets/homeImage/pixelPaperPlane.svg";
 import pixelGame from "../assets/homeImage/pixelGame.svg";
 import { useQuery } from "@tanstack/react-query";
-import { getGameList } from "../api/game";
+import { getGameList, getGameListAuth } from "../api/game";
 import { TGameData } from "../types";
+import { userStore } from "../share/store/userStore";
 
 type TRandGame = {
   category_name: string;
@@ -22,9 +23,11 @@ type TMainHttpResponse = {
 };
 
 const Home = () => {
+  const { userData } = userStore();
+
   const { data } = useQuery<TMainHttpResponse>({
-    queryKey: ["gameList"],
-    queryFn: getGameList,
+    queryKey: ["gameList", userData],
+    queryFn: userData ? getGameListAuth : getGameList,
   });
 
   return (
@@ -44,7 +47,7 @@ const Home = () => {
           </div>
         </GameCardList>
         {data?.rand1.game_list.length > 0 && (
-          <GameCardList data={data?.rand1.game_list}>
+          <GameCardList data={data?.rand1.game_list} to={`/category?category=${data?.rand1.category_name}`}>
             <div className="flex items-center gap-3">
               <img src={pixelGame} />
               <p className="font-DungGeunMo text-heading-32 text-white">[{data?.rand1.category_name}]</p>
@@ -52,7 +55,7 @@ const Home = () => {
           </GameCardList>
         )}
         {data?.rand2.game_list.length > 0 && (
-          <GameCardList data={data?.rand2.game_list}>
+          <GameCardList data={data?.rand2.game_list} to={`/category?category=${data?.rand2.category_name}`}>
             <div className="flex items-center gap-3">
               <img src={pixelGame} />
               <p className="font-DungGeunMo text-heading-32 text-white">[{data?.rand2.category_name}]</p>
@@ -60,7 +63,7 @@ const Home = () => {
           </GameCardList>
         )}
         {data?.rand3.game_list.length > 0 && (
-          <GameCardList data={data?.rand3.game_list}>
+          <GameCardList data={data?.rand3.game_list} to={`/category?category=${data?.rand3.category_name}`}>
             <div className="flex items-center gap-3">
               <img src={pixelGame} />
               <p className="font-DungGeunMo text-heading-32 text-white">[{data?.rand3.category_name}]</p>

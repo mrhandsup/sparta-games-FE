@@ -15,6 +15,7 @@ type Props = {
 };
 
 function Login({ onClose }: Props) {
+  // 로그인 폼
   const {
     register,
     formState: { isValid },
@@ -30,6 +31,7 @@ function Login({ onClose }: Props) {
 
   const { setUser } = userStore();
 
+  // 로그인 요청
   const fetchLogin = async () => {
     if (!isValid) return;
 
@@ -52,15 +54,29 @@ function Login({ onClose }: Props) {
         <div className=" flex items-center gap-[12px] mt-4 justify-center pb-7 mb-7 border-b-[1px] border-solid border-gray-100">
           <SocialLoginBtn
             loginUrl={`https://accounts.google.com/o/oauth2/v2/auth?client_id=${
-              import.meta.env.VITE_CLIENT_ID
-            }&redirect_uri=${import.meta.env.VITE_REDIRECT_URI}&response_type=code&scope=email+profile`}
+              import.meta.env.VITE_GOOGLE_CLIENT_ID
+            }&redirect_uri=${import.meta.env.VITE_GOOGLE_CALLBACK_URL}&response_type=code&scope=email+profile`}
             icon={googleIcon}
             altText="구글 아이콘"
             bgColor="bg-white"
           />
           <SocialLoginBtn loginUrl="/" icon={discordIcon} altText="디스코드 아이콘" bgColor="bg-[#5662F6]" />
-          <SocialLoginBtn loginUrl="/" icon={naverIcon} altText="네이버 아이콘" bgColor="bg-[#03C75A]" />
-          <SocialLoginBtn loginUrl="/" icon={kakaoIcon} altText="카카오 아이콘" bgColor="bg-[#FEE500]" />
+          <SocialLoginBtn
+            loginUrl={`https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${
+              import.meta.env.VITE_GOOGLE_CLIENT_ID
+            }&state=false&redirect_uri=${import.meta.env.VITE_NAVER_CALLBACK_URL}`}
+            icon={naverIcon}
+            altText="네이버 아이콘"
+            bgColor="bg-[#03C75A]"
+          />
+          <SocialLoginBtn
+            loginUrl={`https://kauth.kakao.com/oauth/authorize?client_id=${
+              import.meta.env.VITE_KAKAO_CLIENT_ID
+            }&redirect_uri=${import.meta.env.VITE_KAKAO_CALLBACK_URL}&response_type=code`}
+            icon={kakaoIcon}
+            altText="카카오 아이콘"
+            bgColor="bg-[#FEE500]"
+          />
         </div>
         <h2 className="text-center font-bold text-heading-24 text-custom-red font-DungGeunMo text-primary-500 mb-7">
           이메일 로그인
