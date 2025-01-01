@@ -4,7 +4,7 @@ type Props = {
   type?: "standard" | "filled";
   size?: "small" | "medium" | "large";
   colorType?: "primary" | "alert" | "error" | "grey";
-  onClick: () => void;
+  onClick?: () => void;
 };
 
 const SpartaButton = ({

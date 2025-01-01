@@ -6,9 +6,12 @@ import kakaoIcon from "../../assets/common/kakaoIcon.svg";
 import SpartaButton from "../../spartaDesignSystem/SpartaButton";
 import SpartaTextField from "../../spartaDesignSystem/SpartaTextField";
 import { useForm } from "react-hook-form";
-import { TUserInformationInputForm } from "../../types";
+import { TUser, TUserInformationInputForm } from "../../types";
 import { login } from "../../api/login";
 import { userStore } from "../../share/store/userStore";
+import { useMutation } from "@tanstack/react-query";
+import { jwtDecode } from "jwt-decode";
+import { getUserData } from "../../api/user";
 
 type Props = {
   onClose: () => void;
@@ -19,8 +22,7 @@ function Login({ onClose }: Props) {
   const {
     register,
     formState: { isValid },
-    setValue,
-    getValues,
+    handleSubmit,
   } = useForm<Partial<TUserInformationInputForm>>({
     mode: "onChange",
     defaultValues: {
@@ -31,18 +33,30 @@ function Login({ onClose }: Props) {
 
   const { setUser } = userStore();
 
-  // 로그인 요청
-  const fetchLogin = async () => {
-    if (!isValid) return;
+  const loginMutation = useMutation({
+    mutationFn: ({ email, password }: { email: string; password: string }) => login(email, password),
+    onSuccess: async (data) => {
+      sessionStorage.setItem("accessToken", data?.data.access);
+      sessionStorage.setItem("refreshToken", data?.data.refresh);
+      const userDataReturn = await setUser(data?.data.access);
 
-    const email = getValues("email") || "";
-    const password = getValues("password") || "";
-    const loginData = await login(email, password);
-    if (!loginData) return;
-    sessionStorage.setItem("accessToken", loginData?.data.access);
-    sessionStorage.setItem("refreshToken", loginData?.data.refresh);
-    setUser(loginData?.data.access);
-    onClose();
+      if (userDataReturn?.is_staff) {
+        sessionStorage.setItem("isAdmin", "true");
+        window.location.href = "/admin/dashboard";
+      } else {
+        onClose();
+      }
+    },
+    onError: () => {
+      window.alert("로그인에 실패했습니다");
+    },
+  });
+
+  const onSubmit = (data: Partial<TUserInformationInputForm>) => {
+    loginMutation.mutate({
+      email: data.email || "",
+      password: data.password || "",
+    });
   };
 
   return (
@@ -93,23 +107,15 @@ function Login({ onClose }: Props) {
           이메일 로그인
         </h2>
       </div>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-        }}
-        className="flex flex-col gap-[28px] mb-8"
-      >
-        <div className="flex flex-col gap-[12px]">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
+        <div className="flex flex-col gap-[12px] mb-4">
           <SpartaTextField
             label="이메일"
             type="medium"
-            register={register("email", {
-              required: true,
-            })}
+            register={register("email", { required: true })}
             inputProps={{
               placeholder: "spartagames@sparta.com",
             }}
-            onClear={() => setValue("email", "")}
             subLabel={{
               default: "이메일을 입력해주세요",
               error: "올바른 이메일 형식이 아닙니다",
@@ -120,13 +126,10 @@ function Login({ onClose }: Props) {
           <SpartaTextField
             label="비밀번호"
             type="medium"
-            register={register("password", {
-              required: true,
-            })}
+            register={register("password", { required: true })}
             inputProps={{
               placeholder: "*****",
             }}
-            onClear={() => setValue("password", "")}
             subLabel={{
               default: "비밀번호를 입력해주세요",
               error: "8~32자의 영문 대소문자, 숫자를 포함해야 합니다",
@@ -135,17 +138,15 @@ function Login({ onClose }: Props) {
             passwordType
           />
         </div>
+        <SpartaButton content="회원가입" onClick={() => {}} type="filled" colorType="grey" size="medium" />
+        <SpartaButton
+          content={loginMutation.isPending ? "로그인 중..." : "로그인"}
+          type="filled"
+          colorType="primary"
+          size="medium"
+          disabled={!isValid || loginMutation.isPending}
+        />
       </form>
-      <SpartaButton content="회원가입" onClick={() => {}} type={"filled"} colorType="grey" size="medium" />
-      <div className="h-2" />
-      <SpartaButton
-        content="로그인"
-        onClick={() => fetchLogin()}
-        type={"filled"}
-        colorType={"primary"}
-        size="medium"
-        disabled={!isValid}
-      />
     </>
   );
 }

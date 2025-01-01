@@ -11,6 +11,9 @@ import Community from "../page/Community";
 import GameUpload from "../page/GameUpload";
 import Redirect from "../page/Redirect";
 import SignUp from "../page/SignUp";
+import AdminDashBoard from "../page/admin/AdminDashBoard";
+import AdminGameLog from "../page/admin/AdminGameLog";
+import AdminLayout from "../components/layout/AdminLayout";
 
 const Router = () => {
   return (
@@ -28,6 +31,11 @@ const Router = () => {
           <Route element={<AuthLayout />}>
             <Route path="my-page" element={<MyPage />} />
             <Route path="game-upload" element={<GameUpload />} />
+          </Route>
+
+          <Route element={<AdminLayout />}>
+            <Route path="/admin/dashboard" element={<AdminDashBoard />} />
+            <Route path="/admin/game-log" element={<AdminGameLog />} />
           </Route>
         </Route>
       </Routes>

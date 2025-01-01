@@ -5,7 +5,7 @@ import { TUser } from "../../types";
 
 type Store = {
   userData?: TUser;
-  setUser: (accessToken?: string) => void;
+  setUser: (accessToken?: string) => Promise<TUser | undefined>;
   logout: () => void;
 };
 
@@ -19,9 +19,10 @@ export const userStore = create<Store>()((set) => ({
       const decoded_jwt = jwtDecode<{ user_id: number }>(accessToken);
       const userData = await getUserData(decoded_jwt.user_id);
       set({ userData: userData });
-      if (userData.is_staff) {
-        sessionStorage.setItem("is_staff", "true");
+      if (userData?.is_staff) {
+        sessionStorage.setItem("isAdmin", "true");
       }
+      return userData;
     } catch (error) {
       console.error("Error fetching user data:", error);
       set({ userData: undefined });
@@ -30,6 +31,8 @@ export const userStore = create<Store>()((set) => ({
   logout: () => {
     sessionStorage.removeItem("accessToken");
     sessionStorage.removeItem("refreshToken");
+    sessionStorage.removeItem("isAdmin");
     set({ userData: undefined });
+    window.location.href = "/";
   },
 }));
