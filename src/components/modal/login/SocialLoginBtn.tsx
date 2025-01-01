@@ -6,8 +6,6 @@ type ButtonTypes = {
 };
 
 const SocialLoginBtn = ({ icon, altText, bgColor, loginUrl }: ButtonTypes) => {
-  console.log(loginUrl);
-
   const bgImage = `bg-[url(${icon})]`;
   return (
     <div

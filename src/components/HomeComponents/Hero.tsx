@@ -77,7 +77,7 @@ const Hero = () => {
         </section>
       )}
       {/* 로그인 후 && 북마크 게임 o */}
-      {userData && data?.results && data?.results.length !== 0 && (
+      {userData && data?.results && data?.results?.length !== 0 && (
         <section className="flex flex-col items-center w-full h-[475px]  text-white justify-center gap-4 mb-10 bg-red-500 ">
           <Swiper
             ref={swiperRef}

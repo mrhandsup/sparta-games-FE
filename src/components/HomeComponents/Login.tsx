@@ -55,16 +55,27 @@ function Login({ onClose }: Props) {
           <SocialLoginBtn
             loginUrl={`https://accounts.google.com/o/oauth2/v2/auth?client_id=${
               import.meta.env.VITE_GOOGLE_CLIENT_ID
-            }&redirect_uri=${import.meta.env.VITE_GOOGLE_CALLBACK_URL}&response_type=code&scope=email+profile`}
+            }&redirect_uri=${
+              import.meta.env.VITE_GOOGLE_CALLBACK_URL
+            }&response_type=code&scope=email+profile&access_type=offline`}
             icon={googleIcon}
             altText="구글 아이콘"
             bgColor="bg-white"
           />
-          <SocialLoginBtn loginUrl="/" icon={discordIcon} altText="디스코드 아이콘" bgColor="bg-[#5662F6]" />
+          <SocialLoginBtn
+            loginUrl={`https://discord.com/api/oauth2/authorize?client_id=${
+              import.meta.env.VITE_DISCORD_CLIENT_ID
+            }&redirect_uri=${import.meta.env.VITE_DISCORD_CALLBACK_URL}&response_type=code&scope=identify+email`}
+            icon={discordIcon}
+            altText="디스코드 아이콘"
+            bgColor="bg-[#5662F6]"
+          />
           <SocialLoginBtn
             loginUrl={`https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${
-              import.meta.env.VITE_GOOGLE_CLIENT_ID
-            }&state=false&redirect_uri=${import.meta.env.VITE_NAVER_CALLBACK_URL}`}
+              import.meta.env.VITE_NAVER_CLIENT_ID
+            }&state=${import.meta.env.VITE_NAVER_STATE}&redirect_uri=${
+              import.meta.env.VITE_NAVER_CALLBACK_URL
+            }&state=check_random_string`}
             icon={naverIcon}
             altText="네이버 아이콘"
             bgColor="bg-[#03C75A]"
