@@ -47,14 +47,7 @@ const Hero = () => {
               <p>같이 게임을 만들어 갈 동료를 구할 수 있습니다.</p>
             </div>
 
-            <div className="flex gap-4 w-full">
-              <SpartaButton
-                content="회원가입"
-                type="filled"
-                size="medium"
-                colorType="grey"
-                onClick={() => onClickModalToggleHandlers[LOG_OUT_MODAL_ID]()}
-              />
+            <div className="w-full">
               <SpartaButton
                 content="로그인"
                 type="filled"

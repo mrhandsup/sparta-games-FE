@@ -1,5 +1,6 @@
 type Props = {
   content: string;
+  width?: string;
   disabled?: boolean;
   type?: "standard" | "filled";
   size?: "small" | "medium" | "large";
@@ -9,6 +10,7 @@ type Props = {
 
 const SpartaButton = ({
   disabled = false,
+  width = "w-full",
   content,
   type = "standard",
   size = "large",
@@ -16,7 +18,7 @@ const SpartaButton = ({
   onClick,
 }: Props) => {
   const getButtonStyles = (): string => {
-    const baseStyles = "w-full rounded-md transition-colors duration-200 box-border";
+    const baseStyles = "rounded-md transition-colors duration-200 box-border";
 
     const sizeStyles = {
       small: "h-10 text-title-16",
@@ -52,7 +54,7 @@ const SpartaButton = ({
       },
     };
 
-    return `${baseStyles} ${colorDict[colorType][type]} ${sizeStyles[size]} hover:shadow-md`;
+    return `${baseStyles} ${colorDict[colorType][type]} ${sizeStyles[size]} ${width} hover:shadow-md`;
   };
 
   return (

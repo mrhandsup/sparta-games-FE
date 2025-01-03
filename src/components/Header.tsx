@@ -186,11 +186,15 @@ const Header = () => {
 
         {/* 유저 액션 */}
         {!userData?.is_staff && (
-          <div onClick={onClickModalToggleHandlers.userStatus} className="cursor-pointer ">
+          <div className="cursor-pointer ">
             {userData ? (
-              <p className="hover:text-primary-500">마이페이지</p>
+              <p onClick={onClickModalToggleHandlers.userStatus} className="hover:text-primary-500">
+                마이페이지
+              </p>
             ) : (
-              <p className="hover:text-primary-500">로그인/회원가입</p>
+              <p onClick={onClickModalToggleHandlers[LOGIN_MODAL_ID]} className="hover:text-primary-500">
+                로그인/회원가입
+              </p>
             )}
             {/* 유저액션 팝오버 */}
             {modalToggles.userStatus && (
