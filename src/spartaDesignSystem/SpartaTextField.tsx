@@ -1,5 +1,7 @@
-import React from "react";
 import { IoCloseCircleOutline } from "react-icons/io5";
+import { IoEyeSharp } from "react-icons/io5";
+import { FaEyeSlash } from "react-icons/fa";
+import { useState } from "react";
 
 type Props = {
   /**
@@ -38,9 +40,23 @@ type Props = {
    * 클리어 버튼 클릭 시
    */
   onClear?: () => void;
+  /**
+   * 비밀번호 타입
+   */
+  passwordType?: boolean;
 };
 
-const SpartaTextField = ({ label, inputProps, register, type = "medium", subLabel, error, pass, onClear }: Props) => {
+const SpartaTextField = ({
+  label,
+  inputProps,
+  register,
+  type = "medium",
+  subLabel,
+  error,
+  pass,
+  onClear,
+  passwordType,
+}: Props) => {
   const subLabelBranch = () => {
     if (error && !pass) {
       return subLabel?.error;
@@ -71,6 +87,8 @@ const SpartaTextField = ({ label, inputProps, register, type = "medium", subLabe
     }
   };
 
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
   return (
     <div className="flex flex-col gap-2">
       <div className="flex gap-2 items-baseline">
@@ -92,14 +110,28 @@ const SpartaTextField = ({ label, inputProps, register, type = "medium", subLabe
           className={`w-full py-3 px-4 border border-solid ${inputBorderBranch()} rounded-md ${
             type === "small" ? "text-body-16" : "text-body-18"
           } text-gray-200 bg-transparent ${onClear ? "pr-10" : ""}`}
+          type={!passwordType || showPassword ? "text" : "password"}
         />
-        {!inputProps.disabled && onClear && (
+        {!inputProps.disabled && onClear && !passwordType && (
           <button
             type="button"
             onClick={onClear}
             className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-200 transition-colors"
           >
             <IoCloseCircleOutline size={type === "small" ? 18 : 20} />
+          </button>
+        )}
+        {passwordType && (
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-200 transition-colors"
+          >
+            {showPassword ? (
+              <IoEyeSharp size={type === "small" ? 18 : 20} />
+            ) : (
+              <FaEyeSlash size={type === "small" ? 18 : 20} />
+            )}{" "}
           </button>
         )}
       </div>

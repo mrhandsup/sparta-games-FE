@@ -1,0 +1,10 @@
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide img {
+  width: auto !important;
+  height: auto !important;
+  object-fit: fill !important;
+}

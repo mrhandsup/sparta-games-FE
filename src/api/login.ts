@@ -12,7 +12,7 @@ export const getUserInfo = async (code: string) => {
     });
     return response;
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 };
 
@@ -25,6 +25,65 @@ export const login = async (email: string, password: string) => {
 
     return response;
   } catch (error) {
-    console.log(error);
+    throw error;
+  }
+};
+
+export const googleLogin = async (code: string) => {
+  try {
+    const response = await sparta_games.get("/accounts/api/google/callback/", {
+      withCredentials: true,
+      headers: {
+        AUTHORIZATION: code,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const kakaoLogin = async (code: string) => {
+  try {
+    const response = await sparta_games.get("/accounts/api/kakao/callback/", {
+      headers: {
+        AUTHORIZATION: code,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const naverLogin = async (code: string) => {
+  try {
+    const response = await sparta_games.get("/accounts/api/naver/callback/", {
+      withCredentials: true,
+      headers: {
+        AUTHORIZATION: code,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const discordLogin = async (code: string) => {
+  try {
+    const response = await sparta_games.get("/accounts/api/discord/callback/", {
+      withCredentials: true,
+      headers: {
+        AUTHORIZATION: code,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    throw error;
   }
 };

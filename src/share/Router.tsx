@@ -9,6 +9,8 @@ import GameDetail from "../page/GameDetail";
 import MyPage from "../page/MyPage";
 import Community from "../page/Community";
 import GameUpload from "../page/GameUpload";
+import Redirect from "../page/Redirect";
+import SignUp from "../page/SignUp";
 
 const Router = () => {
   return (
@@ -19,7 +21,8 @@ const Router = () => {
           <Route path="/game-detail" element={<GameDetail />} />
           <Route path="/category" element={<Category />} />
           <Route path="/community" element={<Community />} />
-
+          <Route path="/redirect/:service" element={<Redirect />} />
+          <Route path="/signup" element={<SignUp />} />
           <Route element={<NonAuthLayout />}></Route>
 
           <Route element={<AuthLayout />}>

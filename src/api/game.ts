@@ -15,6 +15,19 @@ export const getGameList = async () => {
 };
 
 /**
+ * 게임 리스트 조회(인증)
+ */
+export const getGameListAuth = async () => {
+  try {
+    const res = await sparta_games_auth.get("/games/api/list/");
+    return res.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+/**
  * 게임 리스트 조회(카테고리)
  */
 export const getGameListByCategory = async (category: string, page?: number, limit?: number) => {
@@ -57,6 +70,32 @@ export const getMyBookmarkList = async () => {
   const { userData } = userStore();
   try {
     const res = await sparta_games_auth.get(`/user/api/${userData?.user_pk}/likes/`);
+    return res.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+/**
+ * 게임 전체 카테고리 조회
+ */
+export const getGameCategory = async () => {
+  try {
+    const res = await sparta_games.get("/games/api/categories/");
+    return res.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+/**
+ * 게임 검색
+ */
+export const searchGame = async (keyword: string) => {
+  try {
+    const res = await sparta_games.get(`/games/api/list/search/?game-q=${keyword}&maker-q=${keyword}`);
     return res.data;
   } catch (error) {
     console.error(error);

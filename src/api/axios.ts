@@ -1,21 +1,10 @@
 //axios 예시 이 파일은 작업을 시작할때 지워도 됩니다.
 
 import axios from "axios";
-import { userStore } from "../share/store/userStore";
-
-// async/await 사용을 원한다면, 함수 외부에 `async` 키워드를 추가하세요.
-export async function getUser() {
-  try {
-    const response = await axios.get("/user?ID=12345");
-    console.log(response);
-  } catch (error) {
-    console.error(error);
-  }
-}
 
 // v1 코드 보고 만든 코드라 확실하지 않습니다!
 // accessToken갱신 함수
-const retrieveAccessToken = async () => {
+export const retrieveAccessToken = async () => {
   const refreshToken = sessionStorage.getItem("refreshToken");
 
   try {

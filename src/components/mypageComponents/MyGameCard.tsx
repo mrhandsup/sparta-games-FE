@@ -1,4 +1,3 @@
-import React from "react";
 import { TGameData } from "../../types";
 import StarRating from "../common/StarRating";
 import GameChip from "../common/chipComponents/GameChip";
@@ -33,7 +32,7 @@ const MyGameCard = ({ item }: Props) => {
             </div>
           </div>
           <div className="flex gap-1">
-            {item?.chip_list?.map((chip) => (
+            {item?.chip_names?.map((chip) => (
               <GameChip key={chip} chipName={chip} />
             ))}
           </div>

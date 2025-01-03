@@ -65,6 +65,13 @@ export type TGameData = {
   is_liked: boolean;
 };
 
+export type TListResponse = {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: TGameData[];
+};
+
 export type TGamePlayData = {
   id: number;
   maker_name: string;
@@ -81,3 +88,8 @@ export type TGamePlayData = {
 };
 
 export type TGameChip = "Daily Top" | "Review Top" | "Bookmark Top" | "Long Play" | "New Game";
+
+export type TCategoryListResponse = {
+  pk: number;
+  name: string;
+}[];

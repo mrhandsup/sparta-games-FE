@@ -7,7 +7,7 @@ type btnConfig = {
   onClick: () => void;
 };
 
-type TSpartaReactionModalProps = Pick<TModalProps, "type" | "isOpen" | "modalId" | "onClose"> & {
+export type TSpartaReactionModalProps = Pick<TModalProps, "type" | "isOpen" | "modalId" | "onClose"> & {
   title: string;
   content: string;
   btn1: btnConfig;
