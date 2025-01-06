@@ -6,9 +6,13 @@ import kakaoIcon from "../../assets/common/kakaoIcon.svg";
 import SpartaButton from "../../spartaDesignSystem/SpartaButton";
 import SpartaTextField from "../../spartaDesignSystem/SpartaTextField";
 import { useForm } from "react-hook-form";
-import { TUserInformationInputForm } from "../../types";
+import { TUser, TUserInformationInputForm } from "../../types";
 import { login } from "../../api/login";
 import { userStore } from "../../share/store/userStore";
+import { useMutation } from "@tanstack/react-query";
+import { jwtDecode } from "jwt-decode";
+import { getUserData } from "../../api/user";
+import { useState } from "react";
 
 type Props = {
   onClose: () => void;
@@ -19,8 +23,7 @@ function Login({ onClose }: Props) {
   const {
     register,
     formState: { isValid },
-    setValue,
-    getValues,
+    handleSubmit,
   } = useForm<Partial<TUserInformationInputForm>>({
     mode: "onChange",
     defaultValues: {
@@ -31,121 +34,145 @@ function Login({ onClose }: Props) {
 
   const { setUser } = userStore();
 
-  // 로그인 요청
-  const fetchLogin = async () => {
-    if (!isValid) return;
+  const loginMutation = useMutation({
+    mutationFn: ({ email, password }: { email: string; password: string }) => login(email, password),
+    onSuccess: async (data) => {
+      sessionStorage.setItem("accessToken", data?.data.access);
+      sessionStorage.setItem("refreshToken", data?.data.refresh);
+      const userDataReturn = await setUser(data?.data.access);
 
-    const email = getValues("email") || "";
-    const password = getValues("password") || "";
-    const loginData = await login(email, password);
-    if (!loginData) return;
-    sessionStorage.setItem("accessToken", loginData?.data.access);
-    sessionStorage.setItem("refreshToken", loginData?.data.refresh);
-    setUser(loginData?.data.access);
-    onClose();
+      if (userDataReturn?.is_staff) {
+        sessionStorage.setItem("isAdmin", "true");
+        window.location.href = "/admin/dashboard";
+      } else {
+        onClose();
+      }
+    },
+    onError: () => {
+      window.alert("로그인에 실패했습니다");
+    },
+  });
+
+  const onSubmit = (data: Partial<TUserInformationInputForm>) => {
+    loginMutation.mutate({
+      email: data.email || "",
+      password: data.password || "",
+    });
   };
+
+  const [isLocalLogin, setIsLocalLogin] = useState(false);
 
   return (
     <>
       <div className="w-[350px]">
-        <h2 className="text-center font-bold text-heading-24 text-custom-red font-DungGeunMo text-primary-500">
-          간편로그인
-        </h2>
-        <div className=" flex items-center gap-[12px] mt-4 justify-center pb-7 mb-7 border-b-[1px] border-solid border-gray-100">
-          <SocialLoginBtn
-            loginUrl={`https://accounts.google.com/o/oauth2/v2/auth?client_id=${
-              import.meta.env.VITE_GOOGLE_CLIENT_ID
-            }&redirect_uri=${
-              import.meta.env.VITE_GOOGLE_CALLBACK_URL
-            }&response_type=code&scope=email+profile&access_type=offline`}
-            icon={googleIcon}
-            altText="구글 아이콘"
-            bgColor="bg-white"
-          />
-          <SocialLoginBtn
-            loginUrl={`https://discord.com/api/oauth2/authorize?client_id=${
-              import.meta.env.VITE_DISCORD_CLIENT_ID
-            }&redirect_uri=${import.meta.env.VITE_DISCORD_CALLBACK_URL}&response_type=code&scope=identify+email`}
-            icon={discordIcon}
-            altText="디스코드 아이콘"
-            bgColor="bg-[#5662F6]"
-          />
-          <SocialLoginBtn
-            loginUrl={`https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${
-              import.meta.env.VITE_NAVER_CLIENT_ID
-            }&state=${import.meta.env.VITE_NAVER_STATE}&redirect_uri=${
-              import.meta.env.VITE_NAVER_CALLBACK_URL
-            }&state=check_random_string`}
-            icon={naverIcon}
-            altText="네이버 아이콘"
-            bgColor="bg-[#03C75A]"
-          />
-          <SocialLoginBtn
-            loginUrl={`https://kauth.kakao.com/oauth/authorize?client_id=${
-              import.meta.env.VITE_KAKAO_CLIENT_ID
-            }&redirect_uri=${import.meta.env.VITE_KAKAO_CALLBACK_URL}&response_type=code`}
-            icon={kakaoIcon}
-            altText="카카오 아이콘"
-            bgColor="bg-[#FEE500]"
-          />
-        </div>
-        <h2 className="text-center font-bold text-heading-24 text-custom-red font-DungGeunMo text-primary-500 mb-7">
-          이메일 로그인
-        </h2>
-      </div>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-        }}
-        className="flex flex-col gap-[28px] mb-8"
-      >
-        <div className="flex flex-col gap-[12px]">
-          <SpartaTextField
-            label="이메일"
-            type="medium"
-            register={register("email", {
-              required: true,
-            })}
-            inputProps={{
-              placeholder: "spartagames@sparta.com",
-            }}
-            onClear={() => setValue("email", "")}
-            subLabel={{
-              default: "이메일을 입력해주세요",
-              error: "올바른 이메일 형식이 아닙니다",
-              pass: "",
-            }}
-          />
+        {!isLocalLogin && (
+          <>
+            <h2 className="text-center font-bold text-heading-24 text-custom-red font-DungGeunMo text-primary-500">
+              간편로그인
+            </h2>
+            <div className="text-white text-center mt-5">쉽고 빠르게</div>
+            <div className="text-white text-center mb-5 mt-1">스파르타 게임즈를 즐겨보세요!</div>
+            {/* 간편로그인 버튼 그룹 */}
 
-          <SpartaTextField
-            label="비밀번호"
-            type="medium"
-            register={register("password", {
-              required: true,
-            })}
-            inputProps={{
-              placeholder: "*****",
-            }}
-            onClear={() => setValue("password", "")}
-            subLabel={{
-              default: "비밀번호를 입력해주세요",
-              error: "8~32자의 영문 대소문자, 숫자를 포함해야 합니다",
-              pass: "사용 가능한 비밀번호입니다",
-            }}
-            passwordType
-          />
-        </div>
-      </form>
-      <SpartaButton content="회원가입" onClick={() => {}} type={"filled"} colorType="grey" size="medium" />
-      <div className="h-2" />
-      <SpartaButton
-        content="로그인"
-        onClick={() => fetchLogin()}
-        type={"filled"}
-        colorType={"primary"}
-        size="medium"
-        disabled={!isValid}
-      />
+            <div className=" flex flex-col items-center gap-[12px] mt-4 justify-center ">
+              <SocialLoginBtn
+                loginUrl={`https://accounts.google.com/o/oauth2/v2/auth?client_id=${
+                  import.meta.env.VITE_GOOGLE_CLIENT_ID
+                }&redirect_uri=${
+                  import.meta.env.VITE_GOOGLE_CALLBACK_URL
+                }&response_type=code&scope=email+profile&access_type=offline`}
+                icon={googleIcon}
+                altText="구글 간편로그인"
+                bgColor="bg-white"
+              />
+              <SocialLoginBtn
+                loginUrl={`https://discord.com/api/oauth2/authorize?client_id=${
+                  import.meta.env.VITE_DISCORD_CLIENT_ID
+                }&redirect_uri=${import.meta.env.VITE_DISCORD_CALLBACK_URL}&response_type=code&scope=identify+email`}
+                icon={discordIcon}
+                altText="디스코드 간편로그인"
+                bgColor="bg-[#5662F6]"
+                textColor="text-white"
+              />
+              <SocialLoginBtn
+                loginUrl={`https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${
+                  import.meta.env.VITE_NAVER_CLIENT_ID
+                }&state=${import.meta.env.VITE_NAVER_STATE}&redirect_uri=${
+                  import.meta.env.VITE_NAVER_CALLBACK_URL
+                }&state=check_random_string`}
+                icon={naverIcon}
+                altText="네이버 간편로그인"
+                bgColor="bg-[#03C75A]"
+                textColor="text-white"
+              />
+              <SocialLoginBtn
+                loginUrl={`https://kauth.kakao.com/oauth/authorize?client_id=${
+                  import.meta.env.VITE_KAKAO_CLIENT_ID
+                }&redirect_uri=${import.meta.env.VITE_KAKAO_CALLBACK_URL}&response_type=code`}
+                icon={kakaoIcon}
+                altText="카카오 간편로그인"
+                bgColor="bg-[#FEE500]"
+              />
+              <div
+                onClick={() => setIsLocalLogin(!isLocalLogin)}
+                className={`h-[48px] flex items-center justify-center px-[12px] rounded-full shadow-[0_1px_2px_0_rgba(0,0,0,0.25)] bg-gray-300 w-full gap-3 cursor-pointer`}
+              >
+                <div className="text-title-16">이메일 로그인</div>
+              </div>
+            </div>
+          </>
+        )}
+        {isLocalLogin && (
+          <>
+            <h2 className="text-center font-bold text-heading-24 text-custom-red font-DungGeunMo text-primary-500 mb-7">
+              이메일 로그인
+            </h2>
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
+              <div className="flex flex-col gap-[12px] mb-4">
+                <SpartaTextField
+                  label="이메일"
+                  type="medium"
+                  register={register("email", { required: true })}
+                  inputProps={{
+                    placeholder: "spartagames@sparta.com",
+                  }}
+                  subLabel={{
+                    default: "이메일을 입력해주세요",
+                    error: "올바른 이메일 형식이 아닙니다",
+                    pass: "",
+                  }}
+                />
+
+                <SpartaTextField
+                  label="비밀번호"
+                  type="medium"
+                  register={register("password", { required: true })}
+                  inputProps={{
+                    placeholder: "*****",
+                  }}
+                  subLabel={{
+                    default: "비밀번호를 입력해주세요",
+                    error: "8~32자의 영문 대소문자, 숫자를 포함해야 합니다",
+                    pass: "사용 가능한 비밀번호입니다",
+                  }}
+                  passwordType
+                />
+              </div>
+              <div className="text-white text-right text underline underline-offset-1 mb-1 cursor-pointer">
+                비밀번호 찾기
+              </div>
+              <SpartaButton content="회원가입" onClick={() => {}} type="filled" colorType="grey" size="medium" />
+              <SpartaButton
+                content={loginMutation.isPending ? "로그인 중..." : "로그인"}
+                type="filled"
+                colorType="primary"
+                size="medium"
+                disabled={!isValid || loginMutation.isPending}
+              />
+            </form>
+          </>
+        )}
+      </div>
     </>
   );
 }

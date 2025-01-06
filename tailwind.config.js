@@ -103,6 +103,13 @@ export default {
             fontWeight: "700",
           },
         ],
+        "title-16": [
+          "16px",
+          {
+            lineHeight: "100%",
+            fontWeight: "600",
+          },
+        ],
         "title-14": [
           "14px",
           {

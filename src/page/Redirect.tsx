@@ -2,6 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { discordLogin, googleLogin, kakaoLogin, naverLogin } from "../api/login";
+import CircularProgress from "@mui/material/CircularProgress";
+import loading from "../assets/common/loading.gif";
 
 const Redirect = () => {
   const { service } = useParams();
@@ -52,7 +54,14 @@ const Redirect = () => {
     }
   }, [data, isError]);
 
-  return <div>Redirect</div>;
+  return (
+    <div className="flex flex-col justify-center items-center h-screen gap-3 bg-white">
+      {/* <CircularProgress size="3rem" /> */}
+      <img src={loading} className="w-[200px] h-30" />
+      <div className="font-DungGeunMo  text-heading-28 mt-5">소셜로그인을 진행중입니다... </div>
+      <div className="font-DungGeunMo text-heading-28">잠시만 기다려주세요! </div>
+    </div>
+  );
 };
 
 export default Redirect;
