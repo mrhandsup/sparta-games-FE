@@ -36,8 +36,11 @@ const SpartaReactionModal = ({
   return (
     <SpartaModal isOpen={isOpen} onClose={onClose} modalId={modalId} type={type}>
       <div className="min-w-80 flex flex-col items-center gap-4">
-        <div className={`text-heading-32 font-semibold ${titleColor} font-DungGeunMo`}>{title}</div>
-        <div className="text-title-22 my-10 text-white line-clamp-2">{content}</div>
+        <div className={`text-heading-32 font-medium ${titleColor} font-DungGeunMo`}>{title}</div>
+        <div
+          className="text-title-22 font-light leading-8 my-10 text-white text-center"
+          dangerouslySetInnerHTML={{ __html: content }}
+        ></div>
         {btn2 && <SpartaButton content={btn2.text} onClick={btn2.onClick} type={"filled"} colorType="grey" />}
         <SpartaButton content={btn1.text} onClick={btn1.onClick} type={"filled"} colorType={type} />
       </div>

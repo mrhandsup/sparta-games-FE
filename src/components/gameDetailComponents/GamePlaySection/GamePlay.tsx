@@ -18,7 +18,15 @@ type Props = {
 
 const GamePlay = ({ gamePk, title, makerNmae, gamePath }: Props) => {
   const BOOK_MARK_MODAL_ID = "bookMarkModal";
-  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([BOOK_MARK_MODAL_ID]);
+  const LINK_COPY_MODAL_ID = "LinkCopyModal";
+  const RANDOM_GAME_PICK_ID = "randomGamePickModal";
+
+  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([
+    BOOK_MARK_MODAL_ID,
+    LINK_COPY_MODAL_ID,
+    RANDOM_GAME_PICK_ID,
+  ]);
+
   const [isBookmarked, setIsBookmarked] = useState(false);
 
   const gameUrl = `${import.meta.env.VITE_PROXY_HOST}${gamePath}/index.html`;
@@ -43,6 +51,16 @@ const GamePlay = ({ gamePk, title, makerNmae, gamePath }: Props) => {
     bookMarkMutation.mutate(gamePk);
   };
 
+  const handleLinkCopy = () => {
+    navigator.clipboard.writeText(window.location.href);
+
+    onClickModalToggleHandlers[LINK_COPY_MODAL_ID]();
+  };
+
+  const handleRandomGamePick = () => {
+    onClickModalToggleHandlers[RANDOM_GAME_PICK_ID]();
+  };
+
   return (
     <div className="w-[880px]">
       <div className="flex flex-col gap-2 font-DungGeunMo text-[32px] text-white">
@@ -51,8 +69,8 @@ const GamePlay = ({ gamePk, title, makerNmae, gamePath }: Props) => {
           <p className="text-gray-100 text-[28px]">[{makerNmae}]</p>
           <div className="flex gap-6">
             <img src={bookmark} alt="즐겨찾기" onClick={handleBookMark} className="cursor-pointer" />
-            <img src={share} alt="링크 공유" className="cursor-pointer" />
-            <img src={randomgame} alt="랜덤 게임 추천" className="cursor-pointer" />
+            <img src={share} alt="링크 공유" onClick={handleLinkCopy} className="cursor-pointer" />
+            <img src={randomgame} alt="랜덤 게임 추천" onClick={handleRandomGamePick} className="cursor-pointer" />
             <img src={expand} onClick={handleFullscreen} alt="전체화면" className="cursor-pointer" />
           </div>
         </div>
@@ -68,7 +86,7 @@ const GamePlay = ({ gamePk, title, makerNmae, gamePath }: Props) => {
         title={isBookmarked ? "즐겨찾기 완료" : "즐겨찾기 취소"}
         content={
           isBookmarked
-            ? "즐겨찾기가 성공적으로 완료되었어요. 즐겨찾기한 게임은 마이페이지에서 확인 가능합니다."
+            ? "즐겨찾기가 성공적으로 완료되었어요.<br/>즐겨찾기한 게임은 마이페이지에서 확인 가능합니다."
             : "즐겨찾기가 취소되었습니다."
         }
         type={isBookmarked ? "primary" : "error"}
@@ -76,6 +94,35 @@ const GamePlay = ({ gamePk, title, makerNmae, gamePath }: Props) => {
           text: "확인했습니다",
           onClick: () => {
             onClickModalToggleHandlers[BOOK_MARK_MODAL_ID]();
+          },
+        }}
+      />
+
+      <SpartaReactionModal
+        isOpen={modalToggles[LINK_COPY_MODAL_ID]}
+        onClose={onClickModalToggleHandlers[LINK_COPY_MODAL_ID]}
+        modalId={LINK_COPY_MODAL_ID}
+        title={"링크복사 완료"}
+        content={"게임링크가 성공적으로 복사되었어요.<br/>원하시는 곳에서 붙여넣기 하여 게임을 공유해보세요."}
+        btn1={{
+          text: "확인했습니다",
+          onClick: () => {
+            onClickModalToggleHandlers[LINK_COPY_MODAL_ID]();
+          },
+        }}
+      />
+
+      <SpartaReactionModal
+        isOpen={modalToggles[RANDOM_GAME_PICK_ID]}
+        onClose={onClickModalToggleHandlers[RANDOM_GAME_PICK_ID]}
+        modalId={RANDOM_GAME_PICK_ID}
+        title={"개발예정 기능"}
+        content={"게임 랜덤 추천 기능은 개발 예정입니다."}
+        type={"error"}
+        btn1={{
+          text: "확인했습니다",
+          onClick: () => {
+            onClickModalToggleHandlers[RANDOM_GAME_PICK_ID]();
           },
         }}
       />
