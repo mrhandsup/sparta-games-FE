@@ -4,19 +4,37 @@ import expand from "../../../assets/gameDetail/expand.svg";
 import share from "../../../assets/gameDetail/linkshare.svg";
 import bookmark from "../../../assets/gameDetail/bookmark.svg";
 import randomgame from "../../../assets/gameDetail/randomgame.svg";
+import { sparta_games_auth } from "../../../api/axios";
+import { useMutation } from "@tanstack/react-query";
+import { postBookMark } from "../../../api/game";
 
 type Props = {
+  gamePk?: number;
   title?: string;
   makerNmae?: string;
   gamePath?: string;
 };
 
-const GamePlay = ({ title, makerNmae, gamePath }: Props) => {
+const GamePlay = ({ gamePk, title, makerNmae, gamePath }: Props) => {
   const gameUrl = `${import.meta.env.VITE_PROXY_HOST}${gamePath}/index.html`;
   const fullScreenRef = useRef<HTMLDivElement>(null);
 
   const handleFullscreen = () => {
     fullScreenRef.current?.requestFullscreen();
+  };
+
+  const bookMarkMutation = useMutation({
+    mutationFn: (gamePk: number | undefined) => postBookMark(gamePk),
+    onSuccess: () => {
+      console.log("즐겨찾기 완료했습니다.");
+    },
+    onError: () => {
+      console.log("즐겨찾기에 실패했습니다. 잠시후에 다시 시도해주세요.");
+    },
+  });
+
+  const handleBookMark = () => {
+    bookMarkMutation.mutate(gamePk);
   };
 
   return (
@@ -26,7 +44,7 @@ const GamePlay = ({ title, makerNmae, gamePath }: Props) => {
         <div className="flex justify-between">
           <p className="text-gray-100 text-[28px]">[{makerNmae}]</p>
           <div className="flex gap-6">
-            <img src={bookmark} alt="즐겨찾기" className="cursor-pointer" />
+            <img src={bookmark} alt="즐겨찾기" onClick={handleBookMark} className="cursor-pointer" />
             <img src={share} alt="링크 공유" className="cursor-pointer" />
             <img src={randomgame} alt="랜덤 게임 추천" className="cursor-pointer" />
             <img src={expand} onClick={handleFullscreen} alt="전체화면" className="cursor-pointer" />
