@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 import expand from "../../../assets/gameDetail/expand.svg";
 import share from "../../../assets/gameDetail/linkshare.svg";
 import bookmark from "../../../assets/gameDetail/bookmark.svg";
+import bookmarkfill from "../../../assets/gameDetail/bookmarkfill.svg";
 import randomgame from "../../../assets/gameDetail/randomgame.svg";
 import { useMutation } from "@tanstack/react-query";
 import { postBookMark } from "../../../api/game";
@@ -112,7 +113,12 @@ const GamePlay = ({ gamePk, title, makerNmae, gamePath }: Props) => {
         <div className="flex justify-between">
           <p className="text-gray-100 text-[28px]">[{makerNmae}]</p>
           <div className="flex gap-6">
-            <img src={bookmark} alt="즐겨찾기" onClick={handleBookMark} className="cursor-pointer" />
+            <img
+              src={isBookmarked ? bookmarkfill : bookmark}
+              alt="즐겨찾기"
+              onClick={handleBookMark}
+              className="cursor-pointer"
+            />
             <img src={share} alt="링크 공유" onClick={handleLinkCopy} className="cursor-pointer" />
             <img src={randomgame} alt="랜덤 게임 추천" onClick={handleRandomGamePick} className="cursor-pointer" />
             <img src={expand} onClick={handleFullscreen} alt="전체화면" className="cursor-pointer" />
