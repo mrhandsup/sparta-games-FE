@@ -9,25 +9,24 @@ import { formatDate } from "../../../share/validation";
 
 type reviewDataProps = {
   review: TReviewData | undefined;
-  myReview: boolean;
+  isMyReview?: boolean;
 };
 
-const ReviewCard = ({ review, myReview }: reviewDataProps) => {
-  console.log(review);
+const ReviewCard = ({ review, isMyReview = false }: reviewDataProps) => {
   return (
     <div
       className={`relative flex flex-col gap-2 p-4 bg-gray-800 text-white rounded-xl ${
-        myReview ? "border border-solid border-primary-500" : ""
+        isMyReview ? "border border-solid border-primary-500" : ""
       }`}
     >
       <div className="flex gap-2">
         <img src={exampleProfile} />
         <div className="flex flex-col gap-[2px]">
           <div className="flex items-center justify-between">
-            {myReview ? (
+            {isMyReview ? (
               <>
                 <p className="font-DungGeunMo text-lg text-primary-500">{review?.author_name}</p>
-                <img className="absolute right-12 cursor-pointer" src={reviewEdit} alt="리뷰 수정정" />
+                <img className="absolute right-12 cursor-pointer" src={reviewEdit} alt="리뷰 수정" />
                 <img className="absolute right-4 cursor-pointer" src={reviewDelete} alt="리뷰 삭제" />
               </>
             ) : (
