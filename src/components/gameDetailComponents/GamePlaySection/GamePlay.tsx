@@ -8,6 +8,8 @@ import { useMutation } from "@tanstack/react-query";
 import { postBookMark } from "../../../api/game";
 import SpartaReactionModal, { TSpartaReactionModalProps } from "../../../spartaDesignSystem/SpartaReactionModal";
 import useModalToggles from "../../../hook/useModalToggles";
+import { userStore } from "../../../share/store/userStore";
+import { AxiosError } from "axios";
 
 type Props = {
   gamePk?: number;
@@ -46,9 +48,22 @@ const GamePlay = ({ gamePk, title, makerNmae, gamePath }: Props) => {
       },
       type: "error",
     },
+    bookmarkerror: {
+      title: "즐겨찾기 실패",
+      content: "로그인 후에 이용해주세요.",
+      btn1: {
+        text: "확인했습니다",
+        onClick: () => {
+          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+        },
+      },
+      type: "error",
+    },
   };
 
   const [noActionModalData, setNoActionModalData] = useState<Partial<TSpartaReactionModalProps>>(noActionData.linkcopy);
+
+  const { userData } = userStore();
 
   const gameUrl = `${import.meta.env.VITE_PROXY_HOST}${gamePath}/index.html`;
 
@@ -59,18 +74,23 @@ const GamePlay = ({ gamePk, title, makerNmae, gamePath }: Props) => {
   };
 
   const bookMarkMutation = useMutation({
-    mutationFn: (gamePk: number | undefined) => postBookMark(gamePk),
+    mutationFn: () => postBookMark(gamePk),
     onSuccess: () => {
       setIsBookmarked((prev) => !prev);
       onClickModalToggleHandlers[BOOK_MARK_MODAL_ID]();
     },
-    onError: () => {
-      window.alert("즐겨찾기에 실패했습니다. 잠시후에 다시 시도해주세요.");
+    onError: (error: AxiosError) => {
+      if (error.response && error.response.status === 401) {
+        setNoActionModalData(noActionData.bookmarkerror);
+        onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+      } else {
+        window.alert("알 수 없는 오류가 발생했습니다. 잠시후에 다시 시도해주세요.");
+      }
     },
   });
 
   const handleBookMark = () => {
-    bookMarkMutation.mutate(gamePk);
+    bookMarkMutation.mutate();
   };
 
   const handleLinkCopy = () => {
@@ -103,24 +123,39 @@ const GamePlay = ({ gamePk, title, makerNmae, gamePath }: Props) => {
         <iframe src={gameUrl} width="100%" height="100%" className="rounded-xl" />
       </div>
 
-      <SpartaReactionModal
-        isOpen={modalToggles[BOOK_MARK_MODAL_ID]}
-        onClose={onClickModalToggleHandlers[BOOK_MARK_MODAL_ID]}
-        modalId={BOOK_MARK_MODAL_ID}
-        title={isBookmarked ? "즐겨찾기 완료" : "즐겨찾기 취소"}
-        content={
-          isBookmarked
-            ? "즐겨찾기가 성공적으로 완료되었어요.<br/>즐겨찾기한 게임은 마이페이지에서 확인 가능합니다."
-            : "즐겨찾기가 취소되었습니다."
-        }
-        type={isBookmarked ? "primary" : "error"}
-        btn1={{
-          text: "확인했습니다",
-          onClick: () => {
-            onClickModalToggleHandlers[BOOK_MARK_MODAL_ID]();
-          },
-        }}
-      />
+      {userData && noActionModalData ? (
+        <SpartaReactionModal
+          isOpen={modalToggles[BOOK_MARK_MODAL_ID]}
+          onClose={onClickModalToggleHandlers[BOOK_MARK_MODAL_ID]}
+          modalId={BOOK_MARK_MODAL_ID}
+          title={isBookmarked ? "즐겨찾기 완료" : "즐겨찾기 취소"}
+          content={
+            isBookmarked
+              ? "즐겨찾기가 성공적으로 완료되었어요.<br/>즐겨찾기한 게임은 마이페이지에서 확인 가능합니다."
+              : "즐겨찾기가 취소되었습니다."
+          }
+          type={isBookmarked ? "primary" : "error"}
+          btn1={{
+            text: "확인했습니다",
+            onClick: () => {
+              onClickModalToggleHandlers[BOOK_MARK_MODAL_ID]();
+            },
+          }}
+        />
+      ) : (
+        <SpartaReactionModal
+          isOpen={modalToggles[NO_ACTION_MODAL_ID]}
+          onClose={onClickModalToggleHandlers[NO_ACTION_MODAL_ID]}
+          modalId={NO_ACTION_MODAL_ID}
+          title={noActionModalData.title || ""}
+          content={noActionModalData.content || ""}
+          btn1={{
+            text: noActionModalData?.btn1?.text || "",
+            onClick: noActionModalData?.btn1?.onClick || (() => {}),
+          }}
+          type={noActionModalData.type}
+        />
+      )}
 
       {noActionModalData && (
         <SpartaReactionModal
