@@ -5,7 +5,7 @@ import { useState } from "react";
 import { userStore } from "../../../share/store/userStore";
 import { useQuery } from "@tanstack/react-query";
 import { TReviewResponse } from "../../../types";
-import { sparta_games } from "../../../api/axios";
+import { sparta_games, sparta_games_auth } from "../../../api/axios";
 
 const ReviewComents = ({ gamePk }: { gamePk: number }) => {
   const { userData } = userStore();
@@ -16,7 +16,7 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
     setOpenModal(true);
   };
 
-  const { data } = useQuery<TReviewResponse>({
+  const { data: reviewData } = useQuery<TReviewResponse>({
     queryKey: ["reviews"],
     queryFn: async () => {
       const res = await sparta_games.get(`/games/api/list/${gamePk}/reviews/`);
@@ -24,24 +24,35 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
     },
   });
 
-  const reviewData = data?.results.all_reviews;
-  const myReview = data?.results.my_review;
+  // 내가 쓴 리뷰 요청 (로그인한 경우에만 실행)
+  const { data: myReviewData } = useQuery<TReviewResponse>({
+    queryKey: ["my_review", gamePk],
+    queryFn: async () => {
+      const res = await sparta_games_auth.get(`/games/api/list/${gamePk}/reviews/`);
+      return res.data;
+    },
+    enabled: !!userData, // userData가 있을 때만 요청 실행
+  });
 
+  const allReviewData = reviewData?.results.all_reviews;
+  const myReview = myReviewData?.results.my_review;
+
+  const reviewsWithoutMyReview = allReviewData?.filter((review) => review.id !== myReview?.id);
   return (
     <>
       <section className="flex flex-col gap-3">
         <div className="flex justify-between">
           <p className="text-3xl font-DungGeunMo text-white">Review</p>
           <div className="flex gap-3 text-xl font-semibold text-white">
-            <p>최근 게시순</p>
-            <p>공감 많은순</p>
-            <p>비공감 많은 순</p>
+            <p className="cursor-pointer">최근 게시순</p>
+            <p className="cursor-pointer">공감 많은순</p>
+            <p className="cursor-pointer">비공감 많은 순</p>
           </div>
         </div>
         <div className="grid grid-cols-3 gap-5">
           {/* 로그인한 상태 */}
           {userData ? (
-            // 내가 쓴 리뷰가 있을 떄
+            // 내가 쓴 리뷰가 없을 떄
             !myReview ? (
               <>
                 <div
@@ -53,7 +64,7 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
                 </div>
               </>
             ) : (
-              // 내가 쓴 리뷰가 없을 때
+              // 내가 쓴 리뷰가 있을 때
               <ReviewCard review={myReview} isMyReview={true} />
             )
           ) : (
@@ -66,7 +77,7 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
             </div>
           )}
 
-          {reviewData?.map((review) => (
+          {reviewsWithoutMyReview?.map((review) => (
             <ReviewCard review={review} />
           ))}
         </div>
