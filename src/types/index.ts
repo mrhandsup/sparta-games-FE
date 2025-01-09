@@ -25,6 +25,32 @@ export type TReviewInputForm = {
   difficulty: "easy" | "normal" | "hard" | "";
 };
 
+export type TReviewData = {
+  id: number;
+  auauthor_name: string;
+  src: null;
+  like_count: number;
+  dislike_count: number;
+  user_is_like: number;
+  content: string;
+  star: number;
+  difficulty: number;
+  is_visible: boolean;
+  created_at: string;
+  updated_at: string;
+  game: number;
+  author: number;
+};
+export type TReviewResponse = {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: {
+    all_reviews: TReviewData[];
+    my_review?: TReviewData;
+  };
+};
+
 export type TUserInformationInputForm = {
   email: string;
   nickname: string;

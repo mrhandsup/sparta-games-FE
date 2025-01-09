@@ -2,14 +2,31 @@ import ReviewCard from "./ReviewCard";
 import reviewRegister from "../../../assets/gameDetail/reviewRegister.svg";
 import ReviewRegisterModal from "./ReviewRegisterModal";
 import { useState } from "react";
+import { userStore } from "../../../share/store/userStore";
+import { useQuery } from "@tanstack/react-query";
+import { TReviewResponse } from "../../../types";
+import { sparta_games } from "../../../api/axios";
 
-const ReviewComents = () => {
+const ReviewComents = ({ gamePk }: { gamePk: number }) => {
+  const { userData } = userStore();
+
   const [openModal, setOpenModal] = useState(false);
 
   const handleModalOpen = () => {
     setOpenModal(true);
   };
 
+  const { data } = useQuery<TReviewResponse>({
+    queryKey: ["reviews"],
+    queryFn: async () => {
+      const res = await sparta_games.get(`/games/api/list/${gamePk}/reviews/`);
+      return res.data;
+    },
+  });
+
+  const reviewData = data?.results.all_reviews;
+
+  console.log("reviewData", reviewData);
   return (
     <>
       <section className="flex flex-col gap-3">
@@ -22,27 +39,28 @@ const ReviewComents = () => {
           </div>
         </div>
         <div className="grid grid-cols-3 gap-5">
-          {/* TODO: 리뷰 api 적용 후 적절히 데이터 prps로 전달하기기 */}
-          <div
-            onClick={handleModalOpen}
-            className="flex items-center justify-center gap-6 border border-solid border-primary-500 bg-gray-800 rounded-xl cursor-pointer"
-          >
-            <img src={reviewRegister} />
-            <p className="text-white font-DungGeunMo text-2xl">내 리뷰 등록하기</p>
-          </div>
+          {userData ? (
+            <>
+              <div
+                onClick={handleModalOpen}
+                className="flex items-center justify-center gap-6 border border-solid border-primary-500 bg-gray-800 rounded-xl cursor-pointer"
+              >
+                <img src={reviewRegister} />
+                <p className="text-white font-DungGeunMo text-2xl">내 리뷰 등록하기</p>
+              </div>
+            </>
+          ) : (
+            <div className="flex items-center justify-center gap-6 px-11 border border-solid border-alert-default hover:border-alert-hover bg-gray-800 rounded-xl">
+              <img src={reviewRegister} />
+              <p className="text-white font-DungGeunMo text-2xl text-center leading-none">
+                비회원은 리뷰등록이 불가능합니다.
+              </p>
+            </div>
+          )}
 
-          <div className="flex items-center justify-center gap-6 px-11 bg-gray-800 rounded-xl">
-            <img src={reviewRegister} />
-            <p className="text-white font-DungGeunMo text-2xl text-center leading-none">
-              비회원은 리뷰등록이 불가능합니다.
-            </p>
-          </div>
-
-          <ReviewCard myReview={true} />
-          <ReviewCard myReview={false} />
-          <ReviewCard myReview={false} />
-          <ReviewCard myReview={false} />
-          <ReviewCard myReview={false} />
+          {reviewData?.map((review) => (
+            <ReviewCard review={review} myReview={true} />
+          ))}
         </div>
       </section>
       <ReviewRegisterModal modalOpen={openModal} setOpenModal={setOpenModal} />
