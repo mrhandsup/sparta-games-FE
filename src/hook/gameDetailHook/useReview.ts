@@ -33,10 +33,9 @@ const useReview = () => {
   const onSubmitHandler: (id: number, data: TReviewInputForm, accessToken: string | null) => void = async (
     id,
     data,
-    accessToken,
   ) => {
     // difficulty 데이터 유형 integer로 인한 오류 수정 필요
-    await postGameReviews(id, data, accessToken);
+    await postGameReviews(id, data);
   };
 
   const form = {

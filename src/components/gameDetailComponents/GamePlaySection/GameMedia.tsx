@@ -34,6 +34,7 @@ const GameMedia = ({ youtubeUrl, screenShot }: Props) => {
         <div className="h-[340px] overflow-hidden cursor-pointer">
           {screenShot && (
             <Swiper
+              className="gamescreenShotSwiper"
               ref={swiperRef}
               direction={"vertical"}
               loop={true}
@@ -48,11 +49,7 @@ const GameMedia = ({ youtubeUrl, screenShot }: Props) => {
               {screenShot.map((image, index) => (
                 <SwiperSlide key={index}>
                   <div className="flex justify-center">
-                    <img
-                      className="w-[198px] h-[112px] rounded-lg"
-                      src={import.meta.env.VITE_PROXY_HOST + image.src}
-                      alt={`carousel-img-${index}`}
-                    />
+                    <img src={import.meta.env.VITE_PROXY_HOST + image.src} alt={`carousel-img-${index}`} />
                   </div>
                 </SwiperSlide>
               ))}
