@@ -17,12 +17,13 @@ import fillStar from "../../../assets/fillStar.svg";
 import grayStar from "../../../assets/grayStar.svg";
 
 type Props = {
+  gamePk: number;
   modalOpen: boolean;
   setOpenModal: Dispatch<SetStateAction<boolean>>;
 };
 
-const ReviewRegisterModal = ({ modalOpen, setOpenModal }: Props) => {
-  const [ratingValue, setRatingValue] = useState<number | null>(null);
+const ReviewRegisterModal = ({ gamePk, modalOpen, setOpenModal }: Props) => {
+  const [ratingValue, setRatingValue] = useState<number | null>(0);
 
   const [selectedDifficulty, setSelectedDifficulty] = useState("");
   const [isHovered, setIsHovered] = useState(false);
@@ -54,6 +55,8 @@ const ReviewRegisterModal = ({ modalOpen, setOpenModal }: Props) => {
     }
   };
 
+  const difficulty = difficultyValue();
+
   useEffect(() => {
     form.register("content", {
       required: "필수",
@@ -73,7 +76,10 @@ const ReviewRegisterModal = ({ modalOpen, setOpenModal }: Props) => {
 
   const editorContent = form.watch("content");
 
-  console.log("난이도:", difficultyValue(), "별점:", ratingValue, "리뷰 내용:", editorContent, form.formState.isValid);
+  const handleRegisterReview = () => {
+    eventHandler.onSubmitHandler(gamePk, difficulty, ratingValue, editorContent);
+  };
+
   return (
     <Modal open={modalOpen}>
       <Box className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 border border-solid border-primary-500 rounded-xl bg-gray-800 outline-none">
@@ -137,6 +143,7 @@ const ReviewRegisterModal = ({ modalOpen, setOpenModal }: Props) => {
           </div>
 
           <button
+            onClick={handleRegisterReview}
             disabled={!form.formState.isValid || ratingValue === null || selectedDifficulty === ""}
             className={`w-full h-12 text-title-18 rounded-md ${
               !form.formState.isValid || ratingValue === null || selectedDifficulty === ""

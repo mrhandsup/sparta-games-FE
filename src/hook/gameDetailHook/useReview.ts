@@ -6,12 +6,15 @@ import { postGameReviews } from "../../api/review";
 const useReview = () => {
   const { register, watch, setValue, formState, trigger, handleSubmit } = useForm<TReviewInputForm>();
 
-  const onSubmitHandler: (id: number, data: TReviewInputForm, accessToken: string | null) => void = async (
-    id,
-    data,
+  const onSubmitHandler = async (
+    gamePk: number,
+    difficulty: number | undefined,
+    star: number | null,
+    content: string,
   ) => {
-    // difficulty 데이터 유형 integer로 인한 오류 수정 필요
-    await postGameReviews(id, data);
+    // TODO: useMutaion 적용, onSuccess시 모달 적용
+
+    await postGameReviews(gamePk, star, content, difficulty);
   };
 
   const form = {

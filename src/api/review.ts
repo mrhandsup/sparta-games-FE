@@ -1,12 +1,16 @@
-import { TReviewInputForm } from "../types";
 import { sparta_games_auth } from "./axios";
 
-export const postGameReviews = async (id: number, data: TReviewInputForm) => {
+export const postGameReviews = async (
+  gamePk: number,
+  star: number | null,
+  content: string,
+  difficulty: number | undefined,
+) => {
   try {
-    const res = await sparta_games_auth.post(`/games/api/list/${id}/reviews/`, {
-      content: data.content,
-      star: data.star,
-      difficulty: data.difficulty,
+    const res = await sparta_games_auth.post(`/games/api/list/${gamePk}/reviews/`, {
+      star: star,
+      content: content,
+      difficulty: difficulty,
     });
     console.log("Response:", res);
     return res;

@@ -6,6 +6,7 @@ import reviewDelete from "../../../assets/gameDetail/ReviewDelete.svg";
 import exampleProfile from "../../../assets/gameDetail/example_profile.png";
 import { TReviewData } from "../../../types";
 import { formatDate } from "../../../share/validation";
+import DOMPurify from "dompurify";
 
 type reviewDataProps = {
   review: TReviewData | undefined;
@@ -13,6 +14,8 @@ type reviewDataProps = {
 };
 
 const ReviewCard = ({ review, isMyReview = false }: reviewDataProps) => {
+  const sanitizedContent = DOMPurify.sanitize(review?.content || "");
+
   return (
     <div
       className={`relative flex flex-col gap-2 p-4 bg-gray-800 text-white rounded-xl ${
@@ -42,7 +45,10 @@ const ReviewCard = ({ review, isMyReview = false }: reviewDataProps) => {
           </div>
         </div>
       </div>
-      <div className="w-full h-[72px] text-body-14 line-clamp-4 text-ellipsis">{review?.content}</div>
+      <div
+        className="w-full h-[72px] text-body-14 line-clamp-4 text-ellipsis"
+        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(sanitizedContent) }}
+      />
       <div className="flex justify-between items-end">
         <p className="text-[12px] leading-4 text-gray-300">{formatDate(review?.created_at)}</p>
         <div className="flex items-center gap-1 text-[11px] font-bold">

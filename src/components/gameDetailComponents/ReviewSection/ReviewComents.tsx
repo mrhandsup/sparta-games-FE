@@ -82,7 +82,7 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
           ))}
         </div>
       </section>
-      <ReviewRegisterModal modalOpen={openModal} setOpenModal={setOpenModal} />
+      <ReviewRegisterModal gamePk={gamePk} modalOpen={openModal} setOpenModal={setOpenModal} />
     </>
   );
 };
