@@ -1,9 +1,16 @@
+import { useQuery } from "@tanstack/react-query";
 import pixelGame from "../../assets/homeImage/pixelGame.svg";
 import AdminListItem from "../../components/adminComponents/AdminListItem";
+import { getRegisterGameStat } from "../../api/direct";
 
 type Props = {};
 
 const AdminDashBoard = (props: Props) => {
+  const statData = useQuery<any>({
+    queryKey: ["registerGameStat"],
+    queryFn: getRegisterGameStat,
+  });
+
   return (
     <div className="flex flex-col px-24 py-20 gap-5">
       <div className="flex items-center gap-4">
