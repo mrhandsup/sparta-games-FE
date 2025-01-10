@@ -27,7 +27,7 @@ export type TReviewInputForm = {
 
 export type TReviewData = {
   id: number;
-  auauthor_name: string;
+  author_name: string;
   src: null;
   like_count: number;
   dislike_count: number;
@@ -41,6 +41,7 @@ export type TReviewData = {
   game: number;
   author: number;
 };
+
 export type TReviewResponse = {
   count: number;
   next: string | null;

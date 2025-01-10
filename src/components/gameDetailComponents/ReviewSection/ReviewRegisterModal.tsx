@@ -17,20 +17,26 @@ type Props = {
 
 const ReviewRegisterModal = ({ modalOpen, setOpenModal }: Props) => {
   const [value, setValue] = useState<number | null>(null);
-  const [isHovered, setIsHovered] = useState(false); // 후버 상태
+  const [isHovered, setIsHovered] = useState(false);
+  const [selectedDifficulty, setSelectedDifficulty] = useState("");
 
   const { form, state, eventHandler } = useReview();
 
+  const gameDifficulty = ["EASY", "NORMAL", "HARD"];
+
   const onHoverEnter = () => {
-    setIsHovered(true); // 마우스를 올렸을 때 isHovered를 true로 설정
+    setIsHovered(true);
   };
 
   const onHoverLeave = () => {
     setIsHovered(false);
   };
 
+  const handleSelectDifficulty = (level: string) => {
+    setSelectedDifficulty(level);
+  };
+
   return (
-    //TODO: POST 기능 완성, 버튼 상호작용 추가
     <Modal open={modalOpen}>
       <Box className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 border border-solid border-primary-500 rounded-xl bg-gray-800 outline-none">
         <div className="flex flex-col gap-4 p-5 w-[900px]">
@@ -42,9 +48,16 @@ const ReviewRegisterModal = ({ modalOpen, setOpenModal }: Props) => {
           <div className="flex items-center gap-8">
             <p className="text-2xl font-DungGeunMo text-white whitespace-nowrap">게임의 난이도는?</p>
             <div className="flex gap-3">
-              <DifficultyChip chipSize="big" difficultyLevel="EASY" />
-              <DifficultyChip chipSize="big" difficultyLevel="NORMAL" />
-              <DifficultyChip chipSize="big" difficultyLevel="HARD" />
+              {gameDifficulty.map((level) => (
+                <DifficultyChip
+                  key={level}
+                  chipSize="big"
+                  difficultyLevel={level as "EASY" | "NORMAL" | "HARD"}
+                  selectedDifficulty={selectedDifficulty}
+                  isSelected={selectedDifficulty === level}
+                  onClick={() => handleSelectDifficulty(level)}
+                />
+              ))}
             </div>
           </div>
 
