@@ -1,13 +1,14 @@
 import easyImage from "../../../assets/gameDetail/easy_icon.svg";
 import normalImage from "../../../assets/gameDetail/normal_icon.svg";
 import hardImage from "../../../assets/gameDetail/hard_icon.svg";
+import { ReactNode } from "react";
 
 type Props = {
   chipSize: "small" | "big";
   difficultyLevel: "EASY" | "NORMAL" | "HARD";
   isSelected?: boolean;
   onClick?: () => void;
-  selectedDifficulty?: string;
+  selectedDifficulty?: ReactNode;
 };
 const DifficultyChip = ({ chipSize, difficultyLevel, isSelected, onClick, selectedDifficulty }: Props) => {
   const imageMapping = {
@@ -18,10 +19,7 @@ const DifficultyChip = ({ chipSize, difficultyLevel, isSelected, onClick, select
 
   if (chipSize === "small") {
     return (
-      <div
-        className="flex items-center justify-center gap-1 px-1 bg-white text-black font-bold rounded-md cursor-pointer"
-        onClick={onClick}
-      >
+      <div className="flex items-center justify-center gap-1 px-1 bg-white text-black font-bold rounded-md">
         <img className="w-3 h-3" src={imageMapping[difficultyLevel]} alt={difficultyLevel} />
         <p className="text-sm">{difficultyLevel}</p>
       </div>
