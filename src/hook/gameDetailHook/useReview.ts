@@ -47,6 +47,7 @@ const useReview = () => {
 
   const review = {
     registerSuccess,
+    setRegisterSuccess,
     modalToggles,
     onClickModalToggleHandlers,
     REVIEW_REGISTER_MODAL_ID,

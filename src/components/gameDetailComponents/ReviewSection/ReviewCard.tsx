@@ -18,6 +18,7 @@ import reviewDetail from "../../../assets/gameDetail/ReviewDetail.svg";
 import reviewEdit from "../../../assets/gameDetail/ReviewEdit.svg";
 import reviewDeleteImage from "../../../assets/gameDetail/ReviewDelete.svg";
 import exampleProfile from "../../../assets/gameDetail/example_profile.png";
+import { useQueryClient } from "@tanstack/react-query";
 
 type reviewDataProps = {
   review: TReviewData | undefined;
@@ -30,6 +31,8 @@ const ReviewCard = ({ review, isMyReview = false }: reviewDataProps) => {
 
   const sanitizedContent = DOMPurify.sanitize(review?.content || "");
 
+  const queryClient = useQueryClient();
+
   const noActionData: { [key: string]: Partial<TSpartaReactionModalProps> } = {
     reviewDelete: {
       title: "리뷰삭제",
@@ -38,6 +41,8 @@ const ReviewCard = ({ review, isMyReview = false }: reviewDataProps) => {
         text: "확인했습니다.",
         onClick: () => {
           onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+          queryClient.invalidateQueries({ queryKey: ["my_review", review?.game] });
+          queryClient.invalidateQueries({ queryKey: ["reviews"] });
         },
       },
       type: "error",

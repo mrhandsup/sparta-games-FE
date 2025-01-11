@@ -8,9 +8,9 @@ import "./App.css";
 import { userStore } from "./share/store/userStore";
 import { useEffect } from "react";
 
-function App() {
-  const queryClient = new QueryClient();
+const queryClient = new QueryClient();
 
+function App() {
   const { userData, setUser } = userStore();
 
   // 로그인 정보가 없을 때, sessionStorage에 저장된 accessToken을 이용하여 로그인 처리

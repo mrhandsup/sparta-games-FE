@@ -25,8 +25,8 @@ type Props = {
 
 const ReviewRegisterModal = ({ gamePk, modalOpen, setOpenModal }: Props) => {
   const [ratingValue, setRatingValue] = useState<number | null>(null);
-
   const [selectedDifficulty, setSelectedDifficulty] = useState("");
+
   const [isHovered, setIsHovered] = useState(false);
 
   const { review, form, eventHandler } = useReview();
@@ -84,8 +84,22 @@ const ReviewRegisterModal = ({ gamePk, modalOpen, setOpenModal }: Props) => {
   useEffect(() => {
     if (review.registerSuccess) {
       setOpenModal(false);
+      resetForm();
     }
+
+    const timer = setTimeout(() => {
+      review.setRegisterSuccess(false);
+    }, 5000);
+    console.log(review.registerSuccess);
+
+    return () => clearTimeout(timer); // 타이머 정리
   }, [review.registerSuccess]);
+
+  const resetForm = () => {
+    form.setValue("content", "");
+    setRatingValue(null);
+    setSelectedDifficulty("");
+  };
 
   return (
     <>

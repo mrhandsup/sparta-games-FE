@@ -23,11 +23,12 @@ export const postGameReviews = async (
 export const deleteGameReview = async (reviewId: number | undefined, game_pk: number | undefined) => {
   try {
     const res = await sparta_games_auth.delete(`/games/api/review/${reviewId}/`, {
-      data: { game_pk }, // 요청 본문에 game_pk를 전달
+      data: { game_pk },
     });
     return res;
   } catch (error) {
-    window.alert("에러가 발생했습니다.");
-    console.log(error);
+    if (error instanceof Error) {
+      window.alert(error.message);
+    }
   }
 };
