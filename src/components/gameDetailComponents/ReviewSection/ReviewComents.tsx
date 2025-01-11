@@ -26,7 +26,7 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
 
   // 내가 쓴 리뷰 요청 (로그인한 경우에만 실행)
   const { data: myReviewData } = useQuery<TReviewResponse>({
-    queryKey: ["my_review", gamePk],
+    queryKey: ["reviews", "my_review", gamePk],
     queryFn: async () => {
       const res = await sparta_games_auth.get(`/games/api/list/${gamePk}/reviews/`);
       return res.data;

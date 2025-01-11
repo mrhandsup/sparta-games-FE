@@ -6,7 +6,7 @@ import StarRating from "../../common/StarRating";
 import SpartaReactionModal, { TSpartaReactionModalProps } from "../../../spartaDesignSystem/SpartaReactionModal";
 import useModalToggles from "../../../hook/useModalToggles";
 
-import { deleteGameReview } from "../../../api/review";
+import { deleteGameReview, postReviewLike } from "../../../api/review";
 
 import { TReviewData } from "../../../types";
 
@@ -41,7 +41,7 @@ const ReviewCard = ({ review, isMyReview = false }: reviewDataProps) => {
         text: "확인했습니다.",
         onClick: () => {
           onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-          queryClient.invalidateQueries({ queryKey: ["my_review", review?.game] });
+
           queryClient.invalidateQueries({ queryKey: ["reviews"] });
         },
       },
@@ -85,6 +85,13 @@ const ReviewCard = ({ review, isMyReview = false }: reviewDataProps) => {
       onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
     }
   };
+
+  const handleReviewReaction = async (reviewId: number | undefined, action: "like" | "dislike") => {
+    await postReviewLike(reviewId, action);
+
+    queryClient.invalidateQueries({ queryKey: ["reviews"] });
+  };
+
   return (
     <>
       <div
@@ -127,10 +134,16 @@ const ReviewCard = ({ review, isMyReview = false }: reviewDataProps) => {
         <div className="flex justify-between items-end">
           <p className="text-[12px] leading-4 text-gray-300">{formatDate(review?.created_at)}</p>
           <div className="flex items-center gap-1 text-[11px] font-bold">
-            <div className="flex gap-1 p-1 bg-gray-600 rounded">
-              👍<p>{review?.like_count}</p>
+            <div
+              onClick={() => handleReviewReaction(review?.id, "like")}
+              className="flex gap-1 p-1 bg-gray-600 rounded cursor-pointer"
+            >
+              👍🏻<p>{review?.like_count}</p>
             </div>
-            <div className="flex gap-1 p-1 bg-gray-600 rounded">
+            <div
+              onClick={() => handleReviewReaction(review?.id, "dislike")}
+              className="flex gap-1 p-1 bg-gray-600 rounded cursor-pointer"
+            >
               👎<p>{review?.dislike_count}</p>
             </div>
           </div>

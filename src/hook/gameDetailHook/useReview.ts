@@ -30,7 +30,7 @@ const useReview = () => {
     }) => postGameReviews(gamePk, star, content, difficulty),
     onSuccess: (data, variables) => {
       const { gamePk } = variables;
-      queryClient.invalidateQueries({ queryKey: ["my_review", gamePk] });
+      queryClient.invalidateQueries({ queryKey: ["reviews", "my_review", gamePk] });
       onClickModalToggleHandlers[REVIEW_REGISTER_MODAL_ID]();
       setRegisterSuccess(true);
     },
