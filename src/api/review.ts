@@ -12,9 +12,21 @@ export const postGameReviews = async (
       content: content,
       difficulty: difficulty,
     });
-    console.log("Response:", res);
     return res;
   } catch (error) {
-    console.error("Error occurred while posting review:", error);
+    window.alert("에러가 발생했습니다.");
+    console.log(error);
+  }
+};
+
+export const deleteGameReview = async (reviewId: number | undefined, game_pk: number | undefined) => {
+  try {
+    const res = await sparta_games_auth.delete(`/games/api/review/${reviewId}/`, {
+      data: { game_pk }, // 요청 본문에 game_pk를 전달
+    });
+    return res;
+  } catch (error) {
+    window.alert("에러가 발생했습니다.");
+    console.log(error);
   }
 };

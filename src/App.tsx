@@ -1,4 +1,3 @@
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import Router from "./share/Router";
@@ -25,7 +24,6 @@ function App() {
     <div className="relative min-w-fit min-h-full bg-gray-700">
       <QueryClientProvider client={queryClient}>
         <Router />
-        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
       <div className="absolute -bottom-48 mt-auto w-full bg-gray-700">
         <Footer />

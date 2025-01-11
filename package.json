@@ -15,7 +15,6 @@
     "@emotion/styled": "^11.13.0",
     "@mui/material": "^6.1.5",
     "@tanstack/react-query": "^5.51.11",
-    "@tanstack/react-query-devtools": "^5.63.0",
     "autoprefixer": "^10.4.19",
     "axios": "^1.7.2",
     "dompurify": "^3.2.3",
