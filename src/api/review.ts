@@ -14,8 +14,9 @@ export const postGameReviews = async (
     });
     return res;
   } catch (error) {
-    window.alert("에러가 발생했습니다.");
-    console.log(error);
+    if (error instanceof Error) {
+      window.alert(error.message);
+    }
   }
 };
 

@@ -24,7 +24,7 @@ type Props = {
 };
 
 const ReviewRegisterModal = ({ gamePk, modalOpen, setOpenModal }: Props) => {
-  const [ratingValue, setRatingValue] = useState<number | null>(0);
+  const [ratingValue, setRatingValue] = useState<number | null>(null);
 
   const [selectedDifficulty, setSelectedDifficulty] = useState("");
   const [isHovered, setIsHovered] = useState(false);

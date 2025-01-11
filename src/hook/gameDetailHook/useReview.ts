@@ -28,11 +28,11 @@ const useReview = () => {
       content: string;
       difficulty: number | undefined;
     }) => postGameReviews(gamePk, star, content, difficulty),
-    onSuccess: () => {
-      setRegisterSuccess(true);
+    onSuccess: (data, variables) => {
+      const { gamePk } = variables;
+      queryClient.invalidateQueries({ queryKey: ["my_review", gamePk] });
       onClickModalToggleHandlers[REVIEW_REGISTER_MODAL_ID]();
-
-      queryClient.refetchQueries();
+      setRegisterSuccess(true);
     },
   });
 
@@ -42,8 +42,6 @@ const useReview = () => {
     star: number | null,
     content: string,
   ) => {
-    // TODO: useMutaion 적용, onSuccess시 모달 적용
-
     reviewMutation.mutate({ gamePk, difficulty, star, content });
   };
 
