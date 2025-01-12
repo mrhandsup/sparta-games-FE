@@ -41,11 +41,11 @@ const ReviewRegisterModal = ({ gamePk, modalOpen, setOpenModal }: Props) => {
     setIsHovered(false);
   };
 
-  const handleSelectDifficulty = (level: "EASY" | "NORMAL" | "HARD") => {
+  const onClickDifficulty = (level: "EASY" | "NORMAL" | "HARD") => {
     setSelectedDifficulty(level);
   };
 
-  const difficultyValue = () => {
+  const convertDifficulty = () => {
     switch (selectedDifficulty) {
       case "EASY":
         return 0;
@@ -56,7 +56,7 @@ const ReviewRegisterModal = ({ gamePk, modalOpen, setOpenModal }: Props) => {
     }
   };
 
-  const difficulty = difficultyValue();
+  const difficulty = convertDifficulty();
 
   useEffect(() => {
     form.register("content", {
@@ -65,7 +65,7 @@ const ReviewRegisterModal = ({ gamePk, modalOpen, setOpenModal }: Props) => {
     });
   }, [form.register]);
 
-  const handleEditorChange = (editorState: string) => {
+  const onChangeContent = (editorState: string) => {
     // react-quill 내용 작성 후 다 지울 경우 생기는 <p></br></p> 부분 제거
     const plainText = editorState.replace(/<(.|\n)*?>/g, "").trim();
 
@@ -77,7 +77,7 @@ const ReviewRegisterModal = ({ gamePk, modalOpen, setOpenModal }: Props) => {
 
   const editorContent = form.watch("content");
 
-  const handleRegisterReview = () => {
+  const onClickReviewRegister = () => {
     eventHandler.onSubmitHandler(gamePk, difficulty, ratingValue, editorContent);
   };
 
@@ -90,9 +90,8 @@ const ReviewRegisterModal = ({ gamePk, modalOpen, setOpenModal }: Props) => {
     const timer = setTimeout(() => {
       review.setRegisterSuccess(false);
     }, 5000);
-    console.log(review.registerSuccess);
 
-    return () => clearTimeout(timer); // 타이머 정리
+    return () => clearTimeout(timer);
   }, [review.registerSuccess]);
 
   const resetForm = () => {
@@ -103,8 +102,8 @@ const ReviewRegisterModal = ({ gamePk, modalOpen, setOpenModal }: Props) => {
 
   return (
     <>
-      <Modal open={modalOpen}>
-        <Box className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 border border-solid border-primary-500 rounded-xl bg-gray-800 outline-none">
+      <Modal open={modalOpen} disableScrollLock={true}>
+        <Box className="fixed left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 border border-solid border-primary-500 rounded-xl bg-gray-800 outline-none">
           <div className="flex flex-col gap-4 p-5 w-[900px]">
             <div className="flex justify-between items-center">
               <p className="text-3xl font-DungGeunMo text-primary-500">리뷰등록</p>
@@ -121,7 +120,7 @@ const ReviewRegisterModal = ({ gamePk, modalOpen, setOpenModal }: Props) => {
                     difficultyLevel={level}
                     selectedDifficulty={selectedDifficulty}
                     isSelected={selectedDifficulty === level}
-                    onClick={() => handleSelectDifficulty(level)}
+                    onClick={() => onClickDifficulty(level)}
                   />
                 ))}
               </div>
@@ -155,7 +154,7 @@ const ReviewRegisterModal = ({ gamePk, modalOpen, setOpenModal }: Props) => {
               <ReactQuill
                 theme="snow"
                 value={editorContent}
-                onChange={handleEditorChange}
+                onChange={onChangeContent}
                 modules={{
                   toolbar: false,
                 }}
@@ -165,7 +164,7 @@ const ReviewRegisterModal = ({ gamePk, modalOpen, setOpenModal }: Props) => {
             </div>
 
             <button
-              onClick={handleRegisterReview}
+              onClick={onClickReviewRegister}
               disabled={!form.formState.isValid || ratingValue === null || selectedDifficulty === ""}
               className={`w-full h-12 text-title-18 rounded-md ${
                 !form.formState.isValid || ratingValue === null || selectedDifficulty === ""

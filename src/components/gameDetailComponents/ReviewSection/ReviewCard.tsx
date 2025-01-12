@@ -10,7 +10,7 @@ import { deleteGameReview, postReviewLike } from "../../../api/review";
 
 import { TReviewData } from "../../../types";
 
-import { formatDate } from "../../../share/validation";
+import { formatDate } from "../../../util/validation";
 
 import DOMPurify from "dompurify";
 
@@ -54,7 +54,7 @@ const ReviewCard = ({ review, isMyReview = false }: reviewDataProps) => {
       btn1: {
         text: "리뷰를 삭제할게요.",
         onClick: () => {
-          handleReviewDelete(review?.id);
+          onClickReviewDelete(review?.id);
           onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
         },
       },
@@ -72,12 +72,12 @@ const ReviewCard = ({ review, isMyReview = false }: reviewDataProps) => {
     noActionData.reviewDelete,
   );
 
-  const handleReviewConfirm = () => {
+  const onClickConfirm = () => {
     setNoActionModalData(noActionData.reviewDeleteConfirm);
     onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
   };
 
-  const handleReviewDelete = async (reviewId: number | undefined) => {
+  const onClickReviewDelete = async (reviewId: number | undefined) => {
     const res = await deleteGameReview(reviewId, review?.game);
 
     if (res?.status === 200) {
@@ -86,7 +86,7 @@ const ReviewCard = ({ review, isMyReview = false }: reviewDataProps) => {
     }
   };
 
-  const handleReviewReaction = async (reviewId: number | undefined, action: "like" | "dislike") => {
+  const onClickReaction = async (reviewId: number | undefined, action: "like" | "dislike") => {
     await postReviewLike(reviewId, action);
 
     queryClient.invalidateQueries({ queryKey: ["reviews"] });
@@ -108,7 +108,7 @@ const ReviewCard = ({ review, isMyReview = false }: reviewDataProps) => {
                   <p className="font-DungGeunMo text-lg text-primary-500">{review?.author_name}</p>
                   <img className="absolute right-12 cursor-pointer" src={reviewEdit} alt="리뷰 수정" />
                   <img
-                    onClick={handleReviewConfirm}
+                    onClick={onClickConfirm}
                     className="absolute right-4 cursor-pointer"
                     src={reviewDeleteImage}
                     alt="리뷰 삭제"
@@ -135,13 +135,13 @@ const ReviewCard = ({ review, isMyReview = false }: reviewDataProps) => {
           <p className="text-[12px] leading-4 text-gray-300">{formatDate(review?.created_at)}</p>
           <div className="flex items-center gap-1 text-[11px] font-bold">
             <div
-              onClick={() => handleReviewReaction(review?.id, "like")}
+              onClick={() => onClickReaction(review?.id, "like")}
               className="flex gap-1 p-1 bg-gray-600 rounded cursor-pointer"
             >
               👍🏻<p>{review?.like_count}</p>
             </div>
             <div
-              onClick={() => handleReviewReaction(review?.id, "dislike")}
+              onClick={() => onClickReaction(review?.id, "dislike")}
               className="flex gap-1 p-1 bg-gray-600 rounded cursor-pointer"
             >
               👎<p>{review?.dislike_count}</p>

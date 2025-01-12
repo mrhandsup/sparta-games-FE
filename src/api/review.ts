@@ -35,10 +35,9 @@ export const deleteGameReview = async (reviewId: number | undefined, game_pk: nu
 
 export const postReviewLike = async (reviewId: number | undefined, action: "like" | "dislike") => {
   try {
-    const res = await sparta_games_auth.post(`/games/api/review/${reviewId}/like/`, {
+    await sparta_games_auth.post(`/games/api/review/${reviewId}/like/`, {
       action: action,
     });
-    console.log(res);
   } catch (error) {
     if (error instanceof Error) {
       window.alert(error.message);

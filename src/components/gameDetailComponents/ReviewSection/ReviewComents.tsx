@@ -12,7 +12,7 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
 
   const [openModal, setOpenModal] = useState(false);
 
-  const handleModalOpen = () => {
+  const onClickModalOpen = () => {
     setOpenModal(true);
   };
 
@@ -24,7 +24,6 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
     },
   });
 
-  // 내가 쓴 리뷰 요청 (로그인한 경우에만 실행)
   const { data: myReviewData } = useQuery<TReviewResponse>({
     queryKey: ["reviews", "my_review", gamePk],
     queryFn: async () => {
@@ -56,7 +55,7 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
             !myReview ? (
               <>
                 <div
-                  onClick={handleModalOpen}
+                  onClick={onClickModalOpen}
                   className="flex items-center justify-center gap-6 border border-solid border-primary-500 bg-gray-800 rounded-xl cursor-pointer"
                 >
                   <img src={reviewRegister} />

@@ -70,7 +70,7 @@ const GamePlay = ({ gamePk, title, makerNmae, gamePath }: Props) => {
 
   const fullScreenRef = useRef<HTMLDivElement>(null);
 
-  const handleFullscreen = () => {
+  const onClickFullscreen = () => {
     fullScreenRef.current?.requestFullscreen();
   };
 
@@ -90,18 +90,18 @@ const GamePlay = ({ gamePk, title, makerNmae, gamePath }: Props) => {
     },
   });
 
-  const handleBookMark = () => {
+  const onClickBookMark = () => {
     bookMarkMutation.mutate();
   };
 
-  const handleLinkCopy = () => {
+  const onClickLinkCopy = () => {
     navigator.clipboard.writeText(window.location.href);
 
     setNoActionModalData(noActionData.linkcopy);
     onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
   };
 
-  const handleRandomGamePick = () => {
+  const onClickRandomGamePick = () => {
     setNoActionModalData(noActionData.randomgamepick);
     onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
   };
@@ -116,12 +116,12 @@ const GamePlay = ({ gamePk, title, makerNmae, gamePath }: Props) => {
             <img
               src={isBookmarked ? bookmarkfill : bookmark}
               alt="즐겨찾기"
-              onClick={handleBookMark}
+              onClick={onClickBookMark}
               className="cursor-pointer"
             />
-            <img src={share} alt="링크 공유" onClick={handleLinkCopy} className="cursor-pointer" />
-            <img src={randomgame} alt="랜덤 게임 추천" onClick={handleRandomGamePick} className="cursor-pointer" />
-            <img src={expand} onClick={handleFullscreen} alt="전체화면" className="cursor-pointer" />
+            <img src={share} alt="링크 공유" onClick={onClickLinkCopy} className="cursor-pointer" />
+            <img src={randomgame} alt="랜덤 게임 추천" onClick={onClickRandomGamePick} className="cursor-pointer" />
+            <img src={expand} onClick={onClickFullscreen} alt="전체화면" className="cursor-pointer" />
           </div>
         </div>
       </div>
