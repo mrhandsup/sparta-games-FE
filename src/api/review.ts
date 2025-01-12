@@ -20,6 +20,29 @@ export const postGameReviews = async (
   }
 };
 
+export const putGameReview = async (
+  reviewId: number | undefined,
+  gamePk: number | undefined,
+  difficulty: number | undefined,
+  star: number | null,
+  preStar: number | undefined,
+  content: string,
+) => {
+  try {
+    await sparta_games_auth.put(`/games/api/review/${reviewId}/`, {
+      game_pk: gamePk,
+      difficulty: difficulty,
+      star: star,
+      pre_star: preStar,
+      content: content,
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      window.alert(error.message);
+    }
+  }
+};
+
 export const deleteGameReview = async (reviewId: number | undefined, game_pk: number | undefined) => {
   try {
     const res = await sparta_games_auth.delete(`/games/api/review/${reviewId}/`, {

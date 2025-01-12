@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 import DifficultyChip from "../../common/chipComponents/DifficultyChip";
 import StarRating from "../../common/StarRating";
@@ -14,18 +15,18 @@ import { formatDate } from "../../../util/validation";
 
 import DOMPurify from "dompurify";
 
-import reviewDetail from "../../../assets/gameDetail/ReviewDetail.svg";
-import reviewEdit from "../../../assets/gameDetail/ReviewEdit.svg";
+import reviewDetailImage from "../../../assets/gameDetail/ReviewDetail.svg";
+import reviewEditImage from "../../../assets/gameDetail/ReviewEdit.svg";
 import reviewDeleteImage from "../../../assets/gameDetail/ReviewDelete.svg";
 import exampleProfile from "../../../assets/gameDetail/example_profile.png";
-import { useQueryClient } from "@tanstack/react-query";
 
 type reviewDataProps = {
   review: TReviewData | undefined;
+  onClickMoreToggleHandler: () => void;
   isMyReview?: boolean;
 };
 
-const ReviewCard = ({ review, isMyReview = false }: reviewDataProps) => {
+const ReviewCard = ({ review, onClickMoreToggleHandler, isMyReview = false }: reviewDataProps) => {
   const NO_ACTION_MODAL_ID = "noActionModal";
   const { modalToggles, onClickModalToggleHandlers } = useModalToggles([NO_ACTION_MODAL_ID]);
 
@@ -41,8 +42,7 @@ const ReviewCard = ({ review, isMyReview = false }: reviewDataProps) => {
         text: "확인했습니다.",
         onClick: () => {
           onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-
-          queryClient.invalidateQueries({ queryKey: ["reviews"] });
+          window.location.reload();
         },
       },
       type: "error",
@@ -72,7 +72,7 @@ const ReviewCard = ({ review, isMyReview = false }: reviewDataProps) => {
     noActionData.reviewDelete,
   );
 
-  const onClickConfirm = () => {
+  const onClickReviewDeleteHandler = () => {
     setNoActionModalData(noActionData.reviewDeleteConfirm);
     onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
   };
@@ -92,6 +92,17 @@ const ReviewCard = ({ review, isMyReview = false }: reviewDataProps) => {
     queryClient.invalidateQueries({ queryKey: ["reviews"] });
   };
 
+  const convertDifficulty = (difficulty: number | undefined) => {
+    switch (difficulty) {
+      case 0:
+        return "EASY";
+      case 1:
+        return "NORMAL";
+      case 2:
+        return "HARD";
+    }
+  };
+
   return (
     <>
       <div
@@ -106,9 +117,14 @@ const ReviewCard = ({ review, isMyReview = false }: reviewDataProps) => {
               {isMyReview ? (
                 <>
                   <p className="font-DungGeunMo text-lg text-primary-500">{review?.author_name}</p>
-                  <img className="absolute right-12 cursor-pointer" src={reviewEdit} alt="리뷰 수정" />
                   <img
-                    onClick={onClickConfirm}
+                    onClick={onClickMoreToggleHandler}
+                    className="absolute right-12 cursor-pointer"
+                    src={reviewEditImage}
+                    alt="리뷰 수정"
+                  />
+                  <img
+                    onClick={onClickReviewDeleteHandler}
                     className="absolute right-4 cursor-pointer"
                     src={reviewDeleteImage}
                     alt="리뷰 삭제"
@@ -117,12 +133,12 @@ const ReviewCard = ({ review, isMyReview = false }: reviewDataProps) => {
               ) : (
                 <>
                   <p className="font-DungGeunMo text-lg">{review?.author_name}</p>
-                  <img className="absolute right-4 cursor-pointer" src={reviewDetail} alt="리뷰 상세 보기" />
+                  <img className="absolute right-4 cursor-pointer" src={reviewDetailImage} alt="리뷰 상세 보기" />
                 </>
               )}
             </div>
             <div className="flex gap-2">
-              <DifficultyChip chipSize="small" difficultyLevel="EASY" />
+              <DifficultyChip chipSize="small" difficultyLevel={convertDifficulty(review?.difficulty)} />
               <StarRating score={review?.star} />
             </div>
           </div>

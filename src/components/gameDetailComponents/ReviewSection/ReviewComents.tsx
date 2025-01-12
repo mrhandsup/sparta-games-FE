@@ -1,19 +1,19 @@
 import ReviewCard from "./ReviewCard";
 import reviewRegister from "../../../assets/gameDetail/reviewRegister.svg";
 import ReviewRegisterModal from "./ReviewRegisterModal";
-import { useState } from "react";
 import { userStore } from "../../../share/store/userStore";
 import { useQuery } from "@tanstack/react-query";
 import { TReviewResponse } from "../../../types";
 import { sparta_games, sparta_games_auth } from "../../../api/axios";
+import useGameDetail from "../../../hook/gameDetailHook/useGameDetail";
 
 const ReviewComents = ({ gamePk }: { gamePk: number }) => {
   const { userData } = userStore();
 
-  const [openModal, setOpenModal] = useState(false);
+  const { more, onClickMoreToggleHandler } = useGameDetail();
 
   const onClickModalOpen = () => {
-    setOpenModal(true);
+    onClickMoreToggleHandler();
   };
 
   const { data: reviewData } = useQuery<TReviewResponse>({
@@ -37,6 +37,7 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
   const myReview = myReviewData?.results.my_review;
 
   const reviewsWithoutMyReview = allReviewData?.filter((review) => review.id !== myReview?.id);
+
   return (
     <>
       <section className="flex flex-col gap-3">
@@ -64,7 +65,11 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
               </>
             ) : (
               // 내가 쓴 리뷰가 있을 때
-              <ReviewCard review={myReview} isMyReview={true} />
+              <ReviewCard
+                onClickMoreToggleHandler={onClickMoreToggleHandler}
+                review={myReview}
+                isMyReview={!!myReview}
+              />
             )
           ) : (
             // 로그인 하지 않은 상태
@@ -77,11 +82,16 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
           )}
 
           {reviewsWithoutMyReview?.map((review) => (
-            <ReviewCard review={review} />
+            <ReviewCard review={review} onClickMoreToggleHandler={onClickMoreToggleHandler} />
           ))}
         </div>
       </section>
-      <ReviewRegisterModal gamePk={gamePk} modalOpen={openModal} setOpenModal={setOpenModal} />
+      <ReviewRegisterModal
+        gamePk={gamePk}
+        more={more}
+        onClickMoreToggleHandler={onClickMoreToggleHandler}
+        myReview={myReview}
+      />
     </>
   );
 };

@@ -1,4 +1,4 @@
-import { SetStateAction, Dispatch, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 import { Modal, Box } from "@mui/material";
 import Rating from "@mui/material/Rating";
@@ -16,22 +16,25 @@ import star from "../../../assets/star.svg";
 import fillStar from "../../../assets/fillStar.svg";
 import grayStar from "../../../assets/grayStar.svg";
 import SpartaReactionModal from "../../../spartaDesignSystem/SpartaReactionModal";
+import { TReviewData } from "../../../types";
 
 type Props = {
   gamePk: number;
-  modalOpen: boolean;
-  setOpenModal: Dispatch<SetStateAction<boolean>>;
+  more: boolean;
+  onClickMoreToggleHandler: () => void;
+  myReview: TReviewData | undefined;
 };
 
-const ReviewRegisterModal = ({ gamePk, modalOpen, setOpenModal }: Props) => {
-  const [ratingValue, setRatingValue] = useState<number | null>(null);
-  const [selectedDifficulty, setSelectedDifficulty] = useState("");
-
-  const [isHovered, setIsHovered] = useState(false);
-
+const ReviewRegisterModal = ({ gamePk, more, onClickMoreToggleHandler, myReview }: Props) => {
   const { review, form, eventHandler } = useReview();
 
+  const [ratingValue, setRatingValue] = useState<number | null>(null);
+  const [selectedDifficulty, setSelectedDifficulty] = useState("");
+  const [isHovered, setIsHovered] = useState(false);
+
   const gameDifficulty: ("EASY" | "NORMAL" | "HARD")[] = ["EASY", "NORMAL", "HARD"];
+
+  const editorContent = form.watch("content");
 
   const onHoverEnter = () => {
     setIsHovered(true);
@@ -41,22 +44,64 @@ const ReviewRegisterModal = ({ gamePk, modalOpen, setOpenModal }: Props) => {
     setIsHovered(false);
   };
 
+  useEffect(() => {
+    if (myReview) {
+      const convertedDifficulty = convertDifficulty(myReview?.difficulty, true) as string;
+
+      setRatingValue(myReview?.star);
+      setSelectedDifficulty(convertedDifficulty);
+      form.setValue("content", myReview?.content), { shouldValidate: true };
+
+      form.trigger();
+    }
+  }, [myReview]);
+
+  const onClickReviewRegisterHandler = () => {
+    const difficulty = convertDifficulty(selectedDifficulty, false) as number;
+    eventHandler.onSubmitHandler(gamePk, difficulty, ratingValue, editorContent);
+
+    onClickMoreToggleHandler();
+  };
+
+  const onClickReviewEditHandler = () => {
+    const difficulty = convertDifficulty(selectedDifficulty, false) as number;
+    eventHandler.onSubmitReviewEditHandler(
+      myReview?.id,
+      myReview?.game,
+      difficulty,
+      ratingValue,
+      myReview?.star,
+      editorContent,
+    );
+
+    onClickMoreToggleHandler();
+  };
+
   const onClickDifficulty = (level: "EASY" | "NORMAL" | "HARD") => {
     setSelectedDifficulty(level);
   };
 
-  const convertDifficulty = () => {
-    switch (selectedDifficulty) {
-      case "EASY":
-        return 0;
-      case "NORMAL":
-        return 1;
-      case "HARD":
-        return 2;
+  const convertDifficulty = (difficulty: string | number, toString: boolean) => {
+    if (toString) {
+      switch (difficulty) {
+        case 0:
+          return "EASY";
+        case 1:
+          return "NORMAL";
+        case 2:
+          return "HARD";
+      }
+    } else {
+      switch (difficulty) {
+        case "EASY":
+          return 0;
+        case "NORMAL":
+          return 1;
+        case "HARD":
+          return 2;
+      }
     }
   };
-
-  const difficulty = convertDifficulty();
 
   useEffect(() => {
     form.register("content", {
@@ -75,39 +120,19 @@ const ReviewRegisterModal = ({ gamePk, modalOpen, setOpenModal }: Props) => {
     form.setValue("content", cleanedContent, { shouldValidate: true });
   };
 
-  const editorContent = form.watch("content");
-
-  const onClickReviewRegister = () => {
-    eventHandler.onSubmitHandler(gamePk, difficulty, ratingValue, editorContent);
-  };
-
-  useEffect(() => {
-    if (review.registerSuccess) {
-      setOpenModal(false);
-      resetForm();
-    }
-
-    const timer = setTimeout(() => {
-      review.setRegisterSuccess(false);
-    }, 5000);
-
-    return () => clearTimeout(timer);
-  }, [review.registerSuccess]);
-
-  const resetForm = () => {
-    form.setValue("content", "");
-    setRatingValue(null);
-    setSelectedDifficulty("");
-  };
-
   return (
     <>
-      <Modal open={modalOpen} disableScrollLock={true}>
+      <Modal open={more} disableScrollLock={true}>
         <Box className="fixed left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 border border-solid border-primary-500 rounded-xl bg-gray-800 outline-none">
           <div className="flex flex-col gap-4 p-5 w-[900px]">
             <div className="flex justify-between items-center">
               <p className="text-3xl font-DungGeunMo text-primary-500">리뷰등록</p>
-              <img onClick={() => setOpenModal(false)} className="w-7 h-7 cursor-pointer" src={closeBtn} alt="닫기" />
+              <img
+                onClick={() => onClickMoreToggleHandler()}
+                className="w-7 h-7 cursor-pointer"
+                src={closeBtn}
+                alt="닫기"
+              />
             </div>
 
             <div className="flex items-center gap-8">
@@ -164,7 +189,7 @@ const ReviewRegisterModal = ({ gamePk, modalOpen, setOpenModal }: Props) => {
             </div>
 
             <button
-              onClick={onClickReviewRegister}
+              onClick={myReview ? onClickReviewEditHandler : onClickReviewRegisterHandler}
               disabled={!form.formState.isValid || ratingValue === null || selectedDifficulty === ""}
               className={`w-full h-12 text-title-18 rounded-md ${
                 !form.formState.isValid || ratingValue === null || selectedDifficulty === ""
@@ -186,7 +211,23 @@ const ReviewRegisterModal = ({ gamePk, modalOpen, setOpenModal }: Props) => {
           modalId={review.REVIEW_REGISTER_MODAL_ID}
           title={"리뷰등록 완료"}
           content={"게임을 재밌게 즐겨주시고,<br/>소중한 의견 남겨주셔서 감사합니다!"}
-          type={"primary"}
+          btn1={{
+            text: "확인했습니다",
+            onClick: () => {
+              review.onClickModalToggleHandlers[review.REVIEW_REGISTER_MODAL_ID]();
+              review.setRegisterSuccess(false);
+            },
+          }}
+        />
+      )}
+
+      {review.editSuccess && (
+        <SpartaReactionModal
+          isOpen={review.modalToggles[review.REVIEW_REGISTER_MODAL_ID]}
+          onClose={review.onClickModalToggleHandlers[review.REVIEW_REGISTER_MODAL_ID]}
+          modalId={review.REVIEW_REGISTER_MODAL_ID}
+          title={"리뷰수정 완료"}
+          content={"리뷰수정이 완료되었습니다."}
           btn1={{
             text: "확인했습니다",
             onClick: () => {

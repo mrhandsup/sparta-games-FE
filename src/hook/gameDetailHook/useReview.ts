@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 
 import type { TReviewInputForm } from "../../types";
-import { postGameReviews } from "../../api/review";
+import { postGameReviews, putGameReview } from "../../api/review";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import useModalToggles from "../useModalToggles";
@@ -13,6 +13,7 @@ const useReview = () => {
   const { modalToggles, onClickModalToggleHandlers } = useModalToggles([REVIEW_REGISTER_MODAL_ID]);
 
   const [registerSuccess, setRegisterSuccess] = useState(false);
+  const [editSuccess, setEditSuccess] = useState(false);
 
   const queryClient = useQueryClient();
 
@@ -45,7 +46,23 @@ const useReview = () => {
     reviewMutation.mutate({ gamePk, difficulty, star, content });
   };
 
+  const onSubmitReviewEditHandler = async (
+    reviewId: number | undefined,
+    gamePk: number | undefined,
+    difficulty: number | undefined,
+    star: number | null,
+    preStar: number | undefined,
+    content: string,
+  ) => {
+    await putGameReview(reviewId, gamePk, difficulty, star, preStar, content);
+    queryClient.invalidateQueries({ queryKey: ["reviews", "my_review", gamePk] });
+    onClickModalToggleHandlers[REVIEW_REGISTER_MODAL_ID]();
+    setEditSuccess(true);
+  };
+
   const review = {
+    editSuccess,
+    setEditSuccess,
     registerSuccess,
     setRegisterSuccess,
     modalToggles,
@@ -64,6 +81,7 @@ const useReview = () => {
 
   const eventHandler = {
     onSubmitHandler,
+    onSubmitReviewEditHandler,
   };
 
   return { review, form, eventHandler };
