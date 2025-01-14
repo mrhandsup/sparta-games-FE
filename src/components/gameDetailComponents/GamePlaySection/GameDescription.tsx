@@ -1,5 +1,5 @@
-import { useState } from "react";
 import GameDescriptionModal from "./GameDescriptionModal";
+import useGameDetail from "../../../hook/gameDetailHook/useGameDetail";
 
 type Props = {
   title?: string;
@@ -11,20 +11,18 @@ type Props = {
 };
 
 const GameDescription = ({ title, content, screenshot }: Props) => {
-  const [openModal, setOpenModal] = useState(false);
-
-  const handleModalOpen = () => {
-    setOpenModal(true);
-  };
-  const handleModalClose = () => {
-    setOpenModal(false);
-  };
+  const { more, onClickMoreToggleHandler } = useGameDetail();
 
   return (
     <div className="flex flex-col gap-3 mt-5 p-5 bg-gray-800 rounded-xl">
       <div className="flex items-center justify-between">
         <p className="font-DungGeunMo text-[24px] text-white">게임설명</p>
-        <p onClick={handleModalOpen} className="font-DungGeunMo text-[24px] text-white text-xl cursor-pointer">
+        <p
+          onClick={() => {
+            onClickMoreToggleHandler();
+          }}
+          className="font-DungGeunMo text-[24px] text-white text-xl cursor-pointer"
+        >
           더보기
         </p>
       </div>
@@ -37,8 +35,8 @@ const GameDescription = ({ title, content, screenshot }: Props) => {
         title={title}
         content={content}
         screenshot={screenshot}
-        modalOpen={openModal}
-        handleModalClose={handleModalClose}
+        more={more}
+        onClickMoreToggleHandler={onClickMoreToggleHandler}
       />
     </div>
   );

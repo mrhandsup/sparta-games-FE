@@ -3,16 +3,12 @@ import { Link, useSearchParams } from "react-router-dom";
 import GamePlaySection from "../components/gameDetailComponents/GamePlaySection/GamePlaySection";
 import Review from "../components/gameDetailComponents/ReviewSection/Review";
 
-import useGameDetail from "../hook/gameDetailHook/useGameDetail";
-
 import CaretLeft from "../assets/CaretLeft";
 import { useQuery } from "@tanstack/react-query";
 import { getGameDetail } from "../api/game";
 import { TGamePlayData } from "../types";
 
 const GameDetail = () => {
-  const { more, onClickMoreToggleHandler } = useGameDetail();
-
   const [searchParams] = useSearchParams();
   const gameDetailId = Number(searchParams.get("id"));
 
@@ -30,8 +26,8 @@ const GameDetail = () => {
           <p>Action</p>
         </div>
       </Link>
-      <GamePlaySection gamePlayData={gamePlayData} more={more} onClickMoreToggleHandler={onClickMoreToggleHandler} />
-      <Review />
+      <GamePlaySection gamePlayData={gamePlayData} />
+      <Review gamePk={gameDetailId} />
     </main>
   );
 };

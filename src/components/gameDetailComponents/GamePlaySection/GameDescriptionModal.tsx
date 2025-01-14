@@ -13,19 +13,19 @@ type Props = {
     id: number;
     src: string;
   }[];
-  modalOpen: boolean;
-  handleModalClose: () => void;
+  more: boolean;
+  onClickMoreToggleHandler: () => void;
 };
 
-const GameDescriptionModal = ({ title, content, screenshot, modalOpen, handleModalClose }: Props) => {
+const GameDescriptionModal = ({ title, content, screenshot, more, onClickMoreToggleHandler }: Props) => {
   return (
-    <Modal open={modalOpen} onClose={handleModalClose}>
-      <Box className="absolute top-16 left-1/2 transform -translate-x-1/2 rounded-3xl outline-none border border-solid border-primary-500 bg-gray-800 p-8 max-w-[1200px] max-h-full overflow-auto">
+    <Modal open={more} onClose={onClickMoreToggleHandler} disableScrollLock={true}>
+      <Box className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-3xl outline-none border border-solid border-primary-500 bg-gray-800 p-8 max-w-[1200px] max-h-full overflow-auto">
         <div className="flex flex-col gap-6 w-full">
           <p className="text-2xl font-DungGeunMo text-white">{`[${title}]`}</p>
           <Swiper
             pagination={{
-              clickable: true, // pagination을 클릭할 수 있도록 설정
+              clickable: true,
             }}
             loop={true}
             centeredSlides={true}

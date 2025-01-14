@@ -6,8 +6,6 @@ import { TGamePlayData } from "../../../types";
 
 type Props = {
   gamePlayData?: TGamePlayData;
-  more: boolean;
-  onClickMoreToggleHandler: () => void;
 };
 
 const GamePlaySection = ({ gamePlayData }: Props) => {
