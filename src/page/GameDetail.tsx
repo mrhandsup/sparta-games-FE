@@ -7,28 +7,37 @@ import CaretLeft from "../assets/CaretLeft";
 import { useQuery } from "@tanstack/react-query";
 import { getGameDetail } from "../api/game";
 import { TGamePlayData } from "../types";
+import loading from "../assets/common/loading.gif";
 
 const GameDetail = () => {
   const [searchParams] = useSearchParams();
   const gameDetailId = Number(searchParams.get("id"));
 
-  const { data: gamePlayData } = useQuery<TGamePlayData>({
+  const { data: gamePlayData, isLoading } = useQuery<TGamePlayData>({
     queryKey: ["gameList"],
     queryFn: () => getGameDetail(gameDetailId),
   });
 
   return (
-    <main className="mx-[130px]">
-      {/* 데이터를 가져왔을 때 게임에 맞는 카테고리로 변경 */}
-      <Link to={"/category?category=Action"}>
-        <div className="flex gap-3 mt-10 font-DungGeunMo text-[24px] text-gray-300">
-          <CaretLeft />
-          <p>Action</p>
+    <>
+      {isLoading ? (
+        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+          <img src={loading} className="w-[300px] h-[300px]" alt="로딩 중" />
         </div>
-      </Link>
-      <GamePlaySection gamePlayData={gamePlayData} />
-      <Review gamePk={gameDetailId} />
-    </main>
+      ) : (
+        <main className="mx-[130px]">
+          {/* 데이터를 가져왔을 때 게임에 맞는 카테고리로 변경 */}
+          <div className="inline-block mt-10 font-DungGeunMo text-[24px] text-gray-300">
+            <Link to={"/category?category=Action"} className="flex gap-3">
+              <CaretLeft />
+              <p>Action</p>
+            </Link>
+          </div>
+          <GamePlaySection gamePlayData={gamePlayData} />
+          <Review gamePk={gameDetailId} />
+        </main>
+      )}
+    </>
   );
 };
 

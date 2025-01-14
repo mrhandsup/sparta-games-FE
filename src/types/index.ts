@@ -96,13 +96,16 @@ export type TListResponse = {
   count: number;
   next: string | null;
   previous: string | null;
-  results: TGameData[];
+  results: {
+    all_games: TGameData[];
+  };
 };
 
 export type TGamePlayData = {
   id: number;
   maker_name: string;
   title: string;
+  is_liked: boolean;
   thumnail: null;
   youtube_url: string;
   content: string;
