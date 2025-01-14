@@ -1,103 +1,225 @@
+import { useState, useEffect } from "react";
+
 import { Modal, Box } from "@mui/material";
 import Rating from "@mui/material/Rating";
 
-import { SetStateAction, Dispatch, useState } from "react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import "./reactQuillStyle.css";
 
 import useReview from "../../../hook/gameDetailHook/useReview";
+
 import DifficultyChip from "../../common/chipComponents/DifficultyChip";
+
 import closeBtn from "../../../assets/common/closeBtn.svg";
 import star from "../../../assets/star.svg";
 import fillStar from "../../../assets/fillStar.svg";
 import grayStar from "../../../assets/grayStar.svg";
+import SpartaReactionModal from "../../../spartaDesignSystem/SpartaReactionModal";
+import { TReviewData } from "../../../types";
 
 type Props = {
-  modalOpen: boolean;
-  setOpenModal: Dispatch<SetStateAction<boolean>>;
+  gamePk: number;
+  more: boolean;
+  onClickMoreToggleHandler: () => void;
+  myReview: TReviewData | undefined;
 };
 
-const ReviewRegisterModal = ({ modalOpen, setOpenModal }: Props) => {
-  const [value, setValue] = useState<number | null>(null);
-  const [isHovered, setIsHovered] = useState(false); // 후버 상태
+const ReviewRegisterModal = ({ gamePk, more, onClickMoreToggleHandler, myReview }: Props) => {
+  const { review, form, eventHandler } = useReview();
 
-  const { form, state, eventHandler } = useReview();
+  const [ratingValue, setRatingValue] = useState<number | null>(null);
+  const [selectedDifficulty, setSelectedDifficulty] = useState("");
+  const [isHovered, setIsHovered] = useState(false);
+
+  const gameDifficulty: ("EASY" | "NORMAL" | "HARD")[] = ["EASY", "NORMAL", "HARD"];
+
+  const editorContent = form.watch("content");
 
   const onHoverEnter = () => {
-    setIsHovered(true); // 마우스를 올렸을 때 isHovered를 true로 설정
+    setIsHovered(true);
   };
 
   const onHoverLeave = () => {
     setIsHovered(false);
   };
 
+  useEffect(() => {
+    if (myReview) {
+      const convertedDifficulty = convertDifficulty(myReview?.difficulty, true) as string;
+
+      setRatingValue(myReview?.star);
+      setSelectedDifficulty(convertedDifficulty);
+      form.setValue("content", myReview?.content), { shouldValidate: true };
+
+      form.trigger();
+    }
+  }, [myReview]);
+
+  const onClickReviewRegisterHandler = () => {
+    const difficulty = convertDifficulty(selectedDifficulty, false) as number;
+    eventHandler.onSubmitHandler(gamePk, difficulty, ratingValue, editorContent);
+
+    onClickMoreToggleHandler();
+  };
+
+  const onClickReviewEditHandler = () => {
+    const difficulty = convertDifficulty(selectedDifficulty, false) as number;
+    eventHandler.onSubmitReviewEditHandler(
+      myReview?.id,
+      myReview?.game_id,
+      difficulty,
+      ratingValue,
+      myReview?.star,
+      editorContent,
+    );
+
+    onClickMoreToggleHandler();
+  };
+
+  const onClickDifficulty = (level: "EASY" | "NORMAL" | "HARD") => {
+    setSelectedDifficulty(level);
+  };
+
+  const convertDifficulty = (difficulty: string | number, toString: boolean) => {
+    if (toString) {
+      switch (difficulty) {
+        case 0:
+          return "EASY";
+        case 1:
+          return "NORMAL";
+        case 2:
+          return "HARD";
+      }
+    } else {
+      switch (difficulty) {
+        case "EASY":
+          return 0;
+        case "NORMAL":
+          return 1;
+        case "HARD":
+          return 2;
+      }
+    }
+  };
+
+  useEffect(() => {
+    form.register("content", {
+      required: "필수",
+      minLength: 3,
+    });
+  }, [form.register]);
+
+  const onChangeContent = (editorState: string) => {
+    // react-quill 내용 작성 후 다 지울 경우 생기는 <p></br></p> 부분 제거
+    const plainText = editorState.replace(/<(.|\n)*?>/g, "").trim();
+
+    // 내용이 없을 경우 빈 문자열로 설정해서 isValid가 false가 되도록 함
+    const cleanedContent = plainText === "" ? "" : editorState;
+
+    form.setValue("content", cleanedContent, { shouldValidate: true });
+  };
+
   return (
-    //TODO: POST 기능 완성, 버튼 상호작용 추가
-    <Modal open={modalOpen}>
-      <Box className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 border border-solid border-primary-500 rounded-xl bg-gray-800 outline-none">
-        <div className="flex flex-col gap-4 p-5 w-[900px]">
-          <div className="flex justify-between items-center">
-            <p className="text-3xl font-DungGeunMo text-primary-500">리뷰등록</p>
-            <img onClick={() => setOpenModal(false)} className="w-7 h-7 cursor-pointer" src={closeBtn} alt="닫기" />
-          </div>
-
-          <div className="flex items-center gap-8">
-            <p className="text-2xl font-DungGeunMo text-white whitespace-nowrap">게임의 난이도는?</p>
-            <div className="flex gap-3">
-              <DifficultyChip chipSize="big" difficultyLevel="EASY" />
-              <DifficultyChip chipSize="big" difficultyLevel="NORMAL" />
-              <DifficultyChip chipSize="big" difficultyLevel="HARD" />
-            </div>
-          </div>
-
-          <div className="flex gap-14">
-            <p className="text-2xl font-DungGeunMo text-white">게임의 점수는?</p>
-
-            <Rating
-              name="gameRating"
-              value={value}
-              onChange={(event: React.SyntheticEvent, newValue: number | null): void => {
-                console.log("New Rating Value:", newValue);
-                setValue(newValue);
-              }}
-              sx={{
-                width: "120px",
-              }}
-              icon={<img src={fillStar} width={30} height={30} />}
-              emptyIcon={<img src={value === null && !isHovered ? grayStar : star} width={30} height={30} />}
-              onMouseEnter={onHoverEnter}
-              onMouseLeave={onHoverLeave}
-            />
-          </div>
-
-          <div className="flex items-start gap-10">
-            <div>
-              <p className="text-2xl font-DungGeunMo text-white whitespace-nowrap">리뷰뷰내용 입력</p>
-              <span className="text-sm font-DungGeunMo text-white">(최대 300자)</span>
-            </div>
-            <div className="border border-solid border-gray-100 p-2 w-full h-52 rounded-lg">
-              <textarea
-                maxLength={299}
-                placeholder="소중한 리뷰 감사합니다 :)"
-                {...form.register("content", { required: "필수" })}
-                className="p-2 w-full h-full text-white  bg-transparent outline-none"
+    <>
+      <Modal open={more} disableScrollLock={true}>
+        <Box className="fixed left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 border border-solid border-primary-500 rounded-xl bg-gray-800 outline-none">
+          <div className="flex flex-col gap-4 p-5 w-[900px]">
+            <div className="flex justify-between items-center">
+              <p className="text-3xl font-DungGeunMo text-primary-500">리뷰등록</p>
+              <img
+                onClick={() => onClickMoreToggleHandler()}
+                className="w-7 h-7 cursor-pointer"
+                src={closeBtn}
+                alt="닫기"
               />
             </div>
-          </div>
 
-          <button
-            disabled={!form.formState.isValid || state.star === 0 || state.difficultyLevel === ""}
-            className={`w-full h-12 text-title-18 rounded-md ${
-              !form.formState.isValid || state.star === 0 || state.difficultyLevel === ""
-                ? "bg-gray-100"
-                : "bg-primary-500"
-            }`}
-          >
-            {!form.formState.isValid || state.star === 0 || state.difficultyLevel === ""
-              ? "세가지 모두 입력해주세요!"
-              : "리뷰를 등록합니다"}
-          </button>
-        </div>
-      </Box>
-    </Modal>
+            <div className="flex items-center gap-8">
+              <p className="text-2xl font-DungGeunMo text-white whitespace-nowrap">게임의 난이도는?</p>
+              <div className="flex gap-3">
+                {gameDifficulty.map((level) => (
+                  <DifficultyChip
+                    key={level}
+                    chipSize="big"
+                    difficultyLevel={level}
+                    selectedDifficulty={selectedDifficulty}
+                    isSelected={selectedDifficulty === level}
+                    onClick={() => onClickDifficulty(level)}
+                  />
+                ))}
+              </div>
+            </div>
+
+            <div className="flex gap-14">
+              <p className="text-2xl font-DungGeunMo text-white">게임의 점수는?</p>
+
+              <Rating
+                name="gameRating"
+                value={ratingValue}
+                onChange={(event: React.SyntheticEvent, newValue: number | null): void => {
+                  setRatingValue(newValue);
+                }}
+                sx={{
+                  width: "120px",
+                }}
+                icon={<img src={fillStar} width={30} height={30} />}
+                emptyIcon={<img src={ratingValue === null && !isHovered ? grayStar : star} width={30} height={30} />}
+                onMouseEnter={onHoverEnter}
+                onMouseLeave={onHoverLeave}
+              />
+            </div>
+
+            <div className="flex items-start gap-10">
+              <div>
+                <p className="text-2xl font-DungGeunMo text-white whitespace-nowrap">리뷰내용 입력</p>
+                <span className="text-sm font-DungGeunMo text-white">(최대 300자)</span>
+              </div>
+
+              <ReactQuill
+                theme="snow"
+                value={editorContent}
+                onChange={onChangeContent}
+                modules={{
+                  toolbar: false,
+                }}
+                placeholder="소중한 리뷰 감사합니다 :)"
+                className="p-2 w-full h-full"
+              />
+            </div>
+
+            <button
+              onClick={myReview ? onClickReviewEditHandler : onClickReviewRegisterHandler}
+              disabled={!form.formState.isValid || ratingValue === null || selectedDifficulty === ""}
+              className={`w-full h-12 text-title-18 rounded-md ${
+                !form.formState.isValid || ratingValue === null || selectedDifficulty === ""
+                  ? "bg-gray-100"
+                  : "bg-primary-500"
+              }`}
+            >
+              {!form.formState.isValid || ratingValue === null || selectedDifficulty === ""
+                ? "세가지 모두 입력해주세요!"
+                : "리뷰를 등록합니다"}
+            </button>
+          </div>
+        </Box>
+      </Modal>
+
+      {review.noActionModalData && (
+        <SpartaReactionModal
+          isOpen={review.modalToggles[review.NO_ACTION_MODAL_ID]}
+          onClose={review.onClickModalToggleHandlers[review.NO_ACTION_MODAL_ID]}
+          modalId={review.NO_ACTION_MODAL_ID}
+          title={review.noActionModalData.title || ""}
+          content={review.noActionModalData.content || ""}
+          btn1={{
+            text: review.noActionModalData?.btn1?.text || "",
+            onClick: review.noActionModalData?.btn1?.onClick || (() => {}),
+          }}
+          type={review.noActionModalData.type}
+        />
+      )}
+    </>
   );
 };
 
