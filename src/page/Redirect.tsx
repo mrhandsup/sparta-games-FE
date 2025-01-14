@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { discordLogin, googleLogin, kakaoLogin, naverLogin } from "../api/login";
-import CircularProgress from "@mui/material/CircularProgress";
 import loading from "../assets/common/loading.gif";
 
 const Redirect = () => {

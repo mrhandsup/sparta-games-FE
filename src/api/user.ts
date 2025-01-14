@@ -45,7 +45,7 @@ export const deleteUser = async (userId: number) => {
  */
 export const getUserGameMadeList = async (userId: number) => {
   try {
-    const res = await sparta_games.get(`/users/api/${userId}/games/`);
+    const res = await sparta_games_auth.get(`/users/api/${userId}/games/`);
     return res.data;
   } catch (error) {
     console.error(error);

@@ -33,7 +33,7 @@ const Profile = (props: Props) => {
         game_category: string[];
         is_maker: boolean;
       };
-    }) => updateUserData(userData?.user_pk, data),
+    }) => updateUserData(userData?.user_pk || 0, data),
     onSuccess: () => {
       setIsUpdate(false);
       setUser(sessionStorage.getItem("accessToken") as string);

@@ -87,3 +87,13 @@ export const discordLogin = async (code: string) => {
     throw error;
   }
 };
+
+export const signUp = async (data: any) => {
+  try {
+    const response = await sparta_games.post("/accounts/api/signup/", data);
+
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};

@@ -3,6 +3,7 @@ import { TUser } from "../../types";
 import { convertToConfigObjects } from "../../util/convertToConfigObjects";
 import { USER_TECH } from "../../constant/constant";
 import SpartaButton from "../../spartaDesignSystem/SpartaButton";
+import defaultProfile from "../../assets/common/defaultProfile.svg";
 
 type TProfileProps = {
   user: TUser;
@@ -14,7 +15,11 @@ const ProfileHeader = (props: TProfileProps) => {
 
   return (
     <div className="bg-gray-800 h-[176px] px-32 py-3 flex items-center w-full">
-      <div className="bg-white w-[110px] h-[110px] rounded-md" />
+      {props.user.profile_image ? (
+        <img className="bg-gray-700 w-[110px] h-[110px] rounded-md" src={props.user.profile_image} />
+      ) : (
+        <img src={defaultProfile} className="bg-gray-700 w-[110px] h-[110px] rounded-md p-3" />
+      )}
       <div className="flex flex-col gap-3 ml-3 w-full">
         <div className="flex items-center justify-between w-full">
           <div className="flex items-center">
