@@ -1,4 +1,4 @@
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import pixelMeteor from "../assets/homeImage/pixelMeteor.svg";
 import heroImage from "../assets/homeImage/heroImage.svg";
 
@@ -9,6 +9,7 @@ import Profile from "../components/signUpComponents/Profile";
 import SpartaButton from "../spartaDesignSystem/SpartaButton";
 import { useMutation } from "@tanstack/react-query";
 import { signUp } from "../api/login";
+import { userStore } from "../share/store/userStore";
 
 const SignUp = () => {
   const [searchParams] = useSearchParams();
@@ -30,13 +31,17 @@ const SignUp = () => {
     },
   });
 
+  const navigate = useNavigate();
+  const { setUser } = userStore();
+
   // TODO : 로그인 데이터 통일시 수정
   const signUpMutation = useMutation({
     mutationFn: (data: Partial<TUserInformationInputForm>) => signUp(data),
     onSuccess: async (data) => {
       sessionStorage.setItem("accessToken", data?.data.access);
       sessionStorage.setItem("refreshToken", data?.data.refresh);
-      window.location.href = "/";
+      setUser(data?.data.access);
+      navigate("/");
     },
     onError: () => {
       console.log("회원가입 실패");

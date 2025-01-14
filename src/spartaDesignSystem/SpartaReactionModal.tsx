@@ -41,7 +41,9 @@ const SpartaReactionModal = ({
           className="text-[16px] font-light leading-7 my-2 text-white text-center"
           dangerouslySetInnerHTML={{ __html: content }}
         ></div>
-        {btn2 && <SpartaButton content={btn2.text} onClick={btn2.onClick} type={"filled"} colorType="grey" />}
+        {btn2 && (
+          <SpartaButton content={btn2.text} onClick={btn2.onClick} type={"filled"} colorType="grey" size="small" />
+        )}
         <SpartaButton content={btn1.text} onClick={btn1.onClick} type={"filled"} colorType={type} size="small" />
       </div>
     </SpartaModal>

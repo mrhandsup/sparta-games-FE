@@ -6,12 +6,10 @@ import kakaoIcon from "../../assets/common/kakaoIcon.svg";
 import SpartaButton from "../../spartaDesignSystem/SpartaButton";
 import SpartaTextField from "../../spartaDesignSystem/SpartaTextField";
 import { useForm } from "react-hook-form";
-import { TUser, TUserInformationInputForm } from "../../types";
+import { TUserInformationInputForm } from "../../types";
 import { login } from "../../api/login";
 import { userStore } from "../../share/store/userStore";
 import { useMutation } from "@tanstack/react-query";
-import { jwtDecode } from "jwt-decode";
-import { getUserData } from "../../api/user";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 

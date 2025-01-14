@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { discordLogin, googleLogin, kakaoLogin, naverLogin } from "../api/login";
 import loading from "../assets/common/loading.gif";
+import { userStore } from "../share/store/userStore";
 
 const Redirect = () => {
   const { service } = useParams();
@@ -10,6 +11,7 @@ const Redirect = () => {
   const code = searchParams.get("code");
 
   const navigate = useNavigate();
+  const { setUser } = userStore();
 
   const switchFetchApiByService = (service: string) => {
     switch (service) {
@@ -49,6 +51,7 @@ const Redirect = () => {
       sessionStorage.setItem("accessToken", data.data?.access);
       sessionStorage.setItem("refreshToken", data.data?.refresh);
       //메인 페이지로 이동
+      setUser(data?.data.access);
       navigate("/");
     }
   }, [data, isError]);
