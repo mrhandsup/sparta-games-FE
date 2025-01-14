@@ -35,7 +35,7 @@ const Hero = () => {
     <>
       {/* 로그인 전 */}
       {!userData && (
-        <section className="flex items-center gap-[60px] w-full h-[475px] bg-gray-700 ">
+        <section className="flex items-center gap-[60px] w-full h-[475px] bg-gray-800 ">
           <img src={heroImage} />
           <div className="flex flex-col justify-center gap-4 items-center w-[50%] px-20">
             <h2 className="font-DungGeunMo text-heading-32 text-primary-500 ">★ Welcome to Sparta Games ★</h2>
@@ -60,7 +60,7 @@ const Hero = () => {
         </section>
       )}
       {/* 로그인 후 && 북마크 게임 x */}
-      {userData && data?.results.length == 0 && (
+      {userData && data?.results?.length == 0 && (
         <section className="flex flex-col items-center  w-full h-[475px]  text-white  justify-center relative gap-4 ">
           <div className="absolute bg-hero-image bg-cover bg-center opacity-20 justify-center w-full h-full"></div>
           <p className="font-DungGeunMo text-heading-28 text-primary-400 mb-24">[User Name]의 Game Pack</p>

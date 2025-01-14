@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 
 import titleImage from "../assets/titleImage.svg";
+import logo from "../assets/common/logo.svg";
 import balloon from "../assets/headerImage/balloon.svg";
 import CategoryModal from "./headerComponents/CategoryModal";
 
@@ -139,7 +140,7 @@ const Header = () => {
     <header className="flex justify-between items-center py-5 px-[30px] w-[100%] h-20 bg-gray-800 ">
       {/* 제목 */}
       <section className="flex items-center gap-4">
-        <img src="" alt="스파르타 게임 아이콘" className="w-12 h-12 rounded-full" />
+        <img src={logo} alt="스파르타 게임 아이콘" className="w-12 h-12 rounded-full" />
         <Link to={userData && userData.is_staff ? "/admin/dashboard" : "/"}>
           <h1>
             <img src={titleImage} />
