@@ -4,8 +4,8 @@ import ReviewRegisterModal from "./ReviewRegisterModal";
 import { userStore } from "../../../share/store/userStore";
 import { useQuery } from "@tanstack/react-query";
 import { TReviewResponse } from "../../../types";
-import { sparta_games, sparta_games_auth } from "../../../api/axios";
 import useGameDetail from "../../../hook/gameDetailHook/useGameDetail";
+import { getGameMyReview, getGameReviews } from "../../../api/review";
 
 const ReviewComents = ({ gamePk }: { gamePk: number }) => {
   const { userData } = userStore();
@@ -18,18 +18,12 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
 
   const { data: reviewData } = useQuery<TReviewResponse>({
     queryKey: ["reviews"],
-    queryFn: async () => {
-      const res = await sparta_games.get(`/games/api/list/${gamePk}/reviews/`);
-      return res.data;
-    },
+    queryFn: () => getGameReviews(gamePk),
   });
 
   const { data: myReviewData } = useQuery<TReviewResponse>({
     queryKey: ["reviews", "my_review", gamePk],
-    queryFn: async () => {
-      const res = await sparta_games_auth.get(`/games/api/list/${gamePk}/reviews/`);
-      return res.data;
-    },
+    queryFn: () => getGameMyReview(gamePk),
     enabled: !!userData, // userData가 있을 때만 요청 실행
   });
 

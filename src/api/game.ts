@@ -107,5 +107,12 @@ export const searchGame = async (keyword: string) => {
  * 게임 즐겨찾기
  */
 export const postBookMark = async (gamePk: number | undefined) => {
-  await sparta_games_auth.post(`/games/api/list/${gamePk}/like/`);
+  try {
+    const res = await sparta_games_auth.post(`/games/api/list/${gamePk}/like/`);
+    console.log(res);
+    return res.data.message;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };

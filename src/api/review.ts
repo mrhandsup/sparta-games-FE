@@ -1,5 +1,25 @@
-import { sparta_games_auth } from "./axios";
+import { sparta_games, sparta_games_auth } from "./axios";
 
+export const getGameReviews = async (gamePk: number) => {
+  try {
+    const res = await sparta_games.get(`/games/api/list/${gamePk}/reviews/`);
+    return res.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      window.alert(error.message);
+    }
+  }
+};
+export const getGameMyReview = async (gamePk: number) => {
+  try {
+    const res = await sparta_games_auth.get(`/games/api/list/${gamePk}/reviews/`);
+    return res.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      window.alert(error.message);
+    }
+  }
+};
 export const postGameReviews = async (
   gamePk: number,
   star: number | null,

@@ -78,7 +78,7 @@ const ReviewCard = ({ review, onClickMoreToggleHandler, isMyReview = false }: re
   };
 
   const onClickReviewDelete = async (reviewId: number | undefined) => {
-    const res = await deleteGameReview(reviewId, review?.game);
+    const res = await deleteGameReview(reviewId, review?.game_id);
 
     if (res?.status === 200) {
       setNoActionModalData(noActionData.reviewDelete);

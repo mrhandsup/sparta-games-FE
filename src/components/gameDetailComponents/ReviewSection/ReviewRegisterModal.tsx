@@ -67,7 +67,7 @@ const ReviewRegisterModal = ({ gamePk, more, onClickMoreToggleHandler, myReview 
     const difficulty = convertDifficulty(selectedDifficulty, false) as number;
     eventHandler.onSubmitReviewEditHandler(
       myReview?.id,
-      myReview?.game,
+      myReview?.game_id,
       difficulty,
       ratingValue,
       myReview?.star,
@@ -204,36 +204,19 @@ const ReviewRegisterModal = ({ gamePk, more, onClickMoreToggleHandler, myReview 
           </div>
         </Box>
       </Modal>
-      {review.registerSuccess && (
-        <SpartaReactionModal
-          isOpen={review.modalToggles[review.REVIEW_REGISTER_MODAL_ID]}
-          onClose={review.onClickModalToggleHandlers[review.REVIEW_REGISTER_MODAL_ID]}
-          modalId={review.REVIEW_REGISTER_MODAL_ID}
-          title={"리뷰등록 완료"}
-          content={"게임을 재밌게 즐겨주시고,<br/>소중한 의견 남겨주셔서 감사합니다!"}
-          btn1={{
-            text: "확인했습니다",
-            onClick: () => {
-              review.onClickModalToggleHandlers[review.REVIEW_REGISTER_MODAL_ID]();
-              review.setRegisterSuccess(false);
-            },
-          }}
-        />
-      )}
 
-      {review.editSuccess && (
+      {review.noActionModalData && (
         <SpartaReactionModal
-          isOpen={review.modalToggles[review.REVIEW_REGISTER_MODAL_ID]}
-          onClose={review.onClickModalToggleHandlers[review.REVIEW_REGISTER_MODAL_ID]}
-          modalId={review.REVIEW_REGISTER_MODAL_ID}
-          title={"리뷰수정 완료"}
-          content={"리뷰수정이 완료되었습니다."}
+          isOpen={review.modalToggles[review.NO_ACTION_MODAL_ID]}
+          onClose={review.onClickModalToggleHandlers[review.NO_ACTION_MODAL_ID]}
+          modalId={review.NO_ACTION_MODAL_ID}
+          title={review.noActionModalData.title || ""}
+          content={review.noActionModalData.content || ""}
           btn1={{
-            text: "확인했습니다",
-            onClick: () => {
-              review.onClickModalToggleHandlers[review.REVIEW_REGISTER_MODAL_ID]();
-            },
+            text: review.noActionModalData?.btn1?.text || "",
+            onClick: review.noActionModalData?.btn1?.onClick || (() => {}),
           }}
+          type={review.noActionModalData.type}
         />
       )}
     </>

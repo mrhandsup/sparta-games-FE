@@ -5,15 +5,41 @@ import { postGameReviews, putGameReview } from "../../api/review";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import useModalToggles from "../useModalToggles";
+import { TSpartaReactionModalProps } from "../../spartaDesignSystem/SpartaReactionModal";
 
 const useReview = () => {
   const { register, watch, setValue, formState, trigger, handleSubmit } = useForm<TReviewInputForm>();
 
-  const REVIEW_REGISTER_MODAL_ID = "reviewRegisterModal";
-  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([REVIEW_REGISTER_MODAL_ID]);
+  const NO_ACTION_MODAL_ID = "noActionModal";
 
-  const [registerSuccess, setRegisterSuccess] = useState(false);
-  const [editSuccess, setEditSuccess] = useState(false);
+  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([NO_ACTION_MODAL_ID]);
+
+  const noActionData: { [key: string]: Partial<TSpartaReactionModalProps> } = {
+    registerSuccess: {
+      title: "리뷰등록 완료",
+      content: "게임을 재밌게 즐겨주시고,<br/>소중한 의견 남겨주셔서 감사합니다!",
+      btn1: {
+        text: "확인했습니다",
+        onClick: () => {
+          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+        },
+      },
+    },
+    editSuccess: {
+      title: "리뷰수정 완료",
+      content: "리뷰수정이 완료되었습니다.",
+      btn1: {
+        text: "확인했습니다",
+        onClick: () => {
+          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+        },
+      },
+    },
+  };
+
+  const [noActionModalData, setNoActionModalData] = useState<Partial<TSpartaReactionModalProps>>(
+    noActionData.registerSuccess,
+  );
 
   const queryClient = useQueryClient();
 
@@ -32,8 +58,9 @@ const useReview = () => {
     onSuccess: (data, variables) => {
       const { gamePk } = variables;
       queryClient.invalidateQueries({ queryKey: ["reviews", "my_review", gamePk] });
-      onClickModalToggleHandlers[REVIEW_REGISTER_MODAL_ID]();
-      setRegisterSuccess(true);
+
+      setNoActionModalData(noActionData.registerSuccess);
+      onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
     },
   });
 
@@ -56,18 +83,16 @@ const useReview = () => {
   ) => {
     await putGameReview(reviewId, gamePk, difficulty, star, preStar, content);
     queryClient.invalidateQueries({ queryKey: ["reviews", "my_review", gamePk] });
-    onClickModalToggleHandlers[REVIEW_REGISTER_MODAL_ID]();
-    setEditSuccess(true);
+
+    setNoActionModalData(noActionData.editSuccess);
+    onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
   };
 
   const review = {
-    editSuccess,
-    setEditSuccess,
-    registerSuccess,
-    setRegisterSuccess,
     modalToggles,
+    noActionModalData,
     onClickModalToggleHandlers,
-    REVIEW_REGISTER_MODAL_ID,
+    NO_ACTION_MODAL_ID,
   };
 
   const form = {

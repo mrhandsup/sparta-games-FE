@@ -38,8 +38,8 @@ export type TReviewData = {
   is_visible: boolean;
   created_at: string;
   updated_at: string;
-  game: number;
-  author: number;
+  game_id: number;
+  author_id: number;
 };
 
 export type TReviewResponse = {
