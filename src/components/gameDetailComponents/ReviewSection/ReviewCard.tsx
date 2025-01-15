@@ -62,6 +62,19 @@ const ReviewCard = ({ review, onClickMoreToggleHandler, isMyReview = false }: re
       },
       type: "alert",
     },
+
+    reactionFail: {
+      title: "오류",
+      content: "로그인 후에 시도해주세요.",
+      btn1: {
+        text: "확인했습니다.",
+        onClick: () => {
+          queryClient.invalidateQueries({ queryKey: ["reviews"] });
+          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+        },
+      },
+      type: "error",
+    },
   };
 
   const [noActionModalData, setNoActionModalData] = useState<Partial<TSpartaReactionModalProps>>(
@@ -83,9 +96,15 @@ const ReviewCard = ({ review, onClickMoreToggleHandler, isMyReview = false }: re
   };
 
   const onClickReaction = async (reviewId: number | undefined, action: "like" | "dislike") => {
-    await postReviewLike(reviewId, action);
+    const res = await postReviewLike(reviewId, action);
 
     queryClient.invalidateQueries({ queryKey: ["reviews"] });
+
+    console.log(res);
+    if (res?.status === 401) {
+      setNoActionModalData(noActionData.reactionFail);
+      onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+    }
   };
 
   const convertDifficulty = (difficulty: number | undefined) => {
