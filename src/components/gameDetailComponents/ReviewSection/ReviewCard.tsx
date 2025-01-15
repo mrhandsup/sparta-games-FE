@@ -13,8 +13,6 @@ import { TReviewData } from "../../../types";
 
 import { formatDate } from "../../../util/validation";
 
-import DOMPurify from "dompurify";
-
 import reviewDetailImage from "../../../assets/gameDetail/ReviewDetail.svg";
 import reviewEditImage from "../../../assets/gameDetail/ReviewEdit.svg";
 import reviewDeleteImage from "../../../assets/gameDetail/ReviewDelete.svg";
@@ -30,8 +28,6 @@ const ReviewCard = ({ review, onClickMoreToggleHandler, isMyReview = false }: re
   const NO_ACTION_MODAL_ID = "noActionModal";
   const { modalToggles, onClickModalToggleHandlers } = useModalToggles([NO_ACTION_MODAL_ID]);
 
-  const sanitizedContent = DOMPurify.sanitize(review?.content || "");
-
   const queryClient = useQueryClient();
 
   const noActionData: { [key: string]: Partial<TSpartaReactionModalProps> } = {
@@ -41,8 +37,8 @@ const ReviewCard = ({ review, onClickMoreToggleHandler, isMyReview = false }: re
       btn1: {
         text: "확인했습니다.",
         onClick: () => {
+          queryClient.invalidateQueries({ queryKey: ["reviews"] });
           onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-          window.location.reload();
         },
       },
       type: "error",
@@ -143,10 +139,7 @@ const ReviewCard = ({ review, onClickMoreToggleHandler, isMyReview = false }: re
             </div>
           </div>
         </div>
-        <div
-          className="w-full h-[72px] text-body-14 line-clamp-4 text-ellipsis"
-          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(sanitizedContent) }}
-        />
+        <div className="w-full h-[72px] text-body-14 line-clamp-4 text-ellipsis">{review?.content}</div>
         <div className="flex justify-between items-end">
           <p className="text-[12px] leading-4 text-gray-300">{formatDate(review?.created_at)}</p>
           <div className="flex items-center gap-1 text-[11px] font-bold">

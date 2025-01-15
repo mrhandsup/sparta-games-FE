@@ -44,9 +44,7 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
           </div>
         </div>
         <div className="grid grid-cols-3 gap-5">
-          {/* 로그인한 상태 */}
           {userData ? (
-            // 내가 쓴 리뷰가 없을 떄
             !myReview ? (
               <>
                 <div
@@ -58,7 +56,6 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
                 </div>
               </>
             ) : (
-              // 내가 쓴 리뷰가 있을 때
               <ReviewCard
                 onClickMoreToggleHandler={onClickMoreToggleHandler}
                 review={myReview}
@@ -66,7 +63,6 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
               />
             )
           ) : (
-            // 로그인 하지 않은 상태
             <div className="flex items-center justify-center gap-6 px-11 border border-solid border-alert-default hover:border-alert-hover bg-gray-800 rounded-xl">
               <img src={reviewRegister} />
               <p className="text-white font-DungGeunMo text-2xl text-center leading-none">

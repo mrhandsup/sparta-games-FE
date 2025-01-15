@@ -103,7 +103,6 @@ const GamePlay = ({ gamePk, title, makerName, gamePath }: Props) => {
   const bookMarkedGames = data?.results.all_games;
   const currentBookMarkedGame = bookMarkedGames?.some((game: TGameData) => game.pk === gamePk);
 
-  console.log(bookMarkedGames, currentBookMarkedGame);
   const bookMarkMutation = useMutation({
     mutationFn: () => postBookMark(gamePk),
 
@@ -145,6 +144,7 @@ const GamePlay = ({ gamePk, title, makerName, gamePath }: Props) => {
 
   return (
     <>
+      {/* TODO: Mui 스켈레톤 적용 */}
       {isLoading ? (
         <div className="w-full h-[500px] flex justify-center items-center"></div>
       ) : (

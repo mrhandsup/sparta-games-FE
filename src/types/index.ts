@@ -52,6 +52,12 @@ export type TReviewResponse = {
   };
 };
 
+export type ReviewFormData = {
+  title: string;
+  content: string;
+  rating: number;
+};
+
 export type TUserInformationInputForm = {
   email: string;
   nickname: string;

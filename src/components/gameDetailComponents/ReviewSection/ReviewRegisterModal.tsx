@@ -41,6 +41,12 @@ const ReviewRegisterModal = ({ gamePk, more, onClickMoreToggleHandler, myReview 
     setIsHovered(false);
   };
 
+  const resetForm = () => {
+    form.setValue("content", "");
+    setRatingValue(null);
+    setSelectedDifficulty("");
+  };
+
   useEffect(() => {
     if (myReview) {
       const convertedDifficulty = convertDifficulty(myReview?.difficulty, true) as string;
@@ -50,6 +56,8 @@ const ReviewRegisterModal = ({ gamePk, more, onClickMoreToggleHandler, myReview 
       form.setValue("content", myReview?.content), { shouldValidate: true };
 
       form.trigger();
+    } else {
+      resetForm();
     }
   }, [myReview]);
 
@@ -168,7 +176,7 @@ const ReviewRegisterModal = ({ gamePk, more, onClickMoreToggleHandler, myReview 
 
             <SpartaButton
               content={
-                editorContent.length > 300
+                editorContent?.length > 300
                   ? "리뷰는 300자 이내로 입력바랍니다."
                   : !form.formState.isValid || ratingValue === null || selectedDifficulty === ""
                   ? "세가지 모두 입력해주세요!"
