@@ -111,6 +111,10 @@ export type TListResponse = {
 
 export type TGamePlayData = {
   id: number;
+  category: {
+    pk: number;
+    name: string;
+  }[];
   maker_name: string;
   title: string;
   is_liked: boolean;

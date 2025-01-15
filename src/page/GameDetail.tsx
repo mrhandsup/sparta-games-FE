@@ -18,6 +18,8 @@ const GameDetail = () => {
     queryFn: () => getGameDetail(gameDetailId),
   });
 
+  const gameCategory = gamePlayData?.category[0].name;
+
   return (
     <>
       {isLoading ? (
@@ -26,11 +28,10 @@ const GameDetail = () => {
         </div>
       ) : (
         <main className="mx-[130px]">
-          {/* 데이터를 가져왔을 때 게임에 맞는 카테고리로 변경 */}
           <div className="inline-block mt-10 font-DungGeunMo text-[24px] text-gray-300">
             <Link to={"/category?category=Action"} className="flex gap-3">
               <CaretLeft />
-              <p>Action</p>
+              <p>{gameCategory}</p>
             </Link>
           </div>
           <GamePlaySection gamePlayData={gamePlayData} />
