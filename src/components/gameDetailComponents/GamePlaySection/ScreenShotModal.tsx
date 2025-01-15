@@ -38,12 +38,12 @@ const ScreenShotModal = ({ screenShotList, swiperRef }: Props) => {
         }
       };
 
-      swiperInstance.slides.forEach((slide: HTMLElement) => {
+      swiperInstance.slides?.forEach((slide: HTMLElement) => {
         slide.addEventListener("click", onClickSlide);
       });
 
       return () => {
-        swiperInstance.slides.forEach((slide: HTMLElement) => {
+        swiperInstance.slides?.forEach((slide: HTMLElement) => {
           slide.removeEventListener("click", onClickSlide);
         });
       };
