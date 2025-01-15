@@ -98,6 +98,7 @@ const GamePlay = ({ gamePk, title, makerName, gamePath }: Props) => {
   const { data, isLoading } = useQuery<TListResponse>({
     queryKey: ["isBookMarked"],
     queryFn: () => getMyBookmarkList(userData?.user_pk),
+    enabled: !!userData,
   });
 
   const bookMarkedGames = data?.results.all_games;

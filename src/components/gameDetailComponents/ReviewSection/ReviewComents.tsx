@@ -24,7 +24,7 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
   const { data: myReviewData } = useQuery<TReviewResponse>({
     queryKey: ["reviews", "my_review", gamePk],
     queryFn: () => getGameMyReview(gamePk),
-    enabled: !!userData, // userData가 있을 때만 요청 실행
+    enabled: !!userData,
   });
 
   const allReviewData = reviewData?.results.all_reviews;
