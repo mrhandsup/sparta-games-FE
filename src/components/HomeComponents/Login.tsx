@@ -6,13 +6,12 @@ import kakaoIcon from "../../assets/common/kakaoIcon.svg";
 import SpartaButton from "../../spartaDesignSystem/SpartaButton";
 import SpartaTextField from "../../spartaDesignSystem/SpartaTextField";
 import { useForm } from "react-hook-form";
-import { TUser, TUserInformationInputForm } from "../../types";
+import { TUserInformationInputForm } from "../../types";
 import { login } from "../../api/login";
 import { userStore } from "../../share/store/userStore";
 import { useMutation } from "@tanstack/react-query";
-import { jwtDecode } from "jwt-decode";
-import { getUserData } from "../../api/user";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   onClose: () => void;
@@ -34,6 +33,8 @@ function Login({ onClose }: Props) {
 
   const { setUser } = userStore();
 
+  const navigate = useNavigate();
+
   const loginMutation = useMutation({
     mutationFn: ({ email, password }: { email: string; password: string }) => login(email, password),
     onSuccess: async (data) => {
@@ -46,6 +47,7 @@ function Login({ onClose }: Props) {
         window.location.href = "/admin/dashboard";
       } else {
         onClose();
+        window.location.href = "/";
       }
     },
     onError: () => {
@@ -161,7 +163,16 @@ function Login({ onClose }: Props) {
               <div className="text-white text-right text underline underline-offset-1 mb-1 cursor-pointer">
                 비밀번호 찾기
               </div>
-              <SpartaButton content="회원가입" onClick={() => {}} type="filled" colorType="grey" size="medium" />
+              <SpartaButton
+                content="회원가입"
+                onClick={() => {
+                  navigate(`/signup`);
+                  onClose();
+                }}
+                type="filled"
+                colorType="grey"
+                size="medium"
+              />
               <SpartaButton
                 content={loginMutation.isPending ? "로그인 중..." : "로그인"}
                 type="filled"

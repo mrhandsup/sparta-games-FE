@@ -59,9 +59,11 @@ export type TUserInformationInputForm = {
   password_check: string;
   new_password: string;
   new_password_check: string;
-  game_category: string[];
+  game_category: string;
   user_tech: string;
   is_maker: boolean;
+  email_code?: string;
+  login_type: string;
 };
 
 export type TUser = {
