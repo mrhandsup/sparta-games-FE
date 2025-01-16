@@ -113,3 +113,16 @@ export const getUserGamePackList = async (userId: number) => {
     throw error;
   }
 };
+
+/**
+ * 회원 탈퇴
+ */
+export const leaveUser = async (userId: number) => {
+  try {
+    const res = await sparta_games_auth.delete(`/users/api/${userId}/`);
+    return res.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};

@@ -1,71 +1,75 @@
-import React from "react";
+import React, { useState } from "react";
 import log from "../../../assets/Log.svg";
-import { useForm } from "react-hook-form";
-import { TUserInformationInputForm } from "../../../types";
 import { userStore } from "../../../share/store/userStore";
-import { updatePassword } from "../../../api/user";
-import { useMutation } from "@tanstack/react-query";
+import useModalToggles from "../../../hook/useModalToggles";
+import SpartaModal from "../../../spartaDesignSystem/SpartaModal";
+import AccountModal from "./AccountModal";
+import SpartaReactionModal, { TSpartaReactionModalProps } from "../../../spartaDesignSystem/SpartaReactionModal";
+import { useForm } from "react-hook-form";
+import SpartaButton from "../../../spartaDesignSystem/SpartaButton";
 
 type TAccountProps = {};
 
 const Account = (props: TAccountProps) => {
   //* Hooks
-  const { userData } = userStore();
-  const [isUpdate, setIsUpdate] = React.useState<boolean>(false);
+  const { userData, logout } = userStore();
 
-  const { register, handleSubmit, watch, reset } = useForm<Partial<TUserInformationInputForm>>({
-    mode: "onChange",
-    defaultValues: {
-      email: userData?.email,
-      password: "",
+  //* 모달
+  const CHANGE_PASSWORD_MODAL_ID = "changePasswordModal";
+  const WITHDRAWAL_MODAL_ID = "withdrawalModal";
+  const NO_ACTION_MODAL_ID = "noActionModal";
+  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([
+    CHANGE_PASSWORD_MODAL_ID,
+    NO_ACTION_MODAL_ID,
+    WITHDRAWAL_MODAL_ID,
+  ]);
+
+  // 단순 모달 데이터 config
+  const noActionData: { [key: string]: Partial<TSpartaReactionModalProps> } = {
+    successChangePw: {
+      title: "비밀번호 변경 완료",
+      content: "비밀번호가 성공적으로 변경되었습니다.",
+      btn1: {
+        text: "확인했습니다",
+        onClick: () => {
+          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+        },
+      },
+      type: "alert",
     },
-  });
-  // 비밀번호 값 감시
-  const password = watch("new_password");
-
-  // 비밀번호 변경 mutation
-  const passwordMutation = useMutation({
-    mutationFn: ({
-      userId,
-      password,
-      new_password,
-      new_password_check,
-    }: {
-      userId: number;
-      password: string;
-      new_password: string;
-      new_password_check: string;
-    }) => updatePassword(userId, password, new_password, new_password_check),
-    onSuccess: () => {
-      setIsUpdate(false);
-      reset({ password: "", new_password: "", new_password_check: "" }); // 폼 초기화
-      // TODO: 성공 토스트 메시지 표시
+    successWithdrawal: {
+      title: "회원 탈퇴 완료",
+      content: "회원 탈퇴가 완료되었습니다.",
+      btn1: {
+        text: "확인했습니다",
+        onClick: () => {
+          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+          logout();
+        },
+      },
+      type: "alert",
     },
-    onError: (error) => {
-      // TODO: 에러 토스트 메시지 표시
-      console.error(error);
-    },
-  });
-
-  const onSubmit = async (data: Partial<TUserInformationInputForm>) => {
-    if (!isUpdate || !userData?.user_pk) return;
-
-    passwordMutation.mutate({
-      userId: userData.user_pk,
-      password: data.password!,
-      new_password: data.new_password!,
-      new_password_check: data.new_password_check!,
-    });
   };
 
-  const handleEditClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setIsUpdate(true);
+  // 단순 모달 데이터
+  const [noActionModalData, setNoActionModalData] = useState<Partial<TSpartaReactionModalProps>>(
+    noActionData.successChangePw,
+  );
+
+  const { register, watch } = useForm();
+
+  const withdrawal = watch("withdrawal");
+
+  const handleDeleteClick = () => {
+    onClickModalToggleHandlers[WITHDRAWAL_MODAL_ID]();
+    setNoActionModalData(noActionData.successWithdrawal);
+    onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
   };
 
-  const handleDeleteClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    // TODO: 회원 탈퇴 모달에 붙이기
+  const onSuccessChangePassword = () => {
+    onClickModalToggleHandlers[CHANGE_PASSWORD_MODAL_ID]();
+    setNoActionModalData(noActionData.successChangePw);
+    onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
   };
 
   const socialLoginConfig = {
@@ -79,7 +83,7 @@ const Account = (props: TAccountProps) => {
 
   return (
     <div className="bg-gray-800 rounded-xl px-7 py-5 flex flex-col gap-4 justify-start items-start">
-      <form onSubmit={handleSubmit(onSubmit)} className="w-full flex flex-col gap-5">
+      <div className="w-full flex flex-col gap-5">
         <div className="flex justify-between w-full">
           <div className="flex items-center gap-4">
             <img src={log} alt="로고" />
@@ -87,16 +91,11 @@ const Account = (props: TAccountProps) => {
           </div>
           {userData?.login_type == "DEFAULT" && (
             <button
-              type="submit"
-              disabled={passwordMutation.isPending || userData?.login_type !== "DEFAULT"}
-              className={`${isUpdate ? "border-primary-500" : "border-gray-400"} border-2 w-[20%] h-10 rounded-md ${
-                isUpdate ? "text-primary-500" : "text-gray-400"
-              } font-bold hover:bg-gray-700 transition-colors ${
-                passwordMutation.isPending ? "opacity-50 cursor-not-allowed" : ""
-              }`}
-              onClick={!isUpdate ? handleEditClick : undefined}
+              disabled={userData?.login_type !== "DEFAULT"}
+              className={`border-primary-500 border-2 w-[20%] h-10 rounded-md text-primary-500 font-bold hover:bg-gray-700 transition-colors `}
+              onClick={() => onClickModalToggleHandlers[CHANGE_PASSWORD_MODAL_ID]()}
             >
-              {passwordMutation.isPending ? "처리중" : isUpdate ? "저장하기" : "수정하기"}
+              수정하기
             </button>
           )}
         </div>
@@ -104,7 +103,7 @@ const Account = (props: TAccountProps) => {
           <div className="flex justify-between items-center">
             <label className="text-gray-100">아이디</label>
             <input
-              {...register("email")}
+              value={userData?.email}
               disabled
               placeholder="spartagames@sparta.com"
               className={`py-3 px-4 bg-gray-700 border border-solid rounded-md w-[50%] text-gray-200`}
@@ -116,7 +115,6 @@ const Account = (props: TAccountProps) => {
           <div className="flex justify-between items-center">
             <label className="text-gray-100">현재 비밀번호</label>
             <input
-              {...register("password")}
               disabled
               type="password"
               placeholder={
@@ -126,10 +124,76 @@ const Account = (props: TAccountProps) => {
             />
           </div>
         </div>
-      </form>
-      <div className="flex w-full justify-end text-red-500 underline cursor-pointer" onClick={handleDeleteClick}>
+      </div>
+      <div
+        className="flex w-full justify-end text-red-500 underline cursor-pointer"
+        onClick={() => onClickModalToggleHandlers[WITHDRAWAL_MODAL_ID]()}
+      >
         <p>회원탈퇴</p>
       </div>
+      <SpartaModal
+        modalId={CHANGE_PASSWORD_MODAL_ID}
+        isOpen={modalToggles[CHANGE_PASSWORD_MODAL_ID]}
+        onClose={onClickModalToggleHandlers[CHANGE_PASSWORD_MODAL_ID]}
+        closeOnClickOutside={false}
+        title="비밀번호 변경"
+        type="primary"
+      >
+        <AccountModal onSuccess={onSuccessChangePassword} />
+      </SpartaModal>
+      <SpartaModal
+        modalId={WITHDRAWAL_MODAL_ID}
+        isOpen={modalToggles[WITHDRAWAL_MODAL_ID]}
+        onClose={onClickModalToggleHandlers[WITHDRAWAL_MODAL_ID]}
+        closeOnClickOutside={false}
+        title="정말 회원을 탈퇴하시겠습니까?"
+        type="error"
+      >
+        <>
+          <div className="text-white flex flex-col gap-2 py-4">
+            <li>회원탈퇴 시 연동되어있던 정보는 전부 삭제됩니다.</li>
+            <li>다만 만들었던 게임은 본 서비스에서 계속해서 사용될 수 있어요</li>
+            <li>원하지 않을 경우, 게임 삭제를 먼저 진행해주신 후 회원탈퇴를 진행해주시기 바랍니다. </li>
+            <li>
+              삭제를 희망하신다면, <span className="text-error-default">‘안녕 스파르타게임즈!</span>’ 라고 입력해주시기
+              바랍니다.
+            </li>
+          </div>
+          <input
+            className="w-full h-10 rounded-md border border-solid bg-transparent border-gray-200 p-3 mt-5 mb-3 text-gray-200"
+            placeholder="안녕 스파르타게임즈!"
+            {...register("withdrawal")}
+          />
+          <SpartaButton
+            type="filled"
+            size="small"
+            colorType="error"
+            content="회원탈퇴"
+            onClick={handleDeleteClick}
+            disabled={withdrawal !== "안녕 스파르타게임즈!"}
+          />
+        </>
+      </SpartaModal>
+      {noActionModalData && (
+        <SpartaReactionModal
+          isOpen={modalToggles[NO_ACTION_MODAL_ID]}
+          onClose={onClickModalToggleHandlers[NO_ACTION_MODAL_ID]}
+          modalId={NO_ACTION_MODAL_ID}
+          title={noActionModalData.title || ""}
+          content={noActionModalData.content || ""}
+          btn1={{
+            text: noActionModalData?.btn1?.text || "",
+            onClick: noActionModalData?.btn1?.onClick || (() => {}),
+          }}
+          btn2={
+            noActionModalData?.btn2 && {
+              text: noActionModalData?.btn2?.text || "",
+              onClick: noActionModalData?.btn2?.onClick || (() => {}),
+            }
+          }
+          type={noActionModalData.type}
+        />
+      )}
     </div>
   );
 };

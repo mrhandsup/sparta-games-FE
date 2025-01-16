@@ -26,8 +26,7 @@ const Hero = () => {
 
   // 모달
   const LOGIN_MODAL_ID = "loginModal";
-  const LOG_OUT_MODAL_ID = "logOutModal";
-  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([LOGIN_MODAL_ID, LOG_OUT_MODAL_ID]);
+  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([LOGIN_MODAL_ID]);
 
   const swiperRef = useRef(null);
 
