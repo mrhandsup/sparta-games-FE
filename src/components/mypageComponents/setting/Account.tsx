@@ -20,7 +20,6 @@ const Account = (props: TAccountProps) => {
       password: "",
     },
   });
-
   // 비밀번호 값 감시
   const password = watch("new_password");
 
