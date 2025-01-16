@@ -4,27 +4,26 @@ import share from "../../../assets/gameDetail/linkshare.svg";
 import bookmark from "../../../assets/gameDetail/bookmark.svg";
 import bookmarkfill from "../../../assets/gameDetail/bookmarkfill.svg";
 import randomgame from "../../../assets/gameDetail/randomgame.svg";
-import { useMutation } from "@tanstack/react-query";
-import { postBookMark } from "../../../api/game";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getMyBookmarkList, postBookMark } from "../../../api/game";
 import SpartaReactionModal, { TSpartaReactionModalProps } from "../../../spartaDesignSystem/SpartaReactionModal";
 import useModalToggles from "../../../hook/useModalToggles";
 import { AxiosError } from "axios";
+import { userStore } from "../../../share/store/userStore";
+import { TGameData, TListResponse } from "../../../types";
 
 type Props = {
   gamePk?: number;
   title?: string;
-  makerNmae?: string;
+  makerName?: string;
+  isLiked?: boolean;
   gamePath?: string;
 };
 
-const GamePlay = ({ gamePk, title, makerNmae, gamePath }: Props) => {
+const GamePlay = ({ gamePk, title, makerName, gamePath }: Props) => {
   const BOOK_MARK_MODAL_ID = "bookMarkModal";
   const NO_ACTION_MODAL_ID = "noActionModal";
-
   const { modalToggles, onClickModalToggleHandlers } = useModalToggles([BOOK_MARK_MODAL_ID, NO_ACTION_MODAL_ID]);
-
-  //TODO: 즐겨찾기 상태값 false가 아닌 서버에서 받아온 데이터에 따라 초기값 설정
-  const [isBookmarked, setIsBookmarked] = useState(false);
 
   const noActionData: { [key: string]: Partial<TSpartaReactionModalProps> } = {
     completeBookMark: {
@@ -92,14 +91,29 @@ const GamePlay = ({ gamePk, title, makerNmae, gamePath }: Props) => {
     fullScreenRef.current?.requestFullscreen();
   };
 
+  const queryClient = useQueryClient();
+
+  const { userData } = userStore();
+
+  const { data, isLoading } = useQuery<TListResponse>({
+    queryKey: ["isBookMarked"],
+    queryFn: () => getMyBookmarkList(userData?.user_pk),
+    enabled: !!userData,
+  });
+
+  const bookMarkedGames = data?.results.all_games;
+  const currentBookMarkedGame = bookMarkedGames?.some((game: TGameData) => game.pk === gamePk);
+
   const bookMarkMutation = useMutation({
     mutationFn: () => postBookMark(gamePk),
+
     onSuccess: () => {
-      setIsBookmarked((prev) => {
-        const updatedBookmark = !prev;
-        setNoActionModalData(updatedBookmark ? noActionData.completeBookMark : noActionData.cancelBookMark);
-        return updatedBookmark;
-      });
+      queryClient.invalidateQueries({ queryKey: ["isBookMarked"] });
+
+      const updatedBookMarkedGames = queryClient.getQueryData<TListResponse>(["isBookMarked"])?.results.all_games;
+      const updatedCurrentBookMarkedGame = updatedBookMarkedGames?.some((game: TGameData) => game.pk === gamePk);
+
+      setNoActionModalData(!updatedCurrentBookMarkedGame ? noActionData.completeBookMark : noActionData.cancelBookMark);
       onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
     },
 
@@ -130,43 +144,51 @@ const GamePlay = ({ gamePk, title, makerNmae, gamePath }: Props) => {
   };
 
   return (
-    <div className="w-[880px]">
-      <div className="flex flex-col gap-2 font-DungGeunMo text-[32px] text-white">
-        <p>[{title}]</p>
-        <div className="flex justify-between">
-          <p className="text-gray-100 text-[28px]">[{makerNmae}]</p>
-          <div className="flex gap-6">
-            <img
-              src={isBookmarked ? bookmarkfill : bookmark}
-              alt="즐겨찾기"
-              onClick={onClickBookMark}
-              className="cursor-pointer"
-            />
-            <img src={share} alt="링크 공유" onClick={onClickLinkCopy} className="cursor-pointer" />
-            <img src={randomgame} alt="랜덤 게임 추천" onClick={onClickRandomGamePick} className="cursor-pointer" />
-            <img src={expand} onClick={onClickFullscreen} alt="전체화면" className="cursor-pointer" />
+    <>
+      {/* TODO: Mui 스켈레톤 적용 */}
+      {isLoading ? (
+        <div className="w-full h-[500px] flex justify-center items-center"></div>
+      ) : (
+        <div className="w-[880px]">
+          <div className="flex flex-col gap-2 font-DungGeunMo text-[32px] text-white">
+            <p>[{title}]</p>
+            <div className="flex justify-between">
+              <p className="text-gray-100 text-[28px]">[{makerName}]</p>
+              <div className="flex gap-6">
+                <img
+                  src={currentBookMarkedGame ? bookmarkfill : bookmark}
+                  alt="즐겨찾기"
+                  onClick={onClickBookMark}
+                  className="cursor-pointer"
+                />
+                <img src={share} alt="링크 공유" onClick={onClickLinkCopy} className="cursor-pointer" />
+                <img src={randomgame} alt="랜덤 게임 추천" onClick={onClickRandomGamePick} className="cursor-pointer" />
+                <img src={expand} onClick={onClickFullscreen} alt="전체화면" className="cursor-pointer" />
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      <div className="mt-5 w-full h-[560px] bg-gray-400 rounded-xl" ref={fullScreenRef}>
-        <iframe src={gameUrl} width="100%" height="100%" className="rounded-xl" />
-      </div>
 
-      {noActionModalData && (
-        <SpartaReactionModal
-          isOpen={modalToggles[NO_ACTION_MODAL_ID]}
-          onClose={onClickModalToggleHandlers[NO_ACTION_MODAL_ID]}
-          modalId={NO_ACTION_MODAL_ID}
-          title={noActionModalData.title || ""}
-          content={noActionModalData.content || ""}
-          btn1={{
-            text: noActionModalData?.btn1?.text || "",
-            onClick: noActionModalData?.btn1?.onClick || (() => {}),
-          }}
-          type={noActionModalData.type}
-        />
+          <div className="mt-5 w-full h-[560px] bg-gray-400 rounded-xl" ref={fullScreenRef}>
+            <iframe src={gameUrl} width="100%" height="100%" className="rounded-xl" />
+          </div>
+
+          {noActionModalData && (
+            <SpartaReactionModal
+              isOpen={modalToggles[NO_ACTION_MODAL_ID]}
+              onClose={onClickModalToggleHandlers[NO_ACTION_MODAL_ID]}
+              modalId={NO_ACTION_MODAL_ID}
+              title={noActionModalData.title || ""}
+              content={noActionModalData.content || ""}
+              btn1={{
+                text: noActionModalData?.btn1?.text || "",
+                onClick: noActionModalData?.btn1?.onClick || (() => {}),
+              }}
+              type={noActionModalData.type}
+            />
+          )}
+        </div>
       )}
-    </div>
+    </>
   );
 };
 

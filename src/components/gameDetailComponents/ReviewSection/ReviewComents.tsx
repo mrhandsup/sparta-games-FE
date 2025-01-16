@@ -24,7 +24,7 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
   const { data: myReviewData } = useQuery<TReviewResponse>({
     queryKey: ["reviews", "my_review", gamePk],
     queryFn: () => getGameMyReview(gamePk),
-    enabled: !!userData, // userData가 있을 때만 요청 실행
+    enabled: !!userData,
   });
 
   const allReviewData = reviewData?.results.all_reviews;
@@ -44,21 +44,18 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
           </div>
         </div>
         <div className="grid grid-cols-3 gap-5">
-          {/* 로그인한 상태 */}
           {userData ? (
-            // 내가 쓴 리뷰가 없을 떄
             !myReview ? (
               <>
                 <div
                   onClick={onClickModalOpen}
-                  className="flex items-center justify-center gap-6 border border-solid border-primary-500 bg-gray-800 rounded-xl cursor-pointer"
+                  className="flex items-center justify-center gap-6 h-[189px] border border-solid border-primary-500 bg-gray-800 rounded-xl cursor-pointer"
                 >
                   <img src={reviewRegister} />
                   <p className="text-white font-DungGeunMo text-2xl">내 리뷰 등록하기</p>
                 </div>
               </>
             ) : (
-              // 내가 쓴 리뷰가 있을 때
               <ReviewCard
                 onClickMoreToggleHandler={onClickMoreToggleHandler}
                 review={myReview}
@@ -66,8 +63,7 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
               />
             )
           ) : (
-            // 로그인 하지 않은 상태
-            <div className="flex items-center justify-center gap-6 px-11 border border-solid border-alert-default hover:border-alert-hover bg-gray-800 rounded-xl">
+            <div className="flex items-center justify-center gap-6 px-11 h-[189px] border border-solid border-alert-default hover:border-alert-hover bg-gray-800 rounded-xl">
               <img src={reviewRegister} />
               <p className="text-white font-DungGeunMo text-2xl text-center leading-none">
                 비회원은 리뷰등록이 불가능합니다.

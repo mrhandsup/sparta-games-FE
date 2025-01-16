@@ -15,7 +15,7 @@ type Props = {
 };
 
 const GameMedia = ({ youtubeUrl, screenShot }: Props) => {
-  const videoId = youtubeUrl?.split("v=")[1]?.split("&")[0];
+  const videoId = youtubeUrl ? youtubeUrl?.split("v=")[1].split("&")[0] : null;
   const embedUrl = `https://www.youtube.com/embed/${videoId}`;
 
   const swiperRef = useRef(null);

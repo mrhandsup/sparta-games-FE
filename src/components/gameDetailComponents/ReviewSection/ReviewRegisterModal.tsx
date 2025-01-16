@@ -3,10 +3,6 @@ import { useState, useEffect } from "react";
 import { Modal, Box } from "@mui/material";
 import Rating from "@mui/material/Rating";
 
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import "./reactQuillStyle.css";
-
 import useReview from "../../../hook/gameDetailHook/useReview";
 
 import DifficultyChip from "../../common/chipComponents/DifficultyChip";
@@ -17,6 +13,7 @@ import fillStar from "../../../assets/fillStar.svg";
 import grayStar from "../../../assets/grayStar.svg";
 import SpartaReactionModal from "../../../spartaDesignSystem/SpartaReactionModal";
 import { TReviewData } from "../../../types";
+import SpartaButton from "../../../spartaDesignSystem/SpartaButton";
 
 type Props = {
   gamePk: number;
@@ -44,6 +41,12 @@ const ReviewRegisterModal = ({ gamePk, more, onClickMoreToggleHandler, myReview 
     setIsHovered(false);
   };
 
+  const resetForm = () => {
+    form.setValue("content", "");
+    setRatingValue(null);
+    setSelectedDifficulty("");
+  };
+
   useEffect(() => {
     if (myReview) {
       const convertedDifficulty = convertDifficulty(myReview?.difficulty, true) as string;
@@ -53,6 +56,8 @@ const ReviewRegisterModal = ({ gamePk, more, onClickMoreToggleHandler, myReview 
       form.setValue("content", myReview?.content), { shouldValidate: true };
 
       form.trigger();
+    } else {
+      resetForm();
     }
   }, [myReview]);
 
@@ -101,23 +106,6 @@ const ReviewRegisterModal = ({ gamePk, more, onClickMoreToggleHandler, myReview 
           return 2;
       }
     }
-  };
-
-  useEffect(() => {
-    form.register("content", {
-      required: "필수",
-      minLength: 3,
-    });
-  }, [form.register]);
-
-  const onChangeContent = (editorState: string) => {
-    // react-quill 내용 작성 후 다 지울 경우 생기는 <p></br></p> 부분 제거
-    const plainText = editorState.replace(/<(.|\n)*?>/g, "").trim();
-
-    // 내용이 없을 경우 빈 문자열로 설정해서 isValid가 false가 되도록 함
-    const cleanedContent = plainText === "" ? "" : editorState;
-
-    form.setValue("content", cleanedContent, { shouldValidate: true });
   };
 
   return (
@@ -176,31 +164,30 @@ const ReviewRegisterModal = ({ gamePk, more, onClickMoreToggleHandler, myReview 
                 <span className="text-sm font-DungGeunMo text-white">(최대 300자)</span>
               </div>
 
-              <ReactQuill
-                theme="snow"
-                value={editorContent}
-                onChange={onChangeContent}
-                modules={{
-                  toolbar: false,
-                }}
-                placeholder="소중한 리뷰 감사합니다 :)"
-                className="p-2 w-full h-full"
-              />
+              <div className="border border-solid border-gray-100 p-2 w-full h-52 rounded-lg">
+                <textarea
+                  placeholder="소중한 리뷰 감사합니다 :)"
+                  {...form.register("content", { required: true, maxLength: 300 })}
+                  {...form.register("content", { required: "필수" })}
+                  className="p-2 w-full h-full text-lg leading-tight text-white bg-transparent outline-none resize-none"
+                />
+              </div>
             </div>
 
-            <button
+            <SpartaButton
+              content={
+                editorContent?.length > 300
+                  ? "리뷰는 300자 이내로 입력바랍니다."
+                  : !form.formState.isValid || ratingValue === null || selectedDifficulty === ""
+                  ? "세가지 모두 입력해주세요!"
+                  : "리뷰를 등록합니다"
+              }
               onClick={myReview ? onClickReviewEditHandler : onClickReviewRegisterHandler}
-              disabled={!form.formState.isValid || ratingValue === null || selectedDifficulty === ""}
-              className={`w-full h-12 text-title-18 rounded-md ${
-                !form.formState.isValid || ratingValue === null || selectedDifficulty === ""
-                  ? "bg-gray-100"
-                  : "bg-primary-500"
-              }`}
-            >
-              {!form.formState.isValid || ratingValue === null || selectedDifficulty === ""
-                ? "세가지 모두 입력해주세요!"
-                : "리뷰를 등록합니다"}
-            </button>
+              type={"filled"}
+              colorType={
+                !form.formState.isValid || ratingValue === null || selectedDifficulty === "" ? "grey" : "primary"
+              }
+            />
           </div>
         </Box>
       </Modal>

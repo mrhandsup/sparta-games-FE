@@ -1,3 +1,4 @@
+import axios from "axios";
 import { sparta_games, sparta_games_auth } from "./axios";
 
 export const getGameReviews = async (gamePk: number) => {
@@ -82,8 +83,8 @@ export const postReviewLike = async (reviewId: number | undefined, action: "like
       action: action,
     });
   } catch (error) {
-    if (error instanceof Error) {
-      window.alert(error.message);
+    if (axios.isAxiosError(error)) {
+      return error.response;
     }
   }
 };
