@@ -66,10 +66,10 @@ export const getGameDetail = async (id: number) => {
 /**
  * 내 북마크 게임 리스트 조회
  */
-export const getMyBookmarkList = async () => {
-  const { userData } = userStore();
+export const getMyBookmarkList = async (userPk: number | undefined) => {
   try {
-    const res = await sparta_games_auth.get(`/user/api/${userData?.user_pk}/likes/`);
+    const res = await sparta_games_auth.get(`/users/api/${userPk}/likes/`);
+
     return res.data;
   } catch (error) {
     console.error(error);
