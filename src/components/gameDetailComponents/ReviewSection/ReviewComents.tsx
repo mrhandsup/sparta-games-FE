@@ -7,15 +7,13 @@ import { TReviewResponse } from "../../../types";
 import useGameDetail from "../../../hook/gameDetailHook/useGameDetail";
 import { getGameMyReview, getGameReviews } from "../../../api/review";
 import SpartaPagination from "../../../spartaDesignSystem/SpartaPagination";
-import { useState } from "react";
+import usePageHandler from "../../../hook/usePageHandler ";
 
 const ReviewComents = ({ gamePk }: { gamePk: number }) => {
   const COUNT_PER_PAGE = 6;
 
-  const [currentPage, setCurrentPage] = useState(1);
-
   const { userData } = userStore();
-
+  const { currentPage, onChangePage } = usePageHandler();
   const { more, onClickMoreToggleHandler } = useGameDetail();
 
   const { data: reviewData } = useQuery<TReviewResponse>({
@@ -36,10 +34,6 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
 
   const onClickModalOpen = () => {
     onClickMoreToggleHandler();
-  };
-
-  const onChangePage = (event: React.ChangeEvent<unknown>, page: number) => {
-    setCurrentPage(page);
   };
 
   const isFirstPageVisible = currentPage !== 1 ? "hidden" : "";
