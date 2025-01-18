@@ -22,7 +22,7 @@ export const getGameMyReview = async (gamePk: number, page?: number, limit?: num
   }
 };
 export const postGameReviews = async (
-  gamePk: number,
+  gamePk: number | undefined,
   star: number | null,
   content: string,
   difficulty: number | undefined,

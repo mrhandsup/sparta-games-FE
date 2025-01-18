@@ -32,10 +32,6 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
 
   const reviewsWithoutMyReview = allReviewData?.filter((review) => review.id !== myReview?.id);
 
-  const onClickModalOpen = () => {
-    onClickMoreToggleHandler();
-  };
-
   const isFirstPageVisible = currentPage !== 1 ? "hidden" : "";
 
   return (
@@ -53,7 +49,7 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
           {userData ? (
             !myReview ? (
               <div
-                onClick={onClickModalOpen}
+                onClick={() => onClickMoreToggleHandler()}
                 className={`${isFirstPageVisible} flex items-center justify-center gap-6 h-[189px] border border-solid border-primary-500 bg-gray-800 rounded-xl cursor-pointer`}
               >
                 <img src={reviewRegister} />

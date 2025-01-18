@@ -7,7 +7,7 @@ const usePageHandler = () => {
     setCurrentPage(page);
   };
 
-  return { currentPage, setCurrentPage, onChangePage };
+  return { currentPage, onChangePage };
 };
 
 export default usePageHandler;
