@@ -8,6 +8,7 @@ import useGameDetail from "../../../hook/gameDetailHook/useGameDetail";
 import { getGameMyReview, getGameReviews } from "../../../api/review";
 import SpartaPagination from "../../../spartaDesignSystem/SpartaPagination";
 import usePageHandler from "../../../hook/usePageHandler ";
+import { useState } from "react";
 
 const ReviewComents = ({ gamePk }: { gamePk: number }) => {
   const COUNT_PER_PAGE = 6;
@@ -34,6 +35,8 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
 
   const isFirstPageVisible = currentPage !== 1 ? "hidden" : "";
 
+  const [isRegister, setIsRegister] = useState(false);
+
   return (
     <>
       <section className="flex flex-col gap-3">
@@ -49,7 +52,10 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
           {userData ? (
             !myReview ? (
               <div
-                onClick={() => onClickMoreToggleHandler()}
+                onClick={() => {
+                  onClickMoreToggleHandler();
+                  setIsRegister(true);
+                }}
                 className={`${isFirstPageVisible} flex items-center justify-center gap-6 h-[189px] border border-solid border-primary-500 bg-gray-800 rounded-xl cursor-pointer`}
               >
                 <img src={reviewRegister} />
@@ -61,6 +67,7 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
                   onClickMoreToggleHandler={onClickMoreToggleHandler}
                   review={myReview}
                   isMyReview={!!myReview}
+                  setIsRegister={setIsRegister}
                 />
               </div>
             )
@@ -91,6 +98,7 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
         more={more}
         onClickMoreToggleHandler={onClickMoreToggleHandler}
         myReview={myReview}
+        isRegister={isRegister}
       />
     </>
   );

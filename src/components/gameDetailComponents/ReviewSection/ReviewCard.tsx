@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 
 import DifficultyChip from "../../common/chipComponents/DifficultyChip";
@@ -24,9 +24,10 @@ type reviewDataProps = {
   review: TReviewData | undefined;
   onClickMoreToggleHandler: () => void;
   isMyReview?: boolean;
+  setIsRegister?: Dispatch<SetStateAction<boolean>>;
 };
 
-const ReviewCard = ({ review, onClickMoreToggleHandler, isMyReview = false }: reviewDataProps) => {
+const ReviewCard = ({ review, onClickMoreToggleHandler, isMyReview = false, setIsRegister }: reviewDataProps) => {
   const REVIEW_DETAIL_MODAL_ID = "reviewDetailModal";
   const NO_ACTION_MODAL_ID = "noActionModal";
   const { modalToggles, onClickModalToggleHandlers } = useModalToggles([REVIEW_DETAIL_MODAL_ID, NO_ACTION_MODAL_ID]);
@@ -84,6 +85,13 @@ const ReviewCard = ({ review, onClickMoreToggleHandler, isMyReview = false }: re
     noActionData.reviewDelete,
   );
 
+  const onClickReviewEditHandler = () => {
+    onClickMoreToggleHandler();
+
+    if (setIsRegister) {
+      setIsRegister(false);
+    }
+  };
   const onClickReviewDeleteHandler = () => {
     setNoActionModalData(noActionData.reviewDeleteConfirm);
     onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
@@ -135,7 +143,7 @@ const ReviewCard = ({ review, onClickMoreToggleHandler, isMyReview = false }: re
                 <>
                   <p className="font-DungGeunMo text-lg text-primary-500">{review?.author_name}</p>
                   <img
-                    onClick={onClickMoreToggleHandler}
+                    onClick={onClickReviewEditHandler}
                     className="absolute right-12 cursor-pointer"
                     src={reviewEditImage}
                     alt="리뷰 수정"
