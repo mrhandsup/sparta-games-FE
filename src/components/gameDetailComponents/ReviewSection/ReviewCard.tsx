@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 
 import DifficultyChip from "../../common/chipComponents/DifficultyChip";
@@ -17,16 +17,20 @@ import reviewDetailImage from "../../../assets/gameDetail/ReviewDetail.svg";
 import reviewEditImage from "../../../assets/gameDetail/ReviewEdit.svg";
 import reviewDeleteImage from "../../../assets/gameDetail/ReviewDelete.svg";
 import exampleProfile from "../../../assets/gameDetail/example_profile.png";
+import SpartaModal from "../../../spartaDesignSystem/SpartaModal";
+import ReviewDetail from "./ReviewDetail";
 
 type reviewDataProps = {
   review: TReviewData | undefined;
   onClickMoreToggleHandler: () => void;
   isMyReview?: boolean;
+  setIsRegister?: Dispatch<SetStateAction<boolean>>;
 };
 
-const ReviewCard = ({ review, onClickMoreToggleHandler, isMyReview = false }: reviewDataProps) => {
+const ReviewCard = ({ review, onClickMoreToggleHandler, isMyReview = false, setIsRegister }: reviewDataProps) => {
+  const REVIEW_DETAIL_MODAL_ID = "reviewDetailModal";
   const NO_ACTION_MODAL_ID = "noActionModal";
-  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([NO_ACTION_MODAL_ID]);
+  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([REVIEW_DETAIL_MODAL_ID, NO_ACTION_MODAL_ID]);
 
   const queryClient = useQueryClient();
 
@@ -81,6 +85,13 @@ const ReviewCard = ({ review, onClickMoreToggleHandler, isMyReview = false }: re
     noActionData.reviewDelete,
   );
 
+  const onClickReviewEditHandler = () => {
+    onClickMoreToggleHandler();
+
+    if (setIsRegister) {
+      setIsRegister(false);
+    }
+  };
   const onClickReviewDeleteHandler = () => {
     setNoActionModalData(noActionData.reviewDeleteConfirm);
     onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
@@ -100,7 +111,6 @@ const ReviewCard = ({ review, onClickMoreToggleHandler, isMyReview = false }: re
 
     queryClient.invalidateQueries({ queryKey: ["reviews"] });
 
-    console.log(res);
     if (res?.status === 401) {
       setNoActionModalData(noActionData.reactionFail);
       onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
@@ -133,7 +143,7 @@ const ReviewCard = ({ review, onClickMoreToggleHandler, isMyReview = false }: re
                 <>
                   <p className="font-DungGeunMo text-lg text-primary-500">{review?.author_name}</p>
                   <img
-                    onClick={onClickMoreToggleHandler}
+                    onClick={onClickReviewEditHandler}
                     className="absolute right-12 cursor-pointer"
                     src={reviewEditImage}
                     alt="리뷰 수정"
@@ -148,7 +158,12 @@ const ReviewCard = ({ review, onClickMoreToggleHandler, isMyReview = false }: re
               ) : (
                 <>
                   <p className="font-DungGeunMo text-lg">{review?.author_name}</p>
-                  <img className="absolute right-4 cursor-pointer" src={reviewDetailImage} alt="리뷰 상세 보기" />
+                  <img
+                    onClick={onClickModalToggleHandlers[REVIEW_DETAIL_MODAL_ID]}
+                    className="absolute right-4 cursor-pointer"
+                    src={reviewDetailImage}
+                    alt="리뷰 상세 보기"
+                  />
                 </>
               )}
             </div>
@@ -198,6 +213,19 @@ const ReviewCard = ({ review, onClickMoreToggleHandler, isMyReview = false }: re
           type={noActionModalData.type}
         />
       )}
+
+      <SpartaModal
+        isOpen={modalToggles[REVIEW_DETAIL_MODAL_ID]}
+        onClose={onClickModalToggleHandlers[REVIEW_DETAIL_MODAL_ID]}
+        modalId={REVIEW_DETAIL_MODAL_ID}
+        closeOnClickOutside={false}
+      >
+        <ReviewDetail
+          review={review}
+          convertDifficulty={convertDifficulty}
+          onClose={onClickModalToggleHandlers[REVIEW_DETAIL_MODAL_ID]}
+        />
+      </SpartaModal>
     </>
   );
 };
