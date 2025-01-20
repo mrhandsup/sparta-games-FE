@@ -50,7 +50,7 @@ const useReview = () => {
       content,
       difficulty,
     }: {
-      gamePk: number;
+      gamePk: number | undefined;
       star: number | null;
       content: string;
       difficulty: number | undefined;
@@ -65,7 +65,7 @@ const useReview = () => {
   });
 
   const onSubmitHandler = async (
-    gamePk: number,
+    gamePk: number | undefined,
     difficulty: number | undefined,
     star: number | null,
     content: string,
