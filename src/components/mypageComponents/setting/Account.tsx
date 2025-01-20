@@ -92,7 +92,7 @@ const Account = (props: TAccountProps) => {
           {userData?.login_type == "DEFAULT" && (
             <button
               disabled={userData?.login_type !== "DEFAULT"}
-              className={`border-primary-500 border-2 w-[20%] h-10 rounded-md text-primary-500 font-bold hover:bg-gray-700 transition-colors `}
+              className={`border-gray-300 border-2 w-[20%] h-10 rounded-md text-gray-300 font-bold hover:bg-gray-700 transition-colors `}
               onClick={() => onClickModalToggleHandlers[CHANGE_PASSWORD_MODAL_ID]()}
             >
               수정하기
@@ -113,12 +113,12 @@ const Account = (props: TAccountProps) => {
 
         <div className="flex flex-col gap-2">
           <div className="flex justify-between items-center">
-            <label className="text-gray-100">현재 비밀번호</label>
+            <label className="text-gray-100">비밀번호</label>
             <input
               disabled
               type="password"
               placeholder={
-                userData?.login_type !== "DEFAULT" ? `${socialName} 간편로그인으로 이용하고 계십니다.` : "Password"
+                userData?.login_type !== "DEFAULT" ? `${socialName} 간편로그인으로 이용하고 계십니다.` : "*****"
               }
               className={`py-3 px-4 bg-gray-700 border border-solid rounded-md w-[50%] text-white border-gray-200`}
             />
@@ -155,7 +155,7 @@ const Account = (props: TAccountProps) => {
             <li>다만 만들었던 게임은 본 서비스에서 계속해서 사용될 수 있어요</li>
             <li>원하지 않을 경우, 게임 삭제를 먼저 진행해주신 후 회원탈퇴를 진행해주시기 바랍니다. </li>
             <li>
-              삭제를 희망하신다면, <span className="text-error-default">‘안녕 스파르타게임즈!</span>’ 라고 입력해주시기
+              탈퇴를 희망하신다면, <span className="text-error-default">‘안녕 스파르타게임즈!</span>’ 라고 입력해주시기
               바랍니다.
             </li>
           </div>

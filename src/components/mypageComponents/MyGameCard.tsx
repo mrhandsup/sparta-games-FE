@@ -2,10 +2,46 @@ import { TGameData } from "../../types";
 import StarRating from "../common/StarRating";
 import GameChip from "../common/chipComponents/GameChip";
 import SpartaButton from "../../spartaDesignSystem/SpartaButton";
+import { useNavigate } from "react-router-dom";
 
-type Props = { item?: TGameData };
+type Props = { item?: TGameData & { register_state: number } };
 
 const MyGameCard = ({ item }: Props) => {
+  const navigate = useNavigate();
+
+  const getRegisterStateConfig = (): {
+    content: string;
+    colorType: "alert" | "primary" | "error";
+    detailContent: string;
+  } => {
+    switch (item?.register_state) {
+      case 0:
+        return {
+          content: "검수중",
+          colorType: "alert",
+          detailContent: "미리보기",
+        };
+      case 1:
+        return {
+          content: "검수완료",
+          colorType: "primary",
+          detailContent: "게임하러가기",
+        };
+      case 2:
+        return {
+          content: "반려",
+          colorType: "error",
+          detailContent: "수정 및 반려사유 확인",
+        };
+      default:
+        return {
+          content: "검수중",
+          colorType: "alert",
+          detailContent: "미리보기",
+        };
+    }
+  };
+
   return (
     <section key={item?.pk} className={`relative flex w-full`}>
       <img
@@ -45,11 +81,23 @@ const MyGameCard = ({ item }: Props) => {
           </div>
         </div>
         <div className="flex items-center justify-between w-full">
-          <div className="w-[30%]">
-            <SpartaButton content="으으" onClick={() => {}} size="medium" colorType="alert" type="filled" />
+          <div className="w-[20%]">
+            <SpartaButton
+              content={getRegisterStateConfig()?.content}
+              size="small"
+              colorType={getRegisterStateConfig().colorType}
+              type="filled"
+            />
           </div>
-          <div className="w-[68%]">
-            <SpartaButton content="으으" onClick={() => {}} size="medium" />
+          <div className="w-[78%]">
+            <SpartaButton
+              content={getRegisterStateConfig()?.detailContent}
+              onClick={() => {
+                navigate(`/game-detail?id=${item?.pk}`);
+              }}
+              size="small"
+              colorType={getRegisterStateConfig().colorType}
+            />
           </div>
         </div>
       </div>
