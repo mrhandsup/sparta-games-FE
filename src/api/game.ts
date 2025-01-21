@@ -1,4 +1,3 @@
-import { userStore } from "../share/store/userStore";
 import { sparta_games, sparta_games_auth } from "./axios";
 
 /**
@@ -109,8 +108,37 @@ export const searchGame = async (keyword: string) => {
 export const postBookMark = async (gamePk: number | undefined) => {
   try {
     const res = await sparta_games_auth.post(`/games/api/list/${gamePk}/like/`);
-    console.log(res);
     return res.data.message;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+/**
+ * 게임 시작 시간 기록
+ */
+
+export const getPlayLog = async (gamePk: number | undefined) => {
+  try {
+    const res = await sparta_games_auth.get(`/games/api/list/${gamePk}/playlog/`);
+    return res.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+/**
+ * 게임 종료 시간 기록
+ */
+
+export const postPlayLog = async (gamePk: number | undefined, playTimePk: number | undefined) => {
+  try {
+    const res = await sparta_games_auth.post(`/games/api/list/${gamePk}/playlog/`, {
+      playtime_pk: playTimePk,
+    });
+    return res;
   } catch (error) {
     console.error(error);
     throw error;
