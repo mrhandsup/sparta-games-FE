@@ -8,6 +8,8 @@ import { useQuery } from "@tanstack/react-query";
 import { getGameDetail } from "../api/game";
 import { TGamePlayData } from "../types";
 import loading from "../assets/common/loading.gif";
+import SpartaButton from "../spartaDesignSystem/SpartaButton";
+import { userStore } from "../share/store/userStore";
 
 const GameDetail = () => {
   const [searchParams] = useSearchParams();
@@ -19,7 +21,7 @@ const GameDetail = () => {
   });
 
   const gameCategory = gamePlayData?.category[0].name;
-
+  const { userData } = userStore();
   return (
     <>
       {isLoading ? (
@@ -28,11 +30,20 @@ const GameDetail = () => {
         </div>
       ) : (
         <main className="mx-[130px]">
-          <div className="inline-block mt-10 font-DungGeunMo text-[24px] text-gray-300">
+          <div className="flex justify-between mt-10 font-DungGeunMo text-[24px] text-gray-300">
             <Link to={"/category?category=Action"} className="flex gap-3">
               <CaretLeft />
               <p>{gameCategory}</p>
             </Link>
+
+            {userData?.is_maker && (
+              <>
+                <div className="flex gap-2">
+                  <SpartaButton content={"수정하기"} colorType={"alert"} width={"w-[134px]"} size={"medium"} />
+                  <SpartaButton content={"삭제하기"} colorType={"error"} width={"w-[134px]"} size={"medium"} />
+                </div>
+              </>
+            )}
           </div>
           <GamePlaySection gamePlayData={gamePlayData} />
           <Review gamePk={gameDetailId} />
