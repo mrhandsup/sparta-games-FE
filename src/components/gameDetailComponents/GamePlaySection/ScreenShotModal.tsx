@@ -1,7 +1,7 @@
 import { Modal, Box } from "@mui/material";
 import { useEffect, useState } from "react";
 import { SwiperRef } from "swiper/react";
-import useGameDetail from "../../../hook/gameDetailHook/useGameDetail";
+import useModalToggle from "../../../hook/useModalToggle";
 
 type Props = {
   screenShotList?: {
@@ -11,13 +11,13 @@ type Props = {
   swiperRef: React.RefObject<SwiperRef>;
 };
 const ScreenShotModal = ({ screenShotList, swiperRef }: Props) => {
-  const { more, onClickMoreToggleHandler } = useGameDetail();
+  const { modalToggle, onClickModalToggleHandler } = useModalToggle();
 
   const [gameImage, setGameImage] = useState<string | null>(null);
 
   const openScreenShot = (image: string) => {
     setGameImage(image);
-    onClickMoreToggleHandler();
+    onClickModalToggleHandler();
   };
 
   useEffect(() => {
@@ -51,7 +51,7 @@ const ScreenShotModal = ({ screenShotList, swiperRef }: Props) => {
   }, [screenShotList]);
 
   return (
-    <Modal open={more} onClose={onClickMoreToggleHandler} disableScrollLock={true}>
+    <Modal open={modalToggle} onClose={onClickModalToggleHandler} disableScrollLock={true}>
       <Box className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[60rem] rounded-3xl outline-none border border-solid border-primary-500 bg-gray-800 p-8">
         {gameImage && <img src={gameImage} className="w-[60rem] h-[40rem] object-cover rounded-3xl" alt="modalImage" />}
       </Box>

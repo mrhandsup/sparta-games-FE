@@ -4,18 +4,18 @@ import ReviewRegisterModal from "./ReviewRegisterModal";
 import { userStore } from "../../../share/store/userStore";
 import { useQuery } from "@tanstack/react-query";
 import { TReviewResponse } from "../../../types";
-import useGameDetail from "../../../hook/gameDetailHook/useGameDetail";
 import { getGameMyReview, getGameReviews } from "../../../api/review";
 import SpartaPagination from "../../../spartaDesignSystem/SpartaPagination";
 import usePageHandler from "../../../hook/usePageHandler ";
 import { useState } from "react";
+import useModalToggle from "../../../hook/useModalToggle";
 
 const ReviewComents = ({ gamePk }: { gamePk: number }) => {
   const COUNT_PER_PAGE = 6;
 
   const { userData } = userStore();
   const { currentPage, onChangePage } = usePageHandler();
-  const { more, onClickMoreToggleHandler } = useGameDetail();
+  const { modalToggle, onClickModalToggleHandler } = useModalToggle();
 
   const { data: reviewData } = useQuery<TReviewResponse>({
     queryKey: ["reviews", currentPage],
@@ -53,7 +53,7 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
             !myReview ? (
               <div
                 onClick={() => {
-                  onClickMoreToggleHandler();
+                  onClickModalToggleHandler();
                   setIsRegister(true);
                 }}
                 className={`${isFirstPageVisible} flex items-center justify-center gap-6 h-[189px] border border-solid border-primary-500 bg-gray-800 rounded-xl cursor-pointer`}
@@ -64,7 +64,7 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
             ) : (
               <div className={`${isFirstPageVisible}`}>
                 <ReviewCard
-                  onClickMoreToggleHandler={onClickMoreToggleHandler}
+                  onClickModalToggleHandler={onClickModalToggleHandler}
                   review={myReview}
                   isMyReview={!!myReview}
                   setIsRegister={setIsRegister}
@@ -83,7 +83,7 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
           )}
 
           {reviewsWithoutMyReview?.map((review) => (
-            <ReviewCard review={review} onClickMoreToggleHandler={onClickMoreToggleHandler} />
+            <ReviewCard review={review} onClickModalToggleHandler={onClickModalToggleHandler} />
           ))}
         </div>
         <SpartaPagination
@@ -95,8 +95,8 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
 
       <ReviewRegisterModal
         gamePk={gamePk}
-        more={more}
-        onClickMoreToggleHandler={onClickMoreToggleHandler}
+        modalToggle={modalToggle}
+        onClickModalToggleHandler={onClickModalToggleHandler}
         myReview={myReview}
         isRegister={isRegister}
       />

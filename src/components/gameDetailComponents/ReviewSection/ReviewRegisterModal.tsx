@@ -17,13 +17,13 @@ import SpartaButton from "../../../spartaDesignSystem/SpartaButton";
 
 type Props = {
   gamePk: number;
-  more: boolean;
-  onClickMoreToggleHandler: () => void;
+  modalToggle: boolean;
+  onClickModalToggleHandler: () => void;
   myReview: TReviewData | undefined;
   isRegister: boolean;
 };
 
-const ReviewRegisterModal = ({ gamePk, more, onClickMoreToggleHandler, myReview, isRegister }: Props) => {
+const ReviewRegisterModal = ({ gamePk, modalToggle, onClickModalToggleHandler, myReview, isRegister }: Props) => {
   const { review, form, eventHandler } = useReview();
 
   const [ratingValue, setRatingValue] = useState<number | null>(null);
@@ -66,7 +66,7 @@ const ReviewRegisterModal = ({ gamePk, more, onClickMoreToggleHandler, myReview,
     const difficulty = convertDifficulty(selectedDifficulty, false) as number;
     eventHandler.onSubmitHandler(gamePk, difficulty, ratingValue, editorContent);
 
-    onClickMoreToggleHandler();
+    onClickModalToggleHandler();
   };
 
   const onClickReviewEditHandler = () => {
@@ -80,7 +80,7 @@ const ReviewRegisterModal = ({ gamePk, more, onClickMoreToggleHandler, myReview,
       editorContent,
     );
 
-    onClickMoreToggleHandler();
+    onClickModalToggleHandler();
   };
 
   const onClickDifficulty = (level: "EASY" | "NORMAL" | "HARD") => {
@@ -111,13 +111,13 @@ const ReviewRegisterModal = ({ gamePk, more, onClickMoreToggleHandler, myReview,
 
   return (
     <>
-      <Modal open={more} disableScrollLock={true}>
+      <Modal open={modalToggle} disableScrollLock={true}>
         <Box className="fixed left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 border border-solid border-primary-500 rounded-xl bg-gray-800 outline-none">
           <div className="flex flex-col gap-4 p-5 w-[900px]">
             <div className="flex justify-between items-center">
               <p className="text-3xl font-DungGeunMo text-primary-500">{isRegister ? "리뷰등록" : "리뷰수정"}</p>
               <img
-                onClick={() => onClickMoreToggleHandler()}
+                onClick={() => onClickModalToggleHandler()}
                 className="w-7 h-7 cursor-pointer"
                 src={closeBtn}
                 alt="닫기"
