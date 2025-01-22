@@ -37,6 +37,11 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
 
   const [isRegister, setIsRegister] = useState(false);
 
+  const onClickOrderLikes = (order: "new" | "likes" | "dislikes") => {
+    const res = getGameReviews(gamePk, currentPage, COUNT_PER_PAGE, order);
+
+    console.log("res:", res);
+  };
   return (
     <>
       <section className="flex flex-col gap-3">
@@ -44,7 +49,9 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
           <p className="text-3xl font-DungGeunMo text-white">Review</p>
           <div className="flex gap-3 text-xl font-semibold text-white">
             <p className="cursor-pointer">최근 게시순</p>
-            <p className="cursor-pointer">공감 많은순</p>
+            <p onClick={() => onClickOrderLikes("likes")} className="cursor-pointer">
+              공감 많은순
+            </p>
             <p className="cursor-pointer">비공감 많은 순</p>
           </div>
         </div>
