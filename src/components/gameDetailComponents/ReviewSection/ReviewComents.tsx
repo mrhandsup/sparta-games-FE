@@ -14,6 +14,8 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
   const COUNT_PER_PAGE = 6;
 
   const [reviewList, setReviewList] = useState<TReviewData[] | undefined>();
+  const [selectedOrder, setSelectedOrder] = useState<string>("new");
+  const [isRegister, setIsRegister] = useState(false);
 
   const { userData } = userStore();
   const { currentPage, onChangePage } = usePageHandler();
@@ -42,26 +44,35 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
 
   const isFirstPageVisible = currentPage !== 1 ? "hidden" : "";
 
-  const [isRegister, setIsRegister] = useState(false);
-
   const onClickOrderHandler = async (order: "new" | "likes" | "dislikes") => {
     const res = await getGameReviews(gamePk, currentPage, COUNT_PER_PAGE, order);
 
     setReviewList(res?.results.all_reviews);
+    setSelectedOrder(order);
   };
+
   return (
     <>
       <section className="flex flex-col gap-3">
         <div className="flex justify-between">
           <p className="text-3xl font-DungGeunMo text-white">Review</p>
           <div className="flex gap-3 text-xl font-semibold text-white">
-            <p onClick={() => onClickOrderHandler("new")} className="cursor-pointer">
+            <p
+              onClick={() => onClickOrderHandler("new")}
+              className={`cursor-pointer ${selectedOrder === "new" ? "text-primary-500" : "text-white"}`}
+            >
               최근 게시순
             </p>
-            <p onClick={() => onClickOrderHandler("likes")} className="cursor-pointer">
+            <p
+              onClick={() => onClickOrderHandler("likes")}
+              className={`cursor-pointer ${selectedOrder === "likes" ? "text-primary-500" : "text-white"}`}
+            >
               공감 많은순
             </p>
-            <p onClick={() => onClickOrderHandler("dislikes")} className="cursor-pointer">
+            <p
+              onClick={() => onClickOrderHandler("dislikes")}
+              className={`cursor-pointer ${selectedOrder === "dislikes" ? "text-primary-500" : "text-white"}`}
+            >
               비공감 많은 순
             </p>
           </div>
