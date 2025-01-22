@@ -3,15 +3,17 @@ import reviewRegister from "../../../assets/gameDetail/reviewRegister.svg";
 import ReviewRegisterModal from "./ReviewRegisterModal";
 import { userStore } from "../../../share/store/userStore";
 import { useQuery } from "@tanstack/react-query";
-import { TReviewResponse } from "../../../types";
+import { TReviewData, TReviewResponse } from "../../../types";
 import { getGameMyReview, getGameReviews } from "../../../api/review";
 import SpartaPagination from "../../../spartaDesignSystem/SpartaPagination";
 import usePageHandler from "../../../hook/usePageHandler ";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useModalToggle from "../../../hook/useModalToggle";
 
 const ReviewComents = ({ gamePk }: { gamePk: number }) => {
   const COUNT_PER_PAGE = 6;
+
+  const [reviewList, setReviewList] = useState<TReviewData[] | undefined>();
 
   const { userData } = userStore();
   const { currentPage, onChangePage } = usePageHandler();
@@ -31,16 +33,21 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
   const allReviewData = reviewData?.results.all_reviews;
   const myReview = myReviewData?.results.my_review;
 
-  const reviewsWithoutMyReview = allReviewData?.filter((review) => review.id !== myReview?.id);
+  useEffect(() => {
+    if (allReviewData) {
+      const reviewsWithoutMyReview = allReviewData.filter((review) => review.id !== myReview?.id);
+      setReviewList(reviewsWithoutMyReview);
+    }
+  }, [allReviewData, myReview?.id]);
 
   const isFirstPageVisible = currentPage !== 1 ? "hidden" : "";
 
   const [isRegister, setIsRegister] = useState(false);
 
-  const onClickOrderLikes = (order: "new" | "likes" | "dislikes") => {
-    const res = getGameReviews(gamePk, currentPage, COUNT_PER_PAGE, order);
+  const onClickOrderHandler = async (order: "new" | "likes" | "dislikes") => {
+    const res = await getGameReviews(gamePk, currentPage, COUNT_PER_PAGE, order);
 
-    console.log("res:", res);
+    setReviewList(res?.results.all_reviews);
   };
   return (
     <>
@@ -48,11 +55,15 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
         <div className="flex justify-between">
           <p className="text-3xl font-DungGeunMo text-white">Review</p>
           <div className="flex gap-3 text-xl font-semibold text-white">
-            <p className="cursor-pointer">최근 게시순</p>
-            <p onClick={() => onClickOrderLikes("likes")} className="cursor-pointer">
+            <p onClick={() => onClickOrderHandler("new")} className="cursor-pointer">
+              최근 게시순
+            </p>
+            <p onClick={() => onClickOrderHandler("likes")} className="cursor-pointer">
               공감 많은순
             </p>
-            <p className="cursor-pointer">비공감 많은 순</p>
+            <p onClick={() => onClickOrderHandler("dislikes")} className="cursor-pointer">
+              비공감 많은 순
+            </p>
           </div>
         </div>
         <div className="grid grid-cols-3 gap-5">
@@ -89,7 +100,7 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
             </div>
           )}
 
-          {reviewsWithoutMyReview?.map((review) => (
+          {reviewList?.map((review) => (
             <ReviewCard review={review} onClickModalToggleHandler={onClickModalToggleHandler} />
           ))}
         </div>
