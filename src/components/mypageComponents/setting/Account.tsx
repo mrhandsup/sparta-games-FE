@@ -10,22 +10,14 @@ type TAccountProps = {};
 
 const Account = (props: TAccountProps) => {
   //* Hooks
-  const { userData, setUser } = userStore();
+  const { userData } = userStore();
   const [isUpdate, setIsUpdate] = React.useState<boolean>(false);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    watch,
-    reset,
-  } = useForm<Partial<TUserInformationInputForm>>({
+  const { register, handleSubmit, watch, reset } = useForm<Partial<TUserInformationInputForm>>({
     mode: "onChange",
     defaultValues: {
       email: userData?.email,
       password: "",
-      new_password: "",
-      new_password_check: "",
     },
   });
 
@@ -77,12 +69,14 @@ const Account = (props: TAccountProps) => {
     // TODO: 회원 탈퇴 모달에 붙이기
   };
 
-  React.useEffect(() => {
-    const accessToken = sessionStorage.getItem("accessToken");
-    if (accessToken) {
-      setUser(accessToken);
-    }
-  }, []);
+  const socialLoginConfig = {
+    GOOGLE: "구글",
+    KAKAO: "카카오",
+    NAVER: "네이버",
+    DISCORD: "디스코드",
+  };
+
+  const socialName = socialLoginConfig[userData?.login_type as keyof typeof socialLoginConfig];
 
   return (
     <div className="bg-gray-800 rounded-xl px-7 py-5 flex flex-col gap-4 justify-start items-start">
@@ -92,18 +86,20 @@ const Account = (props: TAccountProps) => {
             <img src={log} alt="로고" />
             <p className="font-DungGeunMo text-heading-32 text-white">계정정보 수정</p>
           </div>
-          <button
-            type="submit"
-            disabled={passwordMutation.isPending}
-            className={`${isUpdate ? "border-primary-500" : "border-gray-400"} border-2 w-[20%] h-10 rounded-md ${
-              isUpdate ? "text-primary-500" : "text-gray-400"
-            } font-bold hover:bg-gray-700 transition-colors ${
-              passwordMutation.isPending ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-            onClick={!isUpdate ? handleEditClick : undefined}
-          >
-            {passwordMutation.isPending ? "처리중" : isUpdate ? "저장하기" : "수정하기"}
-          </button>
+          {userData?.login_type == "DEFAULT" && (
+            <button
+              type="submit"
+              disabled={passwordMutation.isPending || userData?.login_type !== "DEFAULT"}
+              className={`${isUpdate ? "border-primary-500" : "border-gray-400"} border-2 w-[20%] h-10 rounded-md ${
+                isUpdate ? "text-primary-500" : "text-gray-400"
+              } font-bold hover:bg-gray-700 transition-colors ${
+                passwordMutation.isPending ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              onClick={!isUpdate ? handleEditClick : undefined}
+            >
+              {passwordMutation.isPending ? "처리중" : isUpdate ? "저장하기" : "수정하기"}
+            </button>
+          )}
         </div>
         <div className="flex flex-col gap-2">
           <div className="flex justify-between items-center">
@@ -115,88 +111,25 @@ const Account = (props: TAccountProps) => {
               className={`py-3 px-4 bg-gray-700 border border-solid rounded-md w-[50%] text-gray-200`}
             />
           </div>
-          {errors.email && <p className="text-red-500 text-sm text-right w-full">{errors.email.message}</p>}
         </div>
 
         <div className="flex flex-col gap-2">
           <div className="flex justify-between items-center">
             <label className="text-gray-100">현재 비밀번호</label>
             <input
-              {...register("password", {
-                required: "기존 비밀번호는 필수 입력입니다.",
-                minLength: {
-                  value: 8,
-                  message: "비밀번호는 8자 이상이어야 합니다.",
-                },
-                pattern: {
-                  value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-                  message: "비밀번호는 문자, 숫자, 특수문자를 포함해야 합니다.",
-                },
-              })}
-              disabled={!isUpdate}
+              {...register("password")}
+              disabled
               type="password"
-              placeholder="Password"
-              className={`py-3 px-4 bg-gray-700 border border-solid rounded-md w-[50%] text-white ${
-                errors.password ? "border-red-500" : "border-white"
-              }`}
+              placeholder={
+                userData?.login_type !== "DEFAULT" ? `${socialName} 간편로그인으로 이용하고 계십니다.` : "Password"
+              }
+              className={`py-3 px-4 bg-gray-700 border border-solid rounded-md w-[50%] text-white border-gray-200`}
             />
           </div>
-          {errors.password && <p className="text-red-500 text-sm text-right w-full">{errors.password.message}</p>}
         </div>
-        {isUpdate && (
-          <React.Fragment>
-            <div className="flex flex-col gap-2">
-              <div className="flex justify-between items-center">
-                <label className="text-gray-100">새 비밀번호</label>
-                <input
-                  {...register("new_password", {
-                    required: "새 비밀번호는 필수 입력입니다.",
-                    minLength: {
-                      value: 8,
-                      message: "비밀번호는 8자 이상이어야 합니다.",
-                    },
-                    pattern: {
-                      value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-                      message: "비밀번호는 문자, 숫자, 특수문자를 포함해야 합니다.",
-                    },
-                  })}
-                  disabled={!isUpdate}
-                  type="password"
-                  placeholder="New Password"
-                  className={`py-3 px-4 bg-gray-700 border border-solid rounded-md w-[50%] text-white ${
-                    errors.new_password ? "border-red-500" : "border-white"
-                  }`}
-                />
-              </div>
-              {errors.new_password && (
-                <p className="text-red-500 text-sm text-right w-full">{errors.new_password.message}</p>
-              )}
-            </div>
-            <div className="flex flex-col gap-2">
-              <div className="flex justify-between items-center">
-                <label className="text-gray-100">새 비밀번호 확인</label>
-                <input
-                  {...register("new_password_check", {
-                    required: "새 비밀번호 확인은 필수 입력입니다.",
-                    validate: (value) => value === password || "비밀번호가 일치하지 않습니다.",
-                  })}
-                  type="password"
-                  disabled={!isUpdate}
-                  placeholder="New Password Check"
-                  className={`py-3 px-4 bg-gray-700 border border-solid rounded-md w-[50%] text-white ${
-                    errors.new_password_check ? "border-red-500" : "border-white"
-                  }`}
-                />
-              </div>
-              {errors.new_password_check && (
-                <p className="text-red-500 text-sm text-right w-full">{errors.new_password_check.message}</p>
-              )}
-            </div>
-          </React.Fragment>
-        )}
       </form>
-      <div className="flex w-full justify-end text-gray-200 underline cursor-pointer" onClick={handleDeleteClick}>
-        <p>회원탈퇴 신청하기</p>
+      <div className="flex w-full justify-end text-red-500 underline cursor-pointer" onClick={handleDeleteClick}>
+        <p>회원탈퇴</p>
       </div>
     </div>
   );

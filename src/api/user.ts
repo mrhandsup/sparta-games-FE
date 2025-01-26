@@ -67,6 +67,19 @@ export const getUserLikedGameList = async (userId: number) => {
 };
 
 /**
+ * 유저가 최근 플레이한 게임 리스트 조회
+ */
+export const getUserRecentGameList = async (userId: number) => {
+  try {
+    const res = await sparta_games_auth.get(`/users/api/${userId}/recent/`);
+    return res.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+/**
  * 패스워드 수정
  */
 export const updatePassword = async (

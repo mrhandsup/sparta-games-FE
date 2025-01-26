@@ -23,7 +23,6 @@ const Profile = (props: Props) => {
   //* Function
   const profileMutation = useMutation({
     mutationFn: ({
-      user_pk,
       data,
     }: {
       user_pk: number;
@@ -66,14 +65,10 @@ const Profile = (props: Props) => {
   //*
   React.useEffect(() => {
     if (userData) {
-      const convertedUserType = userData.is_maker
-        ? [{ label: "개발자", value: true }]
-        : [{ label: "사용자", value: false }];
       const convertedGameCategory = convertToConfigObjects(GAME_CATEGORY, userData.game_category);
       setNickname(userData.nickname);
       setGameCategory(convertedGameCategory);
       setUserTech(userData.user_tech);
-      setUserType(convertedUserType);
     }
   }, [userData]);
 
@@ -132,17 +127,6 @@ const Profile = (props: Props) => {
               </option>
             ))}
           </select>
-        </div>
-        <div className="flex justify-between items-center">
-          <label className="text-gray-100">유저 구분</label>
-          <div className="w-[50%]">
-            <SpartaSelectableGroup
-              selectableData={USER_TYPE}
-              onChangeSelectedData={(selectedData) => setUserType(selectedData)}
-              initialSelectedData={userType}
-              disabled={!isUpdate}
-            />
-          </div>
         </div>
       </div>
     </div>

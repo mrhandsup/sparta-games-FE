@@ -75,7 +75,7 @@ const GameCardList = ({
         </p>
       )}
 
-      <div className={`flex ${row && "flex-col"}  ${!containerClassName && "w-[1180px] h-[408px] mx-auto gap-4 mt-2"}`}>
+      <div className={`flex ${!containerClassName && "w-[1180px] h-[408px] mx-auto mt-2"} gap-4`}>
         {slicingData?.length != 0 && slicingData ? (
           slicingData.map((item) => (
             <Link to={`/game-detail?id=${item.pk}`}>

@@ -104,9 +104,7 @@ export type TListResponse = {
   count: number;
   next: string | null;
   previous: string | null;
-  results: {
-    all_games: TGameData[];
-  };
+  results: TGameData[];
 };
 
 export type TGamePlayData = {

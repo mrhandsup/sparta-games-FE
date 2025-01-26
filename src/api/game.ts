@@ -31,7 +31,7 @@ export const getGameListAuth = async () => {
  */
 export const getGameListByCategory = async (category: string, page?: number, limit?: number) => {
   try {
-    let url = `/games/api/list/search/?category-q=${category}`;
+    let url = `/games/api/list/categories/?category=${category}`;
 
     // page와 limit이 있을 때만 URL에 추가
     if (page !== undefined) {
@@ -94,7 +94,7 @@ export const getGameCategory = async () => {
  */
 export const searchGame = async (keyword: string) => {
   try {
-    const res = await sparta_games.get(`/games/api/list/search/?game-q=${keyword}&maker-q=${keyword}`);
+    const res = await sparta_games.get(`/games/api/list/search/?keyword=${keyword}`);
     return res.data;
   } catch (error) {
     console.error(error);
