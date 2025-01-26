@@ -10,7 +10,7 @@ import usePageHandler from "../../../hook/usePageHandler ";
 import { useEffect, useState } from "react";
 import useModalToggle from "../../../hook/useModalToggle";
 
-const ReviewComents = ({ gamePk }: { gamePk: number }) => {
+const ReviewContents = ({ gamePk }: { gamePk: number }) => {
   const COUNT_PER_PAGE = 6;
 
   const [reviewList, setReviewList] = useState<TReviewData[] | undefined>();
@@ -53,7 +53,7 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
 
   return (
     <>
-      <section className="flex flex-col gap-3">
+      <section className="flex flex-col gap-3 my-12">
         <div className="flex justify-between">
           <p className="text-3xl font-DungGeunMo text-white">Review</p>
           <div className="flex gap-3 text-xl font-semibold text-white">
@@ -133,4 +133,4 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
   );
 };
 
-export default ReviewComents;
+export default ReviewContents;

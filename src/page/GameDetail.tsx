@@ -1,15 +1,20 @@
 import { Link, useSearchParams } from "react-router-dom";
 
+import { useQuery } from "@tanstack/react-query";
+
+import { userStore } from "../share/store/userStore";
+
+import { getGameDetail } from "../api/game";
+
 import GamePlaySection from "../components/gameDetailComponents/GamePlaySection/GamePlaySection";
-import Review from "../components/gameDetailComponents/ReviewSection/Review";
+import ReviewContents from "../components/gameDetailComponents/ReviewSection/ReviewContents";
+
+import { TGamePlayData } from "../types";
+
+import SpartaButton from "../spartaDesignSystem/SpartaButton";
 
 import CaretLeft from "../assets/CaretLeft";
-import { useQuery } from "@tanstack/react-query";
-import { getGameDetail } from "../api/game";
-import { TGamePlayData } from "../types";
 import loading from "../assets/common/loading.gif";
-import SpartaButton from "../spartaDesignSystem/SpartaButton";
-import { userStore } from "../share/store/userStore";
 
 const GameDetail = () => {
   const [searchParams] = useSearchParams();
@@ -46,7 +51,7 @@ const GameDetail = () => {
             )}
           </div>
           <GamePlaySection gamePlayData={gamePlayData} />
-          <Review gamePk={gameDetailId} />
+          <ReviewContents gamePk={gameDetailId} />
         </main>
       )}
     </>
