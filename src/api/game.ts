@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { sparta_games, sparta_games_auth } from "./axios";
 
 /**
@@ -68,10 +69,11 @@ export const getGameDetail = async (id: number) => {
 export const getMyBookmarkList = async (userPk: number | undefined) => {
   try {
     const res = await sparta_games_auth.get(`/users/api/${userPk}/likes/`);
-
     return res.data;
-  } catch (error) {
-    console.error(error);
+  } catch (error: unknown) {
+    if ((error as AxiosError).response?.status === 404) {
+      return { results: [] };
+    }
     throw error;
   }
 };
@@ -108,6 +110,7 @@ export const searchGame = async (keyword: string) => {
 export const postBookMark = async (gamePk: number | undefined) => {
   try {
     const res = await sparta_games_auth.post(`/games/api/list/${gamePk}/like/`);
+    console.log("res", res);
     return res.data.message;
   } catch (error) {
     console.error(error);

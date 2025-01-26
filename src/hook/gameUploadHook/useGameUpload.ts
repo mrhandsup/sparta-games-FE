@@ -2,11 +2,11 @@ import { ChangeEvent, useState } from "react";
 
 import { useForm, SubmitHandler } from "react-hook-form";
 
-import type { GameUploadInput } from "../../types";
+import type { TGameUploadInput, TGameUploadInputForm } from "../../types";
 import changeUrl from "../../util/changeUrl";
 
 const useGameUpload = () => {
-  const { register, watch, setValue, formState, handleSubmit } = useForm<GameUploadInput>();
+  const { register, watch, setValue, formState, handleSubmit } = useForm<TGameUploadInputForm>();
 
   const [note, setNote] = useState({ 1: false, 2: false, 3: false });
   const [previewThumbnail, setPreviewThumbnail] = useState<string[]>([]);
@@ -67,7 +67,7 @@ const useGameUpload = () => {
     }
   };
 
-  const onSubmitHandler: SubmitHandler<GameUploadInput> = (data) => {
+  const onSubmitHandler: SubmitHandler<TGameUploadInput> = (data) => {
     //게입 업로드 api연결할 부분
     console.log(data);
   };

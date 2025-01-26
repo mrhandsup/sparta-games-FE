@@ -1,7 +1,12 @@
 import axios from "axios";
 import { sparta_games, sparta_games_auth } from "./axios";
 
-export const getGameReviews = async (gamePk: number, page?: number, limit?: number, order?: "new" | "likes" | "dislikes") => {
+export const getGameReviews = async (
+  gamePk: number,
+  page?: number,
+  limit?: number,
+  order?: "new" | "likes" | "dislikes",
+) => {
   try {
     const res = await sparta_games.get(`/games/api/list/${gamePk}/reviews/?page=${page}&limit=${limit}&order=${order}`);
     return res.data;

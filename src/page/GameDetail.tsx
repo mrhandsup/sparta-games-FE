@@ -10,7 +10,6 @@ import GamePlaySection from "../components/gameDetailComponents/GamePlaySection/
 import ReviewContents from "../components/gameDetailComponents/ReviewSection/ReviewContents";
 
 import { TGamePlayData } from "../types";
-
 import SpartaButton from "../spartaDesignSystem/SpartaButton";
 
 import CaretLeft from "../assets/CaretLeft";
