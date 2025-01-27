@@ -11,24 +11,35 @@ const useGameUpload = () => {
   const [note, setNote] = useState({ 1: false, 2: false, 3: false });
   const [previewThumbnail, setPreviewThumbnail] = useState<string[]>([]);
   const [previewStillCut, setPreviewStillCut] = useState<string[]>([]);
+  const [isUpload, setIsUpload] = useState({
+    thumbnail: false,
+    gameFile: false,
+    stillCut: false,
+  });
 
   //이미지 미리보기용 onChangeHandler
   const onChangeImageHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const inputId = e.target.id;
     const file = [...e.target.files!];
     const urlArr: string[] = [];
-
+    console.log(inputId);
     file.map((item) => {
       const url = changeUrl(item);
       urlArr.push(url);
     });
 
-    if (inputId === "game-thumbnail") {
+    if (inputId === "gameThumbnail") {
       setPreviewThumbnail(urlArr);
+      setIsUpload((prev) => ({ ...prev, thumbnail: true }));
     }
 
-    if (inputId === "still-cut") {
+    if (inputId === "gameFile") {
+      setIsUpload((prev) => ({ ...prev, gameFile: true }));
+    }
+
+    if (inputId === "stillCut") {
       setPreviewStillCut([...previewStillCut, ...urlArr]);
+      setIsUpload((prev) => ({ ...prev, stillCut: true }));
     }
   };
 
@@ -87,7 +98,7 @@ const useGameUpload = () => {
     onSubmitHandler,
   };
 
-  return { note, form, previewThumbnail, previewStillCut, eventHandler };
+  return { isUpload, note, form, previewThumbnail, previewStillCut, eventHandler };
 };
 
 export default useGameUpload;

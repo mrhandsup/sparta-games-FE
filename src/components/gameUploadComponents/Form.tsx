@@ -1,3 +1,4 @@
+import { useState } from "react";
 import CloseCircle from "../../assets/CloseCircle";
 import { CATEGORY } from "../../constant/constant";
 
@@ -11,14 +12,18 @@ type Props = {
     2: boolean;
     3: boolean;
   };
+  isUpload: {
+    thumbnail: boolean;
+    gameFile: boolean;
+    stillCut: boolean;
+  };
   previewStillCut: string[];
   onChangeHandler: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onClickHandler: (type: "thumbnail" | "stillCut", arg: number) => void;
   onSubmitHandler: SubmitHandler<TGameUploadInput>;
 };
 
-const Form = ({ form, note, previewStillCut, onChangeHandler, onClickHandler, onSubmitHandler }: Props) => {
-  console.log(form.watch("thumbnail"));
+const Form = ({ form, note, isUpload, previewStillCut, onChangeHandler, onClickHandler, onSubmitHandler }: Props) => {
   return (
     <form onSubmit={form.handleSubmit(onSubmitHandler)} className="mx-[130px]">
       <div className="flex gap-10 my-10 text-gray-300 text-body-18">
@@ -36,9 +41,11 @@ const Form = ({ form, note, previewStillCut, onChangeHandler, onClickHandler, on
                 </div>
                 <label
                   htmlFor="gameThumbnail"
-                  className="flex items-center py-3 px-6 w-24 border border-solid border-primary-500 rounded-lg text-title-18 whitespace-nowrap cursor-pointer"
+                  className={`flex justify-center items-center py-3  ${
+                    isUpload.thumbnail ? "bg-primary-500" : "bg-gray-100"
+                  }  text-black rounded-sm text-title-18 whitespace-nowrap cursor-pointer`}
                 >
-                  업로드
+                  {isUpload.thumbnail ? <p className="px-5">수정하기</p> : <p className="px-7">업로드</p>}
                 </label>
                 <input
                   id="gameThumbnail"
@@ -61,18 +68,20 @@ const Form = ({ form, note, previewStillCut, onChangeHandler, onClickHandler, on
                 </div>
                 <label
                   htmlFor="gameFile"
-                  className="flex items-center py-3 px-6 w-24 border border-solid border-primary-500 rounded-lg text-title-18 whitespace-nowrap cursor-pointer"
+                  className={`flex justify-center items-center py-3 ${
+                    isUpload.gameFile ? "bg-primary-500" : "bg-gray-100"
+                  } text-black rounded-sm text-title-18 whitespace-nowrap cursor-pointer`}
                 >
-                  업로드
+                  {isUpload.gameFile ? <p className="px-5">수정하기</p> : <p className="px-7">업로드</p>}
                 </label>
+                <input
+                  id="gameFile"
+                  type="file"
+                  accept=".zip, .7z"
+                  {...form.register("gameFile", { onChange: onChangeHandler, required: "필수" })}
+                  className="hidden"
+                />
               </div>
-              <input
-                id="gameFile"
-                type="file"
-                accept=".zip, .7z"
-                {...form.register("gameFile", { required: "필수" })}
-                className="hidden"
-              />
             </div>
             <div className="flex flex-col gap-2">
               <div className="flex items-end gap-2 text-heading-20 text-white">
@@ -116,17 +125,20 @@ const Form = ({ form, note, previewStillCut, onChangeHandler, onClickHandler, on
               className="py-3 px-4 border border-solid border-white bg-gray-700 rounded-md"
             />
           </div>
+          {/* 추후 변경되는 시안에 따라 디자인 수정 예정 */}
           <div className="flex flex-col gap-2">
             <div className="flex items-end gap-2 text-heading-20 text-white">
               스틸컷 업로드<span className="text-body-14 text-alert-default">*선택</span>
             </div>
             <p className="text-body-14">1000px*800px이하, 5mb이하 사진파일</p>
-            <div className="flex flex-col items-center gap-3 pt-3 max-h-[668px] border border-solid border-white rounded-md overflow-scroll scrollbar-hide">
+            <div className="flex flex-col items-center gap-3 pt-3 max-h-[220px] border border-solid border-white rounded-md overflow-scroll scrollbar-hide">
               <label
-                htmlFor="still-cut"
-                className="py-3 px-6 w-24 whitespace-nowrap text-title-18 text-primary-500 border border-solid border-primary-500 rounded-lg cursor-pointer"
+                htmlFor="stillCut"
+                className={`py-3 whitespace-nowrap text-title-18 ${
+                  isUpload.stillCut ? "bg-primary-500" : "bg-gray-100"
+                } text-black rounded-sm cursor-pointer`}
               >
-                업로드
+                <p className="px-7">업로드</p>
               </label>
               {previewStillCut && (
                 <div className="grid grid-cols-2 gap-4 w-full">
@@ -134,7 +146,7 @@ const Form = ({ form, note, previewStillCut, onChangeHandler, onClickHandler, on
                     <div key={idx} className="relative">
                       <img
                         src={item}
-                        alt="섬네일 미리보기"
+                        alt="썸썸네일 미리보기"
                         className="w-full object-cover border border-solid border-black"
                       />
                       <div
@@ -148,7 +160,7 @@ const Form = ({ form, note, previewStillCut, onChangeHandler, onClickHandler, on
                 </div>
               )}
               <input
-                id="still-cut"
+                id="stillCut"
                 type="file"
                 accept="image/*"
                 multiple
