@@ -1,9 +1,7 @@
 import { Pagination } from "@mui/material";
 import PaginationItem from "@mui/material/PaginationItem";
-
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-
+import { FaArrowRight } from "react-icons/fa";
+import { FaArrowLeft } from "react-icons/fa";
 type Props = {
   dataTotalCount: number | undefined;
   countPerPage: number;
@@ -40,15 +38,15 @@ const SpartaPagination = ({ dataTotalCount, countPerPage, onChangePage }: Props)
           <PaginationItem
             slots={{
               previous: () => (
-                <div className="flex items-center gap-2">
-                  <ArrowBackIcon sx={{ width: "18px" }} />
+                <div className="flex items-center gap-3">
+                  <FaArrowLeft />
                   <span className="text-base font-Pretendard">Previous</span>
                 </div>
               ),
               next: () => (
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-3">
                   <span className="text-base font-Pretendard">Next</span>
-                  <ArrowForwardIcon sx={{ width: "18px" }} />
+                  <FaArrowRight />
                 </div>
               ),
             }}

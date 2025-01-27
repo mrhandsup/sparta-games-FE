@@ -2,33 +2,44 @@ import { ChangeEvent, useState } from "react";
 
 import { useForm, SubmitHandler } from "react-hook-form";
 
-import type { GameUploadInput } from "../../types";
+import type { TGameUploadInput } from "../../types";
 import changeUrl from "../../util/changeUrl";
 
 const useGameUpload = () => {
-  const { register, watch, setValue, formState, handleSubmit } = useForm<GameUploadInput>();
+  const { register, watch, setValue, formState, handleSubmit } = useForm<TGameUploadInput>();
 
   const [note, setNote] = useState({ 1: false, 2: false, 3: false });
   const [previewThumbnail, setPreviewThumbnail] = useState<string[]>([]);
   const [previewStillCut, setPreviewStillCut] = useState<string[]>([]);
+  const [isUpload, setIsUpload] = useState({
+    thumbnail: false,
+    gameFile: false,
+    stillCut: false,
+  });
 
   //이미지 미리보기용 onChangeHandler
   const onChangeImageHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const inputId = e.target.id;
     const file = [...e.target.files!];
     const urlArr: string[] = [];
-
+    console.log(inputId);
     file.map((item) => {
       const url = changeUrl(item);
       urlArr.push(url);
     });
 
-    if (inputId === "game-thumbnail") {
+    if (inputId === "gameThumbnail") {
       setPreviewThumbnail(urlArr);
+      setIsUpload((prev) => ({ ...prev, thumbnail: true }));
     }
 
-    if (inputId === "still-cut") {
+    if (inputId === "gameFile") {
+      setIsUpload((prev) => ({ ...prev, gameFile: true }));
+    }
+
+    if (inputId === "stillCut") {
       setPreviewStillCut([...previewStillCut, ...urlArr]);
+      setIsUpload((prev) => ({ ...prev, stillCut: true }));
     }
   };
 
@@ -67,7 +78,7 @@ const useGameUpload = () => {
     }
   };
 
-  const onSubmitHandler: SubmitHandler<GameUploadInput> = (data) => {
+  const onSubmitHandler: SubmitHandler<TGameUploadInput> = (data) => {
     //게입 업로드 api연결할 부분
     console.log(data);
   };
@@ -87,7 +98,7 @@ const useGameUpload = () => {
     onSubmitHandler,
   };
 
-  return { note, form, previewThumbnail, previewStillCut, eventHandler };
+  return { isUpload, note, form, previewThumbnail, previewStillCut, eventHandler };
 };
 
 export default useGameUpload;

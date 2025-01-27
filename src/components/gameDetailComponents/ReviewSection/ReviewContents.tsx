@@ -3,19 +3,23 @@ import reviewRegister from "../../../assets/gameDetail/reviewRegister.svg";
 import ReviewRegisterModal from "./ReviewRegisterModal";
 import { userStore } from "../../../share/store/userStore";
 import { useQuery } from "@tanstack/react-query";
-import { TReviewResponse } from "../../../types";
-import useGameDetail from "../../../hook/gameDetailHook/useGameDetail";
+import { TReviewData, TReviewResponse } from "../../../types";
 import { getGameMyReview, getGameReviews } from "../../../api/review";
 import SpartaPagination from "../../../spartaDesignSystem/SpartaPagination";
 import usePageHandler from "../../../hook/usePageHandler ";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useModalToggle from "../../../hook/useModalToggle";
 
-const ReviewComents = ({ gamePk }: { gamePk: number }) => {
+const ReviewContents = ({ gamePk }: { gamePk: number }) => {
   const COUNT_PER_PAGE = 6;
+
+  const [reviewList, setReviewList] = useState<TReviewData[] | undefined>();
+  const [selectedOrder, setSelectedOrder] = useState<string>("new");
+  const [isRegister, setIsRegister] = useState(false);
 
   const { userData } = userStore();
   const { currentPage, onChangePage } = usePageHandler();
-  const { more, onClickMoreToggleHandler } = useGameDetail();
+  const { modalToggle, onClickModalToggleHandler } = useModalToggle();
 
   const { data: reviewData } = useQuery<TReviewResponse>({
     queryKey: ["reviews", currentPage],
@@ -31,21 +35,47 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
   const allReviewData = reviewData?.results.all_reviews;
   const myReview = myReviewData?.results.my_review;
 
-  const reviewsWithoutMyReview = allReviewData?.filter((review) => review.id !== myReview?.id);
+  console.log(reviewData, myReviewData);
+  useEffect(() => {
+    if (allReviewData) {
+      const reviewsWithoutMyReview = allReviewData.filter((review) => review.id !== myReview?.id);
+      setReviewList(reviewsWithoutMyReview);
+    }
+  }, [allReviewData, myReview?.id]);
 
   const isFirstPageVisible = currentPage !== 1 ? "hidden" : "";
 
-  const [isRegister, setIsRegister] = useState(false);
+  const onClickOrderHandler = async (order: "new" | "likes" | "dislikes") => {
+    const res = await getGameReviews(gamePk, currentPage, COUNT_PER_PAGE, order);
+
+    setReviewList(res?.results.all_reviews);
+    setSelectedOrder(order);
+  };
 
   return (
     <>
-      <section className="flex flex-col gap-3">
+      <section className="flex flex-col gap-3 my-12">
         <div className="flex justify-between">
           <p className="text-3xl font-DungGeunMo text-white">Review</p>
           <div className="flex gap-3 text-xl font-semibold text-white">
-            <p className="cursor-pointer">최근 게시순</p>
-            <p className="cursor-pointer">공감 많은순</p>
-            <p className="cursor-pointer">비공감 많은 순</p>
+            <p
+              onClick={() => onClickOrderHandler("new")}
+              className={`cursor-pointer ${selectedOrder === "new" ? "text-primary-500" : "text-white"}`}
+            >
+              최근 게시순
+            </p>
+            <p
+              onClick={() => onClickOrderHandler("likes")}
+              className={`cursor-pointer ${selectedOrder === "likes" ? "text-primary-500" : "text-white"}`}
+            >
+              공감 많은순
+            </p>
+            <p
+              onClick={() => onClickOrderHandler("dislikes")}
+              className={`cursor-pointer ${selectedOrder === "dislikes" ? "text-primary-500" : "text-white"}`}
+            >
+              비공감 많은 순
+            </p>
           </div>
         </div>
         <div className="grid grid-cols-3 gap-5">
@@ -53,7 +83,7 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
             !myReview ? (
               <div
                 onClick={() => {
-                  onClickMoreToggleHandler();
+                  onClickModalToggleHandler();
                   setIsRegister(true);
                 }}
                 className={`${isFirstPageVisible} flex items-center justify-center gap-6 h-[189px] border border-solid border-primary-500 bg-gray-800 rounded-xl cursor-pointer`}
@@ -64,7 +94,7 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
             ) : (
               <div className={`${isFirstPageVisible}`}>
                 <ReviewCard
-                  onClickMoreToggleHandler={onClickMoreToggleHandler}
+                  onClickModalToggleHandler={onClickModalToggleHandler}
                   review={myReview}
                   isMyReview={!!myReview}
                   setIsRegister={setIsRegister}
@@ -82,8 +112,8 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
             </div>
           )}
 
-          {reviewsWithoutMyReview?.map((review) => (
-            <ReviewCard review={review} onClickMoreToggleHandler={onClickMoreToggleHandler} />
+          {reviewList?.map((review) => (
+            <ReviewCard review={review} onClickModalToggleHandler={onClickModalToggleHandler} />
           ))}
         </div>
         <SpartaPagination
@@ -95,8 +125,8 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
 
       <ReviewRegisterModal
         gamePk={gamePk}
-        more={more}
-        onClickMoreToggleHandler={onClickMoreToggleHandler}
+        modalToggle={modalToggle}
+        onClickModalToggleHandler={onClickModalToggleHandler}
         myReview={myReview}
         isRegister={isRegister}
       />
@@ -104,4 +134,4 @@ const ReviewComents = ({ gamePk }: { gamePk: number }) => {
   );
 };
 
-export default ReviewComents;
+export default ReviewContents;

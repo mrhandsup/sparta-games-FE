@@ -22,12 +22,12 @@ import ReviewDetail from "./ReviewDetail";
 
 type reviewDataProps = {
   review: TReviewData | undefined;
-  onClickMoreToggleHandler: () => void;
+  onClickModalToggleHandler: () => void;
   isMyReview?: boolean;
   setIsRegister?: Dispatch<SetStateAction<boolean>>;
 };
 
-const ReviewCard = ({ review, onClickMoreToggleHandler, isMyReview = false, setIsRegister }: reviewDataProps) => {
+const ReviewCard = ({ review, onClickModalToggleHandler, isMyReview = false, setIsRegister }: reviewDataProps) => {
   const REVIEW_DETAIL_MODAL_ID = "reviewDetailModal";
   const NO_ACTION_MODAL_ID = "noActionModal";
   const { modalToggles, onClickModalToggleHandlers } = useModalToggles([REVIEW_DETAIL_MODAL_ID, NO_ACTION_MODAL_ID]);
@@ -86,7 +86,7 @@ const ReviewCard = ({ review, onClickMoreToggleHandler, isMyReview = false, setI
   );
 
   const onClickReviewEditHandler = () => {
-    onClickMoreToggleHandler();
+    onClickModalToggleHandler();
 
     if (setIsRegister) {
       setIsRegister(false);

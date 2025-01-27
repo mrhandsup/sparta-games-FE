@@ -101,19 +101,17 @@ const GamePlay = ({ gamePk, title, makerName, gamePath }: Props) => {
     enabled: !!userData,
   });
 
-  const bookMarkedGames = data?.results.all_games;
+  const bookMarkedGames = data?.results;
   const currentBookMarkedGame = bookMarkedGames?.some((game: TGameData) => game.pk === gamePk);
 
+  console.log(data?.results);
   const bookMarkMutation = useMutation({
     mutationFn: () => postBookMark(gamePk),
 
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["isBookMarked"] });
 
-      const updatedBookMarkedGames = queryClient.getQueryData<TListResponse>(["isBookMarked"])?.results.all_games;
-      const updatedCurrentBookMarkedGame = updatedBookMarkedGames?.some((game: TGameData) => game.pk === gamePk);
-
-      setNoActionModalData(!updatedCurrentBookMarkedGame ? noActionData.completeBookMark : noActionData.cancelBookMark);
+      setNoActionModalData(!currentBookMarkedGame ? noActionData.completeBookMark : noActionData.cancelBookMark);
       onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
     },
 
@@ -143,6 +141,7 @@ const GamePlay = ({ gamePk, title, makerName, gamePath }: Props) => {
     onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
   };
 
+  console.log(bookMarkedGames, currentBookMarkedGame);
   return (
     <>
       {/* TODO: Mui 스켈레톤 적용 */}
