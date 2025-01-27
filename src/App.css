@@ -206,3 +206,7 @@ input:-webkit-autofill:focus {
   transition: background-color 5000s ease-in-out 0s;
   -webkit-text-fill-color: white;
 }
+input:hover,
+input:focus {
+  outline: none;
+}

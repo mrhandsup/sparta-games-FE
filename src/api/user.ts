@@ -1,4 +1,4 @@
-import { TUser } from "../types";
+import { TUser, TUserInformationInputForm } from "../types";
 import { sparta_games, sparta_games_auth } from "./axios";
 
 /**
@@ -17,7 +17,7 @@ export const getUserData = async (userId: number) => {
 /**
  * 유저 정보 수정
  */
-export const updateUserData = async (userId: number, data: Partial<TUser>) => {
+export const updateUserData = async (userId: number, data: Partial<TUserInformationInputForm>) => {
   try {
     const res = await sparta_games_auth.put(`/users/api/${userId}/`, data);
     return res.data;
@@ -43,9 +43,22 @@ export const deleteUser = async (userId: number) => {
 /**
  * 유저가 만든 게임 리스트 조회
  */
-export const getUserGameMadeList = async (userId: number) => {
+export const getUserGameList = async (userId: number, page?: number) => {
   try {
-    const res = await sparta_games_auth.get(`/users/api/${userId}/games/`);
+    const res = await sparta_games.get(`/users/api/${userId}/games/?limit=3&page=${page}`);
+    return res.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+/**
+ * 유저가 만든 게임 리스트 조회(본인 조회)
+ */
+export const getUserGameMadeList = async (userId: number, page?: number) => {
+  try {
+    const res = await sparta_games_auth.get(`/users/api/${userId}/games/?limit=3&page=${page}`);
     return res.data;
   } catch (error) {
     console.error(error);
@@ -107,6 +120,19 @@ export const updatePassword = async (
 export const getUserGamePackList = async (userId: number) => {
   try {
     const res = await sparta_games_auth.get(`/users/api/${userId}/gamepacks/`);
+    return res.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+/**
+ * 회원 탈퇴
+ */
+export const leaveUser = async (userId: number) => {
+  try {
+    const res = await sparta_games_auth.delete(`/users/api/${userId}/`);
     return res.data;
   } catch (error) {
     console.error(error);

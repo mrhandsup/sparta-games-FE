@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useModalToggles from "../../hook/useModalToggles";
 import SpartaButton from "../../spartaDesignSystem/SpartaButton";
 import SpartaReactionModal, { TSpartaReactionModalProps } from "../../spartaDesignSystem/SpartaReactionModal";
@@ -12,14 +12,20 @@ const Account = (props: Props) => {
     register,
     watch,
     formState: { errors },
+    trigger,
   } = useFormContext();
 
   const email = watch("email");
   const password = watch("password");
+  const password_check = watch("password_check");
 
   const NO_ACTION_MODAL_ID = "noReactionModal";
+  const CHANGE_PASSWORD_MODAL_ID = "changePasswordModal";
 
-  const { modalToggles, modalRefs, onClickModalToggleHandlers } = useModalToggles([NO_ACTION_MODAL_ID]);
+  const { modalToggles, modalRefs, onClickModalToggleHandlers } = useModalToggles([
+    NO_ACTION_MODAL_ID,
+    CHANGE_PASSWORD_MODAL_ID,
+  ]);
 
   const noActionData: { [key: string]: Partial<TSpartaReactionModalProps> } = {
     emailVerify: {
@@ -62,7 +68,7 @@ const Account = (props: Props) => {
       message: "비밀번호는 최대 32자까지 가능합니다",
     },
     pattern: {
-      value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
+      value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,32}$/,
       message: "8~32자의 영문 대소문자, 숫자를 포함해야 합니다",
     },
   };
@@ -85,6 +91,12 @@ const Account = (props: Props) => {
       message: "올바른 인증번호 형식이 아닙니다",
     },
   };
+
+  useEffect(() => {
+    if (password_check) {
+      trigger("password_check");
+    }
+  }, [password, trigger, password_check]);
 
   return (
     <>

@@ -29,7 +29,7 @@ const Router = () => {
           <Route element={<NonAuthLayout />}></Route>
 
           <Route element={<AuthLayout />}>
-            <Route path="my-page" element={<MyPage />} />
+            <Route path="my-page/:id" element={<MyPage />} />
             <Route path="game-upload" element={<GameUpload />} />
           </Route>
 
