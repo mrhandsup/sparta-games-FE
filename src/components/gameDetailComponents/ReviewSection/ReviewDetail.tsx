@@ -39,6 +39,7 @@ const ReviewDetail = ({ review, convertDifficulty, onClose }: Props) => {
           <Rating
             name="gameRating"
             value={review?.star}
+            readOnly
             sx={{
               width: "120px",
             }}

@@ -1,9 +1,14 @@
 import axios from "axios";
 import { sparta_games, sparta_games_auth } from "./axios";
 
-export const getGameReviews = async (gamePk: number, page?: number, limit?: number) => {
+export const getGameReviews = async (
+  gamePk: number,
+  page?: number,
+  limit?: number,
+  order?: "new" | "likes" | "dislikes",
+) => {
   try {
-    const res = await sparta_games.get(`/games/api/list/${gamePk}/reviews/?page=${page}&limit=${limit}`);
+    const res = await sparta_games.get(`/games/api/list/${gamePk}/reviews/?page=${page}&limit=${limit}&order=${order}`);
     return res.data;
   } catch (error) {
     if (error instanceof Error) {
@@ -11,6 +16,7 @@ export const getGameReviews = async (gamePk: number, page?: number, limit?: numb
     }
   }
 };
+
 export const getGameMyReview = async (gamePk: number, page?: number, limit?: number) => {
   try {
     const res = await sparta_games_auth.get(`/games/api/list/${gamePk}/reviews/?page=${page}&limit=${limit}`);
@@ -21,6 +27,7 @@ export const getGameMyReview = async (gamePk: number, page?: number, limit?: num
     }
   }
 };
+
 export const postGameReviews = async (
   gamePk: number | undefined,
   star: number | null,

@@ -1,5 +1,5 @@
 import GameDescriptionModal from "./GameDescriptionModal";
-import useGameDetail from "../../../hook/gameDetailHook/useGameDetail";
+import useModalToggle from "../../../hook/useModalToggle";
 
 type Props = {
   title?: string;
@@ -11,7 +11,7 @@ type Props = {
 };
 
 const GameDescription = ({ title, content, screenshot }: Props) => {
-  const { more, onClickMoreToggleHandler } = useGameDetail();
+  const { modalToggle, onClickModalToggleHandler } = useModalToggle();
 
   return (
     <div className="flex flex-col gap-3 mt-5 p-5 bg-gray-800 rounded-xl">
@@ -19,7 +19,7 @@ const GameDescription = ({ title, content, screenshot }: Props) => {
         <p className="font-DungGeunMo text-[24px] text-white">게임설명</p>
         <p
           onClick={() => {
-            onClickMoreToggleHandler();
+            onClickModalToggleHandler();
           }}
           className="font-DungGeunMo text-[24px] text-white text-xl cursor-pointer"
         >
@@ -35,8 +35,8 @@ const GameDescription = ({ title, content, screenshot }: Props) => {
         title={title}
         content={content}
         screenshot={screenshot}
-        more={more}
-        onClickMoreToggleHandler={onClickMoreToggleHandler}
+        modalToggle={modalToggle}
+        onClickModalToggleHandler={onClickModalToggleHandler}
       />
     </div>
   );
