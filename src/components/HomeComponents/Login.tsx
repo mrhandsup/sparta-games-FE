@@ -164,6 +164,13 @@ function Login({ onClose }: Props) {
                 비밀번호 찾기
               </div>
               <SpartaButton
+                content={loginMutation.isPending ? "로그인 중..." : "로그인"}
+                type="filled"
+                colorType="primary"
+                size="medium"
+                disabled={!isValid || loginMutation.isPending}
+              />
+              <SpartaButton
                 content="회원가입"
                 onClick={() => {
                   navigate(`/signup`);
@@ -172,13 +179,6 @@ function Login({ onClose }: Props) {
                 type="filled"
                 colorType="grey"
                 size="medium"
-              />
-              <SpartaButton
-                content={loginMutation.isPending ? "로그인 중..." : "로그인"}
-                type="filled"
-                colorType="primary"
-                size="medium"
-                disabled={!isValid || loginMutation.isPending}
               />
             </form>
           </>

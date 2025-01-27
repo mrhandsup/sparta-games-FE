@@ -104,6 +104,19 @@ export const searchGame = async (keyword: string) => {
 };
 
 /**
+ * 게임 검색 (인증)
+ */
+export const searchGameAuth = async (keyword: string) => {
+  try {
+    const res = await sparta_games_auth.get(`/games/api/list/search/?keyword=${keyword}`);
+    return res.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+/**
  * 게임 즐겨찾기
  */
 export const postBookMark = async (gamePk: number | undefined) => {
