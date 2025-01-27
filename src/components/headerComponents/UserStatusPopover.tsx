@@ -2,13 +2,21 @@ import { Link } from "react-router-dom";
 
 type props = {
   isLogin: boolean;
+  userId?: number;
   onClickModalToggleHandler: () => void;
   modalRef: React.RefObject<HTMLDivElement>;
   loginHandler: () => void;
   logoutHandler?: () => void;
 };
 
-const UserStatusPopover = ({ isLogin, modalRef, onClickModalToggleHandler, loginHandler, logoutHandler }: props) => {
+const UserStatusPopover = ({
+  isLogin,
+  userId,
+  modalRef,
+  onClickModalToggleHandler,
+  loginHandler,
+  logoutHandler,
+}: props) => {
   return (
     <div
       ref={modalRef}
@@ -19,7 +27,7 @@ const UserStatusPopover = ({ isLogin, modalRef, onClickModalToggleHandler, login
     >
       {isLogin ? (
         <div className="flex flex-col items-center gap-6 w-fit">
-          <Link to={`/my-page`}>
+          <Link to={`/my-page/${userId}`}>
             <p className="hover:text-primary-500 w-fit">마이페이지</p>
           </Link>
           <div onClick={logoutHandler}>

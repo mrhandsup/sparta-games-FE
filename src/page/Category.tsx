@@ -21,7 +21,7 @@ const Category = () => {
     <main className="w-full">
       <Title category={searchParams.get("category")!} />
       <div className="">
-        <GameCardList data={data?.results?.results} />
+        <GameCardList data={data?.results} />
       </div>
     </main>
   );

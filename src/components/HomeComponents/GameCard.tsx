@@ -11,7 +11,12 @@ type Props = {
 
 const GameCard = ({ item, simple, row }: Props) => {
   return (
-    <section key={item?.pk} className={`relative flex flex-col border-gray-100 border-[0.7px] rounded-lg border-solid`}>
+    <section
+      key={item?.pk}
+      className={`relative flex ${
+        row ? "flex-row" : "flex-col"
+      } border-gray-100 border-[0.7px] rounded-lg border-solid`}
+    >
       <img
         src={import.meta.env.VITE_PROXY_HOST + item?.thumbnail}
         alt="게임 썸네일"
