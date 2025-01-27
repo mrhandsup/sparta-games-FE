@@ -1,0 +1,11 @@
+.GameUploadSelectCustom .MuiOutlinedInput-notchedOutline {
+  @apply !border-white;
+}
+
+.GameUploadSelectCustom .MuiSelect-select {
+  @apply bg-gray-700;
+}
+
+.GameUploadSelectCustom .items-baseline {
+  @apply block;
+}

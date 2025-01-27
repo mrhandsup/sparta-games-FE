@@ -6,7 +6,7 @@ import type { TGameUploadInput } from "../../types";
 import changeUrl from "../../util/changeUrl";
 
 const useGameUpload = () => {
-  const { register, watch, setValue, formState, handleSubmit } = useForm<TGameUploadInput>();
+  const { register, watch, control, setValue, formState, handleSubmit } = useForm<TGameUploadInput>();
 
   const [note, setNote] = useState({ 1: false, 2: false, 3: false });
   const [previewThumbnail, setPreviewThumbnail] = useState<string[]>([]);
@@ -22,7 +22,7 @@ const useGameUpload = () => {
     const inputId = e.target.id;
     const file = [...e.target.files!];
     const urlArr: string[] = [];
-    console.log(inputId);
+
     file.map((item) => {
       const url = changeUrl(item);
       urlArr.push(url);
@@ -86,6 +86,7 @@ const useGameUpload = () => {
   const form = {
     register,
     watch,
+    control,
     setValue,
     formState,
     handleSubmit,

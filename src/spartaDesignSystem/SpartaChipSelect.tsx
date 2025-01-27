@@ -100,6 +100,7 @@ const SpartaChipSelect = ({ label, options, control, name, pass, subLabel, multi
       },
     },
   };
+
   const colorBranch = () => {
     if (pass) {
       return "text-primary-500";
