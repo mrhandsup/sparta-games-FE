@@ -11,152 +11,142 @@ type Props = {
     2: boolean;
     3: boolean;
   };
-  previewThumbnail: string[];
   previewStillCut: string[];
   onChangeHandler: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onClickHandler: (type: "thumbnail" | "stillCut", arg: number) => void;
   onSubmitHandler: SubmitHandler<TGameUploadInput>;
 };
 
-const Form = ({
-  form,
-  note,
-  previewThumbnail,
-  previewStillCut,
-  onChangeHandler,
-  onClickHandler,
-  onSubmitHandler,
-}: Props) => {
+const Form = ({ form, note, previewStillCut, onChangeHandler, onClickHandler, onSubmitHandler }: Props) => {
+  console.log(form.watch("thumbnail"));
   return (
     <form onSubmit={form.handleSubmit(onSubmitHandler)} className="mx-[130px]">
-      <div className="flex gap-10 my-10 text-gray-300 text-body-22">
-        <div className="flex flex-col gap-[26px] w-[760px]">
-          <div className="flex flex-col gap-[10px]">
-            <div className="flex items-end gap-2 text-heading-24 text-white">
-              제목 <span className="text-body-14 text-primary-500">*필수</span>
-            </div>
-            <input
-              type="text"
-              placeholder="Sparta Games"
-              {...form.register("title", { required: "필수" })}
-              className="py-3 px-4 w-full bg-gray-700 border border-solid border-white rounded-md"
-            />
-          </div>
-          <div className="flex flex-col gap-[10px]">
-            <div className="flex items-end gap-2 text-heading-24 text-white">
-              장르선택 <span className="text-body-14 text-primary-500">*필수</span>
-            </div>
-            <select
-              {...form.register("category", { required: "필수" })}
-              className="py-3 px-4 w-full bg-gray-700 border border-solid border-white rounded-md appearance-none"
-            >
-              <option value="">장르를 선택해주세요</option>
-              {CATEGORY.map((item, idx) => (
-                <option key={idx} value={item}>
-                  {item}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="flex flex-col gap-[10px]">
-            <div className="flex items-end gap-2 text-heading-24 text-white">
-              게임설명 <p className="text-body-14 text-primary-500">*필수</p>
-            </div>
-            <textarea
-              placeholder="게임 설명을 입력해주세요"
-              {...form.register("content", { required: "필수" })}
-              className="py-3 px-4 w-full h-[436px] bg-gray-700 border border-solid border-white rounded-md resize-none"
-            />
-          </div>
-          <div className="flex flex-col gap-[10px]">
-            <div className="flex items-end gap-2 text-heading-24 text-white">
-              게임파일 업로드 <span className="text-body-14 text-primary-500">*필수</span>
-            </div>
-            <div className="flex gap-4">
-              <div className="flex items-center py-3 px-4 w-full bg-gray-700 border border-solid border-white rounded-md resize-none">
-                {form.watch("gameFile") ? form.watch("gameFile")[0]?.name : "게임명"}
+      <div className="flex gap-10 my-10 text-gray-300 text-body-18">
+        <div className="w-[760px]">
+          <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-2">
+              <div className="flex items-end gap-2 text-heading-20 text-white">
+                썸네일 업로드<span className="text-body-14 text-alert-default">*선택</span>
               </div>
-              <label
-                htmlFor="gameFile"
-                className="flex items-center py-3 px-6 w-24 border border-solid border-primary-500 rounded-lg text-title-18 whitespace-nowrap cursor-pointer"
-              >
-                업로드
-              </label>
+              <div className="flex gap-4">
+                <div className="flex items-center py-3 px-4 w-full bg-gray-700 border border-solid border-white rounded-md resize-none">
+                  {form.watch("thumbnail")?.length > 0
+                    ? form.watch("thumbnail")[0]?.name
+                    : "1000px*800px이하, 5mb 이하 사진파일"}
+                </div>
+                <label
+                  htmlFor="gameThumbnail"
+                  className="flex items-center py-3 px-6 w-24 border border-solid border-primary-500 rounded-lg text-title-18 whitespace-nowrap cursor-pointer"
+                >
+                  업로드
+                </label>
+                <input
+                  id="gameThumbnail"
+                  type="file"
+                  accept="image/*"
+                  {...form.register("thumbnail", { onChange: onChangeHandler })}
+                  className="hidden"
+                />
+              </div>
             </div>
-            <input
-              id="gameFile"
-              type="file"
-              accept=".zip, .7z"
-              {...form.register("gameFile", { required: "필수" })}
-              className="hidden"
-            />
+            <div className="flex flex-col gap-2">
+              <div className="flex items-end gap-2 text-heading-20 text-white">
+                파일업로드 <span className="text-body-14 text-primary-500">*필수</span>
+              </div>
+              <div className="flex gap-4">
+                <div className="flex items-center py-3 px-4 w-full bg-gray-700 border border-solid border-white rounded-md resize-none">
+                  {form.watch("gameFile")?.length > 0
+                    ? form.watch("gameFile")[0]?.name
+                    : "200mb 이하 Zip파일로 업로드 해주세요."}
+                </div>
+                <label
+                  htmlFor="gameFile"
+                  className="flex items-center py-3 px-6 w-24 border border-solid border-primary-500 rounded-lg text-title-18 whitespace-nowrap cursor-pointer"
+                >
+                  업로드
+                </label>
+              </div>
+              <input
+                id="gameFile"
+                type="file"
+                accept=".zip, .7z"
+                {...form.register("gameFile", { required: "필수" })}
+                className="hidden"
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <div className="flex items-end gap-2 text-heading-20 text-white">
+                제목 <span className="text-body-14 text-primary-500">*필수</span>
+              </div>
+              <input
+                type="text"
+                placeholder="게임 제목을 입력해주세요."
+                {...form.register("title", { required: "필수" })}
+                className="py-3 px-4 w-full bg-gray-700 border border-solid border-white rounded-md"
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <div className="flex items-end gap-2 text-heading-20 text-white">
+                장르선택 <span className="text-body-14 text-primary-500">*필수</span>
+              </div>
+              <select
+                {...form.register("category", { required: "필수" })}
+                className="py-3 px-4 w-full bg-gray-700 border border-solid border-white rounded-md appearance-none"
+              >
+                <option value="">장르를 선택해주세요</option>
+                {CATEGORY.map((item, idx) => (
+                  <option key={idx} value={item}>
+                    {item}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
 
         <div className="flex flex-col gap-[26px] w-[380px]">
-          <div className="flex flex-col gap-[10px]">
-            <div className="flex items-end gap-2 text-heading-24 text-white">
-              섬네일 업로드<span className="text-body-14">*선택</span>
+          <div className="flex flex-col gap-2">
+            <div className="flex items-end gap-2 text-heading-20 text-white">
+              플레이 영상<span className="text-body-14 text-alert-default">*선택</span>
             </div>
-            <p className="text-body-14">
-              게임 메인에 노출되는 썸네일 이미지 입니다.
-              <br /> 1920*1080px (16:9) 비율의 이미지에 최적화 되어있습니다.
-            </p>
-            <div className="flex flex-col items-center gap-3 p-2 h-[214px] border border-solid border-white rounded-md overflow-scroll scrollbar-hide">
-              {previewThumbnail && (
-                <div className="w-4/5">
-                  {previewThumbnail.map((item, idx) => (
-                    <div key={idx} className="relative">
-                      <img src={item} alt="섬네일 미리보기" className="w-full border border-solid border-black" />
-                      <div onClick={() => onClickHandler("thumbnail", idx)} className="absolute -top-2 -right-2">
-                        <CloseCircle />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-              <label
-                htmlFor="game-thumbnail"
-                className="my-auto py-3 px-6 w-24 whitespace-nowrap text-title-18 text-primary-500 border border-solid border-primary-500 rounded-lg cursor-pointer"
-              >
-                업로드
-              </label>
-              <input
-                id="game-thumbnail"
-                type="file"
-                accept="image/*"
-                {...form.register("thumbnail", { onChange: onChangeHandler })}
-                className="hidden"
-              />
-            </div>
+            <input
+              type="text"
+              placeholder="유튜브에서 전체/일부공개 설정 후 링크 삽입"
+              {...form.register("video")}
+              className="py-3 px-4 border border-solid border-white bg-gray-700 rounded-md"
+            />
           </div>
-          <div className="flex flex-col gap-[10px]">
-            <div className="flex items-end gap-2 text-heading-24 text-white">
-              스틸컷 업로드<span className="text-body-14">*선택</span>
+          <div className="flex flex-col gap-2">
+            <div className="flex items-end gap-2 text-heading-20 text-white">
+              스틸컷 업로드<span className="text-body-14 text-alert-default">*선택</span>
             </div>
-            <p className="text-body-14">
-              게임 플레이 화면에 노출되는 이미지 입니다.
-              <br /> 1920*1080px (16:9) 비율의 이미지에 최적화 되어있습니다.
-            </p>
-            <div className="flex flex-col items-center gap-3 p-2 h-[214px] border border-solid border-white rounded-md overflow-scroll scrollbar-hide">
-              {previewStillCut && (
-                <div className="grid grid-cols-2 gap-3 w-full">
-                  {previewStillCut.map((item, idx) => (
-                    <div key={idx} className="relative">
-                      <img src={item} alt="섬네일 미리보기" className="w-full border border-solid border-black" />
-                      <div onClick={() => onClickHandler("stillCut", idx)} className="absolute -top-2 -right-2">
-                        <CloseCircle />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
+            <p className="text-body-14">1000px*800px이하, 5mb이하 사진파일</p>
+            <div className="flex flex-col items-center gap-3 pt-3 max-h-[668px] border border-solid border-white rounded-md overflow-scroll scrollbar-hide">
               <label
                 htmlFor="still-cut"
-                className="my-auto py-3 px-6 w-24 whitespace-nowrap text-title-18 text-primary-500 border border-solid border-primary-500 rounded-lg cursor-pointer"
+                className="py-3 px-6 w-24 whitespace-nowrap text-title-18 text-primary-500 border border-solid border-primary-500 rounded-lg cursor-pointer"
               >
                 업로드
               </label>
+              {previewStillCut && (
+                <div className="grid grid-cols-2 gap-4 w-full">
+                  {previewStillCut.map((item, idx) => (
+                    <div key={idx} className="relative">
+                      <img
+                        src={item}
+                        alt="섬네일 미리보기"
+                        className="w-full object-cover border border-solid border-black"
+                      />
+                      <div
+                        onClick={() => onClickHandler("stillCut", idx)}
+                        className="absolute top-0 right-0 cursor-pointer"
+                      >
+                        <CloseCircle size={30} color={"#FFCB5C"} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
               <input
                 id="still-cut"
                 type="file"
@@ -167,24 +157,17 @@ const Form = ({
               />
             </div>
           </div>
-          <div className="flex flex-col gap-[10px]">
-            <div className="flex items-end gap-2 text-heading-24 text-white">
-              게임영상 업로드<span className="text-body-14">*선택</span>
-            </div>
-            <p className="text-body-14">
-              게임 소개영사 및 플레이 영상을 업로드 할 수 있습니다.
-              <br /> 유튜브에서 전첵공개 또는 링크공개(일부 공개)설정 후,
-              <br />
-              링크를 복사, 붙여널기 해주세요
-            </p>
-            <input
-              type="text"
-              placeholder="https://youtube.com"
-              {...form.register("video")}
-              className="py-3 px-4 border border-solid border-white bg-gray-700 rounded-md"
-            />
-          </div>
         </div>
+      </div>
+      <div className="flex flex-col gap-[10px] mb-8">
+        <div className="flex items-end gap-2 text-heading-20 text-white">
+          게임설명 <p className="text-body-14 text-primary-500">*필수</p>
+        </div>
+        <textarea
+          placeholder="게임 설명을 입력해주세요"
+          {...form.register("content", { required: "필수" })}
+          className="py-3 px-4 w-full h-[436px] bg-gray-700 border border-solid border-white rounded-md resize-none"
+        />
       </div>
       {!(note[1] && note[2] && note[3]) || !form.formState.isValid ? (
         <button
@@ -192,11 +175,11 @@ const Form = ({
           disabled={!(note[1] && note[2] && note[3]) || !form.formState.isValid}
           className={`mb-10 w-full h-14 text-title-18 text-gray-900 bg-gray-400 rounded-lg`}
         >
-          게임승인 요청하기
+          필수 값을 입력한 후 승인요청을 할 수 있습니다.
         </button>
       ) : (
         <button type="submit" className={`mb-10 w-full h-14 text-title-18 text-primary-950 bg-primary-500 rounded-lg`}>
-          게임승인 요청하기
+          승인요청
         </button>
       )}
     </form>

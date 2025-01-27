@@ -2,11 +2,11 @@ import { ChangeEvent, useState } from "react";
 
 import { useForm, SubmitHandler } from "react-hook-form";
 
-import type { TGameUploadInput, TGameUploadInputForm } from "../../types";
+import type { TGameUploadInput } from "../../types";
 import changeUrl from "../../util/changeUrl";
 
 const useGameUpload = () => {
-  const { register, watch, setValue, formState, handleSubmit } = useForm<TGameUploadInputForm>();
+  const { register, watch, setValue, formState, handleSubmit } = useForm<TGameUploadInput>();
 
   const [note, setNote] = useState({ 1: false, 2: false, 3: false });
   const [previewThumbnail, setPreviewThumbnail] = useState<string[]>([]);

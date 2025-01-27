@@ -3,22 +3,21 @@ import Form from "../components/gameUploadComponents/Form";
 
 import useGameUpload from "../hook/gameUploadHook/useGameUpload";
 
-import pixelMeteor from "../assets/homeImage/pixelMeteor.svg";
+import pixelMeteor from "../assets/gameDetail/ReviewEdit.svg";
 
 const GameUpload = () => {
-  const { note, form, previewThumbnail, previewStillCut, eventHandler } = useGameUpload();
+  const { note, form, previewStillCut, eventHandler } = useGameUpload();
 
   return (
     <main>
       <div className="flex gap-3 my-10 mx-auto w-fit text-[32px] leading-[125%] text-white font-DungGeunMo">
-        <img src={pixelMeteor} />
-        <p>게임을 업로드 합니다.</p>
+        <img className="w-8 h-8" src={pixelMeteor} />
+        <p>스파르타 게임즈에 게임을 등록합니다</p>
       </div>
       <Note state={note} onClickHandler={eventHandler.onClickNoteToggleHandler} />
       <Form
         form={form}
         note={note}
-        previewThumbnail={previewThumbnail}
         previewStillCut={previewStillCut}
         onChangeHandler={eventHandler.onChangeImageHandler}
         onClickHandler={eventHandler.onClickImageDeleteHandler}
