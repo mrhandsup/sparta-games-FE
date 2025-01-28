@@ -1,7 +1,7 @@
 import heroImage from "../../assets/homeImage/heroImage.svg";
 import { userStore } from "../../share/store/userStore";
 import { useQuery } from "@tanstack/react-query";
-import type { TListResponse } from "../../types";
+import type { TGameData } from "../../types";
 import useModalToggles from "../../hook/useModalToggles";
 import SpartaModal from "../../spartaDesignSystem/SpartaModal";
 import { Autoplay } from "swiper/modules";
@@ -18,7 +18,7 @@ import "./HeroSwiper.css";
 const Hero = () => {
   const { userData } = userStore();
 
-  const { data } = useQuery<TListResponse>({
+  const { data } = useQuery<TGameData[]>({
     queryKey: ["userGamePackList", userData],
     queryFn: () => getUserGamePackList(userData?.user_pk || 0),
     enabled: !!userData?.user_pk,
@@ -26,8 +26,7 @@ const Hero = () => {
 
   // 모달
   const LOGIN_MODAL_ID = "loginModal";
-  const LOG_OUT_MODAL_ID = "logOutModal";
-  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([LOGIN_MODAL_ID, LOG_OUT_MODAL_ID]);
+  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([LOGIN_MODAL_ID]);
 
   const swiperRef = useRef(null);
 
@@ -35,7 +34,7 @@ const Hero = () => {
     <>
       {/* 로그인 전 */}
       {!userData && (
-        <section className="flex items-center gap-[60px] w-full h-[475px] bg-gray-700 ">
+        <section className="flex items-center gap-[60px] w-full h-[475px] bg-gray-800 ">
           <img src={heroImage} />
           <div className="flex flex-col justify-center gap-4 items-center w-[50%] px-20">
             <h2 className="font-DungGeunMo text-heading-32 text-primary-500 ">★ Welcome to Sparta Games ★</h2>
@@ -60,7 +59,7 @@ const Hero = () => {
         </section>
       )}
       {/* 로그인 후 && 북마크 게임 x */}
-      {userData && data?.results.length == 0 && (
+      {userData && data?.length == 0 && (
         <section className="flex flex-col items-center  w-full h-[475px]  text-white  justify-center relative gap-4 ">
           <div className="absolute bg-hero-image bg-cover bg-center opacity-20 justify-center w-full h-full"></div>
           <p className="font-DungGeunMo text-heading-28 text-primary-400 mb-24">[User Name]의 Game Pack</p>
@@ -70,18 +69,19 @@ const Hero = () => {
         </section>
       )}
       {/* 로그인 후 && 북마크 게임 o */}
-      {userData && data?.results && data?.results?.length !== 0 && (
+      {userData && data && data?.length !== 0 && (
         <section className="flex flex-col items-center w-full h-[475px]  text-white justify-center gap-4 mb-10 bg-red-500 ">
           <Swiper
+            className="heroSwiper"
             ref={swiperRef}
-            loop={data?.results?.length > 1 ? true : false}
+            loop={data?.length > 1 ? true : false}
             pagination={{
               clickable: true,
             }}
             autoplay={{ delay: 2000, disableOnInteraction: false }}
             modules={[Autoplay]}
           >
-            {data?.results.map((data, index) => (
+            {data?.map((data, index) => (
               <SwiperSlide key={index}>
                 <MyGamePackCard item={data} />
               </SwiperSlide>

@@ -14,8 +14,8 @@ const GameCard = ({ item, simple, row }: Props) => {
     <section
       key={item?.pk}
       className={`relative flex ${
-        row ? "flex-row border-gray-100 border-[1px] rounded-lg border-solid h-[152px]" : "flex-col"
-      }`}
+        row ? "flex-row" : "flex-col"
+      } border-gray-100 border-[0.7px] rounded-lg border-solid`}
     >
       <img
         src={import.meta.env.VITE_PROXY_HOST + item?.thumbnail}

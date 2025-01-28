@@ -1,4 +1,4 @@
-import { userStore } from "../share/store/userStore";
+import { AxiosError } from "axios";
 import { sparta_games, sparta_games_auth } from "./axios";
 
 /**
@@ -32,7 +32,7 @@ export const getGameListAuth = async () => {
  */
 export const getGameListByCategory = async (category: string, page?: number, limit?: number) => {
   try {
-    let url = `/games/api/list/search/?category-q=${category}`;
+    let url = `/games/api/list/categories/?category=${category}`;
 
     // page와 limit이 있을 때만 URL에 추가
     if (page !== undefined) {
@@ -66,13 +66,14 @@ export const getGameDetail = async (id: number) => {
 /**
  * 내 북마크 게임 리스트 조회
  */
-export const getMyBookmarkList = async () => {
-  const { userData } = userStore();
+export const getMyBookmarkList = async (userPk: number | undefined) => {
   try {
-    const res = await sparta_games_auth.get(`/user/api/${userData?.user_pk}/likes/`);
+    const res = await sparta_games_auth.get(`/users/api/${userPk}/likes/`);
     return res.data;
-  } catch (error) {
-    console.error(error);
+  } catch (error: unknown) {
+    if ((error as AxiosError).response?.status === 404) {
+      return { results: [] };
+    }
     throw error;
   }
 };
@@ -95,8 +96,65 @@ export const getGameCategory = async () => {
  */
 export const searchGame = async (keyword: string) => {
   try {
-    const res = await sparta_games.get(`/games/api/list/search/?game-q=${keyword}&maker-q=${keyword}`);
+    const res = await sparta_games.get(`/games/api/list/search/?keyword=${keyword}`);
     return res.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+/**
+ * 게임 검색 (인증)
+ */
+export const searchGameAuth = async (keyword: string) => {
+  try {
+    const res = await sparta_games_auth.get(`/games/api/list/search/?keyword=${keyword}`);
+    return res.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+/**
+ * 게임 즐겨찾기
+ */
+export const postBookMark = async (gamePk: number | undefined) => {
+  try {
+    const res = await sparta_games_auth.post(`/games/api/list/${gamePk}/like/`);
+    console.log("res", res);
+    return res.data.message;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+/**
+ * 게임 시작 시간 기록
+ */
+
+export const getPlayLog = async (gamePk: number | undefined) => {
+  try {
+    const res = await sparta_games_auth.get(`/games/api/list/${gamePk}/playlog/`);
+    return res.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+/**
+ * 게임 종료 시간 기록
+ */
+
+export const postPlayLog = async (gamePk: number | undefined, playTimePk: number | undefined) => {
+  try {
+    const res = await sparta_games_auth.post(`/games/api/list/${gamePk}/playlog/`, {
+      playtime_pk: playTimePk,
+    });
+    return res;
   } catch (error) {
     console.error(error);
     throw error;

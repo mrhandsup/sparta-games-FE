@@ -25,6 +25,39 @@ export type TReviewInputForm = {
   difficulty: "easy" | "normal" | "hard" | "";
 };
 
+export type TReviewData = {
+  id: number;
+  author_name: string;
+  src: null;
+  like_count: number;
+  dislike_count: number;
+  user_is_like: number;
+  content: string;
+  star: number;
+  difficulty: number;
+  is_visible: boolean;
+  created_at: string;
+  updated_at: string;
+  game_id: number;
+  author_id: number;
+};
+
+export type TReviewResponse = {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: {
+    all_reviews: TReviewData[];
+    my_review?: TReviewData;
+  };
+};
+
+export type ReviewFormData = {
+  title: string;
+  content: string;
+  rating: number;
+};
+
 export type TUserInformationInputForm = {
   email: string;
   nickname: string;
@@ -32,9 +65,11 @@ export type TUserInformationInputForm = {
   password_check: string;
   new_password: string;
   new_password_check: string;
-  game_category: string[];
+  game_category: string;
   user_tech: string;
   is_maker: boolean;
+  email_code?: string;
+  login_type: string;
 };
 
 export type TUser = {
@@ -86,8 +121,13 @@ export type TListResponse = {
 
 export type TGamePlayData = {
   id: number;
+  category: {
+    pk: number;
+    name: string;
+  }[];
   maker_name: string;
   title: string;
+  is_liked: boolean;
   thumnail: null;
   youtube_url: string;
   content: string;

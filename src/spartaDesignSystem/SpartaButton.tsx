@@ -32,7 +32,7 @@ const SpartaButton = ({
     };
 
     if (disabled) {
-      return `${baseStyles} ${disabledStyles[type]} ${sizeStyles[size]}`;
+      return `${baseStyles} ${disabledStyles[type]} ${sizeStyles[size]} ${width}`;
     }
 
     const colorDict = {

@@ -1,81 +1,55 @@
-import React from "react";
+import { useState } from "react";
 import log from "../../../assets/Log.svg";
-import SpartaSelectableGroup from "../../common/SpartaSelectableGroup";
+
 import { userStore } from "../../../share/store/userStore";
-import { convertToConfigObjects, convertToConfigValues } from "../../../util/convertToConfigObjects";
-import { updateUserData } from "../../../api/user";
-import { GAME_CATEGORY, selectConfig, USER_TECH, USER_TYPE } from "../../../constant/constant";
-import { useMutation } from "@tanstack/react-query";
+import { convertToConfigObjects } from "../../../util/convertToConfigObjects";
 
-type Props = {};
+import { USER_TECH } from "../../../constant/constant";
 
-const Profile = (props: Props) => {
+import useModalToggles from "../../../hook/useModalToggles";
+import SpartaModal from "../../../spartaDesignSystem/SpartaModal";
+import ProfileModal from "./ProfileModal";
+import SpartaReactionModal, { TSpartaReactionModalProps } from "../../../spartaDesignSystem/SpartaReactionModal";
+
+const Profile = () => {
   //* Hooks
-  const { userData, setUser } = userStore();
+  const { userData } = userStore();
+  //* 모달
+  const CHANGE_PROFILE_MODAL_ID = "changeProfileModal";
+  const NO_ACTION_MODAL_ID = "noActionModal";
 
-  //* State
-  const [nickname, setNickname] = React.useState<string>("");
-  const [gameCategory, setGameCategory] = React.useState<selectConfig[]>([]);
-  const [userTech, setUserTech] = React.useState<string>("");
-  const [userType, setUserType] = React.useState<selectConfig[]>([]);
-  const [isUpdate, setIsUpdate] = React.useState<boolean>(false);
+  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([CHANGE_PROFILE_MODAL_ID, NO_ACTION_MODAL_ID]);
 
-  //* Function
-  const profileMutation = useMutation({
-    mutationFn: ({
-      user_pk,
-      data,
-    }: {
-      user_pk: number;
-      data: {
-        nickname: string;
-        user_tech: string;
-        game_category: string[];
-        is_maker: boolean;
-      };
-    }) => updateUserData(userData?.user_pk, data),
-    onSuccess: () => {
-      setIsUpdate(false);
-      setUser(sessionStorage.getItem("accessToken") as string);
-      // TODO: 성공 토스트 메시지 표시
-    },
-    onError: (error) => {
-      console.error(error);
-      // TODO: 에러 토스트 메시지 표시
-    },
-  });
-
-  const onClickUpdateProfile = async () => {
-    if (!isUpdate) {
-      setIsUpdate(true);
-      return;
-    }
-    if (userData) {
-      profileMutation.mutate({
-        user_pk: userData.user_pk,
-        data: {
-          nickname,
-          user_tech: userTech,
-          game_category: convertToConfigValues(gameCategory),
-          is_maker: userType[0].value as boolean,
+  // 단순 모달 데이터 config
+  const noActionData: { [key: string]: Partial<TSpartaReactionModalProps> } = {
+    successChangeProfile: {
+      title: "프로필 변경 완료",
+      content: "프로필이 변경되었습니다.",
+      btn1: {
+        text: "확인했습니다",
+        onClick: () => {
+          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
         },
-      });
-    }
+      },
+      type: "primary",
+    },
+    failUpdateProfile: {
+      title: "프로필 변경 실패",
+      content: "프로필 변경에 실패했습니다. 다시 시도해주세요.",
+      btn1: {
+        text: "확인했습니다",
+        onClick: () => {
+          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+        },
+      },
+      type: "error",
+    },
   };
 
-  //*
-  React.useEffect(() => {
-    if (userData) {
-      const convertedUserType = userData.is_maker
-        ? [{ label: "개발자", value: true }]
-        : [{ label: "사용자", value: false }];
-      const convertedGameCategory = convertToConfigObjects(GAME_CATEGORY, userData.game_category);
-      setNickname(userData.nickname);
-      setGameCategory(convertedGameCategory);
-      setUserTech(userData.user_tech);
-      setUserType(convertedUserType);
-    }
-  }, [userData]);
+  // 단순 모달 데이터
+  const [noActionModalData, setNoActionModalData] = useState<Partial<TSpartaReactionModalProps>>(
+    noActionData.successChangeProfile,
+  );
 
   return (
     <div className="bg-gray-800 rounded-xl px-7 py-5 flex flex-col gap-4 justify-start items-start ">
@@ -85,66 +59,78 @@ const Profile = (props: Props) => {
           <p className="font-DungGeunMo text-heading-32 text-white">프로필 수정</p>
         </div>
         <button
-          className={`${isUpdate ? "border-primary-500" : "border-gray-400"} border-2 w-[20%] h-10 rounded-md ${
-            isUpdate ? "text-primary-500" : "text-gray-400"
-          } font-bold hover:bg-gray-700 transition-colors`}
-          onClick={onClickUpdateProfile}
+          className={`border-gray-300 border-2 w-[20%] h-10 rounded-md text-gray-300 font-bold hover:bg-gray-700 transition-colors`}
+          onClick={() => onClickModalToggleHandlers[CHANGE_PROFILE_MODAL_ID]()}
         >
-          {profileMutation.isPending ? "처리중" : isUpdate ? "저장하기" : "수정하기"}
+          수정하기
         </button>
       </div>
       <div className="w-full flex flex-col gap-5">
         <div className="flex justify-between items-center">
           <label className="text-gray-100">닉네임</label>
           <input
-            value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
-            placeholder="spartagames"
+            value={userData?.nickname}
             className="py-3 px-4 bg-gray-700 border border-solid border-white rounded-md w-[50%] text-white"
-            disabled={!isUpdate}
+            disabled
           />
         </div>
         <div className="flex justify-between ">
           <label className="text-gray-100">관심게임분야</label>
           <div className="w-[50%]">
-            <SpartaSelectableGroup
-              selectableData={GAME_CATEGORY}
-              onChangeSelectedData={(selectedData) => setGameCategory(selectedData)}
-              initialSelectedData={gameCategory}
-              isResetButton
-              isMultipleSelect
-              disabled={!isUpdate}
-            />
+            <div className="flex gap-2 items-center p-2 border-gray-200 border-2 rounded-md border-solid bg-gray-700">
+              {userData?.game_category.map((category, idx) => (
+                <span key={idx} className="font-DungGeunMo text-body-20 bg-white px-2 py-1  rounded-md w-fit">
+                  {category}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
         <div className="flex justify-between items-center">
           <label className="text-gray-100">관심기술분야</label>
-          <select
-            value={userTech}
-            onChange={(e) => setUserTech(e.target.value)}
-            className="py-3 px-4 w-[50%] bg-gray-700 border border-solid border-white rounded-md appearance-none  text-white"
-            disabled={!isUpdate}
-          >
-            <option value="">장르를 선택해주세요</option>
-            {USER_TECH.map((tech, idx) => (
-              <option key={idx} value={tech.value as string}>
-                {tech.label}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="flex justify-between items-center">
-          <label className="text-gray-100">유저 구분</label>
-          <div className="w-[50%]">
-            <SpartaSelectableGroup
-              selectableData={USER_TYPE}
-              onChangeSelectedData={(selectedData) => setUserType(selectedData)}
-              initialSelectedData={userType}
-              disabled={!isUpdate}
-            />
+          <div className="flex gap-2 items-center p-2 border-gray-200 border-2 rounded-md border-solid bg-gray-700 w-[50%]">
+            <span className="font-DungGeunMo text-body-20 bg-white px-2 py-1  rounded-md w-fit">
+              {userData?.user_tech && convertToConfigObjects(USER_TECH, [userData.user_tech])[0].label}
+            </span>
           </div>
         </div>
       </div>
+      <SpartaModal
+        modalId={CHANGE_PROFILE_MODAL_ID}
+        isOpen={modalToggles[CHANGE_PROFILE_MODAL_ID]}
+        onClose={onClickModalToggleHandlers[CHANGE_PROFILE_MODAL_ID]}
+        closeOnClickOutside={false}
+        title="프로필 수정"
+        type="primary"
+      >
+        <ProfileModal
+          onSuccess={() => {
+            setNoActionModalData(noActionData.successChangeProfile);
+            onClickModalToggleHandlers[CHANGE_PROFILE_MODAL_ID]();
+            onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+          }}
+          onError={(err) => {
+            setNoActionModalData({ ...noActionData.failUpdateProfile, content: err });
+
+            onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+          }}
+        />
+      </SpartaModal>
+
+      {noActionModalData && (
+        <SpartaReactionModal
+          isOpen={modalToggles[NO_ACTION_MODAL_ID]}
+          onClose={onClickModalToggleHandlers[NO_ACTION_MODAL_ID]}
+          modalId={NO_ACTION_MODAL_ID}
+          title={noActionModalData.title || ""}
+          content={noActionModalData.content || ""}
+          btn1={{
+            text: noActionModalData?.btn1?.text || "",
+            onClick: noActionModalData?.btn1?.onClick || (() => {}),
+          }}
+          type={noActionModalData.type}
+        />
+      )}
     </div>
   );
 };

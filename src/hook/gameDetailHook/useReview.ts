@@ -1,64 +1,115 @@
 import { useForm } from "react-hook-form";
 
 import type { TReviewInputForm } from "../../types";
+import { postGameReviews, putGameReview } from "../../api/review";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { postGameReviews } from "../../api/review";
+import useModalToggles from "../useModalToggles";
+import { TSpartaReactionModalProps } from "../../spartaDesignSystem/SpartaReactionModal";
 
 const useReview = () => {
-  const { register, watch, setValue, formState, handleSubmit } = useForm<TReviewInputForm>();
+  const { register, watch, setValue, formState, trigger, handleSubmit } = useForm<TReviewInputForm>();
 
-  const [star, setStar] = useState(0);
-  const [difficultyLevel, setDifficultyLevel] = useState("");
+  const NO_ACTION_MODAL_ID = "noActionModal";
 
-  const onClickStarHandler = (arg: number) => {
-    if (star === arg) {
-      setStar(0);
-      setValue("star", 0);
-      return;
-    }
-    setStar(arg);
-    setValue("star", arg);
+  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([NO_ACTION_MODAL_ID]);
+
+  const noActionData: { [key: string]: Partial<TSpartaReactionModalProps> } = {
+    registerSuccess: {
+      title: "리뷰등록 완료",
+      content: "게임을 재밌게 즐겨주시고,<br/>소중한 의견 남겨주셔서 감사합니다!",
+      btn1: {
+        text: "확인했습니다",
+        onClick: () => {
+          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+        },
+      },
+    },
+    editSuccess: {
+      title: "리뷰수정 완료",
+      content: "리뷰수정이 완료되었습니다.",
+      btn1: {
+        text: "확인했습니다",
+        onClick: () => {
+          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+        },
+      },
+    },
   };
 
-  const onClickDifficultyLevelHandler = (arg: "easy" | "normal" | "hard") => {
-    if (difficultyLevel === arg) {
-      setDifficultyLevel("");
-      setValue("difficulty", "");
-      return;
-    }
-    setDifficultyLevel(arg);
-    setValue("difficulty", arg);
-  };
+  const [noActionModalData, setNoActionModalData] = useState<Partial<TSpartaReactionModalProps>>(
+    noActionData.registerSuccess,
+  );
 
-  const onSubmitHandler: (id: number, data: TReviewInputForm, accessToken: string | null) => void = async (
-    id,
-    data,
-    accessToken,
+  const queryClient = useQueryClient();
+
+  const reviewMutation = useMutation({
+    mutationFn: ({
+      gamePk,
+      star,
+      content,
+      difficulty,
+    }: {
+      gamePk: number | undefined;
+      star: number | null;
+      content: string;
+      difficulty: number | undefined;
+    }) => postGameReviews(gamePk, star, content, difficulty),
+    onSuccess: (data, variables) => {
+      const { gamePk } = variables;
+      queryClient.invalidateQueries({ queryKey: ["reviews", "my_review", gamePk] });
+
+      setNoActionModalData(noActionData.registerSuccess);
+      onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+    },
+  });
+
+  const onSubmitHandler = async (
+    gamePk: number | undefined,
+    difficulty: number | undefined,
+    star: number | null,
+    content: string,
   ) => {
-    // difficulty 데이터 유형 integer로 인한 오류 수정 필요
-    await postGameReviews(id, data, accessToken);
+    reviewMutation.mutate({ gamePk, difficulty, star, content });
+  };
+
+  const onSubmitReviewEditHandler = async (
+    reviewId: number | undefined,
+    gamePk: number | undefined,
+    difficulty: number | undefined,
+    star: number | null,
+    preStar: number | undefined,
+    content: string,
+  ) => {
+    await putGameReview(reviewId, gamePk, difficulty, star, preStar, content);
+    queryClient.invalidateQueries({ queryKey: ["reviews", "my_review", gamePk] });
+
+    setNoActionModalData(noActionData.editSuccess);
+    onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+  };
+
+  const review = {
+    modalToggles,
+    noActionModalData,
+    onClickModalToggleHandlers,
+    NO_ACTION_MODAL_ID,
   };
 
   const form = {
     register,
+    trigger,
     watch,
     setValue,
     formState,
     handleSubmit,
   };
 
-  const state = {
-    star,
-    difficultyLevel,
-  };
-
   const eventHandler = {
-    onClickStarHandler,
-    onClickDifficultyLevelHandler,
     onSubmitHandler,
+    onSubmitReviewEditHandler,
   };
 
-  return { form, state, eventHandler };
+  return { review, form, eventHandler };
 };
 
 export default useReview;

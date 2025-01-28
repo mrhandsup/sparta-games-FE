@@ -44,6 +44,10 @@ type Props = {
    * 비밀번호 타입
    */
   passwordType?: boolean;
+  /**
+   * 버튼 컨텐츠
+   */
+  btnContent?: React.ReactNode;
 };
 
 const SpartaTextField = ({
@@ -56,6 +60,7 @@ const SpartaTextField = ({
   pass,
   onClear,
   passwordType,
+  btnContent,
 }: Props) => {
   const subLabelBranch = () => {
     if (error && !pass) {
@@ -103,37 +108,40 @@ const SpartaTextField = ({
           {subLabelBranch()}
         </p>
       </div>
-      <div className="relative">
-        <input
-          {...register}
-          {...inputProps}
-          className={`w-full py-3 px-4 border border-solid ${inputBorderBranch()} rounded-md ${
-            type === "small" ? "text-body-16" : "text-body-18"
-          } text-gray-200 bg-transparent ${onClear ? "pr-10" : ""}`}
-          type={!passwordType || showPassword ? "text" : "password"}
-        />
-        {!inputProps.disabled && onClear && !passwordType && (
-          <button
-            type="button"
-            onClick={onClear}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-200 transition-colors"
-          >
-            <IoCloseCircleOutline size={type === "small" ? 18 : 20} />
-          </button>
-        )}
-        {passwordType && (
-          <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-200 transition-colors"
-          >
-            {showPassword ? (
-              <IoEyeSharp size={type === "small" ? 18 : 20} />
-            ) : (
-              <FaEyeSlash size={type === "small" ? 18 : 20} />
-            )}{" "}
-          </button>
-        )}
+      <div className="flex w-full items-center gap-2">
+        <div className={`relative ${btnContent ? "w-[80%]" : "w-full"} `}>
+          <input
+            {...register}
+            {...inputProps}
+            className={`w-full py-3 px-4 border border-solid ${inputBorderBranch()} rounded-md ${
+              type === "small" ? "text-body-16" : "text-body-18"
+            } text-gray-200 bg-transparent ${onClear ? "pr-10" : ""}`}
+            type={!passwordType || showPassword ? "text" : "password"}
+          />
+          {!inputProps.disabled && onClear && !passwordType && (
+            <button
+              type="button"
+              onClick={onClear}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-200 transition-colors"
+            >
+              <IoCloseCircleOutline size={type === "small" ? 18 : 20} />
+            </button>
+          )}
+          {passwordType && (
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-200 transition-colors"
+            >
+              {showPassword ? (
+                <IoEyeSharp size={type === "small" ? 18 : 20} />
+              ) : (
+                <FaEyeSlash size={type === "small" ? 18 : 20} />
+              )}{" "}
+            </button>
+          )}
+        </div>
+        {btnContent && <div className="w-[20%]">{btnContent}</div>}
       </div>
     </div>
   );

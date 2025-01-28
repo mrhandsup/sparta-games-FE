@@ -128,6 +128,9 @@ const GAME_CHIP = {
   "Bookmark Top": "🔖 북마크 많은",
   "Long Play": "🕹️ 오래 플레이",
   "New Game": "🆕 새로 등록된",
+  NORMAL: "🟧 NORMAL",
+  EASY: "🟩 EASY",
+  HARD: "🟥 HARD",
 };
 
 export { CATEGORY, USER_TECH, GAME_CATEGORY, USER_TYPE, GAME_CHIP };
