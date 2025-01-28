@@ -15,18 +15,18 @@ type Props = {
 const Note = ({ onClickHandler, state }: Props) => {
   const [isExpanded, setIsExpanded] = useState(true);
 
+  const allChecked = state[1] && state[2] && state[3];
+
   const toggleTerms = () => {
     setIsExpanded(!isExpanded);
   };
 
-  const allChecked = state[1] && state[2] && state[3];
-  console.log(allChecked, isExpanded);
   return (
     <section className="mx-[130px]">
       {/* 약관 창 */}
       <div
         className={`overflow-hidden transition-all duration-500 
-          ${isExpanded ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"}
+          ${isExpanded && allChecked ? "max-h-0 opacity-0" : "max-h-[500px] opacity-100"}
          `}
       >
         <div className="flex flex-col gap-3 py-5 px-10 bg-[#171717] rounded-[20px]">
@@ -80,13 +80,13 @@ const Note = ({ onClickHandler, state }: Props) => {
           <div onClick={toggleTerms} className="flex items-center gap-2 cursor-pointer">
             {isExpanded ? (
               <>
-                <span className="text-gray-100">약관 접기</span>
-                <AiFillCaretUp size={22} color={"#BFBFBF"} />
+                <span className="text-gray-100">약관 다시 확인하기</span>
+                <AiFillCaretDown size={22} color={"#BFBFBF"} />
               </>
             ) : (
               <>
-                <span className="text-gray-100">약관 펼치기</span>
-                <AiFillCaretDown size={22} color={"#BFBFBF"} />
+                <span className="text-gray-100">약관 접기</span>
+                <AiFillCaretUp size={22} color={"#BFBFBF"} />
               </>
             )}
           </div>
