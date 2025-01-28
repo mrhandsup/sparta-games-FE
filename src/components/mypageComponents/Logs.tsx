@@ -2,19 +2,19 @@ import GameCardList from "../HomeComponents/GameCardList";
 import { useQuery } from "@tanstack/react-query";
 import log from "../../assets/Log.svg";
 import { TListResponse, TUser } from "../../types";
-import { getUserGameMadeList, getUserLikedGameList, getUserRecentGameList } from "../../api/user";
+import { getUserLikedGameList, getUserRecentGameList } from "../../api/user";
+import useModalToggles from "../../hook/useModalToggles";
+import MypageLogModal from "./MypageLogModal";
+import SpartaModal from "../../spartaDesignSystem/SpartaModal";
+import { useState } from "react";
 
 type TLogsProps = {
   user: TUser;
 };
 
-type TListData = {
-  data: {
-    results: any[];
-  };
-};
-
 const Logs = (props: TLogsProps) => {
+  const { modalToggles, onClickModalToggleHandlers } = useModalToggles(["gameLogModal"]);
+
   //* Hooks
   const myRecentGameData = useQuery<TListResponse>({
     queryKey: ["myRecentGameList", props.user.user_pk],
@@ -27,12 +27,13 @@ const Logs = (props: TLogsProps) => {
   });
 
   const recentGameData = myRecentGameData.data && myRecentGameData.data?.results;
-  console.log(recentGameData);
 
   const likedData = myLikedData.data && myLikedData.data?.results;
 
   //* Styles
   const LogsClassName = "bg-gray-800 rounded-xl px-7 py-5 flex flex-col gap-4 justify-start items-start w-full";
+
+  const [isRecent, setIsRecent] = useState<boolean>(true);
 
   return (
     <div className="flex flex-col gap-10">
@@ -43,6 +44,10 @@ const Logs = (props: TLogsProps) => {
           maxNum={3}
           containerClassName={LogsClassName}
           noNavigation={(likedData?.length ?? 0) < 4}
+          navigateFn={() => {
+            setIsRecent(false);
+            onClickModalToggleHandlers["gameLogModal"]();
+          }}
         >
           <div className="flex items-center gap-4 justify-start ">
             <img src={log} />
@@ -57,6 +62,10 @@ const Logs = (props: TLogsProps) => {
           maxNum={3}
           containerClassName={LogsClassName}
           noNavigation={(recentGameData?.length ?? 0) < 4}
+          navigateFn={() => {
+            setIsRecent(true);
+            onClickModalToggleHandlers["gameLogModal"]();
+          }}
         >
           <div className="flex items-center gap-4 justify-start ">
             <img src={log} />
@@ -64,14 +73,6 @@ const Logs = (props: TLogsProps) => {
           </div>
         </GameCardList>
       }
-
-      {/* 플레이한 게임 */}
-      {/* <GameCardList data={data} maxNum={3} containerClassName={LogsClassName} noNavigation={(data?.length ?? 0) < 4}>
-        <div className="flex items-center gap-4 justify-start ">
-          <img src={log} />
-          <p className="font-DungGeunMo text-heading-32 text-white">[{props.user.nickname}]이 플레이한 게임</p>
-        </div>
-      </GameCardList> */}
       {/* 커뮤니티 활동 */}
       {/* <GameCardList data={data} maxNum={3} containerClassName={LogsClassName} noNavigation={(data?.length ?? 0) < 4}>
         <div className="flex items-center gap-4 justify-start ">
@@ -79,6 +80,15 @@ const Logs = (props: TLogsProps) => {
           <p className="font-DungGeunMo text-heading-32 text-white">[{props.user.nickname}]의 최근 커뮤니티 활동</p>
         </div>
       </GameCardList> */}
+      <SpartaModal
+        modalId={"gameLogModal"}
+        isOpen={modalToggles["gameLogModal"]}
+        onClose={onClickModalToggleHandlers["gameLogModal"]}
+        closeOnClickOutside
+        type="primary"
+      >
+        <MypageLogModal user_name={props.user.nickname} user_pk={props.user.user_pk} recent={isRecent} />
+      </SpartaModal>
     </div>
   );
 };

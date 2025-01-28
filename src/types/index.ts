@@ -70,6 +70,7 @@ export type TUserInformationInputForm = {
   is_maker: boolean;
   email_code?: string;
   login_type: string;
+  profile_image?: File[];
 };
 
 export type TUser = {

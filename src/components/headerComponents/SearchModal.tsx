@@ -5,6 +5,7 @@ import { searchGame } from "../../api/game";
 import type { TGameData } from "../../types";
 import GameCard from "../HomeComponents/GameCard";
 import { useNavigate } from "react-router-dom";
+import SpartaPagination from "../../spartaDesignSystem/SpartaPagination";
 
 type Props = {
   onClose: () => void;
@@ -12,15 +13,18 @@ type Props = {
 
 const SearchModal = ({ onClose }: Props) => {
   const [keyword, setKeyWord] = useState<string>("");
-
+  const [page, setPage] = useState<number>(1);
   const { data } = useQuery<{
+    count: number;
     results: {
       all_games: TGameData[];
     };
   }>({
-    queryKey: ["searchGame", keyword],
-    queryFn: () => searchGame(keyword),
+    queryKey: ["searchGame", keyword, page],
+    queryFn: () => searchGame(keyword, page),
   });
+
+  const totalCount = data?.count || 0;
 
   const navigate = useNavigate();
 
@@ -38,7 +42,7 @@ const SearchModal = ({ onClose }: Props) => {
         />
       </div>
       {/* 검색 결과 */}
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-wrap gap-3 mb-5">
         {data && data.results && data.results.all_games && data.results.all_games.length > 0 ? (
           data?.results.all_games.map((item, idx) => (
             <div
@@ -57,6 +61,7 @@ const SearchModal = ({ onClose }: Props) => {
           </p>
         )}
       </div>
+      <SpartaPagination dataTotalCount={totalCount} countPerPage={4} onChangePage={(e, page) => setPage(page)} />
     </div>
   );
 };
