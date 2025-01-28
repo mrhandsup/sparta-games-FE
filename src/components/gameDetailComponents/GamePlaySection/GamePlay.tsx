@@ -104,7 +104,6 @@ const GamePlay = ({ gamePk, title, makerName, gamePath }: Props) => {
   const bookMarkedGames = data?.results;
   const currentBookMarkedGame = bookMarkedGames?.some((game: TGameData) => game.pk === gamePk);
 
-  console.log(data?.results);
   const bookMarkMutation = useMutation({
     mutationFn: () => postBookMark(gamePk),
 

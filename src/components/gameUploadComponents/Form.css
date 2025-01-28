@@ -1,11 +1,11 @@
-.GameUploadSelectCustom .MuiOutlinedInput-notchedOutline {
+.gameUploadSelectCustom .MuiOutlinedInput-notchedOutline {
   @apply !border-white;
 }
 
-.GameUploadSelectCustom .MuiSelect-select {
+.gameUploadSelectCustom .MuiSelect-select {
   @apply bg-gray-700;
 }
 
-.GameUploadSelectCustom .items-baseline {
+.gameUploadSelectCustom .items-baseline {
   @apply block;
 }
