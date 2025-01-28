@@ -8,9 +8,19 @@ type Props = {
 
 const CheckBox = ({ check, onClickHandler }: Props) => {
   return check ? (
-    <img src={checkBox} alt="checkBox" onClick={onClickHandler} className="absolute right-0 bottom-0 z-10" />
+    <img
+      src={checkBox}
+      alt="checkBox"
+      onClick={onClickHandler}
+      className="absolute right-0 bottom-0 z-10 cursor-pointer"
+    />
   ) : (
-    <img src={nonCheckBox} alt="checkBox" onClick={onClickHandler} className="absolute right-0 bottom-0 z-10" />
+    <img
+      src={nonCheckBox}
+      alt="checkBox"
+      onClick={onClickHandler}
+      className="absolute right-0 bottom-0 z-10 cursor-pointer"
+    />
   );
 };
 
