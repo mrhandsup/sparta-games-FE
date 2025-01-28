@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { rejectRegisterGame } from "../../api/direct";
 import useModalToggles from "../../hook/useModalToggles";
 import SpartaButton from "../../spartaDesignSystem/SpartaButton";
@@ -12,10 +12,13 @@ type Props = {
 const AdminGameRejectModal = ({ game_pk }: Props) => {
   const { modalToggles, onClickModalToggleHandlers } = useModalToggles(["rejectModal"]);
 
+  const queryClient = useQueryClient();
+
   const rejectRegisterGameMutation = useMutation({
     mutationFn: ({ id, content }: { id: number; content: string }) => rejectRegisterGame(id, content),
     onSuccess: () => {
       setComplete(true);
+      queryClient.invalidateQueries({ queryKey: ["adminGameList"] });
     },
   });
 

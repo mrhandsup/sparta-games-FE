@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getRegisterGameList } from "../../api/direct";
 import AdminListItem from "../../components/adminComponents/AdminListItem";
 import { TCategoryListResponse, TGameAdminData } from "../../types";
@@ -62,6 +62,12 @@ const AdminGameLog = () => {
     setSelectedGame(undefined);
     onClickModalToggleHandlers[GAME_LOG_MODAL]();
   };
+
+  useEffect(() => {
+    if (data) {
+      checkAll();
+    }
+  }, [data]);
 
   return (
     <div className="flex flex-col px-24 py-20 gap-5">

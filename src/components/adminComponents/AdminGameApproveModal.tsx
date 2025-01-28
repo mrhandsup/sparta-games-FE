@@ -3,7 +3,7 @@ import SpartaReactionModal from "../../spartaDesignSystem/SpartaReactionModal";
 import useModalToggles from "../../hook/useModalToggles";
 import SpartaButton from "../../spartaDesignSystem/SpartaButton";
 import { approveRegisterGame } from "../../api/direct";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 type Props = {
   game_pk: number;
@@ -11,11 +11,13 @@ type Props = {
 
 const AdminGameApproveModal = ({ game_pk }: Props) => {
   const { modalToggles, onClickModalToggleHandlers } = useModalToggles(["approveModal"]);
+  const queryClient = useQueryClient();
 
   const approveRegisterGameMutation = useMutation({
     mutationFn: approveRegisterGame,
     onSuccess: () => {
       setComplete(true);
+      queryClient.invalidateQueries({ queryKey: ["adminGameList"] });
     },
   });
 
