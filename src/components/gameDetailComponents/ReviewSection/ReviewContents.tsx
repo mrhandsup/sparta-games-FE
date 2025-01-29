@@ -35,7 +35,6 @@ const ReviewContents = ({ gamePk }: { gamePk: number }) => {
   const allReviewData = reviewData?.results.all_reviews;
   const myReview = myReviewData?.results.my_review;
 
-  console.log(reviewData, myReviewData);
   useEffect(() => {
     if (allReviewData) {
       const reviewsWithoutMyReview = allReviewData.filter((review) => review.id !== myReview?.id);
@@ -54,7 +53,7 @@ const ReviewContents = ({ gamePk }: { gamePk: number }) => {
 
   return (
     <>
-      <section className="flex flex-col gap-3 my-12">
+      <section className="flex flex-col gap-3 mb-12">
         <div className="flex justify-between">
           <p className="text-3xl font-DungGeunMo text-white">Review</p>
           <div className="flex gap-3 text-xl font-semibold text-white">

@@ -1,6 +1,6 @@
 import { Link, useSearchParams } from "react-router-dom";
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { userStore } from "../share/store/userStore";
 
@@ -14,6 +14,10 @@ import SpartaButton from "../spartaDesignSystem/SpartaButton";
 
 import CaretLeft from "../assets/CaretLeft";
 import loading from "../assets/common/loading.gif";
+import useModalToggles from "../hook/useModalToggles";
+import SpartaReactionModal from "../spartaDesignSystem/SpartaReactionModal";
+import { getRegisterGameDetail, getRegisterGameRejectLog } from "../api/direct";
+import { useEffect, useState } from "react";
 
 const GameDetail = () => {
   const [searchParams] = useSearchParams();
@@ -23,9 +27,39 @@ const GameDetail = () => {
     queryKey: ["gameList"],
     queryFn: () => getGameDetail(gameDetailId),
   });
-
-  const gameCategory = gamePlayData?.category[0].name;
   const { userData } = userStore();
+
+  const rejectLogs = useQuery({
+    queryKey: ["gameLog", gameDetailId],
+    queryFn: () => getRegisterGameRejectLog(gameDetailId),
+    enabled:
+      !!gameDetailId &&
+      !!userData &&
+      !!gamePlayData &&
+      userData.user_pk === gamePlayData.maker &&
+      gamePlayData.register_state === 2,
+  });
+
+  const NO_ACTION_MODAL_ID = "noActionModal";
+  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([NO_ACTION_MODAL_ID]);
+
+  const gameCategory = gamePlayData?.category[0]?.name;
+
+  useEffect(() => {
+    if (rejectLogs.data) {
+      onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+    }
+  }, [rejectLogs.data]);
+
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    // 클린업으로 쿼리 캐시 초기화
+    return () => {
+      queryClient.removeQueries({ queryKey: ["gameList"] });
+    };
+  }, [gameDetailId]);
+
   return (
     <>
       {isLoading ? (
@@ -34,25 +68,43 @@ const GameDetail = () => {
         </div>
       ) : (
         <main className="mx-[130px]">
-          <div className="flex justify-between mt-10 font-DungGeunMo text-[24px] text-gray-300">
-            <Link to={"/category?category=Action"} className="flex gap-3">
+          <div className="flex justify-between mt-10 items-center font-DungGeunMo text-[24px] text-gray-300">
+            <Link to={`/category?category=${gameCategory}`} className="flex gap-3">
               <CaretLeft />
               <p>{gameCategory}</p>
             </Link>
 
-            {userData?.is_maker && (
+            {userData?.user_pk === gamePlayData?.maker && (
               <>
                 <div className="flex gap-2">
-                  <SpartaButton content={"수정하기"} colorType={"alert"} width={"w-[134px]"} size={"medium"} />
+                  <SpartaButton
+                    content={"수정하기"}
+                    colorType={"alert"}
+                    width={"w-[134px]"}
+                    size={"medium"}
+                    onClick={() => onClickModalToggleHandlers[NO_ACTION_MODAL_ID]()}
+                  />
                   <SpartaButton content={"삭제하기"} colorType={"error"} width={"w-[134px]"} size={"medium"} />
                 </div>
               </>
             )}
           </div>
           <GamePlaySection gamePlayData={gamePlayData} />
-          <ReviewContents gamePk={gameDetailId} />
+          {gamePlayData?.register_state === 1 && <ReviewContents gamePk={gameDetailId} />}
         </main>
       )}
+      <SpartaReactionModal
+        isOpen={modalToggles[NO_ACTION_MODAL_ID]}
+        onClose={onClickModalToggleHandlers[NO_ACTION_MODAL_ID]}
+        modalId={NO_ACTION_MODAL_ID}
+        title={"게임이 반려되었습니다."}
+        content={rejectLogs.data?.content}
+        btn1={{
+          text: "확인",
+          onClick: () => onClickModalToggleHandlers[NO_ACTION_MODAL_ID](),
+        }}
+        type={"error"}
+      />
     </>
   );
 };
