@@ -70,6 +70,7 @@ export type TUserInformationInputForm = {
   is_maker: boolean;
   email_code?: string;
   login_type: string;
+  profile_image?: File[];
 };
 
 export type TUser = {
@@ -104,6 +105,7 @@ export type TGameAdminData = {
   category_name: string[];
   game_register_logs: {
     content: string;
+    created_at: string;
   }[];
   pk: number;
   register_state: number;

@@ -1,17 +1,61 @@
-import React from "react";
 import { TUser } from "../../types";
 import { convertToConfigObjects } from "../../util/convertToConfigObjects";
 import { USER_TECH } from "../../constant/constant";
 import SpartaButton from "../../spartaDesignSystem/SpartaButton";
 import defaultProfile from "../../assets/common/defaultProfile.svg";
+import { useMutation } from "@tanstack/react-query";
+import { useRef } from "react";
+import { updateUserData } from "../../api/user";
 
 type TProfileProps = {
   user: TUser;
+  isMyPage: boolean;
 };
 
 const ProfileHeader = (props: TProfileProps) => {
   //* Utils
   const userTech = convertToConfigObjects(USER_TECH, [props.user.user_tech]);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const updateProfileMutation = useMutation({
+    mutationFn: async (formData: FormData | undefined) => {
+      if (!formData) {
+        throw new Error("No file selected");
+      }
+      return await updateUserData(props.user.user_pk, formData);
+    },
+    onSuccess: () => {},
+    onError: (error) => {
+      console.error("프로필 이미지 업데이트 실패:", error);
+      alert("이미지 업데이트에 실패했습니다. 다시 시도해주세요.");
+    },
+  });
+
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // 파일 크기 체크 (5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      alert("파일 크기는 5MB 이하여야 합니다.");
+      return;
+    }
+
+    // 이미지 파일 타입 체크
+    if (!file.type.startsWith("image/")) {
+      alert("이미지 파일만 업로드 가능합니다.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("profile_image", file);
+    formData.append("nickname", props.user.nickname);
+    formData.append("user_tech", props.user.user_tech);
+    formData.append("game_category", props.user.game_category.join(","));
+
+    updateProfileMutation.mutate(formData);
+  };
 
   return (
     <div className="bg-gray-800 h-[176px] px-32 py-3 flex items-center w-full">
@@ -28,9 +72,17 @@ const ProfileHeader = (props: TProfileProps) => {
             </span>
             <p className="font-DungGeunMo text-heading-40 text-white">[{props.user.nickname}] 님!</p>
           </div>
-          <div className="w-[110px]">
-            <SpartaButton content="사진 변경" size="small" colorType="grey" onClick={() => {}} />
-          </div>
+          {props.isMyPage && (
+            <div className="w-[110px]">
+              <input type="file" ref={fileInputRef} onChange={handleFileChange} accept="image/*" className="hidden" />
+              <SpartaButton
+                content="사진 변경"
+                size="small"
+                colorType="grey"
+                onClick={() => fileInputRef.current?.click()}
+              />
+            </div>
+          )}
         </div>
         {/* 관심 게임 분야 */}
         <p className="flex gap-2 items-center">

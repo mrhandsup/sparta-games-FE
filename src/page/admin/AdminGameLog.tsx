@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getRegisterGameList } from "../../api/direct";
 import AdminListItem from "../../components/adminComponents/AdminListItem";
 import { TCategoryListResponse, TGameAdminData } from "../../types";
@@ -8,14 +8,20 @@ import { getGameCategory } from "../../api/game";
 import Switch from "@mui/material/Switch";
 import { FaSearch } from "react-icons/fa";
 import SpartaButton from "../../spartaDesignSystem/SpartaButton";
+import useModalToggles from "../../hook/useModalToggles";
+import SpartaModal from "../../spartaDesignSystem/SpartaModal";
+import AdminLogsModal from "../../components/adminComponents/AdminLogsModal";
 
-type Props = {};
-
-const AdminGameLog = (props: Props) => {
+const AdminGameLog = () => {
   const [page, setPage] = useState<number>(1);
   const [category, setCategory] = useState<number[]>([]);
   const [keyword, setKeyWord] = useState<string>("");
   const [state, setState] = useState<number | undefined>(undefined);
+  const [selectedGame, setSelectedGame] = useState<number | undefined>(undefined);
+
+  const GAME_LOG_MODAL = "gameLogModal";
+
+  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([GAME_LOG_MODAL]);
 
   const makeQuery = () => {
     let query = "";
@@ -25,7 +31,7 @@ const AdminGameLog = (props: Props) => {
     if (keyword) {
       query += "keyword=" + keyword + "&";
     }
-    if (state) {
+    if (state !== undefined) {
       query += "state=" + state + "&";
     }
     return query;
@@ -46,6 +52,22 @@ const AdminGameLog = (props: Props) => {
   const checkAll = () => {
     setCategory(data?.map((item) => item.pk) || []);
   };
+
+  const selectGame = (pk: number) => {
+    setSelectedGame(pk);
+    onClickModalToggleHandlers[GAME_LOG_MODAL]();
+  };
+
+  const onCloseModal = () => {
+    setSelectedGame(undefined);
+    onClickModalToggleHandlers[GAME_LOG_MODAL]();
+  };
+
+  useEffect(() => {
+    if (data) {
+      checkAll();
+    }
+  }, [data]);
 
   return (
     <div className="flex flex-col px-24 py-20 gap-5">
@@ -83,7 +105,6 @@ const AdminGameLog = (props: Props) => {
           >
             Reset
           </div>
-          <div className="text-white w-full p-4 rounded-xl bg-gray-600 cursor-pointer">적용하기</div>
         </div>
         <div className="w-[80%] bg-gray-800 rounded-3xl p-10 text-white text-center flex flex-col gap-3">
           <div className="flex items-center mb-3 gap-3">
@@ -99,9 +120,17 @@ const AdminGameLog = (props: Props) => {
             </div>
             <div className="flex gap-1">
               <SpartaButton
+                content="전체"
+                colorType="grey"
+                type={state == undefined ? "filled" : "standard"}
+                size="small"
+                width="w-[60px]"
+                onClick={() => setState(undefined)}
+              />
+              <SpartaButton
                 content="검수"
                 colorType="alert"
-                type="filled"
+                type={state == 0 ? "filled" : "standard"}
                 size="small"
                 width="w-[60px]"
                 onClick={() => setState(0)}
@@ -111,13 +140,13 @@ const AdminGameLog = (props: Props) => {
                 colorType="primary"
                 size="small"
                 width="w-[60px]"
-                type="filled"
+                type={state == 1 ? "filled" : "standard"}
                 onClick={() => setState(1)}
               />
               <SpartaButton
                 content="반려"
                 colorType="error"
-                type="filled"
+                type={state == 2 ? "filled" : "standard"}
                 size="small"
                 width="w-[60px]"
                 onClick={() => setState(2)}
@@ -125,7 +154,7 @@ const AdminGameLog = (props: Props) => {
             </div>
           </div>
           {adminGameList.data?.results?.game_register_list.map((item: TGameAdminData, idx: number) => (
-            <AdminListItem key={idx} idx={idx} item={item} />
+            <AdminListItem key={idx} idx={idx} item={item} onClickShowMore={selectGame} isDetail />
           ))}
           {!adminGameList.data?.results?.game_register_list.length && (
             <p className="text-white font-DungGeunMo text-heading-28 flex items-center justify-center w-full py-24">
@@ -135,6 +164,17 @@ const AdminGameLog = (props: Props) => {
           <SpartaPagination dataTotalCount={totalCount} countPerPage={8} onChangePage={(e, page) => setPage(page)} />
         </div>
       </div>
+      {selectedGame && (
+        <SpartaModal
+          isOpen={modalToggles[GAME_LOG_MODAL]}
+          onClose={onCloseModal}
+          modalId={GAME_LOG_MODAL}
+          title="게임 로그"
+          closeOnClickOutside
+        >
+          <AdminLogsModal game_pk={selectedGame} />
+        </SpartaModal>
+      )}
     </div>
   );
 };

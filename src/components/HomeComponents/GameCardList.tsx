@@ -26,6 +26,10 @@ type TGameCardListProps = {
    */
   noNavigation?: boolean;
   /**
+   * 네비게이션 동작
+   */
+  navigateFn?: () => void;
+  /**
    * 네비게이션 이동 경로
    */
   to?: string;
@@ -49,6 +53,7 @@ const GameCardList = ({
   maxNum = 4,
   simple,
   noNavigation,
+  navigateFn,
   to,
   containerClassName,
   row,
@@ -66,12 +71,16 @@ const GameCardList = ({
           className={`flex justify-between items-center mx-auto  ${
             !containerClassName ? "w-[1180px]" : "w-full"
           } h-12 text-5xl font-bold
-          ${to ? "cursor-pointer" : ""}
+          
           `}
-          onClick={to ? () => navigate(to) : undefined}
         >
           {children}
-          {!noNavigation && <AiFillCaretRight className="w-8 h-8 text-white" />}
+          {!noNavigation && (
+            <AiFillCaretRight
+              className="w-8 h-8 text-white cursor-pointer"
+              onClick={to ? () => navigate(to) : navigateFn ? navigateFn : undefined}
+            />
+          )}
         </p>
       )}
 

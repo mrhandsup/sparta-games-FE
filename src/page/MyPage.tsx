@@ -38,7 +38,7 @@ const MyPage = () => {
     user && (
       <div className="w-full">
         {/* 헤더 */}
-        <ProfileHeader user={user} />
+        <ProfileHeader user={user} isMyPage={isMyPage} />
         <div className="flex gap-9 py-11 w-[83%] mx-auto">
           {/* 네비게이션 */}
           <div className="bg-gray-800 w-[13%] p-2 rounded-xl h-fit">

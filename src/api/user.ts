@@ -17,9 +17,23 @@ export const getUserData = async (userId: number) => {
 /**
  * 유저 정보 수정
  */
-export const updateUserData = async (userId: number, data: Partial<TUserInformationInputForm>) => {
+export const updateUserData = async (
+  userId: number,
+  data: Partial<TUserInformationInputForm> | FormData,
+): Promise<TUser> => {
   try {
-    const res = await sparta_games_auth.put(`/users/api/${userId}/`, data);
+    const config = {
+      headers:
+        data instanceof FormData
+          ? {
+              "Content-Type": "multipart/form-data",
+            }
+          : {
+              "Content-Type": "application/json",
+            },
+    };
+
+    const res = await sparta_games_auth.put(`/users/api/${userId}/`, data, config);
     return res.data;
   } catch (error) {
     console.error(error);
@@ -69,9 +83,9 @@ export const getUserGameMadeList = async (userId: number, page?: number) => {
 /**
  * 유저가 좋아요한 게임 리스트 조회
  */
-export const getUserLikedGameList = async (userId: number) => {
+export const getUserLikedGameList = async (userId: number, page?: number) => {
   try {
-    const res = await sparta_games_auth.get(`/users/api/${userId}/likes/`);
+    const res = await sparta_games_auth.get(`/users/api/${userId}/likes/?limit=4&page=${page ? page : 1}`);
     return res.data;
   } catch (error) {
     console.error(error);
@@ -82,9 +96,9 @@ export const getUserLikedGameList = async (userId: number) => {
 /**
  * 유저가 최근 플레이한 게임 리스트 조회
  */
-export const getUserRecentGameList = async (userId: number) => {
+export const getUserRecentGameList = async (userId: number, page?: number) => {
   try {
-    const res = await sparta_games_auth.get(`/users/api/${userId}/recent/`);
+    const res = await sparta_games_auth.get(`/users/api/${userId}/recent/?limit=4&page=${page ? page : 1}`);
     return res.data;
   } catch (error) {
     console.error(error);

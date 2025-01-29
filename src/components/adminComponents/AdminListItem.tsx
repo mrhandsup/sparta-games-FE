@@ -1,8 +1,9 @@
-import React from "react";
 import SpartaButton from "../../spartaDesignSystem/SpartaButton";
 import { LuDownload } from "react-icons/lu";
-import { TGameData } from "../../types";
 import { downloadZip } from "../../api/direct";
+import { formatToKST } from "../../util/formatToKST";
+import AdminGameApproveModal from "./AdminGameApproveModal";
+import AdminGameRejectModal from "./AdminGameRejectModal";
 
 type Props = {
   idx: number;
@@ -10,15 +11,18 @@ type Props = {
     category_name: string[];
     game_register_logs: {
       content: string;
+      created_at: string;
     }[];
     pk: number;
     register_state: number;
     title: string;
     maker_name: string;
   };
+  onClickShowMore?: (pk: number) => void;
+  isDetail?: boolean;
 };
 
-const AdminListItem = ({ idx, item }: Props) => {
+const AdminListItem = ({ idx, item, onClickShowMore, isDetail }: Props) => {
   const switchCaseByState = () => {
     switch (item.register_state) {
       case 0:
@@ -52,9 +56,11 @@ const AdminListItem = ({ idx, item }: Props) => {
             <p className="font-DungGeunMo text-[17px]">[{idx + 1}]</p>
             <p className="font-DungGeunMo text-[11px]">[{item.category_name[0]}]</p>
           </div>
-          <div className={`rounded-md px-5 py-4 text-black ${switchCaseByState().color}`}>
-            {switchCaseByState().text}
-          </div>
+          {isDetail && (
+            <div className={`rounded-md px-5 py-4 text-black ${switchCaseByState().color}`}>
+              {switchCaseByState().text}
+            </div>
+          )}
           <div className="flex items-start gap-3 flex-col">
             <p className="text-title-22">[{item.title}]</p>
             <p>[{item.maker_name}]</p>
@@ -63,8 +69,8 @@ const AdminListItem = ({ idx, item }: Props) => {
         <div className="flex gap-1">
           {item.register_state === 0 && (
             <>
-              <SpartaButton content="승인" colorType="primary" size="medium" width="w-[80px]" />
-              <SpartaButton content="반려" colorType="error" size="medium" width="w-[80px]" />
+              <AdminGameApproveModal game_pk={item.pk} />
+              <AdminGameRejectModal game_pk={item.pk} />
             </>
           )}
           <SpartaButton
@@ -82,14 +88,26 @@ const AdminListItem = ({ idx, item }: Props) => {
           </div>
         </div>
       </div>
-      <div className="w-full flex bg-gray-500 mt-2 rounded-lg p-2 font-DungGeunMo text-left justify-between">
-        <div className="flex items-center gap-3">
-          <p>log</p>
-          <p key={idx}>{item.game_register_logs[0]?.content}</p>
-          {item.game_register_logs.length === 0 && <p>로그 없음</p>}
+      {isDetail && (
+        <div className="w-full flex bg-gray-500 mt-2 rounded-lg p-2 font-DungGeunMo text-left justify-between">
+          <div className="flex items-center gap-3">
+            <p>latest log :</p>
+
+            {item.game_register_logs.length === 0 ? (
+              <p>no log</p>
+            ) : (
+              <p key={idx}>
+                {formatToKST(item.game_register_logs[0].created_at)} {item.game_register_logs[0]?.content}
+              </p>
+            )}
+          </div>
+          {item.game_register_logs.length !== 0 && (
+            <p className="cursor-pointer underline" onClick={() => onClickShowMore && onClickShowMore(item.pk)}>
+              더보기
+            </p>
+          )}
         </div>
-        {item.game_register_logs.length !== 0 && <p>더보기</p>}
-      </div>
+      )}
     </div>
   );
 };

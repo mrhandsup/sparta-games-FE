@@ -70,7 +70,7 @@ export const rejectRegisterGame = async (id: number, content: string) => {
  */
 export const approveRegisterGame = async (id: number) => {
   try {
-    const res = await sparta_games_auth.post(`/directs/api/list/${id}/approve/`);
+    const res = await sparta_games_auth.post(`/directs/api/list/${id}/register/`);
     return res.data;
   } catch (error) {
     console.error(error);

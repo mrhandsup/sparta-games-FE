@@ -45,6 +45,9 @@ const AdminDashBoard = (props: Props) => {
           {adminGameList.data?.results?.game_register_list.map((item: TGameAdminData, idx: number) => (
             <AdminListItem key={idx} idx={idx} item={item} />
           ))}
+          {adminGameList.data?.results?.game_register_list.length === 0 && (
+            <div className="font-DungGeunMo text-heading-24 text-white m-auto">검수 대기중인 게임이 없습니다.</div>
+          )}
         </div>
       </div>
       <div className="flex items-center gap-4">

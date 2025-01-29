@@ -160,7 +160,10 @@ function Login({ onClose }: Props) {
                   passwordType
                 />
               </div>
-              <div className="text-white text-right text underline underline-offset-1 mb-1 cursor-pointer">
+              <div
+                className="text-white text-right text underline underline-offset-1 mb-1 cursor-pointer"
+                onClick={() => (window.location.href = "/reset")}
+              >
                 비밀번호 찾기
               </div>
               <SpartaButton
