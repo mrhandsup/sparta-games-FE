@@ -34,7 +34,7 @@ const MypageLogModal = ({ user_name, user_pk, recent }: Props) => {
   const data = recent ? recentGameData : likedData;
 
   return (
-    <div className="flex flex-col gap-6 min-w-[1000px]">
+    <div className="flex flex-col gap-6 min-w-[1000px] overflow-hidden">
       <div className="flex items-center gap-4 justify-start ">
         <img src={log} />
         <p className="font-DungGeunMo text-heading-32 text-white">

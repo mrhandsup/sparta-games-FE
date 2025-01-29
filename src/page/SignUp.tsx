@@ -34,7 +34,6 @@ const SignUp = () => {
   const navigate = useNavigate();
   const { setUser } = userStore();
 
-  // TODO : 로그인 데이터 통일시 수정
   const signUpMutation = useMutation({
     mutationFn: (data: Partial<TUserInformationInputForm>) => signUp(data),
     onSuccess: async (data) => {

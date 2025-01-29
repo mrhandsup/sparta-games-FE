@@ -105,7 +105,6 @@ const AdminGameLog = () => {
           >
             Reset
           </div>
-          <div className="text-white w-full p-4 rounded-xl bg-gray-600 cursor-pointer">적용하기</div>
         </div>
         <div className="w-[80%] bg-gray-800 rounded-3xl p-10 text-white text-center flex flex-col gap-3">
           <div className="flex items-center mb-3 gap-3">

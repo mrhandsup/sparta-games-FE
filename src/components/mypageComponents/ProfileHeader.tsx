@@ -9,6 +9,7 @@ import { updateUserData } from "../../api/user";
 
 type TProfileProps = {
   user: TUser;
+  isMyPage: boolean;
 };
 
 const ProfileHeader = (props: TProfileProps) => {
@@ -71,15 +72,17 @@ const ProfileHeader = (props: TProfileProps) => {
             </span>
             <p className="font-DungGeunMo text-heading-40 text-white">[{props.user.nickname}] 님!</p>
           </div>
-          <div className="w-[110px]">
-            <input type="file" ref={fileInputRef} onChange={handleFileChange} accept="image/*" className="hidden" />
-            <SpartaButton
-              content="사진 변경"
-              size="small"
-              colorType="grey"
-              onClick={() => fileInputRef.current?.click()}
-            />
-          </div>
+          {props.isMyPage && (
+            <div className="w-[110px]">
+              <input type="file" ref={fileInputRef} onChange={handleFileChange} accept="image/*" className="hidden" />
+              <SpartaButton
+                content="사진 변경"
+                size="small"
+                colorType="grey"
+                onClick={() => fileInputRef.current?.click()}
+              />
+            </div>
+          )}
         </div>
         {/* 관심 게임 분야 */}
         <p className="flex gap-2 items-center">
