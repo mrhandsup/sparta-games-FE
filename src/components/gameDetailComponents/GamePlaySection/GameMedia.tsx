@@ -49,7 +49,14 @@ const GameMedia = ({ youtubeUrl, screenShot }: Props) => {
               {screenShot.map((image, index) => (
                 <SwiperSlide key={index}>
                   <div className="flex justify-center">
-                    <img src={import.meta.env.VITE_PROXY_HOST + image.src} alt={`carousel-img-${index}`} />
+                    <img
+                      src={
+                        import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
+                          ? import.meta.env.VITE_PROXY_HOST + image.src
+                          : image.src
+                      }
+                      alt={`carousel-img-${index}`}
+                    />
                   </div>
                 </SwiperSlide>
               ))}

@@ -45,7 +45,11 @@ const MyGameCard = ({ item }: Props) => {
   return (
     <section key={item?.pk} className={`relative flex w-full`}>
       <img
-        src={import.meta.env.VITE_PROXY_HOST + item?.thumbnail}
+        src={
+          import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
+            ? import.meta.env.VITE_PROXY_HOST + item?.thumbnail
+            : item?.thumbnail
+        }
         alt="게임 썸네일"
         className="relative flex justify-center items-center bg-gray-50 rounded-l-lg w-[45%] h-[278px]"
       />
