@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import expand from "../../../assets/gameDetail/expand.svg";
 import share from "../../../assets/gameDetail/linkshare.svg";
 import bookmark from "../../../assets/gameDetail/bookmark.svg";
@@ -11,20 +11,22 @@ import useModalToggles from "../../../hook/useModalToggles";
 import { AxiosError } from "axios";
 import { userStore } from "../../../share/store/userStore";
 import { TGameData, TListResponse } from "../../../types";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   gamePk?: number;
   title?: string;
   makerName?: string;
+  makerPk?: number;
   isLiked?: boolean;
   gamePath?: string;
+  thumbnail?: string;
 };
 
-const GamePlay = ({ gamePk, title, makerName, gamePath }: Props) => {
+const GamePlay = ({ gamePk, title, makerName, makerPk, gamePath, thumbnail }: Props) => {
   const BOOK_MARK_MODAL_ID = "bookMarkModal";
   const NO_ACTION_MODAL_ID = "noActionModal";
   const { modalToggles, onClickModalToggleHandlers } = useModalToggles([BOOK_MARK_MODAL_ID, NO_ACTION_MODAL_ID]);
-
   const noActionData: { [key: string]: Partial<TSpartaReactionModalProps> } = {
     completeBookMark: {
       title: "즐겨찾기 완료",
@@ -92,6 +94,7 @@ const GamePlay = ({ gamePk, title, makerName, gamePath }: Props) => {
   };
 
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const { userData } = userStore();
 
@@ -140,7 +143,6 @@ const GamePlay = ({ gamePk, title, makerName, gamePath }: Props) => {
     onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
   };
 
-  console.log(bookMarkedGames, currentBookMarkedGame);
   return (
     <>
       {/* TODO: Mui 스켈레톤 적용 */}
@@ -151,7 +153,9 @@ const GamePlay = ({ gamePk, title, makerName, gamePath }: Props) => {
           <div className="flex flex-col gap-2 font-DungGeunMo text-[32px] text-white">
             <p>[{title}]</p>
             <div className="flex justify-between">
-              <p className="text-gray-100 text-[28px]">[{makerName}]</p>
+              <p className="text-gray-100 text-[28px] cursor-pointer" onClick={() => navigate(`/my-page/${makerPk}`)}>
+                [{makerName}]
+              </p>
               <div className="flex gap-6">
                 <img
                   src={currentBookMarkedGame ? bookmarkfill : bookmark}
@@ -167,7 +171,19 @@ const GamePlay = ({ gamePk, title, makerName, gamePath }: Props) => {
           </div>
 
           <div className="mt-5 w-full h-[560px] bg-gray-400 rounded-xl" ref={fullScreenRef}>
-            <iframe src={gameUrl} width="100%" height="100%" className="rounded-xl" />
+            {gamePath ? (
+              <iframe src={gameUrl} width="100%" height="100%" className="rounded-xl" />
+            ) : (
+              <div className="w-full h-full bg-gray-800 rounded-xl relative">
+                <img src={import.meta.env.VITE_PROXY_HOST + thumbnail} className="w-full h-full brightness-50" />
+                <div className="absolute inset-0 flex justify-center items-center">
+                  <p className="text-white font-bold text-xl font-DungGeunMo text-center">
+                    해당 게임은 현재 검수중이거나 반려되었습니다.
+                    <br /> 관리자에게 문의해주세요.
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
 
           {noActionModalData && (

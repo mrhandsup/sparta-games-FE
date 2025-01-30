@@ -14,6 +14,7 @@ import SignUp from "../page/SignUp";
 import AdminDashBoard from "../page/admin/AdminDashBoard";
 import AdminGameLog from "../page/admin/AdminGameLog";
 import AdminLayout from "../components/layout/AdminLayout";
+import ResetPassword from "../page/ResetPassword";
 
 const Router = () => {
   return (
@@ -26,10 +27,11 @@ const Router = () => {
           <Route path="/community" element={<Community />} />
           <Route path="/redirect/:service" element={<Redirect />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/reset" element={<ResetPassword />} />
           <Route element={<NonAuthLayout />}></Route>
 
           <Route element={<AuthLayout />}>
-            <Route path="my-page" element={<MyPage />} />
+            <Route path="my-page/:id" element={<MyPage />} />
             <Route path="game-upload" element={<GameUpload />} />
           </Route>
 

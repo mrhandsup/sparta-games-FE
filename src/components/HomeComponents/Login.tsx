@@ -160,9 +160,19 @@ function Login({ onClose }: Props) {
                   passwordType
                 />
               </div>
-              <div className="text-white text-right text underline underline-offset-1 mb-1 cursor-pointer">
+              <div
+                className="text-white text-right text underline underline-offset-1 mb-1 cursor-pointer"
+                onClick={() => (window.location.href = "/reset")}
+              >
                 비밀번호 찾기
               </div>
+              <SpartaButton
+                content={loginMutation.isPending ? "로그인 중..." : "로그인"}
+                type="filled"
+                colorType="primary"
+                size="medium"
+                disabled={!isValid || loginMutation.isPending}
+              />
               <SpartaButton
                 content="회원가입"
                 onClick={() => {
@@ -172,13 +182,6 @@ function Login({ onClose }: Props) {
                 type="filled"
                 colorType="grey"
                 size="medium"
-              />
-              <SpartaButton
-                content={loginMutation.isPending ? "로그인 중..." : "로그인"}
-                type="filled"
-                colorType="primary"
-                size="medium"
-                disabled={!isValid || loginMutation.isPending}
               />
             </form>
           </>

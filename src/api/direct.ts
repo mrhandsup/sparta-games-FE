@@ -3,9 +3,9 @@ import { sparta_games, sparta_games_auth } from "./axios";
 /**
  * 등록 게임 목록 호출
  */
-export const getRegisterGameList = async () => {
+export const getRegisterGameList = async (props: string) => {
   try {
-    const res = await sparta_games_auth.get("/directs/api/admin/list/");
+    const res = await sparta_games_auth.get(`/directs/api/admin/list/?${props}`);
     return res.data;
   } catch (error) {
     console.error(error);
@@ -70,7 +70,7 @@ export const rejectRegisterGame = async (id: number, content: string) => {
  */
 export const approveRegisterGame = async (id: number) => {
   try {
-    const res = await sparta_games_auth.post(`/directs/api/list/${id}/approve/`);
+    const res = await sparta_games_auth.post(`/directs/api/list/${id}/register/`);
     return res.data;
   } catch (error) {
     console.error(error);
@@ -83,9 +83,28 @@ export const approveRegisterGame = async (id: number) => {
  */
 export const downloadZip = async (id: number) => {
   try {
-    const res = await sparta_games_auth.get(`/directs/api/list/${id}/dzip/`, {
+    const res = await sparta_games_auth.post(`/directs/api/list/${id}/dzip/`, {
       responseType: "blob",
     });
+
+    // Blob 객체 생성
+    const blob = new Blob([res.data], { type: "application/zip" });
+
+    // Blob URL 생성
+    const url = window.URL.createObjectURL(blob);
+
+    // 임시 링크 생성 및 클릭 이벤트 트리거
+    const link = document.createElement("a");
+    link.href = url;
+    // Content-Disposition 헤더에서 파일명을 가져오거나, 기본 파일명 사용
+    link.download = "download.zip"; // 또는 서버에서 전달받은 파일명 사용
+    document.body.appendChild(link);
+    link.click();
+
+    // cleanup
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+
     return res.data;
   } catch (error) {
     console.error(error);

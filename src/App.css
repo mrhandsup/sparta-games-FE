@@ -71,7 +71,15 @@
   font-weight: normal;
   font-style: normal;
 }
+* {
+  -ms-overflow-style: none; /* IE, Edge */
+  scrollbar-width: none; /* Firefox */
+}
 
+/* Chrome, Safari, Opera에서 스크롤바 숨기기 */
+*::-webkit-scrollbar {
+  display: none;
+}
 html,
 body,
 div,
@@ -205,4 +213,8 @@ input:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0px 1000px transparent inset;
   transition: background-color 5000s ease-in-out 0s;
   -webkit-text-fill-color: white;
+}
+input:hover,
+input:focus {
+  outline: none;
 }

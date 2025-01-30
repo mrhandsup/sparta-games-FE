@@ -78,6 +78,7 @@ export type TUserInformationInputForm = {
   is_maker: boolean;
   email_code?: string;
   login_type: string;
+  profile_image?: File[];
 };
 
 export type TUser = {
@@ -108,6 +109,18 @@ export type TGameData = {
   is_liked: boolean;
 };
 
+export type TGameAdminData = {
+  category_name: string[];
+  game_register_logs: {
+    content: string;
+    created_at: string;
+  }[];
+  pk: number;
+  register_state: number;
+  title: string;
+  maker_name: string;
+};
+
 export type TListResponse = {
   count: number;
   next: string | null;
@@ -122,10 +135,12 @@ export type TGamePlayData = {
     name: string;
   }[];
   maker_name: string;
+  maker: number;
   title: string;
   is_liked: boolean;
-  thumnail: null;
+  thumbnail: string;
   youtube_url: string;
+  register_state: number;
   content: string;
   gamepath: string;
   base_control: string;

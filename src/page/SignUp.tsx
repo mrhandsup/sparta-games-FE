@@ -34,7 +34,6 @@ const SignUp = () => {
   const navigate = useNavigate();
   const { setUser } = userStore();
 
-  // TODO : 로그인 데이터 통일시 수정
   const signUpMutation = useMutation({
     mutationFn: (data: Partial<TUserInformationInputForm>) => signUp(data),
     onSuccess: async (data) => {
@@ -51,7 +50,7 @@ const SignUp = () => {
   const onSubmit = (data: Partial<TUserInformationInputForm>) => {
     // "FPS,Action"
     const game_category = data.game_category?.toString();
-    signUpMutation.mutate({ ...data, game_category });
+    signUpMutation.mutate({ ...data, game_category, login_type: "DEFAULT" });
   };
 
   return (

@@ -53,7 +53,7 @@ const ReviewContents = ({ gamePk }: { gamePk: number }) => {
 
   return (
     <>
-      <section className="flex flex-col gap-3 my-12">
+      <section className="flex flex-col gap-3 mb-12">
         <div className="flex justify-between">
           <p className="text-3xl font-DungGeunMo text-white">Review</p>
           <div className="flex gap-3 text-xl font-semibold text-white">
