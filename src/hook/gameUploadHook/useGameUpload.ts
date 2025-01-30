@@ -6,18 +6,23 @@ import type { TGameUploadInput } from "../../types";
 import changeUrl from "../../util/changeUrl";
 import useModalToggles from "../useModalToggles";
 import { TSpartaReactionModalProps } from "../../spartaDesignSystem/SpartaReactionModal";
+import { postGameList } from "../../api/game";
 
 const useGameUpload = () => {
   const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
-  const MAX_FILE_SIZE = 10 * 1024 * 1024;
-  const VALID_FILE_TYPES = ["zip", "7z"];
+  const MAX_FILE_SIZE = 200 * 1024 * 1024;
 
+  const VALID_FILE_TYPES = ["zip", "7z"];
+  const ALLOWED_EXTENSIONS = ["jpg", "jpeg", "png", "gif"];
+
+  const GAME_UPLOAD_CHECK_ID = "gameUploadCheckId";
   const NO_ACTION_MODAL_ID = "noActionModal";
 
   const { register, watch, control, setValue, formState, handleSubmit } = useForm<TGameUploadInput>();
 
-  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([NO_ACTION_MODAL_ID]);
+  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([GAME_UPLOAD_CHECK_ID, NO_ACTION_MODAL_ID]);
 
+  const [gameUploadResponse, setGameUploadResponse] = useState<number | undefined>(0);
   const [note, setNote] = useState({ 1: false, 2: false, 3: false });
   const [previewThumbnail, setPreviewThumbnail] = useState<string[]>([]);
   const [previewStillCut, setPreviewStillCut] = useState<string[]>([]);
@@ -52,6 +57,18 @@ const useGameUpload = () => {
       type: "alert",
     },
 
+    imageTypeWarning: {
+      title: "확인해주세요!",
+      content: "이미지 파일만 업로드 해주세요.",
+      btn1: {
+        text: "확인",
+        onClick: () => {
+          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+        },
+      },
+      type: "alert",
+    },
+
     imageUploadWarning: {
       title: "확인해주세요!",
       content: "1000px * 800px, 5mb 이하의 이미지 파일을 업로드해 주세요.",
@@ -76,7 +93,11 @@ const useGameUpload = () => {
 
   const checkFileSize = (file: File, maxSize: number): boolean => file.size <= maxSize;
 
-  // 이미지 크기 검사 (1000px * 800px 이하)
+  const isValidImageFile = (fileName: string) => {
+    const extension = fileName.split(".").pop()?.toLowerCase();
+    return extension && ALLOWED_EXTENSIONS.includes(extension);
+  };
+
   const checkImageSize = (file: File): Promise<boolean> => {
     return new Promise((resolve) => {
       const img = new Image();
@@ -87,6 +108,9 @@ const useGameUpload = () => {
     });
   };
 
+  /**
+   * 이미지 업로드 핸들러
+   */
   const onChangeImageHandler = async (e: ChangeEvent<HTMLInputElement>) => {
     const inputId = e.target.id;
     const files = [...e.target.files!]; // 여러 파일을 처리할 수 있도록 배열로 만듦
@@ -96,9 +120,20 @@ const useGameUpload = () => {
       let isValid = true; // 파일 유효성 검사를 위한 플래그
 
       if (inputId === "gameThumbnail" || inputId === "stillCut") {
-        // 이미지 용량 유효성 검사
         if (!checkFileSize(file, MAX_IMAGE_SIZE)) {
           setNoActionModalData(noActionData.imageUploadWarning);
+          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+
+          setIsUpload((prev) => ({
+            ...prev,
+            [inputId === "gameThumbnail" ? "thumbnail" : "stillCut"]: false,
+          }));
+
+          isValid = false;
+        }
+
+        if (!isValidImageFile(file.name)) {
+          setNoActionModalData(noActionData.imageTypeWarning);
           onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
 
           setIsUpload((prev) => ({
@@ -160,6 +195,9 @@ const useGameUpload = () => {
     }
   };
 
+  /**
+   * 업로드한 파일 상태 저장 및 업로드 유무 상태 변경
+   */
   const updateUploadState = (inputId: string, urlArr: string[]) => {
     if (inputId === "gameThumbnail") {
       setPreviewThumbnail(urlArr);
@@ -176,6 +214,9 @@ const useGameUpload = () => {
     }
   };
 
+  /**
+   * 업로드한 이미지 미리보기 삭제
+   */
   const onClickImageDeleteHandler = (type: "thumbnail" | "stillCut", arg: number) => {
     if (type === "thumbnail") {
       setPreviewThumbnail([]);
@@ -194,6 +235,9 @@ const useGameUpload = () => {
     }
   };
 
+  /**
+   *약관 체크
+   */
   const onClickNoteToggleHandler = (arg: 1 | 2 | 3) => {
     if (arg === 1) {
       setNote({ ...note, 1: !note[1] });
@@ -211,9 +255,24 @@ const useGameUpload = () => {
     }
   };
 
-  const onSubmitHandler: SubmitHandler<TGameUploadInput> = (data) => {
-    //게입 업로드 api연결할 부분
-    console.log(data);
+  /**
+   *게임 등록 요청 api
+   */
+  const onSubmitHandler: SubmitHandler<TGameUploadInput> = async (data) => {
+    const formData = new FormData();
+
+    formData.append("title", data.title);
+    formData.append("category", data.category.join(","));
+    formData.append("content", data.content);
+    formData.append("gamefile", data.gameFile[0]);
+    formData.append("thumbnail", data.thumbnail[0]);
+    formData.append("youtube_url", data.video);
+    formData.append("release_note", "테스트");
+    formData.append("base_control", "테스트");
+
+    const res = await postGameList(formData);
+
+    setGameUploadResponse(res?.status);
   };
 
   const form = {
@@ -233,12 +292,14 @@ const useGameUpload = () => {
   };
 
   const modalConfig = {
+    GAME_UPLOAD_CHECK_ID,
     NO_ACTION_MODAL_ID,
     onClickModalToggleHandlers,
     modalToggles,
     noActionModalData,
   };
-  return { isUpload, note, form, previewThumbnail, previewStillCut, eventHandler, modalConfig };
+
+  return { isUpload, note, form, previewThumbnail, previewStillCut, eventHandler, modalConfig, gameUploadResponse };
 };
 
 export default useGameUpload;

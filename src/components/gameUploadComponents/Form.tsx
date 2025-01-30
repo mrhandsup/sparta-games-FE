@@ -7,6 +7,8 @@ import { SubmitHandler } from "react-hook-form";
 
 import "./Form.css";
 import SpartaReactionModal, { TSpartaReactionModalProps } from "../../spartaDesignSystem/SpartaReactionModal";
+import SpartaModal from "../../spartaDesignSystem/SpartaModal";
+import UploadCheck from "./UploadCheck";
 
 type Props = {
   form: TGameUploadInputForm;
@@ -28,8 +30,10 @@ type Props = {
     modalToggles: Record<string, boolean>;
     noActionModalData: Partial<TSpartaReactionModalProps>;
     NO_ACTION_MODAL_ID: string;
+    GAME_UPLOAD_CHECK_ID: string;
     onClickModalToggleHandlers: Record<string, () => void>;
   };
+  gameUploadResponse: number | undefined;
 };
 
 const Form = ({
@@ -41,6 +45,7 @@ const Form = ({
   onClickHandler,
   onSubmitHandler,
   modalConfig,
+  gameUploadResponse,
 }: Props) => {
   return (
     <>
@@ -216,22 +221,21 @@ const Form = ({
           />
         </div>
 
-        {!(note[1] && note[2] && note[3]) ||
-        !form.formState.isValid ||
-        !(isUpload.gameFile && isUpload.stillCut && isUpload.thumbnail) ? (
+        {note[1] && note[2] && note[3] && form.formState.isValid ? (
+          <button
+            onClick={modalConfig.onClickModalToggleHandlers[modalConfig.GAME_UPLOAD_CHECK_ID]}
+            type="button"
+            className={`mb-10 w-full h-14 text-title-18 text-primary-950 bg-primary-500 rounded-lg`}
+          >
+            승인요청
+          </button>
+        ) : (
           <button
             type="submit"
             disabled={true}
             className={`mb-10 w-full h-14 text-title-18 text-gray-900 bg-gray-400 rounded-lg`}
           >
             필수 값을 입력한 후 승인요청을 할 수 있습니다.
-          </button>
-        ) : (
-          <button
-            type="submit"
-            className={`mb-10 w-full h-14 text-title-18 text-primary-950 bg-primary-500 rounded-lg`}
-          >
-            승인요청
           </button>
         )}
       </form>
@@ -250,6 +254,21 @@ const Form = ({
           type={modalConfig.noActionModalData.type}
         />
       )}
+
+      <SpartaModal
+        isOpen={modalConfig.modalToggles[modalConfig.GAME_UPLOAD_CHECK_ID]}
+        onClose={modalConfig.onClickModalToggleHandlers[modalConfig.GAME_UPLOAD_CHECK_ID]}
+        modalId={modalConfig.GAME_UPLOAD_CHECK_ID}
+        closeOnClickOutside={false}
+      >
+        <UploadCheck
+          form={form}
+          gameUploadResponse={gameUploadResponse}
+          GAME_UPLOAD_CHECK_ID={modalConfig.GAME_UPLOAD_CHECK_ID}
+          onSubmitHandler={onSubmitHandler}
+          onClose={modalConfig.onClickModalToggleHandlers[modalConfig.GAME_UPLOAD_CHECK_ID]}
+        />
+      </SpartaModal>
     </>
   );
 };
