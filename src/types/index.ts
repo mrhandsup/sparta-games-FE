@@ -127,10 +127,12 @@ export type TGamePlayData = {
     name: string;
   }[];
   maker_name: string;
+  maker: number;
   title: string;
   is_liked: boolean;
-  thumnail: null;
+  thumbnail: string;
   youtube_url: string;
+  register_state: number;
   content: string;
   gamepath: string;
   base_control: string;
