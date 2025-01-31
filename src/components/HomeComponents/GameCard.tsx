@@ -10,6 +10,11 @@ type Props = {
 };
 
 const GameCard = ({ item, simple, row }: Props) => {
+  const image =
+    import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
+      ? import.meta.env.VITE_PROXY_HOST + item?.thumbnail
+      : item?.thumbnail;
+
   return (
     <section
       key={item?.pk}
@@ -18,7 +23,7 @@ const GameCard = ({ item, simple, row }: Props) => {
       } border-gray-100 border-[0.7px] rounded-lg border-solid`}
     >
       <img
-        src={import.meta.env.VITE_PROXY_HOST + item?.thumbnail}
+        src={image}
         alt="게임 썸네일"
         className={`relative flex justify-center items-center bg-gray-50 ${
           row ? "rounded-l-lg w-[190px] h-[152px]" : "rounded-t-lg w-[280px] h-[224px]"

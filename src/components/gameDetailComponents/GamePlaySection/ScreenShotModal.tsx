@@ -33,7 +33,9 @@ const ScreenShotModal = ({ screenShotList, swiperRef }: Props) => {
           if (slideIndex !== null && screenShotList) {
             const imageSrc = screenShotList[Number(slideIndex)].src;
 
-            openScreenShot(import.meta.env.VITE_PROXY_HOST + imageSrc);
+            openScreenShot(
+              import.meta.env.VITE_DEPLOYMENT_MODE === "dev" ? import.meta.env.VITE_PROXY_HOST + imageSrc : imageSrc,
+            );
           }
         }
       };

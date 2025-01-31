@@ -12,12 +12,17 @@ const MyGameCard = ({ item }: Props) => {
 
   const navigate = useNavigate();
 
+  const image =
+    import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
+      ? import.meta.env.VITE_PROXY_HOST + item?.thumbnail
+      : item?.thumbnail;
+
   return (
     <section key={item?.pk} className={`relative flex items-center w-full h-[475px] bg-gray-800`}>
       <div
         className="w-[50%] h-[475px] bg-cover bg-center bg-no-repeat relative"
         style={{
-          backgroundImage: `url(${import.meta.env.VITE_PROXY_HOST + item?.thumbnail})`,
+          backgroundImage: `url(${image})`,
           maskImage: "linear-gradient(to right, black 75%, transparent 100%)",
           WebkitMaskImage: "linear-gradient(to right, black 75%, transparent 100%)",
         }}
