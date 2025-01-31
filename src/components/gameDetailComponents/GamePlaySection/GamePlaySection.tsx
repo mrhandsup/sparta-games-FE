@@ -6,30 +6,36 @@ import { TGamePlayData } from "../../../types";
 import { useEffect, useRef } from "react";
 import { getPlayLog, postPlayLog } from "../../../api/game";
 import usePlayTimeStore from "../../../share/store/playTimeStore";
+import { userStore } from "../../../share/store/userStore";
 
 type Props = {
   gamePlayData?: TGamePlayData;
 };
 
 const GamePlaySection = ({ gamePlayData }: Props) => {
-  const { id, title, maker_name, gamepath, youtube_url, screenshot, content, maker, thumbnail, register_state } =
-    gamePlayData || {};
+  const { id, title, maker_name, gamepath, youtube_url, screenshot, content, maker, thumbnail } = gamePlayData || {};
+
+  const { userData } = userStore();
   const { playTimePk, setPlayTimePk } = usePlayTimeStore();
+
   const playTimePkRef = useRef(playTimePk);
 
+  console.log("userData", userData);
   useEffect(() => {
     playTimePkRef.current = playTimePk;
   }, [playTimePk]);
 
   useEffect(() => {
     const fetchPlayLog = async () => {
-      const res = await getPlayLog(id);
-      setPlayTimePk(res?.playtime_pk || null);
+      if (userData) {
+        const res = await getPlayLog(id);
+        setPlayTimePk(res?.playtime_pk || null);
+      }
     };
     fetchPlayLog();
 
     return () => {
-      if (playTimePkRef.current) {
+      if (playTimePkRef.current && userData) {
         const sendPlayLog = async () => {
           await postPlayLog(id, playTimePkRef.current);
         };
