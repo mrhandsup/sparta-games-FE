@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import expand from "../../../assets/gameDetail/expand.svg";
 import share from "../../../assets/gameDetail/linkshare.svg";
 import bookmark from "../../../assets/gameDetail/bookmark.svg";

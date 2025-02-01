@@ -3,7 +3,7 @@
 }
 
 .gamescreenShotSwiper .swiper-slide {
-  @apply flex justify-center items-center;
+  @apply flex justify-center items-center transform-none;
 }
 
 .gamescreenShotSwiper .swiper-slide img {

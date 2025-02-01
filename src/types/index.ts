@@ -4,6 +4,7 @@ import type {
   UseFormHandleSubmit,
   UseFormRegister,
   UseFormSetValue,
+  UseFormTrigger,
   UseFormWatch,
 } from "react-hook-form";
 
@@ -25,6 +26,8 @@ export type TGameUploadInputForm = {
   setValue: UseFormSetValue<TGameUploadInput>;
   formState: FormState<TGameUploadInput>;
   handleSubmit: UseFormHandleSubmit<TGameUploadInput>;
+  trigger: UseFormTrigger<TGameUploadInput>;
+  getValues: any;
 };
 
 export type TReviewInputForm = {

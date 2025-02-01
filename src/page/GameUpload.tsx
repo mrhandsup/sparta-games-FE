@@ -6,7 +6,8 @@ import useGameUpload from "../hook/gameUploadHook/useGameUpload";
 import pixelMeteor from "../assets/gameDetail/ReviewEdit.svg";
 
 const GameUpload = () => {
-  const { note, form, isUpload, previewStillCut, eventHandler, modalConfig, gameUploadResponse } = useGameUpload();
+  const { note, form, isUpload, setIsUpload, previewStillCut, eventHandler, modalConfig, gameUploadResponse } =
+    useGameUpload();
 
   return (
     <main>
@@ -19,10 +20,12 @@ const GameUpload = () => {
         form={form}
         note={note}
         isUpload={isUpload}
+        setIsUpload={setIsUpload}
         previewStillCut={previewStillCut}
         onChangeHandler={eventHandler.onChangeImageHandler}
         onClickHandler={eventHandler.onClickImageDeleteHandler}
         onSubmitHandler={eventHandler.onSubmitHandler}
+        onEditHandler={eventHandler.onEditHandler}
         modalConfig={modalConfig}
         gameUploadResponse={gameUploadResponse}
       />

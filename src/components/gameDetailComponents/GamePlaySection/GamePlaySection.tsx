@@ -20,7 +20,6 @@ const GamePlaySection = ({ gamePlayData }: Props) => {
 
   const playTimePkRef = useRef(playTimePk);
 
-  console.log("userData", userData);
   useEffect(() => {
     playTimePkRef.current = playTimePk;
   }, [playTimePk]);

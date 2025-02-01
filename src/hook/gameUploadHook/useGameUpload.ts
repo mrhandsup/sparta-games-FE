@@ -6,7 +6,9 @@ import type { TGameUploadInput } from "../../types";
 import changeUrl from "../../util/changeUrl";
 import useModalToggles from "../useModalToggles";
 import { TSpartaReactionModalProps } from "../../spartaDesignSystem/SpartaReactionModal";
-import { postGameList } from "../../api/game";
+import { postGameList, putGameList } from "../../api/game";
+import { useNavigate } from "react-router-dom";
+import { userStore } from "../../share/store/userStore";
 
 const useGameUpload = () => {
   const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
@@ -18,7 +20,12 @@ const useGameUpload = () => {
   const GAME_UPLOAD_CHECK_ID = "gameUploadCheckId";
   const NO_ACTION_MODAL_ID = "noActionModal";
 
-  const { register, watch, control, setValue, formState, handleSubmit } = useForm<TGameUploadInput>();
+  const { register, watch, control, setValue, formState, handleSubmit, trigger, getValues } =
+    useForm<TGameUploadInput>();
+
+  const { userData } = userStore();
+
+  const navigate = useNavigate();
 
   const { modalToggles, onClickModalToggleHandlers } = useModalToggles([GAME_UPLOAD_CHECK_ID, NO_ACTION_MODAL_ID]);
 
@@ -79,6 +86,19 @@ const useGameUpload = () => {
         },
       },
       type: "alert",
+    },
+
+    editConfirm: {
+      title: "수정 완료",
+      content: "수정이 완료되었습니다.",
+      btn1: {
+        text: "확인",
+        onClick: () => {
+          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+          navigate(`/my-page/${userData?.user_pk}`);
+        },
+      },
+      type: "primary",
     },
   };
 
@@ -275,6 +295,27 @@ const useGameUpload = () => {
     setGameUploadResponse(res?.status);
   };
 
+  /**
+   *게임 수정 요청 api
+   */
+  const onEditHandler = async (data: TGameUploadInput, gamePk: number) => {
+    setNoActionModalData(noActionData.editConfirm);
+    onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+
+    const formData = new FormData();
+
+    formData.append("title", data.title);
+    formData.append("category", data.category.join(","));
+    formData.append("content", data.content);
+    formData.append("gamefile", data.gameFile[0]);
+    formData.append("thumbnail", data.thumbnail[0]);
+    formData.append("youtube_url", data.video);
+    formData.append("release_note", "테스트");
+    formData.append("base_control", "테스트");
+
+    await putGameList(formData, gamePk);
+  };
+
   const form = {
     register,
     watch,
@@ -282,6 +323,8 @@ const useGameUpload = () => {
     setValue,
     formState,
     handleSubmit,
+    trigger,
+    getValues,
   };
 
   const eventHandler = {
@@ -289,6 +332,7 @@ const useGameUpload = () => {
     onClickImageDeleteHandler,
     onClickNoteToggleHandler,
     onSubmitHandler,
+    onEditHandler,
   };
 
   const modalConfig = {
@@ -299,7 +343,17 @@ const useGameUpload = () => {
     noActionModalData,
   };
 
-  return { isUpload, note, form, previewThumbnail, previewStillCut, eventHandler, modalConfig, gameUploadResponse };
+  return {
+    isUpload,
+    setIsUpload,
+    note,
+    form,
+    previewThumbnail,
+    previewStillCut,
+    eventHandler,
+    modalConfig,
+    gameUploadResponse,
+  };
 };
 
 export default useGameUpload;

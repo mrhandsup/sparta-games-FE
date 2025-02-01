@@ -1,4 +1,4 @@
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -16,18 +16,24 @@ import CaretLeft from "../assets/CaretLeft";
 import loading from "../assets/common/loading.gif";
 import useModalToggles from "../hook/useModalToggles";
 import SpartaReactionModal from "../spartaDesignSystem/SpartaReactionModal";
-import { getRegisterGameDetail, getRegisterGameRejectLog } from "../api/direct";
-import { useEffect, useState } from "react";
+import { getRegisterGameRejectLog } from "../api/direct";
+import { useEffect } from "react";
 
 const GameDetail = () => {
+  const NO_ACTION_MODAL_ID = "noActionModal";
+  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([NO_ACTION_MODAL_ID]);
+
+  const navigate = useNavigate();
+
   const [searchParams] = useSearchParams();
   const gameDetailId = Number(searchParams.get("id"));
+
+  const { userData } = userStore();
 
   const { data: gamePlayData, isLoading } = useQuery<TGamePlayData>({
     queryKey: ["gameList"],
     queryFn: () => getGameDetail(gameDetailId),
   });
-  const { userData } = userStore();
 
   const rejectLogs = useQuery({
     queryKey: ["gameLog", gameDetailId],
@@ -39,9 +45,6 @@ const GameDetail = () => {
       userData.user_pk === gamePlayData.maker &&
       gamePlayData.register_state === 2,
   });
-
-  const NO_ACTION_MODAL_ID = "noActionModal";
-  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([NO_ACTION_MODAL_ID]);
 
   const gameCategory = gamePlayData?.category[0]?.name;
 
@@ -97,11 +100,13 @@ const GameDetail = () => {
         isOpen={modalToggles[NO_ACTION_MODAL_ID]}
         onClose={onClickModalToggleHandlers[NO_ACTION_MODAL_ID]}
         modalId={NO_ACTION_MODAL_ID}
-        title={"게임이 반려되었습니다."}
+        title={"게임을 수정합니다."}
         content={rejectLogs.data?.content}
         btn1={{
           text: "확인",
-          onClick: () => onClickModalToggleHandlers[NO_ACTION_MODAL_ID](),
+          onClick: () => {
+            navigate("/game-upload", { state: { gameData: gamePlayData, isEditMode: true } });
+          },
         }}
         type={"error"}
       />

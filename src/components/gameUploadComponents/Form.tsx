@@ -1,14 +1,18 @@
+import { useLocation } from "react-router-dom";
+
 import CloseCircle from "../../assets/CloseCircle";
 import { GAME_CATEGORY } from "../../constant/constant";
 import SpartaChipSelect from "../../spartaDesignSystem/SpartaChipSelect";
 
-import { TGameUploadInput, TGameUploadInputForm } from "../../types";
+import { TCategoryListResponse, TGameUploadInput, TGameUploadInputForm } from "../../types";
 import { SubmitHandler } from "react-hook-form";
 
-import "./Form.css";
 import SpartaReactionModal, { TSpartaReactionModalProps } from "../../spartaDesignSystem/SpartaReactionModal";
 import SpartaModal from "../../spartaDesignSystem/SpartaModal";
 import UploadCheck from "./UploadCheck";
+
+import "./Form.css";
+import { useEffect } from "react";
 
 type Props = {
   form: TGameUploadInputForm;
@@ -22,10 +26,12 @@ type Props = {
     gameFile: boolean;
     stillCut: boolean;
   };
+  setIsUpload: React.Dispatch<React.SetStateAction<{ thumbnail: boolean; gameFile: boolean; stillCut: boolean }>>;
   previewStillCut: string[];
   onChangeHandler: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onClickHandler: (type: "thumbnail" | "stillCut", arg: number) => void;
   onSubmitHandler: SubmitHandler<TGameUploadInput>;
+  onEditHandler: (data: TGameUploadInput, gamePk: number) => Promise<void>;
   modalConfig: {
     modalToggles: Record<string, boolean>;
     noActionModalData: Partial<TSpartaReactionModalProps>;
@@ -40,13 +46,96 @@ const Form = ({
   form,
   note,
   isUpload,
+  setIsUpload,
   previewStillCut,
   onChangeHandler,
   onClickHandler,
   onSubmitHandler,
+  onEditHandler,
   modalConfig,
   gameUploadResponse,
 }: Props) => {
+  const location = useLocation();
+  const existingGameData = location.state?.gameData;
+  const isEditMode = location.state?.isEditMode;
+
+  const extractFileName = (contentType: "thumbnail" | "gameFile" | "stillCut", filePath: string) => {
+    const fileName = filePath.split("/").pop();
+
+    return contentType === "thumbnail"
+      ? fileName?.replace(/_([A-Za-z0-9]+)\.(\w+)$/, ".$2")
+      : contentType === "gameFile"
+      ? fileName?.replace(/^\d+_/, "")
+      : null;
+  };
+
+  const changeUrltoFile = async (contentType: "thumbnail" | "gameFile" | "stillCut", dataUrl: string) => {
+    const orginalContentName =
+      contentType === "thumbnail"
+        ? extractFileName("thumbnail", existingGameData.thumbnail)
+        : contentType === "gameFile"
+        ? extractFileName("gameFile", existingGameData.gamefile)
+        : "";
+
+    const ext = dataUrl.split(".").pop();
+
+    const mimeType =
+      ext === "png"
+        ? "image/png"
+        : ext === "jpg" || ext === "jpeg"
+        ? "image/jpeg"
+        : ext === "gif"
+        ? "image/gif"
+        : ext === "zip"
+        ? "application/x-zip-compressed"
+        : "application/octet-stream";
+
+    fetch(dataUrl)
+      .then((response) => response.blob())
+      .then((blob) => {
+        const file = new File([blob], orginalContentName as string, { type: mimeType });
+        form.setValue(`${contentType}`, [file]);
+      })
+      .catch((err) => console.error("파일 변환 오류:", err));
+
+    setIsUpload((prev: { thumbnail: boolean; gameFile: boolean; stillCut: boolean }) => ({
+      ...prev,
+      [contentType]: true,
+    }));
+  };
+
+  useEffect(() => {
+    if (existingGameData && isEditMode) {
+      changeUrltoFile("thumbnail", existingGameData.thumbnail);
+      changeUrltoFile("gameFile", existingGameData.gamefile);
+
+      form.setValue("title", existingGameData.title);
+
+      form.setValue(
+        "category",
+        existingGameData.category.map((cat: TCategoryListResponse[number]) => cat.name),
+      );
+
+      form.setValue("content", existingGameData.content);
+
+      form.setValue("video", existingGameData.youtube_url);
+
+      form.trigger(["gameFile", "thumbnail"]);
+    }
+  }, [existingGameData]);
+
+  const isEditFormValid =
+    form.watch("thumbnail")?.length > 0 &&
+    form.watch("gameFile")?.length > 0 &&
+    form.watch("category").length > 0 &&
+    form.watch("title") !== "" &&
+    form.watch("content") !== "";
+
+  const onClickEditHandler = () => {
+    const formData = form.getValues() as TGameUploadInput;
+    onEditHandler(formData, existingGameData?.id);
+  };
+
   return (
     <>
       <form onSubmit={form.handleSubmit(onSubmitHandler)} className="mx-[130px]">
@@ -60,7 +149,7 @@ const Form = ({
               <div className="flex gap-4">
                 <div className="flex items-center py-4 px-4 w-full bg-gray-700 border border-solid border-white rounded-md resize-none">
                   {form.watch("thumbnail")?.length > 0 && isUpload.thumbnail
-                    ? form.watch("thumbnail")[0]?.name
+                    ? decodeURIComponent(form.watch("thumbnail")[0]?.name)
                     : "1000px*800px이하, 5mb 이하 이미지 파일"}
                 </div>
 
@@ -91,7 +180,7 @@ const Form = ({
               <div className="flex gap-4">
                 <div className="flex items-center py-4 px-4 w-full bg-gray-700 border border-solid border-white rounded-md resize-none">
                   {form.watch("gameFile")?.length > 0 && isUpload.gameFile
-                    ? form.watch("gameFile")[0]?.name
+                    ? decodeURIComponent(form.watch("gameFile")[0]?.name)
                     : "200mb 이하 Zip파일로 업로드 해주세요."}
                 </div>
 
@@ -221,13 +310,21 @@ const Form = ({
           />
         </div>
 
-        {note[1] && note[2] && note[3] && form.formState.isValid ? (
+        {!isEditMode && note[1] && note[2] && note[3] && form.formState.isValid ? (
           <button
             onClick={modalConfig.onClickModalToggleHandlers[modalConfig.GAME_UPLOAD_CHECK_ID]}
             type="button"
             className={`mb-10 w-full h-14 text-title-18 text-primary-950 bg-primary-500 rounded-lg`}
           >
             승인요청
+          </button>
+        ) : isEditMode && isEditFormValid ? (
+          <button
+            onClick={() => onClickEditHandler()}
+            type="button"
+            className={`mb-10 w-full h-14 text-title-18 text-primary-950 bg-primary-500 rounded-lg`}
+          >
+            수정요청
           </button>
         ) : (
           <button
@@ -267,6 +364,7 @@ const Form = ({
           GAME_UPLOAD_CHECK_ID={modalConfig.GAME_UPLOAD_CHECK_ID}
           onSubmitHandler={onSubmitHandler}
           onClose={modalConfig.onClickModalToggleHandlers[modalConfig.GAME_UPLOAD_CHECK_ID]}
+          isEditMode={isEditMode}
         />
       </SpartaModal>
     </>

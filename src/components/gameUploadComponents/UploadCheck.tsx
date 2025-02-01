@@ -5,6 +5,7 @@ import { useState } from "react";
 import useModalToggles from "../../hook/useModalToggles";
 import { useNavigate } from "react-router-dom";
 import SpartaModal from "../../spartaDesignSystem/SpartaModal";
+import { userStore } from "../../share/store/userStore";
 
 type Props = {
   form: TGameUploadInputForm;
@@ -12,10 +13,20 @@ type Props = {
   GAME_UPLOAD_CHECK_ID: string;
   onSubmitHandler: SubmitHandler<TGameUploadInput>;
   onClose: () => void;
+  isEditMode: boolean;
 };
 
-const UploadCheck = ({ form, gameUploadResponse, GAME_UPLOAD_CHECK_ID, onSubmitHandler, onClose }: Props) => {
+const UploadCheck = ({
+  form,
+  gameUploadResponse,
+  GAME_UPLOAD_CHECK_ID,
+  onSubmitHandler,
+  onClose,
+  isEditMode,
+}: Props) => {
   const GAME_UPLOAD_SUCCESS_ID = "gameupUploadSuccessModal";
+
+  const { userData } = userStore();
 
   const [inputValue, setInputValue] = useState("");
 
@@ -76,7 +87,7 @@ const UploadCheck = ({ form, gameUploadResponse, GAME_UPLOAD_CHECK_ID, onSubmitH
       <div
         className={`flex h-12 rounded-md ${isPhraseCorrect ? "bg-primary-500" : "bg-gray-400"} text-center font-bold`}
       >
-        {isPhraseCorrect ? (
+        {isPhraseCorrect && !isEditMode ? (
           <button onClick={onClickUploadGame} className="w-full">
             {isPhraseCorrect ? "문구가 확인되었습니다. 게임 등록을 진행합니다." : "문구를 올바르게 입력해주세요."}
           </button>
@@ -100,7 +111,10 @@ const UploadCheck = ({ form, gameUploadResponse, GAME_UPLOAD_CHECK_ID, onSubmitH
               <br />
               스파르타 게임즈를 이용해주셔서 감사합니다 :)
             </span>
-            <button onClick={() => navigate("/my-page")} className="w-full py-3 bg-primary-500 font-extrabold">
+            <button
+              onClick={() => navigate(`/my-page/${userData?.user_pk}`)}
+              className="w-full py-3 bg-primary-500 font-extrabold"
+            >
               확인
             </button>
           </div>
