@@ -1,11 +1,14 @@
-import { SubmitHandler } from "react-hook-form";
-import closeBtn from "../../../src/assets/common/closeBtn.svg";
-import { TGameUploadInput, TGameUploadInputForm } from "../../types";
 import { useState } from "react";
-import useModalToggles from "../../hook/useModalToggles";
+import { SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+
+import useModalToggles from "../../hook/useModalToggles";
 import SpartaModal from "../../spartaDesignSystem/SpartaModal";
 import { userStore } from "../../share/store/userStore";
+
+import { TGameUploadInput, TGameUploadInputForm } from "../../types";
+
+import closeBtn from "../../../src/assets/common/closeBtn.svg";
 
 type Props = {
   form: TGameUploadInputForm;
@@ -89,7 +92,7 @@ const UploadCheck = ({
       >
         {isPhraseCorrect && !isEditMode ? (
           <button onClick={onClickUploadGame} className="w-full">
-            {isPhraseCorrect ? "문구가 확인되었습니다. 게임 등록을 진행합니다." : "문구를 올바르게 입력해주세요."}
+            문구가 확인되었습니다. 게임 등록을 진행합니다.
           </button>
         ) : (
           <button disabled={true} className="w-full">

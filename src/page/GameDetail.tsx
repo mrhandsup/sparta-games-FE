@@ -1,4 +1,4 @@
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -18,12 +18,14 @@ import useModalToggles from "../hook/useModalToggles";
 import SpartaReactionModal from "../spartaDesignSystem/SpartaReactionModal";
 import { getRegisterGameRejectLog } from "../api/direct";
 import { useEffect } from "react";
+import SpartaModal from "../spartaDesignSystem/SpartaModal";
+import EditCheck from "../components/gameUploadComponents/EditCheck";
 
 const GameDetail = () => {
-  const NO_ACTION_MODAL_ID = "noActionModal";
-  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([NO_ACTION_MODAL_ID]);
+  const GAME_EDIT_CHECK_ID = "gameEditCheckId";
+  const NO_ACTION_MODAL_ID = "noActionModalId";
 
-  const navigate = useNavigate();
+  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([GAME_EDIT_CHECK_ID, NO_ACTION_MODAL_ID]);
 
   const [searchParams] = useSearchParams();
   const gameDetailId = Number(searchParams.get("id"));
@@ -85,7 +87,7 @@ const GameDetail = () => {
                     colorType={"alert"}
                     width={"w-[134px]"}
                     size={"medium"}
-                    onClick={() => onClickModalToggleHandlers[NO_ACTION_MODAL_ID]()}
+                    onClick={() => onClickModalToggleHandlers[GAME_EDIT_CHECK_ID]()}
                   />
                   <SpartaButton content={"삭제하기"} colorType={"error"} width={"w-[134px]"} size={"medium"} />
                 </div>
@@ -93,20 +95,33 @@ const GameDetail = () => {
             )}
           </div>
           <GamePlaySection gamePlayData={gamePlayData} />
-          {gamePlayData?.register_state === 1 && <ReviewContents gamePk={gameDetailId} />}
+          {gamePlayData?.register_state === 1 ? (
+            <ReviewContents gamePk={gameDetailId} />
+          ) : (
+            <p className="my-10 font-DungGeunMo text-3xl text-gray-100">*댓글기능은 검수 통과 후 활성화 됩니다.</p>
+          )}
         </main>
       )}
+
+      <SpartaModal
+        isOpen={modalToggles[GAME_EDIT_CHECK_ID]}
+        onClose={onClickModalToggleHandlers[GAME_EDIT_CHECK_ID]}
+        modalId={GAME_EDIT_CHECK_ID}
+        closeOnClickOutside={false}
+        type={"alert"}
+      >
+        <EditCheck gamePlayData={gamePlayData} onClose={onClickModalToggleHandlers[GAME_EDIT_CHECK_ID]} />
+      </SpartaModal>
+
       <SpartaReactionModal
         isOpen={modalToggles[NO_ACTION_MODAL_ID]}
         onClose={onClickModalToggleHandlers[NO_ACTION_MODAL_ID]}
         modalId={NO_ACTION_MODAL_ID}
-        title={"게임을 수정합니다."}
+        title="게임이 반려되었습니다."
         content={rejectLogs.data?.content}
         btn1={{
           text: "확인",
-          onClick: () => {
-            navigate("/game-upload", { state: { gameData: gamePlayData, isEditMode: true } });
-          },
+          onClick: () => onClickModalToggleHandlers[NO_ACTION_MODAL_ID](),
         }}
         type={"error"}
       />

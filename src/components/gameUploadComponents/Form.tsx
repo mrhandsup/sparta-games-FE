@@ -127,7 +127,7 @@ const Form = ({
   const isEditFormValid =
     form.watch("thumbnail")?.length > 0 &&
     form.watch("gameFile")?.length > 0 &&
-    form.watch("category").length > 0 &&
+    form.watch("category")?.length > 0 &&
     form.watch("title") !== "" &&
     form.watch("content") !== "";
 

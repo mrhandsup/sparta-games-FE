@@ -44,7 +44,7 @@ const GamePlaySection = ({ gamePlayData }: Props) => {
   }, [id]);
 
   return (
-    <section className="mt-6 mb-12">
+    <section className="mt-6">
       <div className="flex gap-5">
         <GamePlay
           gamePk={id}
