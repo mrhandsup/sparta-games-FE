@@ -361,7 +361,6 @@ const Form = ({
         <UploadCheck
           form={form}
           gameUploadResponse={gameUploadResponse}
-          GAME_UPLOAD_CHECK_ID={modalConfig.GAME_UPLOAD_CHECK_ID}
           onSubmitHandler={onSubmitHandler}
           onClose={modalConfig.onClickModalToggleHandlers[modalConfig.GAME_UPLOAD_CHECK_ID]}
           isEditMode={isEditMode}

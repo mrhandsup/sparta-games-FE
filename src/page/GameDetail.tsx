@@ -20,12 +20,18 @@ import { getRegisterGameRejectLog } from "../api/direct";
 import { useEffect } from "react";
 import SpartaModal from "../spartaDesignSystem/SpartaModal";
 import EditCheck from "../components/gameUploadComponents/EditCheck";
+import DeleteCheck from "../components/gameUploadComponents/DeleteCehck";
 
 const GameDetail = () => {
   const GAME_EDIT_CHECK_ID = "gameEditCheckId";
+  const GAME_DELETE_CHECK_ID = "gameDeleteCheckId";
   const NO_ACTION_MODAL_ID = "noActionModalId";
 
-  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([GAME_EDIT_CHECK_ID, NO_ACTION_MODAL_ID]);
+  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([
+    GAME_EDIT_CHECK_ID,
+    GAME_DELETE_CHECK_ID,
+    NO_ACTION_MODAL_ID,
+  ]);
 
   const [searchParams] = useSearchParams();
   const gameDetailId = Number(searchParams.get("id"));
@@ -89,7 +95,13 @@ const GameDetail = () => {
                     size={"medium"}
                     onClick={() => onClickModalToggleHandlers[GAME_EDIT_CHECK_ID]()}
                   />
-                  <SpartaButton content={"삭제하기"} colorType={"error"} width={"w-[134px]"} size={"medium"} />
+                  <SpartaButton
+                    content={"삭제하기"}
+                    colorType={"error"}
+                    width={"w-[134px]"}
+                    size={"medium"}
+                    onClick={() => onClickModalToggleHandlers[GAME_DELETE_CHECK_ID]()}
+                  />
                 </div>
               </>
             )}
@@ -108,9 +120,17 @@ const GameDetail = () => {
         onClose={onClickModalToggleHandlers[GAME_EDIT_CHECK_ID]}
         modalId={GAME_EDIT_CHECK_ID}
         closeOnClickOutside={false}
-        type={"alert"}
       >
         <EditCheck gamePlayData={gamePlayData} onClose={onClickModalToggleHandlers[GAME_EDIT_CHECK_ID]} />
+      </SpartaModal>
+
+      <SpartaModal
+        isOpen={modalToggles[GAME_DELETE_CHECK_ID]}
+        onClose={onClickModalToggleHandlers[GAME_DELETE_CHECK_ID]}
+        modalId={GAME_DELETE_CHECK_ID}
+        closeOnClickOutside={false}
+      >
+        <DeleteCheck gamePk={gamePlayData?.id} onClose={onClickModalToggleHandlers[GAME_DELETE_CHECK_ID]} />
       </SpartaModal>
 
       <SpartaReactionModal

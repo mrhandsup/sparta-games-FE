@@ -40,6 +40,24 @@ export const putGameList = async (formData: FormData, gamePk: number) => {
 };
 
 /**
+ * 게임 삭제
+ */
+export const deleteGameList = async (gamePk: number | undefined) => {
+  try {
+    console.log("gamePk:", gamePk);
+    const res = await sparta_games_auth.delete(`/games/api/list/${gamePk}/`);
+
+    return res;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      window.alert("오류가 발생했습니다. 관리자에게 문의해주세요.");
+
+      return error.response;
+    }
+  }
+};
+
+/**
  * 게임 리스트 조회(메인)
  */
 export const getGameList = async () => {

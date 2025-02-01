@@ -13,21 +13,13 @@ import closeBtn from "../../../src/assets/common/closeBtn.svg";
 type Props = {
   form: TGameUploadInputForm;
   gameUploadResponse: number | undefined;
-  GAME_UPLOAD_CHECK_ID: string;
   onSubmitHandler: SubmitHandler<TGameUploadInput>;
   onClose: () => void;
   isEditMode: boolean;
 };
 
-const UploadCheck = ({
-  form,
-  gameUploadResponse,
-  GAME_UPLOAD_CHECK_ID,
-  onSubmitHandler,
-  onClose,
-  isEditMode,
-}: Props) => {
-  const GAME_UPLOAD_SUCCESS_ID = "gameupUploadSuccessModal";
+const UploadCheck = ({ form, gameUploadResponse, onSubmitHandler, onClose, isEditMode }: Props) => {
+  const GAME_UPLOAD_SUCCESS_ID = "gameUploadSuccessModal";
 
   const { userData } = userStore();
 
@@ -38,7 +30,7 @@ const UploadCheck = ({
   const requiredPhrase = "즐거운 게임세상 스파르타게임즈!";
   const isPhraseCorrect = inputValue.trim() === requiredPhrase;
 
-  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([GAME_UPLOAD_SUCCESS_ID, GAME_UPLOAD_CHECK_ID]);
+  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([GAME_UPLOAD_SUCCESS_ID]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
