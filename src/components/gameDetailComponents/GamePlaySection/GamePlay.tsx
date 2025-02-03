@@ -88,7 +88,7 @@ const GamePlay = ({ gamePk, title, makerName, makerPk, gamePath, thumbnail }: Pr
   const gameUrl =
     import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
       ? `${import.meta.env.VITE_PROXY_HOST}${gamePath}/index.html`
-      : gamePath;
+      : gamePath + "/index.html";
 
   const fullScreenRef = useRef<HTMLDivElement>(null);
 
