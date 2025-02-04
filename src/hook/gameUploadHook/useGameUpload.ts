@@ -147,7 +147,7 @@ const useGameUpload = () => {
         // 이미지 용량 유효성 검사 통과한 경우
         if (isValid) {
           // 이미지 크기 유효성 검사
-          const isValidSize = await checkImageSize(file);
+          const isValidSize = true;
           if (!isValidSize) {
             setNoActionModalData(noActionData.imageUploadWarning);
             onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
