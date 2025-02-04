@@ -1,5 +1,24 @@
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 import { sparta_games, sparta_games_auth } from "./axios";
+
+/**
+ * 게임 생성
+ */
+export const postGameList = async (formData: FormData) => {
+  try {
+    const res = await sparta_games_auth.post("/games/api/list/", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    return res;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      window.alert("오류가 발생했습니다. 관리자에게 문의해주세요.");
+
+      return error.response;
+    }
+  }
+};
 
 /**
  * 게임 리스트 조회(메인)
@@ -120,7 +139,6 @@ export const searchGameAuth = async (keyword: string) => {
 export const postBookMark = async (gamePk: number | undefined) => {
   try {
     const res = await sparta_games_auth.post(`/games/api/list/${gamePk}/like/`);
-    console.log("res", res);
     return res.data.message;
   } catch (error) {
     console.error(error);

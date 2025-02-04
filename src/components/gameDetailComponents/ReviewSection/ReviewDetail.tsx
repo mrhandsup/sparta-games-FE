@@ -21,33 +21,35 @@ const ReviewDetail = ({ review, convertDifficulty, onClose }: Props) => {
           <img onClick={onClose} className="w-7 h-7 cursor-pointer" src={closeBtn} alt="닫기" />
         </div>
 
-        <div className="flex items-center gap-8">
-          <p className="text-2xl font-DungGeunMo text-white whitespace-nowrap">난이도</p>
-          <div className="flex gap-3">
-            {gameDifficulty.map((level) => (
-              <DifficultyChip
-                key={level}
-                chipSize="big"
-                difficultyLevel={level}
-                isSelected={convertDifficulty(review?.difficulty) === level}
-              />
-            ))}
+        <div className="flex justify-between items-center gap-8">
+          <div className="flex items-center gap-4">
+            <p className="text-2xl font-DungGeunMo text-white whitespace-nowrap">난이도</p>
+            <div className="flex gap-3">
+              {gameDifficulty.map((level) => (
+                <DifficultyChip
+                  key={level}
+                  chipSize="big"
+                  difficultyLevel={level}
+                  isSelected={convertDifficulty(review?.difficulty) === level}
+                />
+              ))}
+            </div>
           </div>
-          <div className="flex gap-3">{convertDifficulty(review?.difficulty)}</div>
 
-          <p className="text-2xl font-DungGeunMo text-white whitespace-nowrap">평점</p>
-          <Rating
-            name="gameRating"
-            value={review?.star}
-            readOnly
-            sx={{
-              width: "120px",
-            }}
-            icon={<img src={fillStar} width={30} height={30} />}
-            emptyIcon={<img src={star} width={30} height={30} />}
-          />
+          <div className="flex  gap-4">
+            <p className="text-2xl font-DungGeunMo text-white whitespace-nowrap">평점</p>
+            <Rating
+              name="gameRating"
+              value={review?.star}
+              readOnly
+              sx={{
+                width: "120px",
+              }}
+              icon={<img src={fillStar} width={30} height={30} />}
+              emptyIcon={<img src={star} width={30} height={30} />}
+            />
+          </div>
         </div>
-
         <p className="min-h-60 text-base font-Pretendard text-white">{review?.content}</p>
       </div>
     </div>

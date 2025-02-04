@@ -1,9 +1,16 @@
-import type { FormState, UseFormHandleSubmit, UseFormRegister, UseFormSetValue, UseFormWatch } from "react-hook-form";
+import type {
+  Control,
+  FormState,
+  UseFormHandleSubmit,
+  UseFormRegister,
+  UseFormSetValue,
+  UseFormWatch,
+} from "react-hook-form";
 
 //공용으로 쓰는 타입의 경우 이 파일의 작성 그렇지 않을경우 분리해서 작성
 export type TGameUploadInput = {
   title: string;
-  category: string;
+  category: string[];
   content: string;
   gameFile: File[];
   thumbnail: File[];
@@ -14,6 +21,7 @@ export type TGameUploadInput = {
 export type TGameUploadInputForm = {
   register: UseFormRegister<TGameUploadInput>;
   watch: UseFormWatch<TGameUploadInput>;
+  control: Control<TGameUploadInput>;
   setValue: UseFormSetValue<TGameUploadInput>;
   formState: FormState<TGameUploadInput>;
   handleSubmit: UseFormHandleSubmit<TGameUploadInput>;
