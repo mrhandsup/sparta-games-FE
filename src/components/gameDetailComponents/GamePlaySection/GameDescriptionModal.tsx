@@ -35,7 +35,14 @@ const GameDescriptionModal = ({ title, content, screenshot, modalToggle, onClick
           >
             {screenshot?.map((image, index) => (
               <SwiperSlide key={index}>
-                <img src={import.meta.env.VITE_PROXY_HOST + image.src} alt={`carousel-img-${index}`} />
+                <img
+                  src={
+                    import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
+                      ? import.meta.env.VITE_PROXY_HOST + image.src
+                      : image.src
+                  }
+                  alt={`carousel-img-${index}`}
+                />
               </SwiperSlide>
             ))}
           </Swiper>

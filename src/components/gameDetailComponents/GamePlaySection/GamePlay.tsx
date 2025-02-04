@@ -85,7 +85,10 @@ const GamePlay = ({ gamePk, title, makerName, makerPk, gamePath, thumbnail }: Pr
 
   const [noActionModalData, setNoActionModalData] = useState<Partial<TSpartaReactionModalProps>>(noActionData.linkcopy);
 
-  const gameUrl = `${import.meta.env.VITE_PROXY_HOST}${gamePath}/index.html`;
+  const gameUrl =
+    import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
+      ? `${import.meta.env.VITE_PROXY_HOST}${gamePath}/index.html`
+      : gamePath + "/index.html";
 
   const fullScreenRef = useRef<HTMLDivElement>(null);
 
@@ -175,7 +178,14 @@ const GamePlay = ({ gamePk, title, makerName, makerPk, gamePath, thumbnail }: Pr
               <iframe src={gameUrl} width="100%" height="100%" className="rounded-xl" />
             ) : (
               <div className="w-full h-full bg-gray-800 rounded-xl relative">
-                <img src={import.meta.env.VITE_PROXY_HOST + thumbnail} className="w-full h-full brightness-50" />
+                <img
+                  src={
+                    import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
+                      ? import.meta.env.VITE_PROXY_HOST + thumbnail
+                      : thumbnail
+                  }
+                  className="w-full h-full brightness-50"
+                />
                 <div className="absolute inset-0 flex justify-center items-center">
                   <p className="text-white font-bold text-xl font-DungGeunMo text-center">
                     해당 게임은 현재 검수중이거나 반려되었습니다.
