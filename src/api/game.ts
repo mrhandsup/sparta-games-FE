@@ -23,7 +23,7 @@ export const postGameList = async (formData: FormData) => {
 /**
  * 게임 수정
  */
-export const putGameList = async (formData: FormData, gamePk: number) => {
+export const putGameList = async (formData: FormData, gamePk: number | undefined) => {
   try {
     const res = await sparta_games_auth.put(`/games/api/list/${gamePk}/`, formData, {
       headers: { "Content-Type": "multipart/form-data" },

@@ -98,7 +98,7 @@ const useGameUpload = () => {
           navigate(`/my-page/${userData?.user_pk}`);
         },
       },
-      type: "primary",
+      type: "alert",
     },
   };
 
@@ -139,14 +139,14 @@ const useGameUpload = () => {
     for (const file of files) {
       let isValid = true; // 파일 유효성 검사를 위한 플래그
 
-      if (inputId === "gameThumbnail" || inputId === "stillCut") {
+      if (inputId === "gameThumbnail" || inputId.startsWith("stillCut")) {
         if (!checkFileSize(file, MAX_IMAGE_SIZE)) {
           setNoActionModalData(noActionData.imageUploadWarning);
           onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
 
           setIsUpload((prev) => ({
             ...prev,
-            [inputId === "gameThumbnail" ? "thumbnail" : "stillCut"]: false,
+            [inputId === "gameThumbnail" ? "thumbnail" : inputId]: false,
           }));
 
           isValid = false;
@@ -158,7 +158,7 @@ const useGameUpload = () => {
 
           setIsUpload((prev) => ({
             ...prev,
-            [inputId === "gameThumbnail" ? "thumbnail" : "stillCut"]: false,
+            [inputId === "gameThumbnail" ? "thumbnail" : inputId]: false,
           }));
 
           isValid = false;
@@ -174,7 +174,7 @@ const useGameUpload = () => {
 
             setIsUpload((prev) => ({
               ...prev,
-              [inputId === "gameThumbnail" ? "thumbnail" : "stillCut"]: false,
+              [inputId === "gameThumbnail" ? "thumbnail" : inputId]: false,
             }));
 
             isValid = false;
@@ -210,7 +210,6 @@ const useGameUpload = () => {
 
     // 파일 검사를 통과한 후 상태 업데이트
     if (urlArr.length > 0) {
-      console.log("urlArr", urlArr);
       updateUploadState(inputId, urlArr);
     }
   };
@@ -228,9 +227,14 @@ const useGameUpload = () => {
       setIsUpload((prev) => ({ ...prev, gameFile: true }));
     }
 
-    if (inputId === "stillCut") {
+    if (inputId.startsWith("stillCut")) {
+      const cutIndex = inputId.replace("stillCut", "");
       setPreviewStillCut((prev) => [...prev, ...urlArr]);
-      setIsUpload((prev) => ({ ...prev, stillCut: true }));
+
+      setIsUpload((prev) => ({
+        ...prev,
+        [`stillCut${cutIndex}`]: true,
+      }));
     }
   };
 
@@ -290,6 +294,12 @@ const useGameUpload = () => {
     formData.append("release_note", "테스트");
     formData.append("base_control", "테스트");
 
+    data.stillCut.forEach((fileList) => {
+      if (fileList.length > 0) {
+        formData.append("screenshots", fileList[0]);
+      }
+    });
+
     const res = await postGameList(formData);
 
     setGameUploadResponse(res?.status);
@@ -298,7 +308,7 @@ const useGameUpload = () => {
   /**
    *게임 수정 요청 api
    */
-  const onEditHandler = async (data: TGameUploadInput, gamePk: number) => {
+  const onEditHandler = async (data: TGameUploadInput, gamePk: number | undefined) => {
     setNoActionModalData(noActionData.editConfirm);
     onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
 

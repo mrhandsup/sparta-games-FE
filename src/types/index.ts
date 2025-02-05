@@ -1,6 +1,7 @@
 import type {
   Control,
   FormState,
+  UseFormGetValues,
   UseFormHandleSubmit,
   UseFormRegister,
   UseFormSetValue,
@@ -15,7 +16,7 @@ export type TGameUploadInput = {
   content: string;
   gameFile: File[];
   thumbnail: File[];
-  stillCut: File[];
+  stillCut: File[][];
   video: string;
 };
 
@@ -27,7 +28,7 @@ export type TGameUploadInputForm = {
   formState: FormState<TGameUploadInput>;
   handleSubmit: UseFormHandleSubmit<TGameUploadInput>;
   trigger: UseFormTrigger<TGameUploadInput>;
-  getValues: any;
+  getValues: UseFormGetValues<TGameUploadInput>;
 };
 
 export type TReviewInputForm = {
@@ -145,6 +146,7 @@ export type TGamePlayData = {
   youtube_url: string;
   register_state: number;
   content: string;
+  gamefile: string;
   gamepath: string;
   base_control: string;
   screenshot: {

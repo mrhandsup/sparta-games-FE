@@ -1,10 +1,7 @@
-import { useLocation } from "react-router-dom";
-
-import CloseCircle from "../../assets/CloseCircle";
 import { GAME_CATEGORY } from "../../constant/constant";
 import SpartaChipSelect from "../../spartaDesignSystem/SpartaChipSelect";
 
-import { TCategoryListResponse, TGameUploadInput, TGameUploadInputForm } from "../../types";
+import { TCategoryListResponse, TGamePlayData, TGameUploadInput, TGameUploadInputForm } from "../../types";
 import { SubmitHandler } from "react-hook-form";
 
 import SpartaReactionModal, { TSpartaReactionModalProps } from "../../spartaDesignSystem/SpartaReactionModal";
@@ -26,12 +23,16 @@ type Props = {
     gameFile: boolean;
     stillCut: boolean;
   };
-  setIsUpload: React.Dispatch<React.SetStateAction<{ thumbnail: boolean; gameFile: boolean; stillCut: boolean }>>;
-  previewStillCut: string[];
+  setIsUpload: React.Dispatch<
+    React.SetStateAction<{
+      thumbnail: boolean;
+      gameFile: boolean;
+      stillCut: boolean;
+    }>
+  >;
   onChangeHandler: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onClickHandler: (type: "thumbnail" | "stillCut", arg: number) => void;
   onSubmitHandler: SubmitHandler<TGameUploadInput>;
-  onEditHandler: (data: TGameUploadInput, gamePk: number) => Promise<void>;
+  onEditHandler: (data: TGameUploadInput, gamePk: number | undefined) => Promise<void>;
   modalConfig: {
     modalToggles: Record<string, boolean>;
     noActionModalData: Partial<TSpartaReactionModalProps>;
@@ -40,6 +41,8 @@ type Props = {
     onClickModalToggleHandlers: Record<string, () => void>;
   };
   gameUploadResponse: number | undefined;
+  previousGameData: TGamePlayData | undefined;
+  isEditMode: boolean;
 };
 
 const Form = ({
@@ -47,34 +50,38 @@ const Form = ({
   note,
   isUpload,
   setIsUpload,
-  previewStillCut,
   onChangeHandler,
-  onClickHandler,
   onSubmitHandler,
   onEditHandler,
   modalConfig,
   gameUploadResponse,
+  previousGameData,
+  isEditMode,
 }: Props) => {
-  const location = useLocation();
-  const existingGameData = location.state?.gameData;
-  const isEditMode = location.state?.isEditMode;
-
-  const extractFileName = (contentType: "thumbnail" | "gameFile" | "stillCut", filePath: string) => {
-    const fileName = filePath.split("/").pop();
+  const extractFileName = (contentType: "thumbnail" | "gameFile" | "stillCut", filePath: string | undefined) => {
+    const fileName = filePath?.split("/").pop();
 
     return contentType === "thumbnail"
       ? fileName?.replace(/_([A-Za-z0-9]+)\.(\w+)$/, ".$2")
       : contentType === "gameFile"
       ? fileName?.replace(/^\d+_/, "")
-      : null;
+      : contentType === "stillCut"
+      ? fileName?.replace(/_([A-Za-z0-9]+)\.(\w+)$/, ".$2")
+      : "";
   };
 
-  const changeUrltoFile = async (contentType: "thumbnail" | "gameFile" | "stillCut", dataUrl: string) => {
+  const changeUrltoFile = async (
+    contentType: "thumbnail" | "gameFile" | "stillCut",
+    dataUrl: string,
+    index?: number,
+  ) => {
     const orginalContentName =
       contentType === "thumbnail"
-        ? extractFileName("thumbnail", existingGameData.thumbnail)
+        ? extractFileName("thumbnail", previousGameData?.thumbnail)
         : contentType === "gameFile"
-        ? extractFileName("gameFile", existingGameData.gamefile)
+        ? extractFileName("gameFile", previousGameData?.gamefile)
+        : contentType === "stillCut"
+        ? extractFileName("stillCut", dataUrl) // "stillCut"일 때도 파일명 추출
         : "";
 
     const ext = dataUrl.split(".").pop();
@@ -90,39 +97,55 @@ const Form = ({
         ? "application/x-zip-compressed"
         : "application/octet-stream";
 
-    fetch(dataUrl)
-      .then((response) => response.blob())
-      .then((blob) => {
-        const file = new File([blob], orginalContentName as string, { type: mimeType });
-        form.setValue(`${contentType}`, [file]);
-      })
-      .catch((err) => console.error("파일 변환 오류:", err));
+    try {
+      const response = await fetch(dataUrl);
+      const blob = await response.blob();
+      const file = new File([blob], orginalContentName as string, { type: mimeType });
 
-    setIsUpload((prev: { thumbnail: boolean; gameFile: boolean; stillCut: boolean }) => ({
+      if (contentType === "stillCut" && index !== undefined) {
+        // stillCut의 경우 동적으로 field name 설정
+        const fieldName = `stillCut.${index}` as keyof TGameUploadInput;
+        form.setValue(fieldName, [file]);
+
+        setIsUpload((prev) => ({
+          ...prev,
+          [`stillCut${["First", "Second", "Third", "Fourth", "Fifth"][index]}`]: true,
+        }));
+      } else {
+        form.setValue(contentType, [file]);
+      }
+    } catch (err) {
+      console.error("파일 변환 오류:", err);
+    }
+
+    setIsUpload((prev) => ({
       ...prev,
       [contentType]: true,
     }));
   };
-
   useEffect(() => {
-    if (existingGameData && isEditMode) {
-      changeUrltoFile("thumbnail", existingGameData.thumbnail);
-      changeUrltoFile("gameFile", existingGameData.gamefile);
+    if (previousGameData && isEditMode) {
+      changeUrltoFile("thumbnail", previousGameData.thumbnail);
+      changeUrltoFile("gameFile", previousGameData.gamefile);
 
-      form.setValue("title", existingGameData.title);
+      previousGameData.screenshot.forEach((image, index) => {
+        changeUrltoFile("stillCut", image.src, index); // 각 stillCut에 대해 인덱스를 전달
+      });
+
+      form.setValue("title", previousGameData.title);
 
       form.setValue(
         "category",
-        existingGameData.category.map((cat: TCategoryListResponse[number]) => cat.name),
+        previousGameData.category.map((cat: TCategoryListResponse[number]) => cat.name),
       );
 
-      form.setValue("content", existingGameData.content);
+      form.setValue("content", previousGameData.content);
 
-      form.setValue("video", existingGameData.youtube_url);
+      form.setValue("video", previousGameData.youtube_url);
 
       form.trigger(["gameFile", "thumbnail"]);
     }
-  }, [existingGameData]);
+  }, [previousGameData]);
 
   const isEditFormValid =
     form.watch("thumbnail")?.length > 0 &&
@@ -133,7 +156,7 @@ const Form = ({
 
   const onClickEditHandler = () => {
     const formData = form.getValues() as TGameUploadInput;
-    onEditHandler(formData, existingGameData?.id);
+    onEditHandler(formData, previousGameData?.id);
   };
 
   return (
@@ -146,7 +169,7 @@ const Form = ({
                 썸네일 업로드<span className="text-body-14 text-primary-500">*필수</span>
               </div>
 
-              <div className="flex gap-4">
+              <div className="flex gap-2">
                 <div className="flex items-center py-4 px-4 w-full bg-gray-700 border border-solid border-white rounded-md resize-none">
                   {form.watch("thumbnail")?.length > 0 && isUpload.thumbnail
                     ? decodeURIComponent(form.watch("thumbnail")[0]?.name)
@@ -177,7 +200,7 @@ const Form = ({
                 파일업로드 <span className="text-body-14 text-primary-500">*필수</span>
               </div>
 
-              <div className="flex gap-4">
+              <div className="flex gap-2">
                 <div className="flex items-center py-4 px-4 w-full bg-gray-700 border border-solid border-white rounded-md resize-none">
                   {form.watch("gameFile")?.length > 0 && isUpload.gameFile
                     ? decodeURIComponent(form.watch("gameFile")[0]?.name)
@@ -248,52 +271,41 @@ const Form = ({
               />
             </div>
 
-            {/* 추후 변경되는 시안에 따라 디자인 수정 예정 */}
             <div className="flex flex-col gap-2">
               <div className="flex items-end gap-2 text-heading-20 text-white">
                 스틸컷 업로드<span className="text-body-14 text-alert-default">*선택</span>
               </div>
-              <p className="text-body-14">1000px*800px이하, 5mb이하 이미지 파일</p>
 
-              <div className="flex flex-col items-center gap-3 pt-3 max-h-[220px] border border-solid border-white rounded-md overflow-scroll scrollbar-hide">
-                <label
-                  htmlFor="stillCut"
-                  className={`py-4 whitespace-nowrap text-title-18 ${
-                    form.watch("stillCut")?.length > 0 && isUpload.stillCut ? "bg-primary-500" : "bg-gray-100"
-                  } text-black rounded-sm cursor-pointer`}
-                >
-                  <p className="px-7">업로드</p>
-                </label>
-
-                <input
-                  id="stillCut"
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  {...form.register("stillCut", { onChange: onChangeHandler })}
-                  className="hidden"
-                />
-
-                {previewStillCut && (
-                  <div className="grid grid-cols-2 gap-4 w-full">
-                    {previewStillCut.map((item, idx) => (
-                      <div key={idx} className="relative">
-                        <img
-                          src={item}
-                          alt="썸네일 미리보기"
-                          className="w-full object-cover border border-solid border-black"
-                        />
-                        <div
-                          onClick={() => onClickHandler("stillCut", idx)}
-                          className="absolute top-0 right-0 cursor-pointer"
-                        >
-                          <CloseCircle size={30} color={"#FFCB5C"} />
-                        </div>
-                      </div>
-                    ))}
+              {["First", "Second", "Third", "Fourth", "Fifth"].map((order, index) => (
+                <div key={index} className="flex gap-2">
+                  <div className="flex justify-end items-center py-4 px-4 w-full bg-gray-700 border border-solid border-white rounded-md resize-none">
+                    {form.watch(`stillCut.${index}`)?.length > 0 && isUpload.stillCut
+                      ? decodeURIComponent(form.watch(`stillCut.${index}`)[0]?.name)
+                      : "1000px*800px 5mb제한"}
                   </div>
-                )}
-              </div>
+
+                  <label
+                    htmlFor={`stillCut${order}`}
+                    className={`flex justify-center items-center ${
+                      isUpload[`stillCut${order}` as keyof typeof isUpload] ? "bg-alert-default" : "bg-gray-100"
+                    } text-black rounded-sm text-title-18 whitespace-nowrap cursor-pointer`}
+                  >
+                    {isUpload[`stillCut${order}` as keyof typeof isUpload] ? (
+                      <p className="px-5">수정하기</p>
+                    ) : (
+                      <p className="px-7">업로드</p>
+                    )}
+                  </label>
+
+                  <input
+                    id={`stillCut${order}`}
+                    type="file"
+                    accept="image/*"
+                    {...form.register(`stillCut.${index}`, { onChange: onChangeHandler })}
+                    className="hidden"
+                  />
+                </div>
+              ))}
             </div>
           </div>
         </div>

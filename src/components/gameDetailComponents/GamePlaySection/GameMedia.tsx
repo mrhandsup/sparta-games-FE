@@ -38,7 +38,7 @@ const GameMedia = ({ youtubeUrl, screenShot }: Props) => {
               ref={swiperRef}
               direction={"vertical"}
               loop={true}
-              centeredSlides={true}
+              // centeredSlides={true}
               slidesPerView={3}
               pagination={{
                 clickable: true,
