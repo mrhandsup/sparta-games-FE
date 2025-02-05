@@ -251,7 +251,7 @@ const Form = ({
                   control={form.control}
                   {...form.register("category", { required: "필수" })}
                   multiple={true}
-                  maxCount={3}
+                  maxCount={1}
                 />
               </div>
             </div>
