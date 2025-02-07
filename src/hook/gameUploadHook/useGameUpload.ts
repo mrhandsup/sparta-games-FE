@@ -113,12 +113,12 @@ const useGameUpload = () => {
 
   const checkFileSize = (file: File, maxSize: number): boolean => file.size <= maxSize;
 
-  const isValidImageFile = (fileName: string) => {
+  const checkFileExtension = (fileName: string) => {
     const extension = fileName.split(".").pop()?.toLowerCase();
     return extension && ALLOWED_EXTENSIONS.includes(extension);
   };
 
-  const checkImageSize = (file: File): Promise<boolean> => {
+  const checkImageDimensions = (file: File): Promise<boolean> => {
     return new Promise((resolve) => {
       const img = new Image();
       img.src = URL.createObjectURL(file);
@@ -133,8 +133,9 @@ const useGameUpload = () => {
    */
   const onChangeImageHandler = async (e: ChangeEvent<HTMLInputElement>) => {
     const inputId = e.target.id;
-    const files = [...e.target.files!]; // 여러 파일을 처리할 수 있도록 배열로 만듦
+    const files = [...e.target.files!];
     const urlArr: string[] = [];
+    const fileInput = document.getElementById(inputId) as HTMLInputElement;
 
     for (const file of files) {
       let isValid = true; // 파일 유효성 검사를 위한 플래그
@@ -152,7 +153,7 @@ const useGameUpload = () => {
           isValid = false;
         }
 
-        if (!isValidImageFile(file.name)) {
+        if (!checkFileExtension(file.name)) {
           setNoActionModalData(noActionData.imageTypeWarning);
           onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
 
@@ -164,21 +165,19 @@ const useGameUpload = () => {
           isValid = false;
         }
 
-        // 이미지 용량 유효성 검사 통과한 경우
-        if (isValid) {
-          // 이미지 크기 유효성 검사
-          const isValidSize = await checkImageSize(file);
-          if (!isValidSize) {
-            setNoActionModalData(noActionData.imageUploadWarning);
-            onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+        const isValidSize = await checkImageDimensions(file);
+        if (!isValidSize) {
+          setNoActionModalData(noActionData.imageUploadWarning);
+          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
 
-            setIsUpload((prev) => ({
-              ...prev,
-              [inputId === "gameThumbnail" ? "thumbnail" : inputId]: false,
-            }));
+          setIsUpload((prev) => ({
+            ...prev,
+            [inputId === "gameThumbnail" ? "thumbnail" : inputId]: false,
+          }));
 
-            isValid = false;
-          }
+          fileInput.value = "";
+
+          isValid = false;
         }
       }
 
@@ -189,6 +188,8 @@ const useGameUpload = () => {
           onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
 
           setIsUpload((prev) => ({ ...prev, gameFile: false }));
+
+          fileInput.value = "";
           isValid = false;
         }
 
@@ -197,6 +198,7 @@ const useGameUpload = () => {
           onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
 
           setIsUpload((prev) => ({ ...prev, gameFile: false }));
+          fileInput.value = "";
           isValid = false;
         }
       }

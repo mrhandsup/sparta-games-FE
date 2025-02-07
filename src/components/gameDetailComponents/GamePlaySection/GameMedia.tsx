@@ -37,14 +37,14 @@ const GameMedia = ({ youtubeUrl, screenShot }: Props) => {
               className="gamescreenShotSwiper"
               ref={swiperRef}
               direction={"vertical"}
-              loop={true}
-              // centeredSlides={true}
+              loop={screenShot.length > 3 ? true : false}
+              centeredSlides={true}
               slidesPerView={3}
               pagination={{
                 clickable: true,
               }}
               autoplay={{ delay: 2000, disableOnInteraction: false }}
-              modules={[Autoplay]}
+              modules={screenShot.length > 3 ? [Autoplay] : undefined}
             >
               {screenShot.map((image, index) => (
                 <SwiperSlide key={index}>

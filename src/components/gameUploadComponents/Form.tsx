@@ -148,8 +148,8 @@ const Form = ({
   }, [previousGameData]);
 
   const isEditFormValid =
-    form.watch("thumbnail")?.length > 0 &&
-    form.watch("gameFile")?.length > 0 &&
+    isUpload.thumbnail &&
+    isUpload.gameFile &&
     form.watch("category")?.length > 0 &&
     form.watch("title") !== "" &&
     form.watch("content") !== "";
@@ -279,7 +279,7 @@ const Form = ({
               {["First", "Second", "Third", "Fourth", "Fifth"].map((order, index) => (
                 <div key={index} className="flex gap-2">
                   <div className="flex justify-end items-center py-4 px-4 w-full bg-gray-700 border border-solid border-white rounded-md resize-none">
-                    {form.watch(`stillCut.${index}`)?.length > 0 && isUpload.stillCut
+                    {form.watch(`stillCut.${index}`)?.length > 0 && `isUpload.stillCut${order}`
                       ? decodeURIComponent(form.watch(`stillCut.${index}`)[0]?.name)
                       : "1000px*800px 5mb제한"}
                   </div>
