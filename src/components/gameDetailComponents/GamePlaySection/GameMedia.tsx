@@ -1,6 +1,6 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import ScreenShotModal from "./ScreenShotModal";
 
 import "swiper/css";
@@ -37,14 +37,13 @@ const GameMedia = ({ youtubeUrl, screenShot }: Props) => {
               className="gamescreenShotSwiper"
               ref={swiperRef}
               direction={"vertical"}
-              loop={screenShot.length > 3 ? true : false}
-              centeredSlides={true}
+              loop={true}
               slidesPerView={3}
               pagination={{
                 clickable: true,
               }}
               autoplay={{ delay: 2000, disableOnInteraction: false }}
-              modules={screenShot.length > 3 ? [Autoplay] : undefined}
+              modules={[Autoplay]}
             >
               {screenShot.map((image, index) => (
                 <SwiperSlide key={index}>

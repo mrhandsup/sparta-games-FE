@@ -3,11 +3,19 @@ import StarRating from "../common/StarRating";
 import GameChip from "../common/chipComponents/GameChip";
 import SpartaButton from "../../spartaDesignSystem/SpartaButton";
 import { useNavigate } from "react-router-dom";
+import DOMPurify from "dompurify";
 
 type Props = { item?: TGameData & { register_state: number } };
 
 const MyGameCard = ({ item }: Props) => {
   const navigate = useNavigate();
+
+  const config = {
+    ALLOWED_TAGS: ["h1", "h2", "p", "strong", "span", "em", "u", "ol", "ul", "li", "br"],
+    ALLOWED_ATTR: ["class", "style"],
+  };
+
+  const sanitizedContent = item && DOMPurify.sanitize(item?.content, config);
 
   const getRegisterStateConfig = (): {
     content: string;
@@ -78,9 +86,13 @@ const MyGameCard = ({ item }: Props) => {
           </div>
           <div className="flex flex-col justify-between min-h-[60%] ">
             <div
-              className={`text-body-14 mt-2 overflow-hidden display-webkit-box  webkit-box-orient-vertical tracking-wider`}
+              className={`text-body-14 mt-2 overflow-hidden display-webkit-box webkit-box-orient-vertical tracking-wider ql-editor`}
             >
-              {item?.content || "게임 설명이 없습니다."}
+              {item?.content ? (
+                <span dangerouslySetInnerHTML={{ __html: sanitizedContent as string }} />
+              ) : (
+                "게임 설명이 없습니다."
+              )}
             </div>
           </div>
         </div>

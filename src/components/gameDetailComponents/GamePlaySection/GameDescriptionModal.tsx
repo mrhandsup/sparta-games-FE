@@ -1,3 +1,5 @@
+import DOMPurify from "dompurify";
+
 import { Modal, Box } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
@@ -5,6 +7,7 @@ import { Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "./GameDescriptionModalSwiper.css";
+import "react-quill/dist/quill.snow.css";
 
 type Props = {
   title?: string;
@@ -18,6 +21,12 @@ type Props = {
 };
 
 const GameDescriptionModal = ({ title, content, screenshot, modalToggle, onClickModalToggleHandler }: Props) => {
+  const config = {
+    ALLOWED_TAGS: ["h1", "h2", "p", "strong", "span", "em", "u", "ol", "ul", "li", "br"],
+    ALLOWED_ATTR: ["class", "style"],
+  };
+  const sanitizedContent = content && DOMPurify.sanitize(content, config);
+
   return (
     <Modal open={modalToggle} onClose={onClickModalToggleHandler} disableScrollLock={true}>
       <Box className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-3xl outline-none border border-solid border-primary-500 bg-gray-800 p-8 max-w-[1200px] max-h-full overflow-auto">
@@ -49,9 +58,10 @@ const GameDescriptionModal = ({ title, content, screenshot, modalToggle, onClick
             </Swiper>
           )}
 
-          <div className="">
-            <p className="text-sm font-Pretendard text-white">{content}</p>
-          </div>
+          <p
+            className="text-sm font-Pretendard text-white ql-editor"
+            dangerouslySetInnerHTML={{ __html: sanitizedContent as string }}
+          />
         </div>
       </Box>
     </Modal>

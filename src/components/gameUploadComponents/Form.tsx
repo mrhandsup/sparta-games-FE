@@ -1,15 +1,19 @@
+import { useEffect } from "react";
+import { SubmitHandler } from "react-hook-form";
+
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+
 import { GAME_CATEGORY } from "../../constant/constant";
 import SpartaChipSelect from "../../spartaDesignSystem/SpartaChipSelect";
 
 import { TCategoryListResponse, TGamePlayData, TGameUploadInput, TGameUploadInputForm } from "../../types";
-import { SubmitHandler } from "react-hook-form";
 
 import SpartaReactionModal, { TSpartaReactionModalProps } from "../../spartaDesignSystem/SpartaReactionModal";
 import SpartaModal from "../../spartaDesignSystem/SpartaModal";
 import UploadCheck from "./UploadCheck";
 
 import "./Form.css";
-import { useEffect } from "react";
 
 type Props = {
   form: TGameUploadInputForm;
@@ -146,6 +150,24 @@ const Form = ({
       form.trigger(["gameFile", "thumbnail"]);
     }
   }, [previousGameData]);
+
+  useEffect(() => {
+    form.register("content", {
+      required: "필수",
+    });
+  }, [form.register]);
+
+  const handleEditorChange = (editorState: string) => {
+    // react-quill 내용 작성 중, 내용 모두 지울 경우 생기는 <p></br></p> 태그 제거
+    const plainText = editorState.replace(/<(.|\n)*?>/g, "").trim();
+
+    // 내용이 없을 경우 빈 문자열로 설정해서 isValid가 false가 되도록 함
+    const cleanedContent = plainText === "" ? "" : editorState;
+
+    form.setValue("content", cleanedContent, { shouldValidate: true });
+  };
+
+  const editorContent = form.watch("content");
 
   const isEditFormValid =
     isUpload.thumbnail &&
@@ -310,15 +332,25 @@ const Form = ({
           </div>
         </div>
 
-        <div className="flex flex-col gap-[10px] mb-8">
+        <div className="flex flex-col gap-[10px] mb-8 formContent">
           <div className="flex items-end gap-2 text-heading-20 text-white">
             게임설명 <p className="text-body-14 text-primary-500">*필수</p>
           </div>
 
-          <textarea
-            placeholder="게임 설명을 입력해주세요"
-            {...form.register("content", { required: "필수" })}
-            className="p-4 w-full h-[436px] bg-gray-700 border border-solid border-white rounded-md resize-none text-gray-100"
+          <ReactQuill
+            theme="snow"
+            value={editorContent}
+            onChange={handleEditorChange}
+            modules={{
+              toolbar: [
+                [{ header: [1, 2] }],
+                [{ size: ["small", false, "large", "huge"] }],
+                ["bold", "italic", "underline"],
+                [{ list: "ordered" }, { list: "bullet" }],
+                [{ color: [] }, { background: [] }],
+              ],
+            }}
+            placeholder="게임 설명을 입력해주세요."
           />
         </div>
 
