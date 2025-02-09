@@ -153,6 +153,17 @@ const Form = ({
       form.trigger(["gameFile", "thumbnail"]);
     } else {
       form.reset();
+
+      setIsUpload((prev) => ({
+        ...prev,
+        thumbnail: false,
+        gameFile: false,
+        stillCutFirst: false,
+        stillCutSecond: false,
+        stillCutThird: false,
+        stillCutFourth: false,
+        stillCutFifth: false,
+      }));
     }
   }, [previousGameData, isEditMode]);
 
@@ -161,6 +172,10 @@ const Form = ({
       required: "필수",
     });
   }, [form.register]);
+
+  useEffect(() => {
+    form.trigger();
+  }, [note]);
 
   const handleEditorChange = (editorState: string) => {
     // react-quill 내용 작성 중, 내용 모두 지울 경우 생기는 <p></br></p> 태그 제거
