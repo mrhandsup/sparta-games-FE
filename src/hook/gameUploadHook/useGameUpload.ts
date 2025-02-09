@@ -21,7 +21,9 @@ const useGameUpload = () => {
   const NO_ACTION_MODAL_ID = "noActionModal";
 
   const { register, watch, control, setValue, formState, handleSubmit, trigger, getValues, reset } =
-    useForm<TGameUploadInput>();
+    useForm<TGameUploadInput>({
+      mode: "onChange",
+    });
 
   const { userData } = userStore();
 

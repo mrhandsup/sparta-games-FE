@@ -308,9 +308,21 @@ const Form = ({
               <input
                 type="text"
                 placeholder="유튜브에서 전체/일부공개 설정 후 링크 삽입"
-                {...form.register("video")}
+                {...form.register("video", {
+                  validate: (value) => {
+                    if (!value) return true;
+
+                    if (!/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/.test(value)) {
+                      console.log(form.formState.errors.video, form.formState.errors.video?.message);
+                      return "유효한 유튜브 링크를 입력해 주세요";
+                    }
+                  },
+                })}
                 className="py-4 px-4 border border-solid border-white bg-gray-700 rounded-md"
               />
+              {form.formState.errors.video && (
+                <p className="text-red-500 text-base font-bold">{form.formState.errors.video.message}</p>
+              )}
             </div>
 
             <div className="flex flex-col gap-2">

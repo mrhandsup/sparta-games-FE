@@ -84,9 +84,9 @@ const MyGameCard = ({ item }: Props) => {
               <GameChip key={chip} chipName={chip} />
             ))}
           </div>
-          <div className="flex flex-col justify-between min-h-[60%] ">
+          <div className="flex flex-col justify-between ">
             <div
-              className={`text-body-14 mt-2 overflow-hidden display-webkit-box webkit-box-orient-vertical tracking-wider ql-editor`}
+              className={`ql-editor text-body-14 my-2 display-webkit-box webkit-box-orient-vertical tracking-wider h-[180px] line-clamp-6`}
             >
               {item?.content ? (
                 <span dangerouslySetInnerHTML={{ __html: sanitizedContent as string }} />
