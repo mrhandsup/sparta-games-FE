@@ -62,9 +62,10 @@ const Form = ({
   previousGameData,
   isEditMode,
 }: Props) => {
+  console.log("isEditMode", isEditMode);
+
   const extractFileName = (contentType: "thumbnail" | "gameFile" | "stillCut", filePath: string | undefined) => {
     const fileName = filePath?.split("/").pop();
-
     return contentType === "thumbnail"
       ? fileName?.replace(/_([A-Za-z0-9]+)\.(\w+)$/, ".$2")
       : contentType === "gameFile"
@@ -127,8 +128,10 @@ const Form = ({
       [contentType]: true,
     }));
   };
+
   useEffect(() => {
     if (previousGameData && isEditMode) {
+      console.log("asdas@@@dasd");
       changeUrltoFile("thumbnail", previousGameData.thumbnail);
       changeUrltoFile("gameFile", previousGameData.gamefile);
 
@@ -148,8 +151,10 @@ const Form = ({
       form.setValue("video", previousGameData.youtube_url);
 
       form.trigger(["gameFile", "thumbnail"]);
+    } else {
+      form.reset();
     }
-  }, [previousGameData]);
+  }, [previousGameData, isEditMode]);
 
   useEffect(() => {
     form.register("content", {
@@ -350,7 +355,7 @@ const Form = ({
                 [{ color: [] }, { background: [] }],
               ],
             }}
-            placeholder="게임 설명을 입력해주세요."
+            placeholder="이렇게 입력해보세요!&#10;• 간단한 게임 스토리&#10;• 개발자의 한마디&#10;• 팀원들의 정보&#10;• 업데이트 계획"
           />
         </div>
 

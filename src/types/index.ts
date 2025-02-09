@@ -4,6 +4,7 @@ import type {
   UseFormGetValues,
   UseFormHandleSubmit,
   UseFormRegister,
+  UseFormReset,
   UseFormSetValue,
   UseFormTrigger,
   UseFormWatch,
@@ -34,6 +35,7 @@ export type TGameUploadInputForm = {
   handleSubmit: UseFormHandleSubmit<TGameUploadInput>;
   trigger: UseFormTrigger<TGameUploadInput>;
   getValues: UseFormGetValues<TGameUploadInput>;
+  reset: UseFormReset<TGameUploadInput>;
 };
 
 export type TReviewInputForm = {

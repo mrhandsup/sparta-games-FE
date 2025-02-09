@@ -65,7 +65,7 @@ const EditCheck = ({ gamePlayData, onClose }: Props) => {
         {isPhraseCorrect ? (
           <button
             onClick={() => {
-              navigate("/game-upload", { state: { gameData: gamePlayData, isEditMode: true } });
+              navigate("/game-upload/edit", { state: { gameData: gamePlayData, isEditMode: true } });
             }}
             className="w-full"
           >

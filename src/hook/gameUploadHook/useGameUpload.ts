@@ -20,7 +20,7 @@ const useGameUpload = () => {
   const GAME_UPLOAD_CHECK_ID = "gameUploadCheckId";
   const NO_ACTION_MODAL_ID = "noActionModal";
 
-  const { register, watch, control, setValue, formState, handleSubmit, trigger, getValues } =
+  const { register, watch, control, setValue, formState, handleSubmit, trigger, getValues, reset } =
     useForm<TGameUploadInput>();
 
   const { userData } = userStore();
@@ -337,6 +337,7 @@ const useGameUpload = () => {
     handleSubmit,
     trigger,
     getValues,
+    reset,
   };
 
   const eventHandler = {
