@@ -45,17 +45,17 @@ const GameCard = ({ item, simple, row }: Props) => {
         <div className="text-heading-20 font-bold text-ellipsis overflow-hidden truncate">
           {item?.title ? item?.title : "test"}
         </div>
-        <div className="text-sm font-normal flex items-center justify-between my-2">
+        <div className="text-sm font-normal flex items-center justify-between my-1.5">
           <p className="text-body-14 text-gray-200 truncate max-w-[55%]">{item?.maker_name}</p>
           <div className="flex items-center gap-1.5">
-            <p className="text-primary-400 font-DungGeunMo text-title-14">{item?.star.toFixed(1)}</p>
+            <p className="text-primary-400 font-DungGeunMo text-title-14 pt-0.5">{item?.star.toFixed(1)}</p>
             {item && <StarRating score={item.star} />}
           </div>
         </div>
         {!simple && (
-          <div className={`flex flex-col justify-between  ${row ? "min-h-[53%]" : "min-h-[60%]"}  `}>
+          <div className={`flex flex-col justify-between  ${row ? "min-h-[53%]" : "min-h-[63%]"}  `}>
             <div
-              className={`text-body-14 mt-2 overflow-hidden display-webkit-box ${
+              className={`text-body-14  overflow-hidden display-webkit-box ${
                 row ? "line-clamp-2" : "line-clamp-3"
               } webkit-box-orient-vertical tracking-wider`}
             >

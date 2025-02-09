@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
+import balloon from "../../assets/headerImage/balloon.svg";
 import { searchGame } from "../../api/game";
 import type { TGameData } from "../../types";
 import GameCard from "../HomeComponents/GameCard";
@@ -32,7 +33,7 @@ const SearchModal = ({ onClose }: Props) => {
     <div className="w-[1000px] pt-2">
       {/* 검색 인풋창  */}
       <div className="w-full border-gray-100 rounded-lg h-10 border-[1px] border-solid items-center flex px-4 mb-3">
-        <FaSearch className="text-gray-100 mr-3" />
+        <img src={balloon} alt="검색 아이콘" className="w-5 mr-3" />
         <input
           type="text"
           value={keyword}

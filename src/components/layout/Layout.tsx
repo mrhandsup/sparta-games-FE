@@ -11,12 +11,14 @@ const Layout = () => {
   }, [pathname]);
 
   return (
-    <div className="relative flex flex-col mx-auto max-w-[1440px] min-w-[1440px] h-full font-Pretendard">
-      <div className="sticky top-0 z-20">
+    <>
+      <div className="sticky top-0 z-20 bg-gray-800 flex align-middle justify-center ">
         <Header />
       </div>
-      <Outlet />
-    </div>
+      <div className="relative flex flex-col mx-auto max-w-[1440px] min-w-[1440px] h-full font-Pretendard">
+        <Outlet />
+      </div>
+    </>
   );
 };
 
