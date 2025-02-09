@@ -152,7 +152,6 @@ const GamePlay = ({ gamePk, title, makerName, makerPk, gamePath, thumbnail }: Pr
 
   return (
     <>
-      {/* TODO: Mui 스켈레톤 적용 */}
       {isLoading ? (
         <div className="w-full h-[500px] flex justify-center items-center"></div>
       ) : (

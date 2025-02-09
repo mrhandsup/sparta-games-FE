@@ -1,6 +1,6 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import ScreenShotModal from "./ScreenShotModal";
 
 import "swiper/css";
@@ -24,15 +24,22 @@ const GameMedia = ({ youtubeUrl, screenShot }: Props) => {
     <div className="flex flex-col gap-5 w-[280px]">
       <div className="flex flex-col gap-3 p-4 w-full bg-gray-800 rounded-2xl">
         <p className="font-DungGeunMo text-[24px] text-white">플레이 영상</p>
-        <div className="relative p-20 rounded-lg overflow-hidden">
-          <iframe src={embedUrl} className="absolute top-0 left-0 w-full h-full" allowFullScreen />
-        </div>
+        {youtubeUrl ? (
+          <div className="relative p-20 rounded-lg overflow-hidden">
+            <iframe src={embedUrl} className="absolute top-0 left-0 w-full h-full" allowFullScreen />
+          </div>
+        ) : (
+          <div className="flex items-center justify-center text-xl text-white text-center font-DungGeunMo h-[155px]">
+            업로드 된 <br />
+            영상이 없습니다.
+          </div>
+        )}
       </div>
 
       <div className="flex flex-col gap-3 p-4 w-full bg-gray-800 rounded-2xl overflow-hidden">
         <p className="font-DungGeunMo text-[24px] text-white">스틸컷</p>
         <div className="h-[340px] overflow-hidden cursor-pointer">
-          {screenShot && (
+          {screenShot && screenShot.length > 0 ? (
             <Swiper
               className="gamescreenShotSwiper"
               ref={swiperRef}
@@ -60,6 +67,11 @@ const GameMedia = ({ youtubeUrl, screenShot }: Props) => {
                 </SwiperSlide>
               ))}
             </Swiper>
+          ) : (
+            <div className="flex items-center justify-center h-[340px] text-xl text-white text-center font-DungGeunMo">
+              업로드 된 <br />
+              스틸컷이 없습니다.
+            </div>
           )}
         </div>
       </div>
