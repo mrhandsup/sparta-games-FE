@@ -24,6 +24,7 @@ export const postGameList = async (formData: FormData) => {
  * 게임 수정
  */
 export const putGameList = async (formData: FormData, gamePk: number | undefined) => {
+  console.log("asd", formData);
   try {
     const res = await sparta_games_auth.put(`/games/api/list/${gamePk}/`, formData, {
       headers: { "Content-Type": "multipart/form-data" },
@@ -32,8 +33,6 @@ export const putGameList = async (formData: FormData, gamePk: number | undefined
     return res;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      window.alert("오류가 발생했습니다. 관리자에게 문의해주세요.");
-
       return error.response;
     }
   }

@@ -35,25 +35,18 @@ type Props = {
 const Form = ({ note, previousGameData, isEditMode }: Props) => {
   const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
   const MAX_FILE_SIZE = 200 * 1024 * 1024;
+  const GAME_UPLOAD_CHECK_ID = "gameUploadCheckId";
+  const NO_ACTION_MODAL_ID = "noActionModal";
 
   const { register, watch, control, setValue, formState, handleSubmit, trigger, getValues, reset, resetField } =
     useForm<TGameUploadInput>({
       mode: "onChange",
     });
 
-  useGameEditSetValue({
-    previousGameData,
-    isEditMode,
-    setValue,
-    trigger,
-    reset,
-  });
+  useGameEditSetValue({ previousGameData, isEditMode, setValue, trigger, reset });
 
   const navigate = useNavigate();
   const { userData } = userStore();
-
-  const GAME_UPLOAD_CHECK_ID = "gameUploadCheckId";
-  const NO_ACTION_MODAL_ID = "noActionModal";
 
   const { modalToggles, onClickModalToggleHandlers } = useModalToggles([GAME_UPLOAD_CHECK_ID, NO_ACTION_MODAL_ID]);
 
@@ -161,15 +154,25 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
     formData.append("title", data.title);
     formData.append("category", data.category.join(","));
     formData.append("content", data.content);
-    formData.append("gamefile", data.gameFile[0]);
-    formData.append("thumbnail", data.thumbnail[0]);
     formData.append("youtube_url", data.video);
-    formData.append("release_note", "테스트");
-    formData.append("base_control", "테스트");
 
-    data.stillCut.forEach((fileList) => {
-      if (fileList.length > 0) {
-        formData.append("screenshots", fileList[0]);
+    if (data.gameFile instanceof FileList) {
+      formData.append("gamefile", data.gameFile[0]);
+    } else if (typeof data.gameFile === "string" && previousGameData?.gamefile) {
+      formData.append("gamefile", previousGameData?.gamefile);
+    }
+
+    if (data.thumbnail instanceof FileList) {
+      formData.append("thumbnail", data.thumbnail[0]);
+    } else if (typeof data.gameFile === "string" && previousGameData?.thumbnail) {
+      formData.append("gamefile", previousGameData?.thumbnail);
+    }
+
+    (data.stillCut as File[][]).forEach((screenshot, index) => {
+      if (screenshot instanceof FileList && screenshot.length > 0) {
+        formData.append("screenshots", screenshot[0]);
+      } else if (typeof screenshot === "string" && previousGameData?.screenshot[index]) {
+        formData.append("screenshots", previousGameData?.screenshot[index].src);
       }
     });
 
@@ -183,11 +186,26 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
   };
 
   const onEditHandler = async (gamePk: number | undefined) => {
-    setNoActionModalData(noActionData.editConfirm);
-    onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-
     const formData = createFormData(getValues());
-    await putGameList(formData, gamePk);
+    const res = await putGameList(formData, gamePk);
+
+    if (res?.status === 400) {
+      setNoActionModalData({
+        title: "확인해주세요!",
+        content: `${res.data.error}`,
+        btn1: {
+          text: "확인",
+          onClick: () => {
+            onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+          },
+        },
+        type: "error",
+      });
+      onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+    } else if (res?.status === 200) {
+      setNoActionModalData(noActionData.editConfirm);
+      onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+    }
   };
 
   const validateImageFile = async (file: File): Promise<boolean> => {
@@ -245,7 +263,7 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
     return false;
   };
 
-  const onChangeHandler = async (e: ChangeEvent<HTMLInputElement>) => {
+  const onChangeFileHandler = async (e: ChangeEvent<HTMLInputElement>) => {
     const inputId = e.target.id;
     const files = [...e.target.files!];
     const urlArr: string[] = [];
@@ -263,6 +281,25 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
     }
   };
 
+  const extractFileName = (filePath: string | undefined, fileType: "imageFile" | "gameFile") => {
+    if (!filePath) return "";
+
+    const fileNameWithExtension = filePath.split("/").pop();
+
+    if (!fileNameWithExtension) return "";
+
+    const [name, extension] = fileNameWithExtension.split(".");
+
+    let finalName = "";
+    if (fileType === "imageFile") {
+      finalName = name.includes("_") ? name.split("_")[0] : name;
+    } else if (fileType === "gameFile") {
+      finalName = name.split("_")[1] || name;
+    }
+
+    return `${finalName}.${extension}`;
+  };
+
   return (
     <>
       <form onSubmit={handleSubmit(onSubmitHandler)} className="mx-[130px]">
@@ -275,9 +312,11 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
 
               <div className="flex gap-2">
                 <div className="flex items-center py-4 px-4 w-full bg-gray-700 border border-solid border-white rounded-md resize-none">
-                  {watch("thumbnail")?.length > 0
-                    ? decodeURIComponent(watch("thumbnail")[0]?.name)
-                    : "1000px*800px이하, 5mb 이하 이미지 파일"}
+                  {typeof watch("thumbnail") === "object" && watch("thumbnail")?.length > 0
+                    ? decodeURIComponent((watch("thumbnail")[0] as File)?.name)
+                    : typeof watch("thumbnail") === "string"
+                    ? decodeURIComponent(extractFileName(previousGameData?.thumbnail, "imageFile") as string)
+                    : "1000px*800px이하의 이미지 파일을 권장합니다."}
                 </div>
 
                 <label
@@ -293,7 +332,7 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
                   id="gameThumbnail"
                   type="file"
                   accept="image/*"
-                  {...register("thumbnail", { onChange: onChangeHandler, required: "필수" })}
+                  {...register("thumbnail", { onChange: onChangeFileHandler, required: "필수" })}
                   className="hidden"
                 />
               </div>
@@ -306,8 +345,10 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
 
               <div className="flex gap-2">
                 <div className="flex items-center py-4 px-4 w-full bg-gray-700 border border-solid border-white rounded-md resize-none">
-                  {watch("gameFile")?.length > 0
-                    ? decodeURIComponent(watch("gameFile")[0]?.name)
+                  {typeof watch("gameFile") === "object" && watch("gameFile")?.length > 0
+                    ? decodeURIComponent((watch("gameFile")[0] as File)?.name)
+                    : typeof watch("gameFile") === "string"
+                    ? decodeURIComponent(extractFileName(previousGameData?.gamefile, "gameFile") as string)
                     : "200mb 이하 Zip파일로 업로드 해주세요."}
                 </div>
 
@@ -324,7 +365,7 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
                   id="gameFile"
                   type="file"
                   accept=".zip, .7z"
-                  {...register("gameFile", { onChange: onChangeHandler, required: "필수" })}
+                  {...register("gameFile", { onChange: onChangeFileHandler, required: "필수" })}
                   className="hidden"
                 />
               </div>
@@ -396,7 +437,7 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
                   <div className="flex justify-end items-center py-4 px-4 w-full bg-gray-700 border border-solid border-white rounded-md resize-none">
                     {watch(`stillCut.${index}`)?.length > 0
                       ? decodeURIComponent(watch(`stillCut.${index}`)[0]?.name)
-                      : "1000px*800px 5mb제한"}
+                      : "1000px*800px이하 파일 권장"}
                   </div>
 
                   <label
@@ -416,7 +457,7 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
                     id={`stillCut${order}`}
                     type="file"
                     accept="image/*"
-                    {...register(`stillCut.${index}`, { onChange: onChangeHandler })}
+                    {...register(`stillCut.${index}`, { onChange: onChangeFileHandler })}
                     className="hidden"
                   />
                 </div>
