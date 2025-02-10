@@ -19,11 +19,8 @@ const UserStatusPopover = ({
 }: props) => {
   return (
     <div
-      ref={modalRef}
       onClick={onClickModalToggleHandler}
-      className={`absolute top-20 ${
-        isLogin ? "right-0" : "right-5"
-      } flex gap-5 py-5 px-10 bg-gray-800 border border-solid border-primary-500 rounded-[20px] w-fit`}
+      className={`absolute top-20 flex gap-5 py-5 px-10 bg-gray-800 border border-solid border-primary-500 rounded-[20px] w-fit`}
     >
       {isLogin ? (
         <div className="flex flex-col items-center gap-6 w-fit">

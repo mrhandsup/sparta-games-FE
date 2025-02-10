@@ -46,9 +46,9 @@ const GameCard = ({ item, simple, row }: Props) => {
           {item?.title ? item?.title : "test"}
         </div>
         <div className="text-sm font-normal flex items-center justify-between my-1.5">
-          <p className="text-body-14 text-gray-200 truncate max-w-[55%]">{item?.maker_name}</p>
+          <p className="text-body-14 font-medium text-gray-200 truncate max-w-[55%]">{item?.maker_name}</p>
           <div className="flex items-center gap-1.5">
-            <p className="text-primary-400 font-DungGeunMo text-title-14 pt-0.5">{item?.star.toFixed(1)}</p>
+            <p className="text-primary-300 font-DungGeunMo  pt-0.5">{item?.star.toFixed(1)}</p>
             {item && <StarRating score={item.star} />}
           </div>
         </div>

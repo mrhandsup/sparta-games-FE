@@ -56,7 +56,7 @@ const SpartaModal = ({
       >
         {title && (
           <div className="flex justify-between items-center mb-4">
-            <div className="text-heading-24 font-semibold text-white font-DungGeunMo">{title}</div>
+            <div className="text-[24px] text-white font-DungGeunMo">{title}</div>
             <button onClick={onClose} className="text-gray-500 hover:text-gray-700 transition-colors ">
               <img src={closeModalIcon} alt="close modal" className="w-5" />
             </button>
