@@ -36,6 +36,7 @@ const Router = () => {
           <Route element={<AuthLayout />}>
             <Route path="my-page/:id" element={<MyPage />} />
             <Route path="game-upload" element={<GameUpload />} />
+            <Route path="game-upload/edit" element={<GameUpload />} />
           </Route>
 
           <Route element={<AdminLayout />}>

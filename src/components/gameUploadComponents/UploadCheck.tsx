@@ -1,21 +1,27 @@
-import { SubmitHandler } from "react-hook-form";
-import closeBtn from "../../../src/assets/common/closeBtn.svg";
-import { TGameUploadInput, TGameUploadInputForm } from "../../types";
 import { useState } from "react";
-import useModalToggles from "../../hook/useModalToggles";
+import { SubmitHandler, UseFormHandleSubmit } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+
+import useModalToggles from "../../hook/useModalToggles";
 import SpartaModal from "../../spartaDesignSystem/SpartaModal";
+import { userStore } from "../../share/store/userStore";
+
+import { TGameUploadInput } from "../../types";
+
+import closeBtn from "../../../src/assets/common/closeBtn.svg";
 
 type Props = {
-  form: TGameUploadInputForm;
+  handleSubmit: UseFormHandleSubmit<TGameUploadInput>;
   gameUploadResponse: number | undefined;
-  GAME_UPLOAD_CHECK_ID: string;
   onSubmitHandler: SubmitHandler<TGameUploadInput>;
   onClose: () => void;
+  isEditMode: boolean;
 };
 
-const UploadCheck = ({ form, gameUploadResponse, GAME_UPLOAD_CHECK_ID, onSubmitHandler, onClose }: Props) => {
-  const GAME_UPLOAD_SUCCESS_ID = "gameupUploadSuccessModal";
+const UploadCheck = ({ gameUploadResponse, handleSubmit, onSubmitHandler, onClose, isEditMode }: Props) => {
+  const GAME_UPLOAD_SUCCESS_ID = "gameUploadSuccessModal";
+
+  const { userData } = userStore();
 
   const [inputValue, setInputValue] = useState("");
 
@@ -24,14 +30,14 @@ const UploadCheck = ({ form, gameUploadResponse, GAME_UPLOAD_CHECK_ID, onSubmitH
   const requiredPhrase = "즐거운 게임세상 스파르타게임즈!";
   const isPhraseCorrect = inputValue.trim() === requiredPhrase;
 
-  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([GAME_UPLOAD_SUCCESS_ID, GAME_UPLOAD_CHECK_ID]);
+  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([GAME_UPLOAD_SUCCESS_ID]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
 
   const onClickUploadGame = () => {
-    form.handleSubmit(onSubmitHandler)();
+    handleSubmit(onSubmitHandler)();
 
     onClickModalToggleHandlers[GAME_UPLOAD_SUCCESS_ID]();
   };
@@ -76,9 +82,9 @@ const UploadCheck = ({ form, gameUploadResponse, GAME_UPLOAD_CHECK_ID, onSubmitH
       <div
         className={`flex h-12 rounded-md ${isPhraseCorrect ? "bg-primary-500" : "bg-gray-400"} text-center font-bold`}
       >
-        {isPhraseCorrect ? (
+        {isPhraseCorrect && !isEditMode ? (
           <button onClick={onClickUploadGame} className="w-full">
-            {isPhraseCorrect ? "문구가 확인되었습니다. 게임 등록을 진행합니다." : "문구를 올바르게 입력해주세요."}
+            문구가 확인되었습니다. 게임 등록을 진행합니다.
           </button>
         ) : (
           <button disabled={true} className="w-full">
@@ -100,7 +106,10 @@ const UploadCheck = ({ form, gameUploadResponse, GAME_UPLOAD_CHECK_ID, onSubmitH
               <br />
               스파르타 게임즈를 이용해주셔서 감사합니다 :)
             </span>
-            <button onClick={() => navigate("/my-page")} className="w-full py-3 bg-primary-500 font-extrabold">
+            <button
+              onClick={() => navigate(`/my-page/${userData?.user_pk}`)}
+              className="w-full py-3 bg-primary-500 font-extrabold"
+            >
               확인
             </button>
           </div>

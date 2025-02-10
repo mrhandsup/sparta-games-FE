@@ -3,11 +3,11 @@
 }
 
 .descriptionSwiper .swiper-wrapper {
-  @apply flex items-center h-[450px];
+  @apply h-[450px];
 }
 
 .descriptionSwiper .swiper-slide {
-  @apply w-auto;
+  @apply flex items-center;
 }
 
 .descriptionSwiper .swiper-slide img {
@@ -27,4 +27,12 @@
 }
 .descriptionSwiper .swiper-pagination-bullet-active {
   @apply w-4 h-4 bg-primary-500;
+}
+
+.ql-editor strong {
+  @apply font-bold;
+}
+
+.ql-editor em {
+  @apply italic;
 }

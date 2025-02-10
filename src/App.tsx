@@ -27,9 +27,8 @@ function App() {
         <Router />
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
-      <div className="absolute -bottom-48 mt-auto w-full bg-gray-700">
-        <Footer />
-      </div>
+
+      <Footer />
     </div>
   );
 }

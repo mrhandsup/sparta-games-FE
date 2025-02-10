@@ -1,9 +1,12 @@
 import type {
   Control,
   FormState,
+  UseFormGetValues,
   UseFormHandleSubmit,
   UseFormRegister,
+  UseFormReset,
   UseFormSetValue,
+  UseFormTrigger,
   UseFormWatch,
 } from "react-hook-form";
 
@@ -14,7 +17,7 @@ export type TGameUploadInput = {
   content: string;
   gameFile: File[];
   thumbnail: File[];
-  stillCut: File[];
+  stillCut: File[][];
   video: string;
 };
 
@@ -25,6 +28,9 @@ export type TGameUploadInputForm = {
   setValue: UseFormSetValue<TGameUploadInput>;
   formState: FormState<TGameUploadInput>;
   handleSubmit: UseFormHandleSubmit<TGameUploadInput>;
+  trigger: UseFormTrigger<TGameUploadInput>;
+  getValues: UseFormGetValues<TGameUploadInput>;
+  reset: UseFormReset<TGameUploadInput>;
 };
 
 export type TReviewInputForm = {
@@ -142,6 +148,7 @@ export type TGamePlayData = {
   youtube_url: string;
   register_state: number;
   content: string;
+  gamefile: string;
   gamepath: string;
   base_control: string;
   screenshot: {

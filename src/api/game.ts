@@ -21,6 +21,43 @@ export const postGameList = async (formData: FormData) => {
 };
 
 /**
+ * 게임 수정
+ */
+export const putGameList = async (formData: FormData, gamePk: number | undefined) => {
+  try {
+    const res = await sparta_games_auth.put(`/games/api/list/${gamePk}/`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    return res;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      window.alert("오류가 발생했습니다. 관리자에게 문의해주세요.");
+
+      return error.response;
+    }
+  }
+};
+
+/**
+ * 게임 삭제
+ */
+export const deleteGameList = async (gamePk: number | undefined) => {
+  try {
+    console.log("gamePk:", gamePk);
+    const res = await sparta_games_auth.delete(`/games/api/list/${gamePk}/`);
+
+    return res;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      window.alert("오류가 발생했습니다. 관리자에게 문의해주세요.");
+
+      return error.response;
+    }
+  }
+};
+
+/**
  * 게임 리스트 조회(메인)
  */
 export const getGameList = async () => {
@@ -85,6 +122,7 @@ export const getGameDetail = async (id: number) => {
 export const getMyBookmarkList = async (userPk: number | undefined) => {
   try {
     const res = await sparta_games_auth.get(`/users/api/${userPk}/likes/`);
+
     return res.data;
   } catch (error: unknown) {
     if ((error as AxiosError).response?.status === 404) {
