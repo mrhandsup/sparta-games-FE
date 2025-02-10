@@ -3,7 +3,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import Header from "../Header";
 import { useEffect } from "react";
 
-const Layout = () => {
+const HomeLayout = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -15,11 +15,11 @@ const Layout = () => {
       <div className="sticky top-0 z-20 bg-gray-800 flex align-middle justify-center ">
         <Header />
       </div>
-      <div className="relative flex flex-col mx-auto max-w-[1440px] min-w-[1440px] h-full font-Pretendard">
+      <div className="relative flex flex-col mx-auto  min-w-[1440px] h-full font-Pretendard">
         <Outlet />
       </div>
     </>
   );
 };
 
-export default Layout;
+export default HomeLayout;

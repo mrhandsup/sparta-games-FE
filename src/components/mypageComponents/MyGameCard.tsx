@@ -75,7 +75,7 @@ const MyGameCard = ({ item }: Props) => {
               [{item?.maker_name || "Maker"}]
             </p>
             <div className="flex items-center gap-1.5">
-              <p className="text-primary-400 font-DungGeunMo text-title-14">{item?.star.toFixed(1)}</p>
+              <p className="text-primary-400 font-DungGeunMo text-title-14 pt-0.5">{item?.star.toFixed(1)}</p>
               {item && <StarRating score={item.star} />}
             </div>
           </div>
