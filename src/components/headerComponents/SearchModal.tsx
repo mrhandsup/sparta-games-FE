@@ -57,7 +57,7 @@ const SearchModal = ({ onClose }: Props) => {
             </div>
           ))
         ) : (
-          <p className="text-white font-DungGeunMo text-heading-28 flex items-center justify-center w-full h-20">
+          <p className="text-white font-DungGeunMo text-[28px] font-[400] flex items-center justify-center w-full h-20">
             검색 결과가 없습니다.
           </p>
         )}

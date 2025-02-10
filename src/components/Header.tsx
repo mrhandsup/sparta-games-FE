@@ -187,7 +187,7 @@ const Header = () => {
 
         {/* 유저 액션 */}
         {!userData?.is_staff && (
-          <div className="cursor-pointer ">
+          <div className="cursor-pointer" ref={modalRefs.userStatus}>
             {userData ? (
               <p onClick={onClickModalToggleHandlers.userStatus} className="hover:text-primary-500">
                 마이페이지
