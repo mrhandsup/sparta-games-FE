@@ -1,26 +1,20 @@
+import { useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-
-import { userStore } from "../share/store/userStore";
-
 import { getGameDetail } from "../api/game";
-
+import { getRegisterGameRejectLog } from "../api/direct";
 import GamePlaySection from "../components/gameDetailComponents/GamePlaySection/GamePlaySection";
 import ReviewContents from "../components/gameDetailComponents/ReviewSection/ReviewContents";
-
+import { userStore } from "../share/store/userStore";
+import useModalToggles from "../hook/useModalToggles";
 import { TGamePlayData } from "../types";
 import SpartaButton from "../spartaDesignSystem/SpartaButton";
-
 import CaretLeft from "../assets/CaretLeft";
-import loading from "../assets/common/loading.gif";
-import useModalToggles from "../hook/useModalToggles";
 import SpartaReactionModal from "../spartaDesignSystem/SpartaReactionModal";
-import { getRegisterGameRejectLog } from "../api/direct";
-import { useEffect } from "react";
 import SpartaModal from "../spartaDesignSystem/SpartaModal";
 import EditCheck from "../components/gameUploadComponents/EditCheck";
 import DeleteCheck from "../components/gameUploadComponents/DeleteCehck";
+import loading from "../assets/common/loading.gif";
 
 const GameDetail = () => {
   const GAME_EDIT_CHECK_ID = "gameEditCheckId";

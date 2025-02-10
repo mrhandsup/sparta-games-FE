@@ -15,7 +15,6 @@ type Props = {
 };
 
 const GameMedia = ({ youtubeUrl, screenShot }: Props) => {
-  console.log("youtube", youtubeUrl);
   const videoId = youtubeUrl ? youtubeUrl?.split("v=")[1].split("&")[0] : null;
   const embedUrl = `https://www.youtube.com/embed/${videoId}`;
 
@@ -39,8 +38,8 @@ const GameMedia = ({ youtubeUrl, screenShot }: Props) => {
 
       <div className="flex flex-col gap-3 p-4 w-full bg-gray-800 rounded-2xl overflow-hidden">
         <p className="font-DungGeunMo text-[24px] text-white">스틸컷</p>
-        <div className="h-[340px] overflow-hidden cursor-pointer">
-          {screenShot && screenShot.length > 0 ? (
+        {screenShot && screenShot.length > 0 ? (
+          <div className="h-[340px] overflow-hidden cursor-pointer">
             <Swiper
               className="gamescreenShotSwiper"
               ref={swiperRef}
@@ -68,13 +67,13 @@ const GameMedia = ({ youtubeUrl, screenShot }: Props) => {
                 </SwiperSlide>
               ))}
             </Swiper>
-          ) : (
-            <div className="flex items-center justify-center h-[340px] text-xl text-white text-center font-DungGeunMo">
-              업로드 된 <br />
-              스틸컷이 없습니다.
-            </div>
-          )}
-        </div>
+          </div>
+        ) : (
+          <div className="flex items-center justify-center h-[340px] text-xl text-white text-center font-DungGeunMo">
+            업로드 된 <br />
+            스틸컷이 없습니다.
+          </div>
+        )}
       </div>
 
       <ScreenShotModal screenShotList={screenShot} swiperRef={swiperRef} />

@@ -18,11 +18,6 @@ export type TGameUploadInput = {
   gameFile: File[];
   thumbnail: File[];
   stillCut: File[][];
-  stillCutFirst: File;
-  stillCutSecond: File;
-  stillCutThird: File;
-  stillCutFourth: File;
-  stillCutFifth: File;
   video: string;
 };
 

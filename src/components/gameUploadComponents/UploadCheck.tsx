@@ -1,24 +1,24 @@
 import { useState } from "react";
-import { SubmitHandler } from "react-hook-form";
+import { SubmitHandler, UseFormHandleSubmit } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import useModalToggles from "../../hook/useModalToggles";
 import SpartaModal from "../../spartaDesignSystem/SpartaModal";
 import { userStore } from "../../share/store/userStore";
 
-import { TGameUploadInput, TGameUploadInputForm } from "../../types";
+import { TGameUploadInput } from "../../types";
 
 import closeBtn from "../../../src/assets/common/closeBtn.svg";
 
 type Props = {
-  form: TGameUploadInputForm;
+  handleSubmit: UseFormHandleSubmit<TGameUploadInput>;
   gameUploadResponse: number | undefined;
   onSubmitHandler: SubmitHandler<TGameUploadInput>;
   onClose: () => void;
   isEditMode: boolean;
 };
 
-const UploadCheck = ({ form, gameUploadResponse, onSubmitHandler, onClose, isEditMode }: Props) => {
+const UploadCheck = ({ gameUploadResponse, handleSubmit, onSubmitHandler, onClose, isEditMode }: Props) => {
   const GAME_UPLOAD_SUCCESS_ID = "gameUploadSuccessModal";
 
   const { userData } = userStore();
@@ -37,7 +37,7 @@ const UploadCheck = ({ form, gameUploadResponse, onSubmitHandler, onClose, isEdi
   };
 
   const onClickUploadGame = () => {
-    form.handleSubmit(onSubmitHandler)();
+    handleSubmit(onSubmitHandler)();
 
     onClickModalToggleHandlers[GAME_UPLOAD_SUCCESS_ID]();
   };

@@ -58,11 +58,11 @@ const GameDescriptionModal = ({ title, content, screenshot, modalToggle, onClick
               ))}
             </Swiper>
           ) : (
-            <img src={Preview} alt="기본이미지" />
+            <img src={Preview} alt="기본 이미지" />
           )}
 
           <p
-            className="text-sm font-Pretendard ql-editor"
+            className="ql-editor text-white font-Pretendard"
             dangerouslySetInnerHTML={{ __html: sanitizedContent as string }}
           />
         </div>

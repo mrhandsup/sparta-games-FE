@@ -37,7 +37,7 @@ const GameDescription = ({ title, content, screenshot }: Props) => {
       </div>
 
       <div className="flex flex-col gap-2 h-40 line-clamp-6 whitespace-nowrap text-ellipsis">
-        <p className="ql-editor" dangerouslySetInnerHTML={{ __html: sanitizedContent as string }} />
+        <p className="ql-editor text-white" dangerouslySetInnerHTML={{ __html: sanitizedContent as string }} />
       </div>
 
       <GameDescriptionModal

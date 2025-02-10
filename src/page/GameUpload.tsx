@@ -1,18 +1,34 @@
 import Note from "../components/gameUploadComponents/Note";
 import Form from "../components/gameUploadComponents/Form";
 
-import useGameUpload from "../hook/gameUploadHook/useGameUpload";
-
 import pixelMeteor from "../assets/gameDetail/ReviewEdit.svg";
 import { useLocation } from "react-router-dom";
 import { TGamePlayData } from "../types";
+import { useState } from "react";
 
 const GameUpload = () => {
-  const { note, form, isUpload, setIsUpload, eventHandler, modalConfig, gameUploadResponse } = useGameUpload();
-
   const location = useLocation();
   const previousGameData = (location.state as { gameData?: TGamePlayData })?.gameData;
   const isEditMode = location.state?.isEditMode;
+
+  const [note, setNote] = useState({ 1: false, 2: false, 3: false });
+
+  const onClickNoteToggleHandler = (arg: 1 | 2 | 3) => {
+    if (arg === 1) {
+      setNote({ ...note, 1: !note[1] });
+      return;
+    }
+
+    if (arg === 2) {
+      setNote({ ...note, 2: !note[2] });
+      return;
+    }
+
+    if (arg === 3) {
+      setNote({ ...note, 3: !note[3] });
+      return;
+    }
+  };
 
   return (
     <main>
@@ -27,21 +43,9 @@ const GameUpload = () => {
           </span>
         </div>
       ) : (
-        <Note state={note} onClickHandler={eventHandler.onClickNoteToggleHandler} />
+        <Note state={note} onClickHandler={onClickNoteToggleHandler} />
       )}
-      <Form
-        form={form}
-        note={note}
-        isUpload={isUpload}
-        setIsUpload={setIsUpload}
-        onChangeHandler={eventHandler.onChangeImageHandler}
-        onSubmitHandler={eventHandler.onSubmitHandler}
-        onEditHandler={eventHandler.onEditHandler}
-        modalConfig={modalConfig}
-        gameUploadResponse={gameUploadResponse}
-        previousGameData={previousGameData}
-        isEditMode={isEditMode}
-      />
+      <Form note={note} previousGameData={previousGameData} isEditMode={isEditMode} />
     </main>
   );
 };
