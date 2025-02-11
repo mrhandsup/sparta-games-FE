@@ -299,7 +299,7 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
               </div>
 
               <div className="flex gap-2">
-                <div className="flex items-center py-4 px-4 w-full bg-gray-700 border border-solid border-white rounded-md resize-none">
+                <div className="py-4 px-4 w-full bg-gray-700 border border-solid border-white rounded-md resize-none whitespace-nowrap overflow-hidden text-ellipsis">
                   {typeof watch("thumbnail") === "object" && watch("thumbnail")?.length > 0
                     ? decodeURIComponent((watch("thumbnail")[0] as File)?.name)
                     : typeof watch("thumbnail") === "string"
@@ -332,7 +332,7 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
               </div>
 
               <div className="flex gap-2">
-                <div className="flex items-center py-4 px-4 w-full bg-gray-700 border border-solid border-white rounded-md resize-none">
+                <div className="py-4 px-4 w-full bg-gray-700 border border-solid border-white rounded-md resize-none whitespace-nowrap overflow-hidden text-ellipsis">
                   {typeof watch("gameFile") === "object" && watch("gameFile")?.length > 0
                     ? decodeURIComponent((watch("gameFile")[0] as File)?.name)
                     : typeof watch("gameFile") === "string"
@@ -422,7 +422,7 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
 
               {["First", "Second", "Third", "Fourth", "Fifth"].map((order, index) => (
                 <div key={index} className="flex gap-2">
-                  <div className="flex justify-end items-center py-4 px-4 w-full bg-gray-700 border border-solid border-white rounded-md resize-none">
+                  <div className="py-4 px-4 w-full bg-gray-700 border border-solid border-white rounded-md resize-none whitespace-nowrap overflow-hidden text-ellipsis">
                     {watch(`stillCut.${index}`)?.length > 0
                       ? decodeURIComponent(watch(`stillCut.${index}`)[0]?.name)
                       : "1000px*800px이하 파일 권장"}
