@@ -12,13 +12,3 @@ export const checkFileExtension = (fileName: string) => {
   const extension = fileName.split(".").pop()?.toLowerCase();
   return extension && ALLOWED_EXTENSIONS.includes(extension);
 };
-
-export const checkImageDimensions = (file: File): Promise<boolean> => {
-  return new Promise((resolve) => {
-    const img = new Image();
-    img.src = URL.createObjectURL(file);
-    img.onload = () => {
-      resolve(img.width <= 1000 && img.height <= 800);
-    };
-  });
-};

@@ -11,7 +11,7 @@ type Props = {
   reset: UseFormReset<TGameUploadInput>;
 };
 
-export const useGameEditSetValue = ({ previousGameData, isEditMode, setValue, trigger, reset }: Props) => {
+export const useGameEditSetValue = ({ previousGameData, isEditMode, setValue, reset }: Props) => {
   const changeUrltoFile = async (
     contentType: "thumbnail" | "gameFile" | "stillCut",
     dataUrl: string,
@@ -23,7 +23,7 @@ export const useGameEditSetValue = ({ previousGameData, isEditMode, setValue, tr
         : contentType === "gameFile"
         ? extractFileName("gameFile", previousGameData?.gamefile)
         : contentType === "stillCut"
-        ? extractFileName("stillCut", dataUrl) // "stillCut"일 때도 파일명 추출
+        ? extractFileName("stillCut", dataUrl)
         : "";
 
     const ext = dataUrl.split(".").pop();
@@ -47,8 +47,8 @@ export const useGameEditSetValue = ({ previousGameData, isEditMode, setValue, tr
 
   useEffect(() => {
     if (previousGameData && isEditMode) {
-      changeUrltoFile("thumbnail", previousGameData.thumbnail);
-      changeUrltoFile("gameFile", previousGameData.gamefile);
+      setValue("thumbnail", previousGameData.thumbnail);
+      setValue("gameFile", previousGameData.gamefile);
 
       previousGameData.screenshot.forEach((image, index) => {
         changeUrltoFile("stillCut", image.src, index);
@@ -64,8 +64,6 @@ export const useGameEditSetValue = ({ previousGameData, isEditMode, setValue, tr
       setValue("content", previousGameData.content);
 
       setValue("video", previousGameData.youtube_url);
-
-      trigger(["gameFile", "thumbnail"]);
     } else {
       reset();
     }
