@@ -195,6 +195,7 @@ const Account = (props: Props) => {
           type={noActionModalData.type}
         />
       )}
+      <div className="h-[28px]" />
     </>
   );
 };

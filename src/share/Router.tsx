@@ -15,13 +15,16 @@ import AdminDashBoard from "../page/admin/AdminDashBoard";
 import AdminGameLog from "../page/admin/AdminGameLog";
 import AdminLayout from "../components/layout/AdminLayout";
 import ResetPassword from "../page/ResetPassword";
+import HomeLayout from "../components/layout/HomeLayout";
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<Layout />}>
+        <Route element={<HomeLayout />}>
           <Route path="/" element={<Home />} />
+        </Route>
+        <Route element={<Layout />}>
           <Route path="/game-detail" element={<GameDetail />} />
           <Route path="/category" element={<Category />} />
           <Route path="/community" element={<Community />} />
