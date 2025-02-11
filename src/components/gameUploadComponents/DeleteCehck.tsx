@@ -21,7 +21,7 @@ const DeleteCheck = ({ gamePk, onClose }: Props) => {
   const navigate = useNavigate();
 
   const requiredPhrase = "게임을 삭제하겠습니다";
-  const isPhraseCorrect = inputValue.trim() === requiredPhrase;
+  const isPhraseCorrect = inputValue === requiredPhrase;
 
   const { modalToggles, onClickModalToggleHandlers } = useModalToggles([GAME_DELETE_SUCCESS_ID, NO_ACTION_MODAL_ID]);
 

@@ -15,7 +15,7 @@ const EditCheck = ({ gamePlayData, onClose }: Props) => {
   const navigate = useNavigate();
 
   const requiredPhrase = "업데이트를 진행하겠습니다";
-  const isPhraseCorrect = inputValue.trim() === requiredPhrase;
+  const isPhraseCorrect = inputValue === requiredPhrase;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);

@@ -218,3 +218,32 @@ input:hover,
 input:focus {
   outline: none;
 }
+
+/* 리액트 Quill Style */
+.ql-container {
+  @apply border-gray-100 rounded-md;
+}
+
+.ql-editor strong {
+  @apply font-bold;
+}
+
+.ql-editor em {
+  @apply italic;
+}
+
+.ql-editor h1 {
+  @apply text-3xl font-bold;
+}
+
+.ql-editor h2 {
+  @apply text-2xl font-semibold;
+}
+
+.ql-editor::before {
+  @apply text-lg font-Pretendard !text-gray-400 !not-italic;
+}
+
+.ql-editor.ql-blank::before {
+  @apply text-gray-100 font-normal;
+}

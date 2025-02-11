@@ -1,26 +1,21 @@
 import { ChangeEvent, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
-
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-
 import { GAME_CATEGORY } from "../../constant/constant";
 import SpartaChipSelect from "../../spartaDesignSystem/SpartaChipSelect";
-
-import { TGamePlayData, TGameUploadInput } from "../../types";
-
 import SpartaReactionModal, { TSpartaReactionModalProps } from "../../spartaDesignSystem/SpartaReactionModal";
 import SpartaModal from "../../spartaDesignSystem/SpartaModal";
-import UploadCheck from "./UploadCheck";
-
-import "./Form.css";
-import { postGameList, putGameList } from "../../api/game";
 import useModalToggles from "../../hook/useModalToggles";
-import changeUrl from "../../util/changeUrl";
-import { useNavigate } from "react-router-dom";
-import { userStore } from "../../share/store/userStore";
-import { checkFileExtension, checkFileSize, checkFileType, checkImageDimensions } from "../../util/fileValidation";
 import { useGameEditSetValue } from "../../hook/useGameEditSetValue";
+import { postGameList, putGameList } from "../../api/game";
+import { userStore } from "../../share/store/userStore";
+import UploadCheck from "./UploadCheck";
+import changeUrl from "../../util/changeUrl";
+import { checkFileExtension, checkFileSize, checkFileType, checkImageDimensions } from "../../util/fileValidation";
+import { TGamePlayData, TGameUploadInput } from "../../types";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import "./Form.css";
 
 type Props = {
   note: {
