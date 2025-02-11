@@ -11,7 +11,7 @@ import { postGameList, putGameList } from "../../api/game";
 import { userStore } from "../../share/store/userStore";
 import UploadCheck from "./UploadCheck";
 import changeUrl from "../../util/changeUrl";
-import { checkFileExtension, checkFileSize, checkFileType, checkImageDimensions } from "../../util/fileValidation";
+import { checkFileExtension, checkFileSize, checkFileType } from "../../util/fileValidation";
 import { TGamePlayData, TGameUploadInput } from "../../types";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -84,7 +84,7 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
 
     imageUploadWarning: {
       title: "확인해주세요!",
-      content: "1000px * 800px, 5mb 이하의 이미지 파일을 업로드해 주세요.",
+      content: "5mb 이하의 이미지 파일을 업로드해 주세요.",
       btn1: {
         text: "확인",
         onClick: () => {
@@ -213,13 +213,6 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
 
     if (!checkFileExtension(file.name)) {
       setNoActionModalData(noActionData.imageTypeWarning);
-      onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-
-      return false;
-    }
-
-    if (!(await checkImageDimensions(file))) {
-      setNoActionModalData(noActionData.imageUploadWarning);
       onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
 
       return false;
