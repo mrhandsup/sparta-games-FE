@@ -50,7 +50,7 @@ const SignUp = () => {
   const onSubmit = (data: Partial<TUserInformationInputForm>) => {
     // "FPS,Action"
     const game_category = data.game_category?.toString();
-    signUpMutation.mutate({ ...data, game_category, login_type: "DEFAULT" });
+    signUpMutation.mutate({ ...data, game_category });
   };
 
   return (
