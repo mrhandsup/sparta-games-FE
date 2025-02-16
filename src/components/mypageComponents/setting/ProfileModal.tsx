@@ -89,7 +89,7 @@ const ProfileModal = ({ onSuccess, onError }: Props) => {
     nickname && !errors.nickname && user_tech && user_tech.length > 0 && game_category && game_category.length > 0;
 
   return (
-    <div className="flex flex-col gap-4 min-w-[500px]">
+    <div className="flex flex-col gap-3 min-w-[500px]">
       <SpartaTextField
         label="닉네임"
         type="medium"
@@ -135,6 +135,7 @@ const ProfileModal = ({ onSuccess, onError }: Props) => {
         content="변경하기"
         size="medium"
         colorType="primary"
+        type="filled"
         disabled={!isFormValid || profileMutation.isPending}
         onClick={onSubmit}
       />

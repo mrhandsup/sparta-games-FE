@@ -14,7 +14,7 @@ const MyPage = () => {
   const { id } = useParams();
 
   const navigationButtonConfig = {
-    clicked: "bg-gray-600 text-primary-600",
+    clicked: "bg-gray-700 text-primary-500",
     unClicked: "bg-gray-800 text-gray-400",
   };
 

@@ -70,7 +70,7 @@ const ProfileHeader = (props: TProfileProps) => {
             <span className="font-DungGeunMo text-body-20 bg-white px-2 py-1 rounded-md w-fit">
               {userTech[0].label}
             </span>
-            <p className="font-DungGeunMo text-heading-40 text-white">[{props.user.nickname}] 님!</p>
+            <p className="font-DungGeunMo text-heading-40 text-white font-[400]">[{props.user.nickname}] 님!</p>
           </div>
           {props.isMyPage && (
             <div className="w-[110px]">
@@ -86,7 +86,7 @@ const ProfileHeader = (props: TProfileProps) => {
         </div>
         {/* 관심 게임 분야 */}
         <p className="flex gap-2 items-center">
-          <p className="font-DungGeunMo text-alert-hover text-heading-24">관심게임분야</p>
+          <p className="font-DungGeunMo text-alert-hover text-heading-24 font-[400]">관심게임분야</p>
           {props.user.game_category.map((category, index) => (
             <span key={index} className="font-DungGeunMo text-body-20 bg-white px-2 py-1  rounded-md w-fit">
               {category}

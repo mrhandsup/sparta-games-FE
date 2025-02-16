@@ -5,7 +5,8 @@ import type { TGameData } from "../../types";
 import useModalToggles from "../../hook/useModalToggles";
 import SpartaModal from "../../spartaDesignSystem/SpartaModal";
 import { Autoplay } from "swiper/modules";
-
+import { Pagination } from "swiper/modules";
+import "swiper/css/pagination";
 import Login from "./Login";
 import { getUserGamePackList } from "../../api/user";
 import SpartaButton from "../../spartaDesignSystem/SpartaButton";
@@ -79,7 +80,7 @@ const Hero = () => {
               clickable: true,
             }}
             autoplay={{ delay: 2000, disableOnInteraction: false }}
-            modules={[Autoplay]}
+            modules={[Autoplay, ...(data?.length > 1 ? [Pagination] : [])]}
           >
             {data?.map((data, index) => (
               <SwiperSlide key={index}>

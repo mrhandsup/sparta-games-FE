@@ -69,7 +69,7 @@ const Home = () => {
             <GameCardList data={data?.rand3.game_list} to={`/category?category=${data?.rand3.category_name}`}>
               <div className="flex items-center gap-3">
                 <img src={pixelGame} />
-                <p className="font-DungGeunMo font-[400]text-heading-32 text-white">[{data?.rand3.category_name}]</p>
+                <p className="font-DungGeunMo font-[400] text-heading-32 text-white">[{data?.rand3.category_name}]</p>
               </div>
             </GameCardList>
           )}
