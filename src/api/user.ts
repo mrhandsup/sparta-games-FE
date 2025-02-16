@@ -22,18 +22,9 @@ export const updateUserData = async (
   data: Partial<TUserInformationInputForm> | FormData,
 ): Promise<TUser> => {
   try {
-    const config = {
-      headers:
-        data instanceof FormData
-          ? {
-              "Content-Type": "multipart/form-data",
-            }
-          : {
-              "Content-Type": "application/json",
-            },
-    };
-
-    const res = await sparta_games_auth.put(`/users/api/${userId}/`, data, config);
+    const res = await sparta_games_auth.put(`/users/api/${userId}/`, data, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
     return res.data;
   } catch (error) {
     console.error(error);
