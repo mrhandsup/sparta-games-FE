@@ -69,6 +69,9 @@ const SpartaChipSelect = ({ label, options, control, name, pass, subLabel, multi
     "& .MuiSelect-icon": {
       color: "#E5E5E5", // gray-200
     },
+    "& .MuiOutlinedInput-input": {
+      padding: "12px 14px",
+    },
     backgroundColor: "#1A1A1A",
   };
 
@@ -93,6 +96,10 @@ const SpartaChipSelect = ({ label, options, control, name, pass, subLabel, multi
     backgroundColor: "white", // primary-500
     // margin: "2px",
     fontFamily: "DungGeunMo",
+    fontSize: "14px",
+    padding: "1px",
+    height: "23px",
+    borderRadius: "4px",
     "& .MuiChip-deleteIcon": {
       color: "#FFFFFF",
       "&:hover": {

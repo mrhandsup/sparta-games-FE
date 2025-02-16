@@ -15,13 +15,16 @@ import AdminDashBoard from "../page/admin/AdminDashBoard";
 import AdminGameLog from "../page/admin/AdminGameLog";
 import AdminLayout from "../components/layout/AdminLayout";
 import ResetPassword from "../page/ResetPassword";
+import FullWidthLayout from "../components/layout/FullWidthLayout";
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<Layout />}>
+        <Route element={<FullWidthLayout />}>
           <Route path="/" element={<Home />} />
+        </Route>
+        <Route element={<Layout />}>
           <Route path="/game-detail" element={<GameDetail />} />
           <Route path="/category" element={<Category />} />
           <Route path="/community" element={<Community />} />
@@ -31,14 +34,18 @@ const Router = () => {
           <Route element={<NonAuthLayout />}></Route>
 
           <Route element={<AuthLayout />}>
-            <Route path="my-page/:id" element={<MyPage />} />
             <Route path="game-upload" element={<GameUpload />} />
+            <Route path="game-upload/edit" element={<GameUpload />} />
           </Route>
 
           <Route element={<AdminLayout />}>
             <Route path="/admin/dashboard" element={<AdminDashBoard />} />
             <Route path="/admin/game-log" element={<AdminGameLog />} />
           </Route>
+        </Route>
+
+        <Route element={<FullWidthLayout />}>
+          <Route path="my-page/:id" element={<MyPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

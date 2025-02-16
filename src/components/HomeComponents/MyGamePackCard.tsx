@@ -4,6 +4,8 @@ import GameChip from "../common/chipComponents/GameChip";
 import SpartaButton from "../../spartaDesignSystem/SpartaButton";
 import { userStore } from "../../share/store/userStore";
 import { useNavigate } from "react-router-dom";
+import DOMPurify from "dompurify";
+import removeHTMLTags from "../../util/removeHTMLTags";
 
 type Props = { item?: TGameData };
 
@@ -28,28 +30,30 @@ const MyGameCard = ({ item }: Props) => {
         }}
       />
       <div className="w-[50%] px-10">
-        <p className="text-heading-24 font-DungGeunMo text-primary-400">
-          {item?.is_liked ? "즐겨찾기한 게임" : `[${userData?.nickname}] 님이 좋아할만한 게임`}
+        <p className="text-title-18 font-DungGeunMo text-primary-400">
+          {item?.is_liked
+            ? `[${userData?.nickname}] 님이 즐겨찾기한 게임`
+            : `[${userData?.nickname}] 님이 좋아할만한 게임`}
         </p>
-        <div className="flex gap-3 font-DungGeunMo items-baseline mt-4">
-          <p className="text-heading-40">[{item?.title ? item?.title : "test"}]</p>
-          <p className="text-heading-24">[{item?.maker_name || "Maker"}]</p>
-          <p className="text-heading-24 text-primary-400">[{item?.category_name[0]}]</p>
+        <div className="flex gap-3 font-DungGeunMo items-baseline mt-[8px]">
+          <p className="text-heading-24">[{item?.title ? item?.title : "test"}]</p>
         </div>
-        <div className="flex items-center gap-1.5 justify-between py-8">
-          <div className="flex gap-1">
-            {item?.chip_names?.map((chip) => (
-              <GameChip key={chip} chipName={chip} />
-            ))}
-          </div>
+        <div className="flex items-center gap-1.5 justify-between pt-1 pb-2">
+          <p className="text-[22.4px] font-DungGeunMo ">[{item?.maker_name || "Maker"}]</p>
           <div className="flex items-center gap-1.5">
-            <p className="text-primary-400 font-DungGeunMo text-title-14">{item?.star.toFixed(1)}</p>
-            {item && <StarRating score={item.star} />}
+            <p className="text-primary-400 font-DungGeunMo text-[22.4px]">{item?.star.toFixed(1)}</p>
+            {item && <StarRating score={item.star} size="large" />}
           </div>
         </div>
-
-        <div className="text-white h-44 leading-6 line-clamp-6 overflow-hidden ">
-          {item?.content || "게임 설명이 없습니다."}
+        <div className="flex gap-3">
+          {item?.chip_names?.map((chip) => (
+            <GameChip key={chip} chipName={chip} size="large" />
+          ))}
+        </div>
+        <div className="min-h-40 ">
+          <div className="text-white pt-2 line-clamp-6 text-[16px] leading-[24px]">
+            {item?.content ? removeHTMLTags(item?.content) : ""}
+          </div>
         </div>
         <SpartaButton
           content="플레이하기"

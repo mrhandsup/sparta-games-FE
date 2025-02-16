@@ -57,24 +57,24 @@ const SignUp = () => {
     <div className="py-14 px-28 flex flex-col gap-14 justify-center items-center">
       <div className="flex items-center gap-3">
         <img src={pixelMeteor} />
-        <p className="font-DungGeunMo text-heading-32 text-white">스파르타 게임즈의 아이디를 생성합니다.</p>
+        <p className="font-DungGeunMo text-heading-32 text-white font-[400]">스파르타 게임즈의 아이디를 생성합니다.</p>
       </div>
       <div className="flex justify-center align-top gap-10 w-full">
-        <div className="flex flex-col p-12 bg-gray-800 rounded-2xl w-[48%] h-fit">
+        <div className="flex flex-col p-[24px] bg-gray-800 rounded-2xl w-[48%] h-fit">
           <img src={heroImage} />
-          <p className="text-white pt-8 leading-6 text-center font-DungGeunMo ">
+          <p className="text-white pt-[24px] leading-6 text-center  ">
             스파르타 게임즈는 게임을 사랑하는 사람들을 위한 공간입니다. <br />
             유저들에게는 다양한 게임을 즐기고, 평가할 수 있는
             <br /> 개발자들에게는 자신이 만든 게임을 선보이고,
             <br /> 같이 게임을 만들어 갈 동료를 구할 수 있습니다.
           </p>
         </div>
-        <div className="flex flex-col p-12 bg-gray-800 rounded-2xl w-[48%] gap-4">
+        <div className="flex flex-col p-[40px] bg-gray-800 rounded-2xl w-[48%] gap-4">
           <FormProvider {...signupForm}>
             {email ? (
               <>
-                <p className="text-primary-400 font-DungGeunMo text-heading-24">계정 정보</p>
-                <p className="text-white text-body-18 font-DungGeunMo text-center py-14">
+                <p className="text-primary-400 font-DungGeunMo text-heading-24 font-[400]">계정 정보</p>
+                <p className="text-white text-body-18 font-DungGeunMo font-[400] text-center py-14">
                   간편로그인은 계정정보가 필요없습니다.
                 </p>
               </>

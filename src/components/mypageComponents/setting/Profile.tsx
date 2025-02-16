@@ -54,9 +54,9 @@ const Profile = () => {
   return (
     <div className="bg-gray-800 rounded-xl px-7 py-5 flex flex-col gap-4 justify-start items-start ">
       <div className="flex justify-between w-full">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 h-12">
           <img src={log} />
-          <p className="font-DungGeunMo text-heading-32 text-white">프로필 수정</p>
+          <p className="font-DungGeunMo text-heading-32 text-white font-[400]">프로필 수정</p>
         </div>
         <button
           className={`border-gray-300 border-2 w-[20%] h-10 rounded-md text-gray-300 font-bold hover:bg-gray-700 transition-colors`}

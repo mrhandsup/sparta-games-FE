@@ -5,7 +5,8 @@ import type { TGameData } from "../../types";
 import useModalToggles from "../../hook/useModalToggles";
 import SpartaModal from "../../spartaDesignSystem/SpartaModal";
 import { Autoplay } from "swiper/modules";
-
+import { Pagination } from "swiper/modules";
+import "swiper/css/pagination";
 import Login from "./Login";
 import { getUserGamePackList } from "../../api/user";
 import SpartaButton from "../../spartaDesignSystem/SpartaButton";
@@ -34,7 +35,7 @@ const Hero = () => {
     <>
       {/* 로그인 전 */}
       {!userData && (
-        <section className="flex items-center gap-[60px] w-full h-[475px] bg-gray-800 ">
+        <section className="flex items-center gap-[60px] w-full h-[475px] bg-gray-800 max-w-[1440px] mx-auto">
           <img src={heroImage} />
           <div className="flex flex-col justify-center gap-4 items-center w-[50%] px-20">
             <h2 className="font-DungGeunMo text-heading-32 text-primary-500 ">★ Welcome to Sparta Games ★</h2>
@@ -60,7 +61,7 @@ const Hero = () => {
       )}
       {/* 로그인 후 && 북마크 게임 x */}
       {userData && data?.length == 0 && (
-        <section className="flex flex-col items-center  w-full h-[475px]  text-white  justify-center relative gap-4 ">
+        <section className="flex flex-col items-center  w-full h-[475px]  text-white  justify-center relative gap-4  max-w-[1440px] mx-auto">
           <div className="absolute bg-hero-image bg-cover bg-center opacity-20 justify-center w-full h-full"></div>
           <p className="font-DungGeunMo text-heading-28 text-primary-400 mb-24">[User Name]의 Game Pack</p>
           <p className="font-DungGeunMo text-heading-40 text-primary-400 mb-3">아직 북마크한 게임이 없습니다.</p>
@@ -70,7 +71,7 @@ const Hero = () => {
       )}
       {/* 로그인 후 && 북마크 게임 o */}
       {userData && data && data?.length !== 0 && (
-        <section className="flex flex-col items-center w-full h-[475px]  text-white justify-center gap-4 mb-10 bg-red-500 ">
+        <section className="flex flex-col items-center w-full h-[475px]  text-white justify-center gap-4 mb-10 bg-red-500  max-w-[1440px] mx-auto">
           <Swiper
             className="heroSwiper"
             ref={swiperRef}
@@ -79,7 +80,7 @@ const Hero = () => {
               clickable: true,
             }}
             autoplay={{ delay: 2000, disableOnInteraction: false }}
-            modules={[Autoplay]}
+            modules={[Autoplay, ...(data?.length > 1 ? [Pagination] : [])]}
           >
             {data?.map((data, index) => (
               <SwiperSlide key={index}>

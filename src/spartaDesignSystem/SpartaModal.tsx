@@ -1,6 +1,9 @@
 import React from "react";
 import useModalToggles from "../hook/useModalToggles";
 import closeModalIcon from "../assets/common/closeModalIcon.svg";
+import closeModalIconPrimary from "../assets/common/closeModalIconPrimary.svg";
+import closeModalIconAlert from "../assets/common/closeModalIconAlert.svg";
+import closeModalIconError from "../assets/common/closeModalIconError.svg";
 
 export type TModalProps = {
   isOpen: boolean;
@@ -44,9 +47,22 @@ const SpartaModal = ({
     }
   };
 
+  const getCloseModalIcon = () => {
+    switch (type) {
+      case "primary":
+        return closeModalIconPrimary;
+      case "alert":
+        return closeModalIconAlert;
+      case "error":
+        return closeModalIconError;
+      default:
+        return closeModalIcon;
+    }
+  };
+
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 "
       onClick={handleOverlayClick}
     >
       <div
@@ -56,9 +72,22 @@ const SpartaModal = ({
       >
         {title && (
           <div className="flex justify-between items-center mb-4">
-            <div className="text-heading-24 font-semibold text-white font-DungGeunMo">{title}</div>
-            <button onClick={onClose} className="text-gray-500 hover:text-gray-700 transition-colors ">
-              <img src={closeModalIcon} alt="close modal" className="w-5" />
+            <div
+              className={`text-[24px] ${
+                type === "error"
+                  ? "text-error-default"
+                  : type === "alert"
+                  ? "text-alert-default"
+                  : type === "primary"
+                  ? "text-primary-400"
+                  : "text-gray-500"
+              } 
+              font-DungGeunMo `}
+            >
+              {title}
+            </div>
+            <button onClick={onClose}>
+              <img src={getCloseModalIcon()} alt="close modal" className="w-5" />
             </button>
           </div>
         )}

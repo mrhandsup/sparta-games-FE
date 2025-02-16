@@ -137,7 +137,7 @@ const Header = () => {
   ];
 
   return (
-    <header className="flex justify-between items-center py-5 px-[30px] w-[100%] h-20 bg-gray-800 ">
+    <header className="max-w-[1440px] flex justify-between items-center py-5 px-[30px] w-full h-20">
       {/* 제목 */}
       <section className="flex items-center gap-4">
         <img src={logo} alt="스파르타 게임 아이콘" className="w-12 h-12 rounded-full" />
@@ -187,7 +187,7 @@ const Header = () => {
 
         {/* 유저 액션 */}
         {!userData?.is_staff && (
-          <div className="cursor-pointer ">
+          <div className="cursor-pointer relative" ref={modalRefs.userStatus}>
             {userData ? (
               <p onClick={onClickModalToggleHandlers.userStatus} className="hover:text-primary-500">
                 마이페이지

@@ -107,7 +107,7 @@ const AccountModal = ({ onSuccess }: Props) => {
   }, [new_password, trigger, new_password_check]);
 
   return (
-    <div className="flex flex-col gap-6 min-w-[410px]">
+    <div className="flex flex-col gap-3 min-w-[410px]">
       <SpartaTextField
         label="이메일"
         type="medium"
@@ -134,7 +134,7 @@ const AccountModal = ({ onSuccess }: Props) => {
         pass={(password && !errors.password) as boolean}
       />
       <SpartaTextField
-        label="세 비밀번호"
+        label="새 비밀번호"
         type="medium"
         register={register("new_password", passwordValidation)}
         inputProps={{
@@ -169,7 +169,8 @@ const AccountModal = ({ onSuccess }: Props) => {
         content="변경하기"
         size="medium"
         colorType="primary"
-        disabled={Object.keys(errors).length > 0}
+        type="filled"
+        disabled={Object.keys(errors).length > 0 || !password || !new_password || !new_password_check}
         onClick={handleSubmit(onSubmit)}
       />
       <SpartaReactionModal

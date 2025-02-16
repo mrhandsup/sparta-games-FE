@@ -14,7 +14,7 @@ const MyPage = () => {
   const { id } = useParams();
 
   const navigationButtonConfig = {
-    clicked: "bg-gray-600 text-primary-600",
+    clicked: "bg-gray-700 text-primary-500",
     unClicked: "bg-gray-800 text-gray-400",
   };
 
@@ -39,47 +39,49 @@ const MyPage = () => {
       <div className="w-full">
         {/* 헤더 */}
         <ProfileHeader user={user} isMyPage={isMyPage} />
-        <div className="flex gap-9 py-11 w-[83%] mx-auto">
-          {/* 네비게이션 */}
-          <div className="bg-gray-800 w-[13%] p-2 rounded-xl h-fit">
-            {isMyPage && (
-              <button
-                className={`w-full h-12 rounded-xl text-heading-20 
+        <div className="relative flex flex-col mx-auto max-w-[1440px] min-w-[1440px]">
+          <div className="flex gap-9 py-11 w-[83%] mx-auto">
+            {/* 네비게이션 */}
+            <div className="bg-gray-800 w-[13%] p-2 rounded-xl h-fit">
+              {isMyPage && (
+                <button
+                  className={`w-full h-12 rounded-xl text-heading-20 
             ${navigation === "log" ? navigationButtonConfig.clicked : navigationButtonConfig.unClicked}
               `}
-                onClick={() => setNavigation("log")}
-              >
-                활동목록
-              </button>
-            )}
-            <button
-              className={`w-full h-12 rounded-xl text-heading-20  ${
-                navigation === "develop" ? navigationButtonConfig.clicked : navigationButtonConfig.unClicked
-              }`}
-              onClick={() => setNavigation("develop")}
-            >
-              개발목록
-            </button>
-            {isMyPage && (
+                  onClick={() => setNavigation("log")}
+                >
+                  활동목록
+                </button>
+              )}
               <button
-                className={`w-full h-12 rounded-xl  text-heading-20  ${
-                  navigation === "setting" ? navigationButtonConfig.clicked : navigationButtonConfig.unClicked
+                className={`w-full h-12 rounded-xl text-heading-20  ${
+                  navigation === "develop" ? navigationButtonConfig.clicked : navigationButtonConfig.unClicked
                 }`}
-                onClick={() => setNavigation("setting")}
+                onClick={() => setNavigation("develop")}
               >
-                정보설정
+                개발목록
               </button>
-            )}
-          </div>
-          {/* 내용 */}
-          <div className="w-[79%]">
-            {navigation === "log" ? (
-              <Logs user={user} />
-            ) : navigation === "develop" ? (
-              <MyGame user={user} isMyPage={isMyPage} />
-            ) : (
-              <Setting />
-            )}
+              {isMyPage && (
+                <button
+                  className={`w-full h-12 rounded-xl  text-heading-20  ${
+                    navigation === "setting" ? navigationButtonConfig.clicked : navigationButtonConfig.unClicked
+                  }`}
+                  onClick={() => setNavigation("setting")}
+                >
+                  정보설정
+                </button>
+              )}
+            </div>
+            {/* 내용 */}
+            <div className="w-[79%]">
+              {navigation === "log" ? (
+                <Logs user={user} />
+              ) : navigation === "develop" ? (
+                <MyGame user={user} isMyPage={isMyPage} />
+              ) : (
+                <Setting />
+              )}
+            </div>
           </div>
         </div>
       </div>

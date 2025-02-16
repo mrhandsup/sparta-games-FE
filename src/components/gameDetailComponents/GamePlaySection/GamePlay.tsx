@@ -1,17 +1,21 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { AxiosError } from "axios";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import { getMyBookmarkList, postBookMark } from "../../../api/game";
+import SpartaReactionModal, { TSpartaReactionModalProps } from "../../../spartaDesignSystem/SpartaReactionModal";
+import useModalToggles from "../../../hook/useModalToggles";
+import { userStore } from "../../../share/store/userStore";
+
+import { TGameData, TListResponse } from "../../../types";
+
+import randomgame from "../../../assets/gameDetail/randomgame.svg";
 import expand from "../../../assets/gameDetail/expand.svg";
 import share from "../../../assets/gameDetail/linkshare.svg";
 import bookmark from "../../../assets/gameDetail/bookmark.svg";
 import bookmarkfill from "../../../assets/gameDetail/bookmarkfill.svg";
-import randomgame from "../../../assets/gameDetail/randomgame.svg";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getMyBookmarkList, postBookMark } from "../../../api/game";
-import SpartaReactionModal, { TSpartaReactionModalProps } from "../../../spartaDesignSystem/SpartaReactionModal";
-import useModalToggles from "../../../hook/useModalToggles";
-import { AxiosError } from "axios";
-import { userStore } from "../../../share/store/userStore";
-import { TGameData, TListResponse } from "../../../types";
-import { useNavigate } from "react-router-dom";
+import Preview from "../../../assets/gameDetail/Priview.jpg";
 
 type Props = {
   gamePk?: number;
@@ -148,7 +152,6 @@ const GamePlay = ({ gamePk, title, makerName, makerPk, gamePath, thumbnail }: Pr
 
   return (
     <>
-      {/* TODO: Mui 스켈레톤 적용 */}
       {isLoading ? (
         <div className="w-full h-[500px] flex justify-center items-center"></div>
       ) : (
@@ -159,17 +162,24 @@ const GamePlay = ({ gamePk, title, makerName, makerPk, gamePath, thumbnail }: Pr
               <p className="text-gray-100 text-[28px] cursor-pointer" onClick={() => navigate(`/my-page/${makerPk}`)}>
                 [{makerName}]
               </p>
-              <div className="flex gap-6">
-                <img
-                  src={currentBookMarkedGame ? bookmarkfill : bookmark}
-                  alt="즐겨찾기"
-                  onClick={onClickBookMark}
-                  className="cursor-pointer"
-                />
-                <img src={share} alt="링크 공유" onClick={onClickLinkCopy} className="cursor-pointer" />
-                <img src={randomgame} alt="랜덤 게임 추천" onClick={onClickRandomGamePick} className="cursor-pointer" />
-                <img src={expand} onClick={onClickFullscreen} alt="전체화면" className="cursor-pointer" />
-              </div>
+              {gamePath && (
+                <div className="flex gap-6">
+                  <img
+                    src={currentBookMarkedGame ? bookmarkfill : bookmark}
+                    alt="즐겨찾기"
+                    onClick={onClickBookMark}
+                    className="cursor-pointer"
+                  />
+                  <img src={share} alt="링크 공유" onClick={onClickLinkCopy} className="cursor-pointer" />
+                  <img
+                    src={randomgame}
+                    alt="랜덤 게임 추천"
+                    onClick={onClickRandomGamePick}
+                    className="cursor-pointer"
+                  />
+                  <img src={expand} onClick={onClickFullscreen} alt="전체화면" className="cursor-pointer" />
+                </div>
+              )}
             </div>
           </div>
 
@@ -178,18 +188,12 @@ const GamePlay = ({ gamePk, title, makerName, makerPk, gamePath, thumbnail }: Pr
               <iframe src={gameUrl} width="100%" height="100%" className="rounded-xl" />
             ) : (
               <div className="w-full h-full bg-gray-800 rounded-xl relative">
-                <img
-                  src={
-                    import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
-                      ? import.meta.env.VITE_PROXY_HOST + thumbnail
-                      : thumbnail
-                  }
-                  className="w-full h-full brightness-50"
-                />
+                <img src={Preview} className="w-full h-full brightness-50 object-cover" />
                 <div className="absolute inset-0 flex justify-center items-center">
-                  <p className="text-white font-bold text-xl font-DungGeunMo text-center">
-                    해당 게임은 현재 검수중이거나 반려되었습니다.
-                    <br /> 관리자에게 문의해주세요.
+                  <p className="text-white text-2xl font-DungGeunMo text-center">
+                    미리보기 페이지에서는 게임을 플레이 할 수 없습니다.
+                    <br />
+                    플레이 영상, 스틸컷, 게임설명 등의 정보를 확인해주세요.
                   </p>
                 </div>
               </div>

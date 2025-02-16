@@ -1,4 +1,3 @@
-import React from "react";
 import SpartaTextField from "../../spartaDesignSystem/SpartaTextField";
 import { useForm, useFormContext } from "react-hook-form";
 import SpartaChipSelect from "../../spartaDesignSystem/SpartaChipSelect";
@@ -26,8 +25,8 @@ const Profile = () => {
       message: "닉네임은 10자 이하여야 합니다",
     },
     pattern: {
-      value: /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{4,10}$/,
-      message: "닉네임은 영숫자 조합 문자열이어야 합니다",
+      value: /^[a-zA-Z0-9가-힣]*$/,
+      message: "닉네임은 4~10자 이하 영/한/숫자만 사용 가능합니다.",
     },
   };
 
@@ -39,7 +38,7 @@ const Profile = () => {
         type="medium"
         register={register("nickname", nicknameValidation)}
         subLabel={{
-          default: "4~10자 이하의 영숫자 조합 문자열을 입력해주세요.",
+          default: "4~10자 이하 영/한/숫자 사용 가능합니다.",
           error: errors.nickname?.message as string,
           pass: nickname && !errors.nickname ? "사용 가능한 닉네임입니다" : "",
         }}

@@ -6,6 +6,7 @@ import defaultProfile from "../../assets/common/defaultProfile.svg";
 import { useMutation } from "@tanstack/react-query";
 import { useRef } from "react";
 import { updateUserData } from "../../api/user";
+import { userStore } from "../../share/store/userStore";
 
 type TProfileProps = {
   user: TUser;
@@ -13,6 +14,7 @@ type TProfileProps = {
 };
 
 const ProfileHeader = (props: TProfileProps) => {
+  const { setUserData } = userStore();
   //* Utils
   const userTech = convertToConfigObjects(USER_TECH, [props.user.user_tech]);
 
@@ -25,7 +27,9 @@ const ProfileHeader = (props: TProfileProps) => {
       }
       return await updateUserData(props.user.user_pk, formData);
     },
-    onSuccess: () => {},
+    onSuccess: (data) => {
+      setUserData("profile_image", data.profile_image);
+    },
     onError: (error) => {
       console.error("프로필 이미지 업데이트 실패:", error);
       alert("이미지 업데이트에 실패했습니다. 다시 시도해주세요.");
@@ -49,7 +53,7 @@ const ProfileHeader = (props: TProfileProps) => {
     }
 
     const formData = new FormData();
-    formData.append("profile_image", file);
+    formData.append("image", file);
     formData.append("nickname", props.user.nickname);
     formData.append("user_tech", props.user.user_tech);
     formData.append("game_category", props.user.game_category.join(","));
@@ -58,41 +62,46 @@ const ProfileHeader = (props: TProfileProps) => {
   };
 
   return (
-    <div className="bg-gray-800 h-[176px] px-32 py-3 flex items-center w-full">
-      {props.user.profile_image ? (
-        <img className="bg-gray-700 w-[110px] h-[110px] rounded-md" src={props.user.profile_image} />
-      ) : (
-        <img src={defaultProfile} className="bg-gray-700 w-[110px] h-[110px] rounded-md p-3" />
-      )}
-      <div className="flex flex-col gap-3 ml-3 w-full">
-        <div className="flex items-center justify-between w-full">
-          <div className="flex items-center">
-            <span className="font-DungGeunMo text-body-20 bg-white px-2 py-1 rounded-md w-fit">
-              {userTech[0].label}
-            </span>
-            <p className="font-DungGeunMo text-heading-40 text-white">[{props.user.nickname}] 님!</p>
-          </div>
-          {props.isMyPage && (
-            <div className="w-[110px]">
-              <input type="file" ref={fileInputRef} onChange={handleFileChange} accept="image/*" className="hidden" />
-              <SpartaButton
-                content="사진 변경"
-                size="small"
-                colorType="grey"
-                onClick={() => fileInputRef.current?.click()}
-              />
+    <div className="bg-gray-800 h-[176px] px-32 py-3 w-full">
+      <div className=" max-w-[1440px] mx-auto flex items-center ">
+        {props.user.profile_image ? (
+          <img
+            className="bg-gray-700 min-w-[110px] w-[110px] min-h-[110px] h-[110px] rounded-md"
+            src={props.user.profile_image}
+          />
+        ) : (
+          <img src={defaultProfile} className="bg-gray-700 w-[110px] h-[110px] rounded-md p-3" />
+        )}
+        <div className="flex flex-col gap-3 ml-3 w-full">
+          <div className="flex items-center justify-between w-full">
+            <div className="flex items-center">
+              <span className="font-DungGeunMo text-body-20 bg-white px-2 py-1 rounded-md w-fit">
+                {userTech[0].label}
+              </span>
+              <p className="font-DungGeunMo text-heading-40 text-white font-[400]">[{props.user.nickname}] 님!</p>
             </div>
-          )}
+            {props.isMyPage && (
+              <div className="w-[110px]">
+                <input type="file" ref={fileInputRef} onChange={handleFileChange} accept="image/*" className="hidden" />
+                <SpartaButton
+                  content="사진 변경"
+                  size="small"
+                  colorType="grey"
+                  onClick={() => fileInputRef.current?.click()}
+                />
+              </div>
+            )}
+          </div>
+          {/* 관심 게임 분야 */}
+          <p className="flex gap-2 items-center">
+            <p className="font-DungGeunMo text-alert-hover text-heading-24 font-[400]">관심게임분야</p>
+            {props.user.game_category.map((category, index) => (
+              <span key={index} className="font-DungGeunMo text-body-20 bg-white px-2 py-1  rounded-md w-fit">
+                {category}
+              </span>
+            ))}
+          </p>
         </div>
-        {/* 관심 게임 분야 */}
-        <p className="flex gap-2 items-center">
-          <p className="font-DungGeunMo text-alert-hover text-heading-24">관심게임분야</p>
-          {props.user.game_category.map((category, index) => (
-            <span key={index} className="font-DungGeunMo text-body-20 bg-white px-2 py-1  rounded-md w-fit">
-              {category}
-            </span>
-          ))}
-        </p>
       </div>
     </div>
   );

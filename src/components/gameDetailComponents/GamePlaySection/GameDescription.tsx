@@ -1,3 +1,5 @@
+import DOMPurify from "dompurify";
+
 import GameDescriptionModal from "./GameDescriptionModal";
 import useModalToggle from "../../../hook/useModalToggle";
 
@@ -13,8 +15,15 @@ type Props = {
 const GameDescription = ({ title, content, screenshot }: Props) => {
   const { modalToggle, onClickModalToggleHandler } = useModalToggle();
 
+  const config = {
+    ALLOWED_TAGS: ["h1", "h2", "p", "strong", "span", "em", "u", "ol", "ul", "li", "br"],
+    ALLOWED_ATTR: ["class", "style"],
+  };
+
+  const sanitizedContent = content && DOMPurify.sanitize(content, config);
+
   return (
-    <div className="flex flex-col gap-3 mt-5 p-5 bg-gray-800 rounded-xl">
+    <div className="flex flex-col gap-3 mt-5 mb-10 p-5 bg-gray-800 rounded-xl">
       <div className="flex items-center justify-between">
         <p className="font-DungGeunMo text-[24px] text-white">게임설명</p>
         <p
@@ -27,8 +36,8 @@ const GameDescription = ({ title, content, screenshot }: Props) => {
         </p>
       </div>
 
-      <div className="flex flex-col gap-2 font-Pretendard text-[14px] text-white leading-[130%]">
-        <p>{content}</p>
+      <div className="flex flex-col gap-2 h-40 line-clamp-6 whitespace-nowrap text-ellipsis">
+        <p className="ql-editor text-white" dangerouslySetInnerHTML={{ __html: sanitizedContent as string }} />
       </div>
 
       <GameDescriptionModal
