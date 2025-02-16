@@ -11,47 +11,6 @@
   @apply block;
 }
 
-/* 리액트 Quill Style */
-.ql-container {
-  @apply border-gray-100 rounded-md;
-}
-
 .formContent .ql-editor {
   @apply h-[436px] text-lg;
-}
-
-.ql-picker.ql-color .ql-selected {
-  color: black !important; /* 텍스트는 검은색으로 */
-}
-
-.ql-editor.ql-checked {
-  color: black !important; /* 검정색 텍스트로 설정 */
-}
-
-.ql-editor .ql-color {
-  color: inherit !important; /* 선택된 색상에 맞게 텍스트 색상 적용 */
-}
-
-.ql-editor strong {
-  @apply font-bold;
-}
-
-.ql-editor em {
-  @apply italic;
-}
-
-.ql-editor h1 {
-  @apply text-3xl font-bold;
-}
-
-.ql-editor h2 {
-  @apply text-2xl font-semibold;
-}
-
-.ql-editor::before {
-  @apply text-lg font-Pretendard !text-gray-400 !not-italic;
-}
-
-.ql-editor.ql-blank::before {
-  @apply text-gray-100 font-normal;
 }

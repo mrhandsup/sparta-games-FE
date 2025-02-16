@@ -28,7 +28,7 @@ const UploadCheck = ({ gameUploadResponse, handleSubmit, onSubmitHandler, onClos
   const navigate = useNavigate();
 
   const requiredPhrase = "즐거운 게임세상 스파르타게임즈!";
-  const isPhraseCorrect = inputValue.trim() === requiredPhrase;
+  const isPhraseCorrect = inputValue === requiredPhrase;
 
   const { modalToggles, onClickModalToggleHandlers } = useModalToggles([GAME_UPLOAD_SUCCESS_ID]);
 
