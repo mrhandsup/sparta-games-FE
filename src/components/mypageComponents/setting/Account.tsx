@@ -85,9 +85,9 @@ const Account = (props: TAccountProps) => {
     <div className="bg-gray-800 rounded-xl px-7 py-5 flex flex-col gap-4 justify-start items-start">
       <div className="w-full flex flex-col gap-5">
         <div className="flex justify-between w-full">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 h-12">
             <img src={log} alt="로고" />
-            <p className="font-DungGeunMo text-heading-32 text-white">계정정보 수정</p>
+            <p className="font-DungGeunMo text-heading-32 text-white font-[400]">계정정보 수정</p>
           </div>
           {userData?.login_type == "DEFAULT" && (
             <button
@@ -150,7 +150,7 @@ const Account = (props: TAccountProps) => {
         type="error"
       >
         <>
-          <div className="text-white flex flex-col gap-2 py-4">
+          <div className="text-white flex flex-col gap-2">
             <li>회원탈퇴 시 연동되어있던 정보는 전부 삭제됩니다.</li>
             <li>다만 만들었던 게임은 본 서비스에서 계속해서 사용될 수 있어요</li>
             <li>원하지 않을 경우, 게임 삭제를 먼저 진행해주신 후 회원탈퇴를 진행해주시기 바랍니다. </li>
@@ -160,7 +160,7 @@ const Account = (props: TAccountProps) => {
             </li>
           </div>
           <input
-            className="w-full h-10 rounded-md border border-solid bg-transparent border-gray-200 p-3 mt-5 mb-3 text-gray-200"
+            className="w-full h-10 rounded-md border border-solid bg-transparent border-gray-200 p-3 mt-[20px] mb-3 text-gray-200"
             placeholder="안녕 스파르타게임즈!"
             {...register("withdrawal")}
           />

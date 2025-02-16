@@ -98,7 +98,7 @@ const SpartaChipSelect = ({ label, options, control, name, pass, subLabel, multi
     fontFamily: "DungGeunMo",
     fontSize: "14px",
     padding: "1px",
-    height: "24px",
+    height: "23px",
     borderRadius: "4px",
     "& .MuiChip-deleteIcon": {
       color: "#FFFFFF",

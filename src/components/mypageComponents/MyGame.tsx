@@ -26,9 +26,9 @@ const MyGame = (props: TMyGameProps) => {
 
   return (
     <div className="bg-gray-800 rounded-xl px-7 py-5 flex flex-col gap-4 justify-start items-center">
-      <div className="flex items-center gap-4 w-full mb-3">
+      <div className="flex  items-center gap-4 w-full mb-3 h-12">
         <img src={log} />
-        <p className="font-DungGeunMo text-heading-32 text-white">[{props.user.nickname}]의 개발중인 게임</p>
+        <p className="font-DungGeunMo text-heading-32 text-white font-[400]">[{props.user.nickname}]의 개발중인 게임</p>
       </div>
       {/* 만든 게임 */}
       {gameData && gameData.length > 0 ? (

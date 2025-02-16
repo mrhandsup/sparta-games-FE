@@ -51,7 +51,7 @@ const Logs = (props: TLogsProps) => {
         >
           <div className="flex items-center gap-4 justify-start ">
             <img src={log} />
-            <p className="font-DungGeunMo text-heading-32 text-white">[{props.user.nickname}]의 Bookmark</p>
+            <p className="font-DungGeunMo text-heading-32 text-white font-[400]">[{props.user.nickname}]의 Bookmark</p>
           </div>
         </GameCardList>
       }
@@ -69,7 +69,7 @@ const Logs = (props: TLogsProps) => {
         >
           <div className="flex items-center gap-4 justify-start ">
             <img src={log} />
-            <p className="font-DungGeunMo text-heading-32 text-white">[{props.user.nickname}]의 Playlist</p>
+            <p className="font-DungGeunMo text-heading-32 text-white font-[400]">[{props.user.nickname}]의 Playlist</p>
           </div>
         </GameCardList>
       }
