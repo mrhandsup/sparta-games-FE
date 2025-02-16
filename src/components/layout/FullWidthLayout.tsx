@@ -3,7 +3,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import Header from "../Header";
 import { useEffect } from "react";
 
-const HomeLayout = () => {
+const FullWidthLayout = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -22,4 +22,4 @@ const HomeLayout = () => {
   );
 };
 
-export default HomeLayout;
+export default FullWidthLayout;

@@ -58,41 +58,43 @@ const ProfileHeader = (props: TProfileProps) => {
   };
 
   return (
-    <div className="bg-gray-800 h-[176px] px-32 py-3 flex items-center w-full">
-      {props.user.profile_image ? (
-        <img className="bg-gray-700 w-[110px] h-[110px] rounded-md" src={props.user.profile_image} />
-      ) : (
-        <img src={defaultProfile} className="bg-gray-700 w-[110px] h-[110px] rounded-md p-3" />
-      )}
-      <div className="flex flex-col gap-3 ml-3 w-full">
-        <div className="flex items-center justify-between w-full">
-          <div className="flex items-center">
-            <span className="font-DungGeunMo text-body-20 bg-white px-2 py-1 rounded-md w-fit">
-              {userTech[0].label}
-            </span>
-            <p className="font-DungGeunMo text-heading-40 text-white font-[400]">[{props.user.nickname}] 님!</p>
-          </div>
-          {props.isMyPage && (
-            <div className="w-[110px]">
-              <input type="file" ref={fileInputRef} onChange={handleFileChange} accept="image/*" className="hidden" />
-              <SpartaButton
-                content="사진 변경"
-                size="small"
-                colorType="grey"
-                onClick={() => fileInputRef.current?.click()}
-              />
+    <div className="bg-gray-800 h-[176px] px-32 py-3 w-full">
+      <div className=" max-w-[1440px] mx-auto flex items-center ">
+        {props.user.profile_image ? (
+          <img className="bg-gray-700 w-[110px] h-[110px] rounded-md" src={props.user.profile_image} />
+        ) : (
+          <img src={defaultProfile} className="bg-gray-700 w-[110px] h-[110px] rounded-md p-3" />
+        )}
+        <div className="flex flex-col gap-3 ml-3 w-full">
+          <div className="flex items-center justify-between w-full">
+            <div className="flex items-center">
+              <span className="font-DungGeunMo text-body-20 bg-white px-2 py-1 rounded-md w-fit">
+                {userTech[0].label}
+              </span>
+              <p className="font-DungGeunMo text-heading-40 text-white font-[400]">[{props.user.nickname}] 님!</p>
             </div>
-          )}
+            {props.isMyPage && (
+              <div className="w-[110px]">
+                <input type="file" ref={fileInputRef} onChange={handleFileChange} accept="image/*" className="hidden" />
+                <SpartaButton
+                  content="사진 변경"
+                  size="small"
+                  colorType="grey"
+                  onClick={() => fileInputRef.current?.click()}
+                />
+              </div>
+            )}
+          </div>
+          {/* 관심 게임 분야 */}
+          <p className="flex gap-2 items-center">
+            <p className="font-DungGeunMo text-alert-hover text-heading-24 font-[400]">관심게임분야</p>
+            {props.user.game_category.map((category, index) => (
+              <span key={index} className="font-DungGeunMo text-body-20 bg-white px-2 py-1  rounded-md w-fit">
+                {category}
+              </span>
+            ))}
+          </p>
         </div>
-        {/* 관심 게임 분야 */}
-        <p className="flex gap-2 items-center">
-          <p className="font-DungGeunMo text-alert-hover text-heading-24 font-[400]">관심게임분야</p>
-          {props.user.game_category.map((category, index) => (
-            <span key={index} className="font-DungGeunMo text-body-20 bg-white px-2 py-1  rounded-md w-fit">
-              {category}
-            </span>
-          ))}
-        </p>
       </div>
     </div>
   );
