@@ -6,6 +6,7 @@ import { TUser } from "../../types";
 type Store = {
   userData?: TUser;
   setUser: (accessToken?: string) => Promise<TUser | undefined>;
+  setUserData: (key: keyof TUser, value: any) => void;
   logout: () => void;
 };
 
@@ -28,6 +29,17 @@ export const userStore = create<Store>()((set) => ({
       console.error("Error fetching user data:", error);
       set({ userData: undefined });
     }
+  },
+  setUserData: (key: keyof TUser, value: any) => {
+    set((state) => {
+      if (!state.userData) return state;
+      return {
+        userData: {
+          ...state.userData,
+          [key]: value,
+        },
+      };
+    });
   },
   logout: () => {
     sessionStorage.removeItem("accessToken");
