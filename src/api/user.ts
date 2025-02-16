@@ -25,7 +25,7 @@ export const updateUserData = async (
     const res = await sparta_games_auth.put(`/users/api/${userId}/`, data, {
       headers: { "Content-Type": "multipart/form-data" },
     });
-    return res.data;
+    return res.data.data;
   } catch (error) {
     console.error(error);
     throw error;
