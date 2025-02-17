@@ -13,10 +13,31 @@ type Props = {
     src: string;
   }[];
 };
-
 const GameMedia = ({ youtubeUrl, screenShot }: Props) => {
-  const videoId = youtubeUrl ? youtubeUrl?.split("v=")[1].split("&")[0] : null;
-  const embedUrl = `https://www.youtube.com/embed/${videoId}`;
+  const getYouTubeVideoId = (url: string) => {
+    try {
+      if (!url.startsWith("http")) {
+        url = "https://" + url;
+      }
+
+      const urlObj = new URL(url);
+
+      if (urlObj.hostname.includes("youtube.com")) {
+        if (urlObj.pathname === "/watch") {
+          return urlObj.searchParams.get("v");
+        } else if (urlObj.pathname.startsWith("/embed/")) {
+          return urlObj.pathname.split("/")[2];
+        }
+      } else if (urlObj.hostname.includes("youtu.be")) {
+        return urlObj.pathname.substring(1);
+      }
+    } catch (e) {
+      window.alert("Invalid YouTube URL");
+      return null;
+    }
+  };
+  const videoId = youtubeUrl && getYouTubeVideoId(youtubeUrl);
+  const embedUrl = videoId ? `https://www.youtube.com/embed/${videoId}` : undefined;
 
   const swiperRef = useRef(null);
 
