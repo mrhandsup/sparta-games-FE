@@ -1,14 +1,18 @@
 import axios from "axios";
 import { sparta_games, sparta_games_auth } from "./axios";
+import { TUser } from "../types";
 
 export const getGameReviews = async (
   gamePk: number,
   page?: number,
   limit?: number,
   order?: "new" | "likes" | "dislikes",
+  userData?: TUser,
 ) => {
   try {
-    const res = await sparta_games.get(`/games/api/list/${gamePk}/reviews/?page=${page}&limit=${limit}&order=${order}`);
+    const client = userData ? sparta_games_auth : sparta_games;
+    const res = await client.get(`/games/api/list/${gamePk}/reviews/?page=${page}&limit=${limit}&order=${order}`);
+
     return res.data;
   } catch (error) {
     if (error instanceof Error) {
