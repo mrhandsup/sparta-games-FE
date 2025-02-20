@@ -23,7 +23,10 @@ const ReviewContents = ({ gamePk }: { gamePk: number }) => {
 
   const { data: reviewData } = useQuery<TReviewResponse>({
     queryKey: ["reviews", currentPage],
-    queryFn: () => getGameReviews(gamePk, currentPage, COUNT_PER_PAGE),
+    queryFn: () =>
+      userData
+        ? getGameReviews(gamePk, currentPage, COUNT_PER_PAGE, "new", userData)
+        : getGameReviews(gamePk, currentPage, COUNT_PER_PAGE),
   });
 
   const { data: myReviewData } = useQuery<TReviewResponse>({
@@ -32,9 +35,11 @@ const ReviewContents = ({ gamePk }: { gamePk: number }) => {
     enabled: !!userData,
   });
 
+  console.log("reviewData", reviewData?.results.all_reviews);
   const allReviewData = reviewData?.results.all_reviews;
   const myReview = myReviewData?.results.my_review;
 
+  console.log("allReviewData", allReviewData);
   useEffect(() => {
     if (allReviewData) {
       const reviewsWithoutMyReview = allReviewData.filter((review) => review.id !== myReview?.id);
@@ -42,12 +47,12 @@ const ReviewContents = ({ gamePk }: { gamePk: number }) => {
     }
   }, [allReviewData, myReview?.id]);
 
-  const isFirstPageVisible = currentPage !== 1 ? "hidden" : "";
-
   const onClickOrderHandler = async (order: "new" | "likes" | "dislikes") => {
     const res = await getGameReviews(gamePk, currentPage, COUNT_PER_PAGE, order);
 
-    setReviewList(res?.results.all_reviews);
+    const allReviews = res?.results.all_reviews.filter((review: TReviewData[]) => Object.keys(review).length > 0);
+
+    setReviewList(allReviews);
     setSelectedOrder(order);
   };
 
@@ -85,25 +90,21 @@ const ReviewContents = ({ gamePk }: { gamePk: number }) => {
                   onClickModalToggleHandler();
                   setIsRegister(true);
                 }}
-                className={`${isFirstPageVisible} flex items-center justify-center gap-6 h-[189px] border border-solid border-primary-500 bg-gray-800 rounded-xl cursor-pointer`}
+                className=" flex items-center justify-center gap-6 h-[189px] border border-solid border-primary-500 bg-gray-800 rounded-xl cursor-pointer"
               >
                 <img src={reviewRegister} />
                 <p className="text-white font-DungGeunMo text-2xl">내 리뷰 등록하기</p>
               </div>
             ) : (
-              <div className={`${isFirstPageVisible}`}>
-                <ReviewCard
-                  onClickModalToggleHandler={onClickModalToggleHandler}
-                  review={myReview}
-                  isMyReview={!!myReview}
-                  setIsRegister={setIsRegister}
-                />
-              </div>
+              <ReviewCard
+                onClickModalToggleHandler={onClickModalToggleHandler}
+                review={myReview}
+                isMyReview={!!myReview}
+                setIsRegister={setIsRegister}
+              />
             )
           ) : (
-            <div
-              className={`${isFirstPageVisible} flex items-center justify-center gap-6 px-11 h-[189px] border border-solid border-alert-default hover:border-alert-hover bg-gray-800 rounded-xl`}
-            >
+            <div className="flex items-center justify-center gap-6 px-11 h-[189px] border border-solid border-alert-default hover:border-alert-hover bg-gray-800 rounded-xl">
               <img src={reviewRegister} />
               <p className="text-white font-DungGeunMo text-2xl text-center leading-none">
                 비회원은 리뷰등록이 불가능합니다.

@@ -37,7 +37,7 @@ const GameMedia = ({ youtubeUrl, screenShot }: Props) => {
     }
   };
   const videoId = youtubeUrl && getYouTubeVideoId(youtubeUrl);
-  const embedUrl = videoId ? `https://www.youtube.com/embed/${videoId}` : undefined;
+  const embedUrl = videoId ? `https://www.youtube.com/embed/${videoId}` : "";
 
   const swiperRef = useRef(null);
 
