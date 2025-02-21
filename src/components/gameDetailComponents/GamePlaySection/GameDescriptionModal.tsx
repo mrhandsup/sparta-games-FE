@@ -6,7 +6,7 @@ import { Pagination } from "swiper/modules";
 
 import "swiper/css";
 import "swiper/css/pagination";
-import "./GameDescriptionModalSwiper.css";
+import "./GamePlaySwiper.css";
 import "react-quill/dist/quill.snow.css";
 import Preview from "../../../assets/gameDetail/Priview.jpg";
 
@@ -40,7 +40,7 @@ const GameDescriptionModal = ({ title, content, screenshot, modalToggle, onClick
               }}
               loop={true}
               centeredSlides={true}
-              slidesPerView={1.5}
+              slidesPerView={2}
               modules={[Pagination]}
               className="descriptionSwiper"
             >

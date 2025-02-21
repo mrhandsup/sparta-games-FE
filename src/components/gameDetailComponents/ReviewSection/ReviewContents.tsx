@@ -35,11 +35,9 @@ const ReviewContents = ({ gamePk }: { gamePk: number }) => {
     enabled: !!userData,
   });
 
-  console.log("reviewData", reviewData?.results.all_reviews);
   const allReviewData = reviewData?.results.all_reviews;
   const myReview = myReviewData?.results.my_review;
 
-  console.log("allReviewData", allReviewData);
   useEffect(() => {
     if (allReviewData) {
       const reviewsWithoutMyReview = allReviewData.filter((review) => review.id !== myReview?.id);

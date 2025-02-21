@@ -21,9 +21,9 @@ const SpartaButton = ({
     const baseStyles = "rounded-md transition-colors duration-200 box-border";
 
     const sizeStyles = {
-      small: "h-10 text-title-16",
-      medium: "h-12 text-title-18",
-      large: "h-14 text-title-22",
+      small: "h-10 text-title-16 font-normal",
+      medium: "h-12 text-title-18 font-normal",
+      large: "h-14 text-title-22 font-normal",
     };
 
     const disabledStyles = {

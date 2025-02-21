@@ -24,10 +24,9 @@ type Props = {
   makerPk?: number;
   isLiked?: boolean;
   gamePath?: string;
-  thumbnail?: string;
 };
 
-const GamePlay = ({ gamePk, title, makerName, makerPk, gamePath, thumbnail }: Props) => {
+const GamePlay = ({ gamePk, title, makerName, makerPk, gamePath }: Props) => {
   const BOOK_MARK_MODAL_ID = "bookMarkModal";
   const NO_ACTION_MODAL_ID = "noActionModal";
   const { modalToggles, onClickModalToggleHandlers } = useModalToggles([BOOK_MARK_MODAL_ID, NO_ACTION_MODAL_ID]);
