@@ -82,13 +82,15 @@ const GameDetail = () => {
             {userData?.user_pk === gamePlayData?.maker && (
               <>
                 <div className="flex gap-2">
-                  <SpartaButton
-                    content={"수정하기"}
-                    colorType={"alert"}
-                    width={"w-[134px]"}
-                    size={"medium"}
-                    onClick={() => onClickModalToggleHandlers[GAME_EDIT_CHECK_ID]()}
-                  />
+                  <span>
+                    <SpartaButton
+                      content={"수정하기"}
+                      colorType={"alert"}
+                      width={"w-[134px]"}
+                      size={"medium"}
+                      onClick={() => onClickModalToggleHandlers[GAME_EDIT_CHECK_ID]()}
+                    />
+                  </span>
                   <SpartaButton
                     content={"삭제하기"}
                     colorType={"error"}

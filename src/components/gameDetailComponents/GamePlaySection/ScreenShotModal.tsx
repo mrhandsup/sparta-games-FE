@@ -1,7 +1,11 @@
 import { Modal, Box } from "@mui/material";
 import { useEffect, useState } from "react";
-import { SwiperRef } from "swiper/react";
+import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
 import useModalToggle from "../../../hook/useModalToggle";
+import { Pagination } from "swiper/modules";
+
+import "swiper/css";
+import "./GamePlaySwiper.css";
 
 type Props = {
   screenShotList?: {
@@ -12,13 +16,7 @@ type Props = {
 };
 const ScreenShotModal = ({ screenShotList, swiperRef }: Props) => {
   const { modalToggle, onClickModalToggleHandler } = useModalToggle();
-
-  const [gameImage, setGameImage] = useState<string | null>(null);
-
-  const openScreenShot = (image: string) => {
-    setGameImage(image);
-    onClickModalToggleHandler();
-  };
+  const [imageIndex, setImageIndex] = useState(0);
 
   useEffect(() => {
     if (swiperRef.current) {
@@ -31,11 +29,8 @@ const ScreenShotModal = ({ screenShotList, swiperRef }: Props) => {
           const slideIndex = slideElement.getAttribute("data-swiper-slide-index");
 
           if (slideIndex !== null && screenShotList) {
-            const imageSrc = screenShotList[Number(slideIndex)].src;
-
-            openScreenShot(
-              import.meta.env.VITE_DEPLOYMENT_MODE === "dev" ? import.meta.env.VITE_PROXY_HOST + imageSrc : imageSrc,
-            );
+            setImageIndex(Number(slideIndex));
+            onClickModalToggleHandler();
           }
         }
       };
@@ -54,8 +49,31 @@ const ScreenShotModal = ({ screenShotList, swiperRef }: Props) => {
 
   return (
     <Modal open={modalToggle} onClose={onClickModalToggleHandler} disableScrollLock={true}>
-      <Box className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[60rem] rounded-3xl outline-none border border-solid border-primary-500 bg-gray-800 p-8">
-        {gameImage && <img src={gameImage} className="w-[60rem] h-[40rem] object-cover rounded-3xl" alt="modalImage" />}
+      <Box className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[100rem] rounded-3xl outline-none border border-solid border-primary-500 bg-gray-800 p-8">
+        <Swiper
+          pagination={{
+            clickable: true,
+          }}
+          loop={true}
+          centeredSlides={true}
+          slidesPerView={1.5}
+          modules={[Pagination]}
+          initialSlide={imageIndex}
+          className="stillCutSwiper"
+        >
+          {screenShotList?.map((image, index) => (
+            <SwiperSlide key={index}>
+              <img
+                src={
+                  import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
+                    ? import.meta.env.VITE_PROXY_HOST + image.src
+                    : image.src
+                }
+                alt={`carousel-img-${index}`}
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </Box>
     </Modal>
   );
