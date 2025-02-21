@@ -16,6 +16,7 @@ import { TGamePlayData, TGameUploadInput } from "../../types";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "./Form.css";
+import JSZip from "jszip";
 
 type Props = {
   note: {
@@ -45,6 +46,7 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
 
   const { modalToggles, onClickModalToggleHandlers } = useModalToggles([GAME_UPLOAD_CHECK_ID, NO_ACTION_MODAL_ID]);
 
+  const [isUploading, setIsUploading] = useState(false);
   const noActionData: { [key: string]: Partial<TSpartaReactionModalProps> } = {
     fileSizeWarning: {
       title: "확인해주세요!",
@@ -257,11 +259,26 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
     const urlArr: string[] = [];
     const fileInput = document.getElementById(inputId) as HTMLInputElement;
 
+    if (files[0].type === "application/zip" || files[0].type === "application/x-zip-compressed") {
+      setIsUploading(true);
+      const zip = await JSZip.loadAsync(files[0]);
+      const fileNames = Object.keys(zip.files);
+      const gzFilesInBuild = fileNames.filter((name) => name.endsWith(".gz"));
+
+      if (gzFilesInBuild.length === 0) {
+        window.alert("WebGL로 빌드된 게임파일을 업로드해주세요!");
+        fileInput.value = "";
+        resetField(inputId as "gameFile");
+        setIsUploading(false);
+      }
+    }
+
     for (const file of files) {
       const isValid = await handleFileValidation(file, inputId);
 
       if (isValid) {
         urlArr.push(changeUrl(file));
+        setIsUploading(false);
       } else {
         fileInput.value = "";
         resetField(inputId as "gameFile" | "thumbnail" | "stillCut");
@@ -333,7 +350,9 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
 
               <div className="flex gap-2">
                 <div className="py-4 px-4 w-full bg-gray-700 border border-solid border-white rounded-md resize-none whitespace-nowrap overflow-hidden text-ellipsis">
-                  {typeof watch("gameFile") === "object" && watch("gameFile")?.length > 0
+                  {isUploading
+                    ? "파일을 검사중입니다."
+                    : typeof watch("gameFile") === "object" && watch("gameFile")?.length > 0
                     ? decodeURIComponent((watch("gameFile")[0] as File)?.name)
                     : typeof watch("gameFile") === "string"
                     ? decodeURIComponent(extractFileName(previousGameData?.gamefile, "gameFile") as string)
@@ -343,10 +362,14 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
                 <label
                   htmlFor="gameFile"
                   className={`flex justify-center items-center ${
-                    watch("gameFile")?.length > 0 ? "bg-primary-500" : "bg-gray-100"
+                    !isUploading && watch("gameFile")?.length > 0 ? "bg-primary-500" : "bg-gray-100"
                   } text-black rounded-sm text-title-18 whitespace-nowrap cursor-pointer`}
                 >
-                  {watch("gameFile")?.length > 0 ? <p className="px-5">수정하기</p> : <p className="px-7">업로드</p>}
+                  {!isUploading && watch("gameFile")?.length > 0 ? (
+                    <p className="px-5">수정하기</p>
+                  ) : (
+                    <p className="px-7">업로드</p>
+                  )}
                 </label>
 
                 <input
