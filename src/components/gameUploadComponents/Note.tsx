@@ -23,18 +23,27 @@ const Note = ({ onClickHandler, state }: Props) => {
 
   return (
     <section className="mx-[130px]">
-      {/* 약관 창 */}
       <div
         className={`overflow-hidden transition-all duration-500 
           ${isExpanded && allChecked ? "max-h-0 opacity-0" : "max-h-[500px] opacity-100"}
          `}
       >
         <div className="flex flex-col gap-3 py-5 px-10 bg-[#171717] rounded-[20px]">
-          <p className="text-title-22 text-[#FF5C5C]">게임 업로드 전, 아래 유의사항을 반드시 확인하여 주세요.</p>
-          <ol className="list-decimal text-title-18 text-white leading-[130%]">
+          {allChecked ? (
+            <div className="flex justify-between">
+              <p className="text-title-22 text-[#05F500]">약관을 전부 확인하셨습니다.</p>
+              <div onClick={toggleTerms} className="flex items-center gap-2 cursor-pointer">
+                <span className="text-gray-100">약관 접기</span>
+                <AiFillCaretUp size={22} color={"#BFBFBF"} />
+              </div>
+            </div>
+          ) : (
+            <p className="text-title-22 text-[#FF5C5C]">게임 업로드 전, 아래 유의사항을 반드시 확인하여 주세요.</p>
+          )}
+          <ol className="text-title-18 text-white leading-[130%]">
             <li className="relative">
-              Sparta Games에 오신걸 환영합니다
-              <ol className="list-alpha ml-5 mr-9 text-body-18">
+              1. Sparta Games에 오신걸 환영합니다
+              <ol className="list-alpha ml-12 text-body-18">
                 <li>Player에게는 다양한 인디게임을 체험하고, 경험할 수 있게 합니다.</li>
                 <li>
                   Maker에게는 게임 소개할 수 있고, 자유로운 피드백을 받고, 게임업계의 사람들과 소통하며 본인의 실력을
@@ -45,9 +54,9 @@ const Note = ({ onClickHandler, state }: Props) => {
             </li>
             <hr className="w-full h-[1px] bg-gray-500 my-2" />
             <li className="relative">
-              이러한 가치를 전달하기 위해, 아래와 지침을 통해 Player와 Maker에게 좋은 서비스를 제공하고자 합니다.
+              2. 이러한 가치를 전달하기 위해, 아래와 지침을 통해 Player와 Maker에게 좋은 서비스를 제공하고자 합니다.
               <br /> 지침을 준수하지 않은 경우, 서비스 관리자에 의해 게임이 삭제되거나 활동이 제한될 수 있습니다.
-              <ol className="list-alpha ml-5 mr-9 text-body-18">
+              <ol className="list-alpha ml-12 text-body-18">
                 <li>업로드 및 서비스 된 게임의 플레이가 어려울 정도로 미개발 상태인 경우</li>
                 <li>광고성 발작을 일으킬 수 있는 지나친 이펙트 효과가 사용된 경우</li>
                 <li>게임과 관련없는 태그가 사용된 경우</li>
@@ -59,8 +68,8 @@ const Note = ({ onClickHandler, state }: Props) => {
             </li>
             <hr className="w-full h-[1px] bg-gray-500 my-2" />
             <li className="relative">
-              게임은 검수 이후 홈페이지에 릴리즈 됩니다.
-              <ol className="list-alpha ml-5 mr-9 text-body-18">
+              3. 게임은 검수 이후 홈페이지에 릴리즈 됩니다.
+              <ol className="list-alpha ml-12 text-body-18">
                 <li>최대 7일간의 검수과정이 걸릴 수 있습니다.</li>
                 <li>
                   검수에 통과되었다 하더라도, 2번의 신고와 또는 실제 유저 플레이 이후 문제가 발견될 경우 별도의 조치가
@@ -73,22 +82,12 @@ const Note = ({ onClickHandler, state }: Props) => {
         </div>
       </div>
 
-      {/* "업로드 준비가 완료되었습니다." 메시지 */}
-      {allChecked && (
+      {allChecked && isExpanded && (
         <div className="flex justify-between items-center mt-2 px-10 py-5 rounded-3xl bg-gray-800">
           <p className="text-xl font-Pretendard text-primary-500">업로드 준비가 완료되었습니다.</p>
           <div onClick={toggleTerms} className="flex items-center gap-2 cursor-pointer">
-            {isExpanded ? (
-              <>
-                <span className="text-gray-100">약관 다시 확인하기</span>
-                <AiFillCaretDown size={22} color={"#BFBFBF"} />
-              </>
-            ) : (
-              <>
-                <span className="text-gray-100">약관 접기</span>
-                <AiFillCaretUp size={22} color={"#BFBFBF"} />
-              </>
-            )}
+            <span className="text-gray-100">약관 다시 확인하기</span>
+            <AiFillCaretDown size={22} color={"#BFBFBF"} />
           </div>
         </div>
       )}
