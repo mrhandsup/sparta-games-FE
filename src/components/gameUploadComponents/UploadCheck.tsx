@@ -23,6 +23,7 @@ const UploadCheck = ({ gameUploadResponse, handleSubmit, onSubmitHandler, onClos
 
   const { userData } = userStore();
 
+  const [isLoading, setIsLoading] = useState(false);
   const [inputValue, setInputValue] = useState("");
 
   const navigate = useNavigate();
@@ -36,10 +37,23 @@ const UploadCheck = ({ gameUploadResponse, handleSubmit, onSubmitHandler, onClos
     setInputValue(e.target.value);
   };
 
-  const onClickUploadGame = () => {
-    handleSubmit(onSubmitHandler)();
+  const onClickUploadGame = async () => {
+    if (isLoading) return;
 
-    onClickModalToggleHandlers[GAME_UPLOAD_SUCCESS_ID]();
+    setIsLoading(true);
+
+    try {
+      await new Promise<void>((resolve) => {
+        handleSubmit(async (data) => {
+          await onSubmitHandler(data); // 실제 요청을 기다림
+          resolve(); // 요청 완료 후 resolve 호출
+        })();
+      });
+
+      onClickModalToggleHandlers[GAME_UPLOAD_SUCCESS_ID](); // 성공 시 모달 열기
+    } finally {
+      setIsLoading(false); // 요청 완료 후 로딩 해제
+    }
   };
 
   return (
@@ -83,8 +97,8 @@ const UploadCheck = ({ gameUploadResponse, handleSubmit, onSubmitHandler, onClos
         className={`flex h-12 rounded-md ${isPhraseCorrect ? "bg-primary-500" : "bg-gray-400"} text-center font-bold`}
       >
         {isPhraseCorrect && !isEditMode ? (
-          <button onClick={onClickUploadGame} className="w-full">
-            문구가 확인되었습니다. 게임 등록을 진행합니다.
+          <button onClick={onClickUploadGame} className="w-full" disabled={isLoading}>
+            {isLoading ? "등록이 진행 중입니다." : "문구가 확인되었습니다. 게임 등록을 진행합니다."}
           </button>
         ) : (
           <button disabled={true} className="w-full">
