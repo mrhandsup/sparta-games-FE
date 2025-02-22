@@ -17,6 +17,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "./Form.css";
 import JSZip from "jszip";
+import SpartaButton from "../../spartaDesignSystem/SpartaButton";
 
 type Props = {
   note: {
@@ -32,6 +33,7 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
   const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
   const MAX_FILE_SIZE = 200 * 1024 * 1024;
   const GAME_UPLOAD_CHECK_ID = "gameUploadCheckId";
+  const EDIT_SUCCESS_ID = "editSuccessId";
   const NO_ACTION_MODAL_ID = "noActionModal";
 
   const { register, watch, control, setValue, formState, handleSubmit, trigger, getValues, reset, resetField } =
@@ -44,7 +46,11 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
   const navigate = useNavigate();
   const { userData } = userStore();
 
-  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([GAME_UPLOAD_CHECK_ID, NO_ACTION_MODAL_ID]);
+  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([
+    GAME_UPLOAD_CHECK_ID,
+    EDIT_SUCCESS_ID,
+    NO_ACTION_MODAL_ID,
+  ]);
 
   const [isUploading, setIsUploading] = useState(false);
   const noActionData: { [key: string]: Partial<TSpartaReactionModalProps> } = {
@@ -96,18 +102,18 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
       type: "alert",
     },
 
-    editConfirm: {
-      title: "수정 완료",
-      content: "수정이 완료되었습니다.",
-      btn1: {
-        text: "확인",
-        onClick: () => {
-          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-          navigate(`/my-page/${userData?.user_pk}`);
-        },
-      },
-      type: "alert",
-    },
+    // editConfirm: {
+    //   title: "수정 완료",
+    //   content: "수정이 완료되었습니다.",
+    //   btn1: {
+    //     text: "확인",
+    //     onClick: () => {
+    //       onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+    //       navigate(`/my-page/${userData?.user_pk}`);
+    //     },
+    //   },
+    //   type: "alert",
+    // },
   };
 
   const [noActionModalData, setNoActionModalData] = useState<Partial<TSpartaReactionModalProps>>(
@@ -201,7 +207,7 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
       onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
     } else if (res?.status === 200) {
       setNoActionModalData(noActionData.editConfirm);
-      onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+      onClickModalToggleHandlers[EDIT_SUCCESS_ID]();
     }
   };
 
@@ -555,6 +561,28 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
           onClose={onClickModalToggleHandlers[GAME_UPLOAD_CHECK_ID]}
           isEditMode={isEditMode}
         />
+      </SpartaModal>
+
+      <SpartaModal
+        isOpen={modalToggles[EDIT_SUCCESS_ID]}
+        onClose={onClickModalToggleHandlers[EDIT_SUCCESS_ID]}
+        modalId={EDIT_SUCCESS_ID}
+        closeOnClickOutside={false}
+        type={"alert"}
+      >
+        <div className="min-w-80 flex flex-col items-center gap-4">
+          <div className="text-[18px] font-medium text-alert-default font-DungGeunMo">수정 완료</div>
+          <div className="text-[16px] font-light leading-7 my-2 text-white text-center"> 수정이 완료되었습니다.</div>
+          <button
+            className="w-full rounded-md transition-colors duration-200 box-border h-10 text-title-16 font-normal bg-alert-default hover:bg-alert-hover"
+            onClick={() => {
+              onClickModalToggleHandlers[EDIT_SUCCESS_ID]();
+              navigate(`/my-page/${userData?.user_pk}`);
+            }}
+          >
+            확인
+          </button>
+        </div>
       </SpartaModal>
     </>
   );
