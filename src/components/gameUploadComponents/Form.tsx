@@ -17,7 +17,6 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "./Form.css";
 import JSZip from "jszip";
-import SpartaButton from "../../spartaDesignSystem/SpartaButton";
 
 type Props = {
   note: {
@@ -43,6 +42,7 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
 
   useGameEditSetValue({ previousGameData, isEditMode, setValue, trigger, reset });
 
+  console.log(previousGameData);
   const navigate = useNavigate();
   const { userData } = userStore();
 
@@ -101,19 +101,6 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
       },
       type: "alert",
     },
-
-    // editConfirm: {
-    //   title: "수정 완료",
-    //   content: "수정이 완료되었습니다.",
-    //   btn1: {
-    //     text: "확인",
-    //     onClick: () => {
-    //       onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-    //       navigate(`/my-page/${userData?.user_pk}`);
-    //     },
-    //   },
-    //   type: "alert",
-    // },
   };
 
   const [noActionModalData, setNoActionModalData] = useState<Partial<TSpartaReactionModalProps>>(
@@ -155,7 +142,7 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
     const formData = new FormData();
 
     formData.append("title", data.title);
-    formData.append("category", data.category.join(","));
+    formData.append("category", data.category);
     formData.append("content", data.content);
     formData.append("youtube_url", data.video);
 
@@ -412,8 +399,6 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
                   options={GAME_CATEGORY}
                   control={control}
                   {...register("category", { required: "필수" })}
-                  multiple={true}
-                  maxCount={1}
                 />
               </div>
             </div>

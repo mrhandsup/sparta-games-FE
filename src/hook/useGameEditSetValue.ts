@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { extractFileName, getMimeType } from "../util/gameFileParser";
 import { UseFormReset, UseFormSetValue, UseFormTrigger } from "react-hook-form";
-import { TCategoryListResponse, TGamePlayData, TGameUploadInput } from "../types";
+import { TGamePlayData, TGameUploadInput } from "../types";
 
 type Props = {
   previousGameData: TGamePlayData | undefined;
@@ -34,6 +34,7 @@ export const useGameEditSetValue = ({ previousGameData, isEditMode, setValue, re
       const blob = await response.blob();
       const file = new File([blob], decodeURIComponent(orginalContentName as string), { type: mimeType });
 
+      console.log("file", file, [file]);
       if (contentType === "stillCut" && index !== undefined) {
         const fieldName = `stillCut.${index}` as keyof TGameUploadInput;
         setValue(fieldName, [file]);
@@ -47,22 +48,16 @@ export const useGameEditSetValue = ({ previousGameData, isEditMode, setValue, re
 
   useEffect(() => {
     if (previousGameData && isEditMode) {
-      setValue("thumbnail", previousGameData.thumbnail);
-      setValue("gameFile", previousGameData.gamefile);
+      changeUrltoFile("thumbnail", previousGameData.thumbnail);
+      changeUrltoFile("gameFile", previousGameData.gamefile);
 
       previousGameData.screenshot.forEach((image, index) => {
         changeUrltoFile("stillCut", image.src, index);
       });
 
       setValue("title", previousGameData.title);
-
-      setValue(
-        "category",
-        previousGameData.category.map((cat: TCategoryListResponse[number]) => cat.name),
-      );
-
+      setValue("category", previousGameData.category[0].name);
       setValue("content", previousGameData.content);
-
       setValue("video", previousGameData.youtube_url);
     } else {
       reset();
