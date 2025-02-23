@@ -77,7 +77,7 @@ const UploadCheck = ({ gameUploadResponse, handleSubmit, onSubmitHandler, onClos
             <span>·</span> 검수 중 수정이 진행될 경우, 새롭게 검수가 진행될 수 있으니 다시한번 확인해주시기 바랍니다.
           </li>
           <li className="flex items-center gap-2 text-sm">
-            <span>·</span> 등록를 희망하신다면, <b className="text-primary-500">‘즐거운 게임세상 스파르타게임즈!’</b>{" "}
+            <span>·</span> 등록를 희망하신다면, <b className="text-primary-500">‘즐거운 게임세상 스파르타게임즈!’</b>
             라고 입력해주시기 바랍니다.
           </li>
         </ul>
@@ -97,7 +97,11 @@ const UploadCheck = ({ gameUploadResponse, handleSubmit, onSubmitHandler, onClos
         className={`flex h-12 rounded-md ${isPhraseCorrect ? "bg-primary-500" : "bg-gray-400"} text-center font-bold`}
       >
         {isPhraseCorrect && !isEditMode ? (
-          <button onClick={onClickUploadGame} className="w-full" disabled={isLoading}>
+          <button
+            onClick={onClickUploadGame}
+            className={`w-full curo ${isLoading ? "cursor-wait" : "cursor-pointer"}`}
+            disabled={isLoading}
+          >
             {isLoading ? "등록이 진행 중입니다." : "문구가 확인되었습니다. 게임 등록을 진행합니다."}
           </button>
         ) : (

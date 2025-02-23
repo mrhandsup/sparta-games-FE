@@ -31,14 +31,16 @@ const Note = ({ onClickHandler, state }: Props) => {
         <div className="flex flex-col gap-3 py-5 px-10 bg-[#171717] rounded-[20px]">
           {allChecked ? (
             <div className="flex justify-between">
-              <p className="text-title-22 text-[#05F500]">약관을 전부 확인하셨습니다.</p>
+              <p className="text-lg font-medium text-[#05F500]">약관을 전부 확인하셨습니다.</p>
               <div onClick={toggleTerms} className="flex items-center gap-2 cursor-pointer">
                 <span className="text-gray-100">약관 접기</span>
                 <AiFillCaretUp size={22} color={"#BFBFBF"} />
               </div>
             </div>
           ) : (
-            <p className="text-title-22 text-[#FF5C5C]">게임 업로드 전, 아래 유의사항을 반드시 확인하여 주세요.</p>
+            <p className="text-lg font-medium text-[#FF5C5C]">
+              게임 업로드 전, 아래 유의사항을 반드시 확인하여 주세요.
+            </p>
           )}
           <ol className="text-title-18 text-white leading-[130%]">
             <li className="relative">
@@ -84,7 +86,7 @@ const Note = ({ onClickHandler, state }: Props) => {
 
       {allChecked && isExpanded && (
         <div className="flex justify-between items-center mt-2 px-10 py-5 rounded-3xl bg-gray-800">
-          <p className="text-xl font-Pretendard text-primary-500">업로드 준비가 완료되었습니다.</p>
+          <p className="text-lg font-medium text-primary-500">업로드 준비가 완료되었습니다.</p>
           <div onClick={toggleTerms} className="flex items-center gap-2 cursor-pointer">
             <span className="text-gray-100">약관 다시 확인하기</span>
             <AiFillCaretDown size={22} color={"#BFBFBF"} />
