@@ -30,7 +30,7 @@ type Props = {
 
 const Form = ({ note, previousGameData, isEditMode }: Props) => {
   const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
-  const MAX_FILE_SIZE = 200 * 1024 * 1024;
+  const MAX_FILE_SIZE = 500 * 1024 * 1024;
   const GAME_UPLOAD_CHECK_ID = "gameUploadCheckId";
   const EDIT_SUCCESS_ID = "editSuccessId";
   const NO_ACTION_MODAL_ID = "noActionModal";
@@ -42,7 +42,6 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
 
   useGameEditSetValue({ previousGameData, isEditMode, setValue, trigger, reset });
 
-  console.log(previousGameData);
   const navigate = useNavigate();
   const { userData } = userStore();
 
@@ -56,7 +55,7 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
   const noActionData: { [key: string]: Partial<TSpartaReactionModalProps> } = {
     fileSizeWarning: {
       title: "확인해주세요!",
-      content: "용량이 커서 파일을 업로드 할 수 없습니다.<br/>업로드할 파일이 200mb 이하인지 확인해주세요.",
+      content: "용량이 커서 파일을 업로드 할 수 없습니다.<br/>업로드할 파일이 500mb 이하인지 확인해주세요.",
       btn1: {
         text: "확인",
         onClick: () => {
@@ -93,6 +92,18 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
     imageUploadWarning: {
       title: "확인해주세요!",
       content: "5mb 이하의 이미지 파일을 업로드해 주세요.",
+      btn1: {
+        text: "확인",
+        onClick: () => {
+          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+        },
+      },
+      type: "alert",
+    },
+
+    gameFileUploadWarning: {
+      title: "확인해주세요!",
+      content: "WebGL로 빌드된 게임파일을 업로드해주세요!",
       btn1: {
         text: "확인",
         onClick: () => {
@@ -259,7 +270,8 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
       const gzFilesInBuild = fileNames.filter((name) => name.endsWith(".gz"));
 
       if (gzFilesInBuild.length === 0) {
-        window.alert("WebGL로 빌드된 게임파일을 업로드해주세요!");
+        setNoActionModalData(noActionData.gameFileUploadWarning);
+        onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
         fileInput.value = "";
         resetField(inputId as "gameFile");
         setIsUploading(false);
@@ -349,7 +361,7 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
                     ? decodeURIComponent((watch("gameFile")[0] as File)?.name)
                     : typeof watch("gameFile") === "string"
                     ? decodeURIComponent(extractFileName(previousGameData?.gamefile, "gameFile") as string)
-                    : "200mb 이하 Zip파일로 업로드 해주세요."}
+                    : "500mb 이하 Zip파일로 업로드 해주세요."}
                 </div>
 
                 <label
