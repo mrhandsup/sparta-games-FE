@@ -1,5 +1,6 @@
 // import { sparta_games } from "./axios";
 
+import axios from "axios";
 import { sparta_games } from "./axios";
 
 export const getUserInfo = async (code: string) => {
@@ -95,5 +96,34 @@ export const signUp = async (data: any) => {
     return response;
   } catch (error) {
     throw error;
+  }
+};
+
+export const postSendEmailCode = async (email: string, isNew: boolean) => {
+  try {
+    const response = await sparta_games.post("/accounts/api/email/", {
+      email,
+      is_new: isNew,
+    });
+
+    return response;
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response) {
+      return error.response;
+    }
+  }
+};
+
+export const postEmailVerify = async (email: string, code: number) => {
+  try {
+    const response = await sparta_games.post("/accounts/api/email-verify/", {
+      email,
+      code,
+    });
+    return response;
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response) {
+      return error.response;
+    }
   }
 };

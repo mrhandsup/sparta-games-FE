@@ -4,6 +4,7 @@ import SpartaButton from "../../spartaDesignSystem/SpartaButton";
 import SpartaReactionModal, { TSpartaReactionModalProps } from "../../spartaDesignSystem/SpartaReactionModal";
 import SpartaTextField from "../../spartaDesignSystem/SpartaTextField";
 import { useFormContext } from "react-hook-form";
+import { postEmailVerify, postSendEmailCode } from "../../api/login";
 
 type Props = {};
 
@@ -15,7 +16,11 @@ const Account = (props: Props) => {
     trigger,
   } = useFormContext();
 
+  const [isEmailVerifying, setIsEmailVerifying] = useState(false);
+  const [isVerifySuccess, setIsVerifySuccess] = useState(false);
+
   const email = watch("email");
+  const emailCode = watch("email_code");
   const password = watch("password");
   const password_check = watch("password_check");
 
@@ -32,6 +37,30 @@ const Account = (props: Props) => {
       title: "인증번호 전송 완료",
       content:
         "플레이어님을 환영합니다 :)</br>작성해주신 이메일로 인증번호가 전송되었습니다.</br>스팸메일함로 전송되는 경우도 있으니 꼭 메일함을 확인해주시고</br>올바른 인증번호를 입력해주세요. ",
+      btn1: {
+        text: "확인했습니다",
+        onClick: () => {
+          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+        },
+      },
+      type: "primary",
+    },
+
+    duplicateEmail: {
+      title: "인증번호 전송 실패",
+      content: "이미 가입한 이메일입니다.",
+      btn1: {
+        text: "확인했습니다",
+        onClick: () => {
+          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+        },
+      },
+      type: "error",
+    },
+
+    successVerify: {
+      title: "이메일 인증 완료",
+      content: "이메일 인증이 완료되었습니다.",
       btn1: {
         text: "확인했습니다",
         onClick: () => {
@@ -79,17 +108,53 @@ const Account = (props: Props) => {
     validate: (value: string) => value === password || "비밀번호가 일치하지 않습니다",
   };
 
-  // TODO : 이메일 인증번호 유효성 검사 규칙
   const emailCodeValidation = {
-    // required: "인증번호를 입력해주세요",
-    minLength: {
-      value: 6,
+    required: "인증번호를 입력해주세요",
+
+    pattern: {
+      value: /^[0-9]{6}$/,
       message: "올바른 인증번호 형식이 아닙니다",
     },
-    maxLength: {
-      value: 6,
-      message: "올바른 인증번호 형식이 아닙니다",
-    },
+  };
+
+  const onClickSendEmailCode = async () => {
+    setIsEmailVerifying(true);
+    const res = await postSendEmailCode(email, true);
+
+    if (res?.status === 200) {
+      setNoActionModalData(noActionData.emailVerify);
+      onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+    } else if (res?.status === 400) {
+      setIsEmailVerifying(false);
+
+      setNoActionModalData(noActionData.duplicateEmail);
+      onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+    }
+  };
+
+  const onClickEmailValidation = async (code: number) => {
+    const res = await postEmailVerify(email, code);
+
+    if (res?.status === 200) {
+      setIsVerifySuccess(true);
+
+      setNoActionModalData(noActionData.successVerify);
+      onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+    } else if (res?.status === 400) {
+      setNoActionModalData({
+        title: "이메일 인증 실패",
+        content: res.data.error,
+        btn1: {
+          text: "확인했습니다",
+          onClick: () => {
+            onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+          },
+        },
+        type: "error",
+      });
+
+      onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+    }
   };
 
   useEffect(() => {
@@ -117,30 +182,40 @@ const Account = (props: Props) => {
         pass={email && !errors.email}
         btnContent={
           <SpartaButton
-            content="인증하기"
+            content="인증번호<br/>전송"
             size="medium"
             colorType="primary"
-            disabled={!email || !!errors.email}
-            onClick={() => onClickModalToggleHandlers[NO_ACTION_MODAL_ID]()}
+            disabled={!email || !!errors.email || isEmailVerifying}
+            onClick={onClickSendEmailCode}
           />
         }
       />
 
-      {/* TODO */}
-      {/* <SpartaTextField
-        label="인증번호 입력"
-        type="medium"
-        register={register("email_code", emailCodeValidation)}
-        inputProps={{
-          placeholder: "인증번호",
-        }}
-        subLabel={{
-          default: "이메일로 전송된 인증번호를 입력하세요",
-          error: errors.email_code?.message as string,
-          pass: "",
-        }}
-        error={!!errors.email_code}
-      /> */}
+      {isEmailVerifying && (
+        <SpartaTextField
+          label="인증번호 입력"
+          type="medium"
+          register={register("email_code", emailCodeValidation)}
+          inputProps={{
+            placeholder: "인증번호",
+          }}
+          subLabel={{
+            default: "이메일로 전송된 인증번호를 입력하세요",
+            error: errors.email_code?.message as string,
+            pass: "",
+          }}
+          error={!!errors.email_code}
+          btnContent={
+            <SpartaButton
+              content={`${isVerifySuccess ? "인증완료" : "인증하기"}`}
+              size="medium"
+              colorType="primary"
+              disabled={!!errors.email_code || isVerifySuccess}
+              onClick={() => onClickEmailValidation(emailCode)}
+            />
+          }
+        />
+      )}
       <SpartaTextField
         label="비밀번호"
         type="medium"

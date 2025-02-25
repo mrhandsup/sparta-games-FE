@@ -59,7 +59,7 @@ const SpartaButton = ({
 
   return (
     <button type="submit" disabled={disabled} onClick={onClick} className={getButtonStyles()}>
-      {content}
+      <span dangerouslySetInnerHTML={{ __html: content }} />
     </button>
   );
 };
