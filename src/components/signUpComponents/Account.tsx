@@ -5,6 +5,7 @@ import SpartaReactionModal, { TSpartaReactionModalProps } from "../../spartaDesi
 import SpartaTextField from "../../spartaDesignSystem/SpartaTextField";
 import { useFormContext } from "react-hook-form";
 import { postEmailVerify, postSendEmailCode } from "../../api/login";
+import { convertToMMSS } from "../../util/convertToMMSS";
 
 type Props = {};
 
@@ -18,6 +19,7 @@ const Account = (props: Props) => {
 
   const [isEmailVerifying, setIsEmailVerifying] = useState(false);
   const [isVerifySuccess, setIsVerifySuccess] = useState(false);
+  const [count, setCount] = useState(0);
 
   const email = watch("email");
   const emailCode = watch("email_code");
@@ -118,6 +120,7 @@ const Account = (props: Props) => {
   };
 
   const onClickSendEmailCode = async () => {
+    setCount(300);
     setIsEmailVerifying(true);
     const res = await postSendEmailCode(email, true);
 
@@ -163,6 +166,18 @@ const Account = (props: Props) => {
     }
   }, [password, trigger, password_check]);
 
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCount((count) => count - 1);
+    }, 1000);
+
+    if (count === 0) {
+      clearInterval(timer);
+    }
+
+    return () => clearInterval(timer);
+  });
+
   return (
     <>
       <p className="text-primary-400 font-DungGeunMo text-heading-24">계정 정보</p>
@@ -172,20 +187,22 @@ const Account = (props: Props) => {
         register={register("email", emailValidation)}
         inputProps={{
           placeholder: "spartagames@sparta.com",
+          disabled: isEmailVerifying ? true : false,
         }}
         subLabel={{
-          default: "이메일을 입력해주세요",
+          default: isVerifySuccess ? "" : "이메일을 입력해주세요",
           error: errors.email?.message as string,
           pass: email && !errors.email ? "사용 가능한 이메일입니다" : "",
         }}
-        error={!!errors.email}
-        pass={email && !errors.email}
+        error={isVerifySuccess ? false : !!errors.email}
+        pass={isVerifySuccess ? false : email && !errors.email}
         btnContent={
           <SpartaButton
-            content="인증번호<br/>전송"
+            content={`${isVerifySuccess ? "확인완료" : isEmailVerifying ? "재전송" : "인증하기"}`}
+            type={isVerifySuccess ? "filled" : "standard"}
             size="medium"
             colorType="primary"
-            disabled={!email || !!errors.email || isEmailVerifying}
+            disabled={!email || !!errors.email || isVerifySuccess}
             onClick={onClickSendEmailCode}
           />
         }
@@ -197,17 +214,19 @@ const Account = (props: Props) => {
           type="medium"
           register={register("email_code", emailCodeValidation)}
           inputProps={{
-            placeholder: "인증번호",
+            placeholder: convertToMMSS(count),
+            disabled: isVerifySuccess ? true : false,
           }}
           subLabel={{
-            default: "이메일로 전송된 인증번호를 입력하세요",
+            default: isVerifySuccess ? "" : "이메일로 전송된 인증번호를 입력하세요",
             error: errors.email_code?.message as string,
             pass: "",
           }}
           error={!!errors.email_code}
           btnContent={
             <SpartaButton
-              content={`${isVerifySuccess ? "인증완료" : "인증하기"}`}
+              content={`${isVerifySuccess ? "확인완료" : "확인"}`}
+              type="filled"
               size="medium"
               colorType="primary"
               disabled={!!errors.email_code || isVerifySuccess}
