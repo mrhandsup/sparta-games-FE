@@ -5,8 +5,8 @@
 - (게임)개발자들은 게임을 업로드하면, 유저들의 반응을 바탕으로 디벨롭 할 수 있습니다.
 - 개발자들의 커뮤니티를 통해 정보 및 인사이트를 공유할 수 있습니다.
 
-배포 사이트: https://www.sparta-games.net/
-테스트 계정: ID: test@test.com / PASSWORD: Qwerqwer!234
+##### 배포 사이트: https://www.sparta-games.net/
+##### 테스트 계정: test@test.com / Qwerqwer!234
 
 ## 👯Participants
 
