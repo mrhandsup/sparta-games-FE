@@ -1,5 +1,5 @@
 # 🎮 Sparta Games
-### 💡 Service Info
+### 💡 Service Summary
 **⭐️주니어 Unity 게임 개발자들의 발판⭐️**
 - 사용자들은 Unity WebGL 빌드 기반의 다양한 게임을 플레이 할 수 있습니다.
 - (게임)개발자들은 게임을 업로드하면, 유저들의 반응을 바탕으로 디벨롭 할 수 있습니다.
