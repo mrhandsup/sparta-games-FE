@@ -1,5 +1,5 @@
 import SpartaTextField from "../../spartaDesignSystem/SpartaTextField";
-import { useForm, useFormContext } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import SpartaChipSelect from "../../spartaDesignSystem/SpartaChipSelect";
 import { GAME_CATEGORY, USER_TECH } from "../../constant/constant";
 
@@ -51,6 +51,7 @@ const Profile = () => {
       <SpartaChipSelect
         label="관심 게임 분야"
         options={GAME_CATEGORY}
+        error={!!errors.game_category}
         control={control}
         name="game_category"
         pass={watch("game_category").length > 0}
@@ -66,6 +67,7 @@ const Profile = () => {
         label="관심 기술 분야"
         options={USER_TECH}
         control={control}
+        error={!!errors.user_tech}
         pass={watch("user_tech").length > 0}
         name="user_tech"
         subLabel={{
