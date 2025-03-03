@@ -32,7 +32,7 @@ const Profile = () => {
 
   return (
     <>
-      <p className="text-primary-400 font-DungGeunMo text-heading-24">프로필 정보</p>
+      <p className="text-primary-400 font-DungGeunMo text-[24px]">프로필 정보</p>
       <SpartaTextField
         label="닉네임"
         type="medium"

@@ -161,10 +161,10 @@ function Login({ onClose }: Props) {
                 />
               </div>
               <div
-                className="text-white text-right text underline underline-offset-1 mb-1 cursor-pointer"
+                className="text-gray-200 text-center text underline underline-offset-1 mb-1 cursor-pointer"
                 onClick={() => (window.location.href = "/reset")}
               >
-                비밀번호 찾기
+                비밀번호를 잊어버리셨나요?
               </div>
               <SpartaButton
                 content={loginMutation.isPending ? "로그인 중..." : "로그인"}

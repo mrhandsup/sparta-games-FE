@@ -180,7 +180,7 @@ const Account = (props: Props) => {
 
   return (
     <>
-      <p className="text-primary-400 font-DungGeunMo text-heading-24">계정 정보</p>
+      <p className="text-primary-400 font-DungGeunMo text-[24px]">계정 정보</p>
       <SpartaTextField
         label="이메일"
         type="medium"
