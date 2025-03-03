@@ -21,9 +21,9 @@ const SpartaButton = ({
     const baseStyles = "rounded-md transition-colors duration-200 box-border";
 
     const sizeStyles = {
-      small: "h-10 text-title-16 font-normal",
-      medium: "h-12 text-title-18 font-normal",
-      large: "h-14 text-title-22 font-normal",
+      small: "h-10 text-title-16",
+      medium: "h-12 text-title-18",
+      large: "h-14 text-title-22",
     };
 
     const disabledStyles = {
@@ -59,7 +59,7 @@ const SpartaButton = ({
 
   return (
     <button type="submit" disabled={disabled} onClick={onClick} className={getButtonStyles()}>
-      {content}
+      <span>{content}</span>
     </button>
   );
 };
