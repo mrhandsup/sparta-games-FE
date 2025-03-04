@@ -128,7 +128,7 @@ const ResetPassword = (props: Props) => {
     validate: (value: string) => value === password || "비밀번호가 일치하지 않습니다",
   };
 
-  // TODO : 이메일 인증번호 유효성 검사 규칙
+  // 이메일 인증번호 유효성 검사 규칙
   const emailCodeValidation = {
     required: "인증번호를 입력해주세요",
 
@@ -293,15 +293,6 @@ const ResetPassword = (props: Props) => {
                   }
                 />
               </div>
-
-              {/* <SpartaButton
-                type="filled"
-                size="medium"
-                colorType="primary"
-                onClick={onClickResetPassword}
-                content="비밀번호 변경하기"
-                disabled={!emailCode || !!errors.email_code}
-              /> */}
             </div>
           )}
           {/* 비밀번호 재설정 */}
