@@ -139,16 +139,15 @@ const ResetPassword = (props: Props) => {
   };
 
   const onClickSendEmailCode = async () => {
-    setCount(300);
-    setIsEmailVerifying(true);
     const res = await postSendEmailCode(email, false);
 
     if (res?.status === 200) {
+      setCount(300);
+      setIsEmailVerifying(true);
       setNoActionModalData(noActionData.emailVerify);
       onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
     } else if (res?.status === 400) {
       setIsEmailVerifying(false);
-
       setNoActionModalData(noActionData.emailNotExists);
       onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
     }
