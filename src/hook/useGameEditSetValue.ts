@@ -34,7 +34,6 @@ export const useGameEditSetValue = ({ previousGameData, isEditMode, setValue, re
       const blob = await response.blob();
       const file = new File([blob], decodeURIComponent(orginalContentName as string), { type: mimeType });
 
-      console.log("file", file, [file]);
       if (contentType === "stillCut" && index !== undefined) {
         const fieldName = `stillCut.${index}` as keyof TGameUploadInput;
         setValue(fieldName, [file]);

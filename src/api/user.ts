@@ -1,3 +1,4 @@
+import axios from "axios";
 import { TUser, TUserInformationInputForm } from "../types";
 import { sparta_games, sparta_games_auth } from "./axios";
 
@@ -142,5 +143,43 @@ export const leaveUser = async (userId: number) => {
   } catch (error) {
     console.error(error);
     throw error;
+  }
+};
+
+/**
+ * 비밀번호 찾기
+ */
+export const resetPassword = async (email: string, code: number, new_password: string, new_password_check: string) => {
+  console.log(email, code, new_password, new_password_check);
+  try {
+    const res = await sparta_games.put("/users/api/reset-password/", {
+      email,
+      code,
+      new_password,
+      new_password_check,
+    });
+    return res;
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response) {
+      return error.response;
+    }
+  }
+};
+
+/**
+ * 비밀번호 찾기- 이메일 인증
+ */
+export const resetPasswordVerify = async (email: string, code: number) => {
+  try {
+    const res = await sparta_games.post("/users/api/reset-password-verify/", {
+      email,
+      code,
+    });
+
+    return res;
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response) {
+      return error.response;
+    }
   }
 };

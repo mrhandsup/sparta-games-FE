@@ -6,6 +6,9 @@ import SpartaButton from "../spartaDesignSystem/SpartaButton";
 import useModalToggles from "../hook/useModalToggles";
 import SpartaReactionModal, { TSpartaReactionModalProps } from "../spartaDesignSystem/SpartaReactionModal";
 import SpartaTextField from "../spartaDesignSystem/SpartaTextField";
+import { postEmailVerify, postSendEmailCode } from "../api/login";
+import { convertToMMSS } from "../util/convertToMMSS";
+import { resetPassword, resetPasswordVerify } from "../api/user";
 
 type Props = {};
 
@@ -20,16 +23,16 @@ const ResetPassword = (props: Props) => {
     mode: "onChange",
     defaultValues: {
       email: "",
-      email_code: "",
+      email_code: null,
       password: "",
       password_check: "",
     },
   });
 
   const email = watch("email");
+  const emailCode = watch("email_code") ?? 0;
   const password = watch("password");
   const password_check = watch("password_check");
-  const email_code = watch("email_code");
 
   const NO_ACTION_MODAL_ID = "noReactionModal";
 
@@ -59,6 +62,17 @@ const ResetPassword = (props: Props) => {
       },
       type: "primary",
     },
+    successVerify: {
+      title: "이메일 인증 완료",
+      content: "이메일 인증이 완료되었습니다. 비밀번호 변경 진행이 가능합니다.",
+      btn1: {
+        text: "확인했습니다",
+        onClick: () => {
+          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+        },
+      },
+      type: "primary",
+    },
     changePasswordComplete: {
       title: "비밀번호 변경 완료",
       content: "비밀번호 변경이 완료되었습니다. 변경된 비밀번호로 로그인해주세요.",
@@ -78,8 +92,9 @@ const ResetPassword = (props: Props) => {
     noActionData.emailVerify,
   );
 
-  // 인증 완료 후
-  const [isEmailVerified, setIsEmailVerified] = useState(false);
+  const [count, setCount] = useState(0);
+  const [isEmailVerifying, setIsEmailVerifying] = useState(false);
+  const [isVerifySuccess, setIsVerifySuccess] = useState(false);
 
   // 이메일 유효성 검사 규칙
   const emailValidation = {
@@ -113,17 +128,77 @@ const ResetPassword = (props: Props) => {
     validate: (value: string) => value === password || "비밀번호가 일치하지 않습니다",
   };
 
-  // TODO : 이메일 인증번호 유효성 검사 규칙
+  // 이메일 인증번호 유효성 검사 규칙
   const emailCodeValidation = {
-    // required: "인증번호를 입력해주세요",
-    minLength: {
-      value: 6,
+    required: "인증번호를 입력해주세요",
+
+    pattern: {
+      value: /^[0-9]{6}$/,
       message: "올바른 인증번호 형식이 아닙니다",
     },
-    maxLength: {
-      value: 6,
-      message: "올바른 인증번호 형식이 아닙니다",
-    },
+  };
+
+  const onClickSendEmailCode = async () => {
+    const res = await postSendEmailCode(email, false);
+
+    if (res?.status === 200) {
+      setCount(300);
+      setIsEmailVerifying(true);
+      setNoActionModalData(noActionData.emailVerify);
+      onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+    } else if (res?.status === 400) {
+      setIsEmailVerifying(false);
+      setNoActionModalData(noActionData.emailNotExists);
+      onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+    }
+  };
+
+  const onClickEmailValidation = async () => {
+    const res = await resetPasswordVerify(email, emailCode);
+
+    if (res?.status === 200) {
+      setIsVerifySuccess(true);
+
+      setNoActionModalData(noActionData.successVerify);
+      onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+    } else if (res?.status === 400) {
+      setNoActionModalData({
+        title: "이메일 인증 실패",
+        content: res.data.error,
+        btn1: {
+          text: "확인했습니다",
+          onClick: () => {
+            onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+          },
+        },
+        type: "error",
+      });
+
+      onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+    }
+  };
+
+  const onClickResetPassword = async () => {
+    const res = await resetPassword(email, emailCode, password, password_check);
+
+    if (res?.status === 202) {
+      setNoActionModalData(noActionData.changePasswordComplete);
+      onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+    } else if (res?.status === 400) {
+      setNoActionModalData({
+        title: "비밀번호 변경 실패",
+        content: res.data.error,
+        btn1: {
+          text: "확인했습니다",
+          onClick: () => {
+            onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+          },
+        },
+        type: "error",
+      });
+
+      onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+    }
   };
 
   useEffect(() => {
@@ -131,6 +206,18 @@ const ResetPassword = (props: Props) => {
       trigger("password_check");
     }
   }, [password, trigger, password_check]);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCount((count) => count - 1);
+    }, 1000);
+
+    if (count === 0) {
+      clearInterval(timer);
+    }
+
+    return () => clearInterval(timer);
+  });
 
   return (
     <div className="py-14 px-28 flex flex-col gap-14 justify-center items-center">
@@ -150,7 +237,7 @@ const ResetPassword = (props: Props) => {
         </div>
         <div className="flex flex-col p-12 bg-gray-800 rounded-2xl w-[48%] gap-4">
           {/* 계정 인증 */}
-          {!isEmailVerified && (
+          {!isVerifySuccess && (
             <div className="flex flex-col justify-between h-full">
               <div className="flex flex-col gap-4">
                 <p className="text-primary-400 font-DungGeunMo text-heading-24">계정 인증</p>
@@ -170,14 +257,12 @@ const ResetPassword = (props: Props) => {
                   pass={!!email && !errors.email}
                   btnContent={
                     <SpartaButton
-                      content="인증하기"
+                      content={"인증하기"}
                       size="medium"
+                      type={isVerifySuccess ? "filled" : "standard"}
                       colorType="primary"
                       disabled={!email || !!errors.email}
-                      onClick={() => {
-                        setNoActionModalData(noActionData.emailVerify);
-                        onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-                      }}
+                      onClick={onClickSendEmailCode}
                     />
                   }
                 />
@@ -186,7 +271,8 @@ const ResetPassword = (props: Props) => {
                   type="medium"
                   register={register("email_code", emailCodeValidation)}
                   inputProps={{
-                    placeholder: "인증번호",
+                    placeholder: isEmailVerifying ? convertToMMSS(count) : "이메일 입력 후 인증하기 버튼을 눌러주세요.",
+                    disabled: isEmailVerifying ? false : true,
                   }}
                   subLabel={{
                     default: "이메일로 전송된 인증번호를 입력하세요",
@@ -194,22 +280,22 @@ const ResetPassword = (props: Props) => {
                     pass: "",
                   }}
                   error={!!errors.email_code}
+                  btnContent={
+                    <SpartaButton
+                      content={`${isVerifySuccess ? "확인완료" : "확인"}`}
+                      type="filled"
+                      size="medium"
+                      colorType="primary"
+                      disabled={!!errors.email_code || isVerifySuccess || emailCode === 0}
+                      onClick={onClickEmailValidation}
+                    />
+                  }
                 />
               </div>
-              <SpartaButton
-                type="filled"
-                size="medium"
-                colorType="primary"
-                onClick={() => {
-                  setIsEmailVerified(true);
-                }}
-                content="인증하기"
-                disabled={!email_code || !!errors.email_code}
-              />
             </div>
           )}
           {/* 비밀번호 재설정 */}
-          {isEmailVerified && (
+          {isVerifySuccess && (
             <div className="flex flex-col justify-between h-full">
               <div className="flex flex-col gap-4">
                 <p className="text-primary-400 font-DungGeunMo text-heading-24">비밀번호 재설정</p>
@@ -250,8 +336,8 @@ const ResetPassword = (props: Props) => {
                 type="filled"
                 size="medium"
                 colorType="primary"
-                onClick={() => {}}
-                content="재설정하기"
+                onClick={onClickResetPassword}
+                content="비밀번호 재설정하기"
                 disabled={!isValid}
               />
             </div>

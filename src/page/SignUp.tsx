@@ -87,6 +87,7 @@ const SignUp = () => {
               size="medium"
               colorType="primary"
               onClick={signupForm.handleSubmit(onSubmit)}
+              disabled={!signupForm.formState.isValid}
               content="회원가입"
             />
           </FormProvider>
