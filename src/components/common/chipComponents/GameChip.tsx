@@ -16,7 +16,7 @@ const GameChip = ({ chipName, size = "small" }: Props) => {
     <div
       className={`flex items-center px-1.5 py-1.5 ${
         isDifficulty ? "bg-white text-black" : "bg-gray-600"
-      } font-bold rounded-md ${size === "small" ? "text-[12px]" : "text-[18px]"} px-[6px]`}
+      } font-bold rounded-md ${size === "small" ? "text-[11px]" : "text-[18px]"} px-[6px]`}
     >
       {GAME_CHIP[chipName]}
     </div>
