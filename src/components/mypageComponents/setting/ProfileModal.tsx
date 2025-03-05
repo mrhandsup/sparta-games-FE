@@ -76,8 +76,8 @@ const ProfileModal = ({ onSuccess, onError }: Props) => {
       message: "닉네임은 10자 이하여야 합니다",
     },
     pattern: {
-      value: /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{4,10}$/,
-      message: "닉네임은 영숫자 조합 문자열이어야 합니다",
+      value: /^[a-zA-Z0-9가-힣]*$/,
+      message: "닉네임은 4~10자 이하 영/한/숫자만 사용 가능합니다.",
     },
   };
 
