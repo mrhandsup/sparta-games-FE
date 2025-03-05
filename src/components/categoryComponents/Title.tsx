@@ -14,7 +14,7 @@ const Title = ({ category }: { category: string }) => {
   }, []);
 
   const getImageUrl = (category: string) => {
-    return new URL(`../../assets/category/${category}.jpg`, import.meta.url).href;
+    return new URL(`../../assets/category/${category}.png`, import.meta.url).href;
   };
 
   return (
