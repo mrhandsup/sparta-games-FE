@@ -2,7 +2,7 @@ import ReviewCard from "./ReviewCard";
 import reviewRegister from "../../../assets/gameDetail/reviewRegister.svg";
 import ReviewRegisterModal from "./ReviewRegisterModal";
 import { userStore } from "../../../share/store/userStore";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { TReviewData, TReviewResponse } from "../../../types";
 import { getGameMyReview, getGameReviews } from "../../../api/review";
 import SpartaPagination from "../../../spartaDesignSystem/SpartaPagination";
@@ -21,6 +21,8 @@ const ReviewContents = ({ gamePk }: { gamePk: number }) => {
   const { currentPage, onChangePage } = usePageHandler();
   const { modalToggle, onClickModalToggleHandler } = useModalToggle();
 
+  const queryClient = useQueryClient();
+
   const { data: reviewData } = useQuery<TReviewResponse>({
     queryKey: ["reviews", currentPage],
     queryFn: () =>
@@ -38,12 +40,17 @@ const ReviewContents = ({ gamePk }: { gamePk: number }) => {
   const allReviewData = reviewData?.results.all_reviews;
   const myReview = myReviewData?.results.my_review;
 
+  // console.log("allReview", allReviewData, "myReview", myReview);
   useEffect(() => {
     if (allReviewData) {
       const reviewsWithoutMyReview = allReviewData.filter((review) => review.id !== myReview?.id);
       setReviewList(reviewsWithoutMyReview);
     }
   }, [allReviewData, myReview?.id]);
+
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ["reviews"] });
+  }, [myReviewData]);
 
   const onClickOrderHandler = async (order: "new" | "likes" | "dislikes") => {
     const res = await getGameReviews(gamePk, currentPage, COUNT_PER_PAGE, order);
