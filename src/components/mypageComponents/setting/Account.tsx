@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import log from "../../../assets/Log.svg";
 import { userStore } from "../../../share/store/userStore";
 import useModalToggles from "../../../hook/useModalToggles";
@@ -7,10 +7,10 @@ import AccountModal from "./AccountModal";
 import SpartaReactionModal, { TSpartaReactionModalProps } from "../../../spartaDesignSystem/SpartaReactionModal";
 import { useForm } from "react-hook-form";
 import SpartaButton from "../../../spartaDesignSystem/SpartaButton";
+import { leaveUser } from "../../../api/user";
+import { useMutation } from "@tanstack/react-query";
 
-type TAccountProps = {};
-
-const Account = (props: TAccountProps) => {
+const Account = () => {
   //* Hooks
   const { userData, logout } = userStore();
 
@@ -23,6 +23,16 @@ const Account = (props: TAccountProps) => {
     NO_ACTION_MODAL_ID,
     WITHDRAWAL_MODAL_ID,
   ]);
+
+  const withDrawalMutation = useMutation({
+    mutationFn: async (user_pk: number) => {
+      if (!userData?.user_pk) throw new Error("사용자 ID가 없습니다.");
+      return leaveUser(user_pk);
+    },
+    onSuccess: () => {
+      logout();
+    },
+  });
 
   // 단순 모달 데이터 config
   const noActionData: { [key: string]: Partial<TSpartaReactionModalProps> } = {
@@ -44,7 +54,7 @@ const Account = (props: TAccountProps) => {
         text: "확인했습니다",
         onClick: () => {
           onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-          logout();
+          userData && withDrawalMutation.mutate(userData?.user_pk);
         },
       },
       type: "alert",

@@ -29,6 +29,9 @@ const Home = () => {
     queryKey: ["gameList", userData],
     queryFn: userData ? getGameListAuth : getGameList,
   });
+  const getIconUrl = (category: string) => {
+    return new URL(`../assets/gameIcon/${category}.png`, import.meta.url).href;
+  };
 
   return (
     data && (
@@ -52,7 +55,10 @@ const Home = () => {
           {data?.rand1.game_list.length > 0 && (
             <GameCardList data={data?.rand1.game_list} to={`/category?category=${data?.rand1.category_name}`}>
               <div className="flex items-center gap-3">
-                <img src={pixelGame} />
+                <div
+                  className="w-[32px] h-[32px] "
+                  style={{ backgroundImage: `url(${getIconUrl(data?.rand1.category_name)})` }}
+                />
                 <p className="font-DungGeunMo text-heading-32 font-[400] text-white">[{data?.rand1.category_name}]</p>
               </div>
             </GameCardList>
@@ -60,7 +66,10 @@ const Home = () => {
           {data?.rand2.game_list.length > 0 && (
             <GameCardList data={data?.rand2.game_list} to={`/category?category=${data?.rand2.category_name}`}>
               <div className="flex items-center gap-3">
-                <img src={pixelGame} />
+                <div
+                  className="w-[32px] h-[32px] "
+                  style={{ backgroundImage: `url(${getIconUrl(data?.rand2.category_name)})` }}
+                />
                 <p className="font-DungGeunMo font-[400] text-heading-32 text-white">[{data?.rand2.category_name}]</p>
               </div>
             </GameCardList>
@@ -68,7 +77,10 @@ const Home = () => {
           {data?.rand3.game_list.length > 0 && (
             <GameCardList data={data?.rand3.game_list} to={`/category?category=${data?.rand3.category_name}`}>
               <div className="flex items-center gap-3">
-                <img src={pixelGame} />
+                <div
+                  className="w-[32px] h-[32px] "
+                  style={{ backgroundImage: `url(${getIconUrl(data?.rand3.category_name)})` }}
+                />
                 <p className="font-DungGeunMo font-[400] text-heading-32 text-white">[{data?.rand3.category_name}]</p>
               </div>
             </GameCardList>
