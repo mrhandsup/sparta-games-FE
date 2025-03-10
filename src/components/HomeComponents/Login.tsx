@@ -96,7 +96,7 @@ function Login({ onClose }: Props) {
                 bgColor="bg-[#5662F6]"
                 textColor="text-white"
               />
-              <SocialLoginBtn
+              {/* <SocialLoginBtn
                 loginUrl={`https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${
                   import.meta.env.VITE_NAVER_CLIENT_ID
                 }&state=${import.meta.env.VITE_NAVER_STATE}&redirect_uri=${
@@ -106,7 +106,7 @@ function Login({ onClose }: Props) {
                 altText="네이버 간편로그인"
                 bgColor="bg-[#03C75A]"
                 textColor="text-white"
-              />
+              /> */}
               <SocialLoginBtn
                 loginUrl={`https://kauth.kakao.com/oauth/authorize?client_id=${
                   import.meta.env.VITE_KAKAO_CLIENT_ID

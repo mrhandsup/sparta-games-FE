@@ -48,7 +48,6 @@ const ProfileModal = ({ onSuccess, onError }: Props) => {
         nickname: formData.nickname,
         user_tech: formData.user_tech,
         game_category: formData.game_category.join(","),
-        is_maker: userData.is_maker,
       };
 
       return updateUserData(userData.user_pk, updateData);
