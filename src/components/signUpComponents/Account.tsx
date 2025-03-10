@@ -134,8 +134,8 @@ const Account = (props: Props) => {
     }
   };
 
-  const onClickEmailValidation = async (code: number) => {
-    const res = await postEmailVerify(email, code);
+  const onClickEmailValidation = async () => {
+    const res = await postEmailVerify(email, emailCode);
 
     if (res?.status === 200) {
       setIsVerifySuccess(true);
@@ -229,7 +229,7 @@ const Account = (props: Props) => {
               size="medium"
               colorType="primary"
               disabled={!!errors.email_code || isVerifySuccess || emailCode.length === 0}
-              onClick={() => onClickEmailValidation(emailCode)}
+              onClick={() => onClickEmailValidation}
             />
           }
         />
