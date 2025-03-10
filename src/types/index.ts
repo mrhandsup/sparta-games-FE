@@ -82,7 +82,7 @@ export type TUserInformationInputForm = {
   game_category: string;
   user_tech: string;
   is_maker: boolean;
-  email_code?: string;
+  code?: string;
   login_type: string;
   profile_image?: File[];
 };

@@ -26,7 +26,7 @@ const SignUp = () => {
       nickname: "",
       user_tech: "",
       game_category: "",
-      email_code: "",
+      code: "",
       is_maker: false,
     },
   });
