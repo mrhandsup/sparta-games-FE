@@ -25,12 +25,7 @@ function App() {
 
   if (isMobileWeb()) {
     return (
-      <div
-        style={{
-          color: "#3f3f3f",
-          textAlign: "center",
-        }}
-      >
+      <div className="relative min-w-fit min-h-full bg-gray-700 flex flex-col items-center justify-center">
         <img src={dino} alt="publ" />
         <p>데스크탑에서 접속해주세요.</p>
       </div>
