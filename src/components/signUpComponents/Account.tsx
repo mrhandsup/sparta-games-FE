@@ -22,7 +22,7 @@ const Account = (props: Props) => {
   const [count, setCount] = useState(0);
 
   const email = watch("email");
-  const emailCode = watch("email_code");
+  const emailCode = watch("code");
   const password = watch("password");
   const password_check = watch("password_check");
 
@@ -211,24 +211,24 @@ const Account = (props: Props) => {
         <SpartaTextField
           label="인증번호 입력"
           type="medium"
-          register={register("email_code", emailCodeValidation)}
+          register={register("code", emailCodeValidation)}
           inputProps={{
             placeholder: convertToMMSS(count),
             disabled: isVerifySuccess ? true : false,
           }}
           subLabel={{
             default: isVerifySuccess ? "" : "이메일로 전송된 인증번호를 입력하세요",
-            error: errors.email_code?.message as string,
+            error: errors.code?.message as string,
             pass: "",
           }}
-          error={!!errors.email_code}
+          error={!!errors.code}
           btnContent={
             <SpartaButton
               content={`${isVerifySuccess ? "확인완료" : "확인"}`}
               type="filled"
               size="medium"
               colorType="primary"
-              disabled={!!errors.email_code || isVerifySuccess || emailCode === ""}
+              disabled={!!errors.code || isVerifySuccess || emailCode === ""}
               onClick={onClickEmailValidation}
             />
           }
