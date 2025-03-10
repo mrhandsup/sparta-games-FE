@@ -228,8 +228,8 @@ const Account = (props: Props) => {
               type="filled"
               size="medium"
               colorType="primary"
-              disabled={!!errors.email_code || isVerifySuccess || emailCode.length === 0}
-              onClick={() => onClickEmailValidation}
+              disabled={!!errors.email_code || isVerifySuccess || emailCode === ""}
+              onClick={onClickEmailValidation}
             />
           }
         />
