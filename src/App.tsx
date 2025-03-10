@@ -27,19 +27,11 @@ function App() {
     return (
       <div
         style={{
-          color: "#68686b",
-          transform: "translateY(50%)",
+          color: "#3f3f3f",
           textAlign: "center",
         }}
       >
-        <img
-          src={dino}
-          alt="publ"
-          style={{
-            maxWidth: 160,
-            pointerEvents: "none",
-          }}
-        />
+        <img src={dino} alt="publ" />
         <p>데스크탑에서 접속해주세요.</p>
       </div>
     );
