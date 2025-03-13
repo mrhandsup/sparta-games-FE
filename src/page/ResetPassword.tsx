@@ -286,7 +286,7 @@ const ResetPassword = (props: Props) => {
                       type="filled"
                       size="medium"
                       colorType="primary"
-                      disabled={!!errors.email_code || isVerifySuccess || emailCode === ""}
+                      disabled={!!errors.email_code || isVerifySuccess || emailCode === null}
                       onClick={onClickEmailValidation}
                     />
                   }
