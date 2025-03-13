@@ -14,7 +14,7 @@ const ReviewContents = ({ gamePk }: { gamePk: number }) => {
   const COUNT_PER_PAGE = 6;
 
   const [reviewList, setReviewList] = useState<TReviewData[] | undefined>();
-  const [selectedOrder, setSelectedOrder] = useState<string>("new");
+  const [selectedOrder, setSelectedOrder] = useState<"new" | "likes" | "dislikes">("new");
   const [isRegister, setIsRegister] = useState(false);
 
   const { userData } = userStore();
@@ -24,11 +24,11 @@ const ReviewContents = ({ gamePk }: { gamePk: number }) => {
   const queryClient = useQueryClient();
 
   const { data: allReviewData } = useQuery<TReviewResponse>({
-    queryKey: ["reviews", currentPage],
+    queryKey: ["reviews", currentPage, selectedOrder],
     queryFn: () =>
       userData
-        ? getGameReviews(gamePk, currentPage, COUNT_PER_PAGE, "new", userData)
-        : getGameReviews(gamePk, currentPage, COUNT_PER_PAGE),
+        ? getGameReviews(gamePk, currentPage, COUNT_PER_PAGE, selectedOrder, userData)
+        : getGameReviews(gamePk, currentPage, COUNT_PER_PAGE, selectedOrder),
   });
 
   const { data: myReviewData } = useQuery<TReviewResponse>({
@@ -40,7 +40,6 @@ const ReviewContents = ({ gamePk }: { gamePk: number }) => {
   const allReviews = allReviewData?.results.all_reviews;
   const myReview = myReviewData?.results.my_review;
 
-  console.log(allReviews);
   useEffect(() => {
     if (allReviews) {
       const reviewsWithoutMyReview = allReviews.filter((review) => review.id !== myReview?.id);
