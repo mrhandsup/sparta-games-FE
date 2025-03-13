@@ -10,6 +10,7 @@ type Props = {
 
 const SpartaPagination = ({ dataTotalCount, countPerPage, onChangePage }: Props) => {
   const TOTAL_PAGE = dataTotalCount ? Math.ceil(dataTotalCount / countPerPage) : 1;
+  console.log("dataTotalCount", dataTotalCount, "countPerPage", countPerPage, "TOTAL_PAGE", TOTAL_PAGE);
 
   return (
     <div className="flex justify-center">

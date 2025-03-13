@@ -23,7 +23,7 @@ const ReviewContents = ({ gamePk }: { gamePk: number }) => {
 
   const queryClient = useQueryClient();
 
-  const { data: reviewData } = useQuery<TReviewResponse>({
+  const { data: allReviewData } = useQuery<TReviewResponse>({
     queryKey: ["reviews", currentPage],
     queryFn: () =>
       userData
@@ -37,16 +37,16 @@ const ReviewContents = ({ gamePk }: { gamePk: number }) => {
     enabled: !!userData,
   });
 
-  const allReviewData = reviewData?.results.all_reviews;
+  const allReviews = allReviewData?.results.all_reviews;
   const myReview = myReviewData?.results.my_review;
 
-  // console.log("allReview", allReviewData, "myReview", myReview);
+  console.log(allReviews);
   useEffect(() => {
-    if (allReviewData) {
-      const reviewsWithoutMyReview = allReviewData.filter((review) => review.id !== myReview?.id);
+    if (allReviews) {
+      const reviewsWithoutMyReview = allReviews.filter((review) => review.id !== myReview?.id);
       setReviewList(reviewsWithoutMyReview);
     }
-  }, [allReviewData, myReview?.id]);
+  }, [allReviews, myReview?.id]);
 
   useEffect(() => {
     queryClient.invalidateQueries({ queryKey: ["reviews"] });
@@ -55,7 +55,10 @@ const ReviewContents = ({ gamePk }: { gamePk: number }) => {
   const onClickOrderHandler = async (order: "new" | "likes" | "dislikes") => {
     const res = await getGameReviews(gamePk, currentPage, COUNT_PER_PAGE, order);
 
-    const allReviews = res?.results.all_reviews.filter((review: TReviewData[]) => Object.keys(review).length > 0);
+    // 서버에서 내려오는 리뷰 데이터 중 빈 객체 제외
+    const allReviews = res?.results.all_reviews.filter(
+      (review: TReviewData) => Object.keys(review).length > 0 && review?.id !== myReview?.id,
+    );
 
     setReviewList(allReviews);
     setSelectedOrder(order);
@@ -88,41 +91,42 @@ const ReviewContents = ({ gamePk }: { gamePk: number }) => {
           </div>
         </div>
         <div className="grid grid-cols-3 gap-5">
-          {userData ? (
-            !myReview ? (
-              <div
-                onClick={() => {
-                  onClickModalToggleHandler();
-                  setIsRegister(true);
-                }}
-                className=" flex items-center justify-center gap-6 h-[189px] border border-solid border-primary-500 bg-gray-800 rounded-xl cursor-pointer"
-              >
-                <img src={reviewRegister} />
-                <p className="text-white font-DungGeunMo text-2xl">내 리뷰 등록하기</p>
-              </div>
+          {currentPage === 1 &&
+            (userData ? (
+              !myReview ? (
+                <div
+                  onClick={() => {
+                    onClickModalToggleHandler();
+                    setIsRegister(true);
+                  }}
+                  className=" flex items-center justify-center gap-6 h-[189px] border border-solid border-primary-500 bg-gray-800 rounded-xl cursor-pointer"
+                >
+                  <img src={reviewRegister} />
+                  <p className="text-white font-DungGeunMo text-2xl">내 리뷰 등록하기</p>
+                </div>
+              ) : (
+                <ReviewCard
+                  onClickModalToggleHandler={onClickModalToggleHandler}
+                  review={myReview}
+                  isMyReview={!!myReview}
+                  setIsRegister={setIsRegister}
+                />
+              )
             ) : (
-              <ReviewCard
-                onClickModalToggleHandler={onClickModalToggleHandler}
-                review={myReview}
-                isMyReview={!!myReview}
-                setIsRegister={setIsRegister}
-              />
-            )
-          ) : (
-            <div className="flex items-center justify-center gap-6 px-11 h-[189px] border border-solid border-alert-default hover:border-alert-hover bg-gray-800 rounded-xl">
-              <img src={reviewRegister} />
-              <p className="text-white font-DungGeunMo text-2xl text-center leading-none">
-                비회원은 리뷰등록이 불가능합니다.
-              </p>
-            </div>
-          )}
+              <div className="flex items-center justify-center gap-6 px-11 h-[189px] border border-solid border-alert-default hover:border-alert-hover bg-gray-800 rounded-xl">
+                <img src={reviewRegister} />
+                <p className="text-white font-DungGeunMo text-2xl text-center leading-none">
+                  비회원은 리뷰등록이 불가능합니다.
+                </p>
+              </div>
+            ))}
 
           {reviewList?.map((review) => (
             <ReviewCard review={review} onClickModalToggleHandler={onClickModalToggleHandler} />
           ))}
         </div>
         <SpartaPagination
-          dataTotalCount={userData ? myReviewData?.count : reviewData?.count}
+          dataTotalCount={allReviewData?.count}
           countPerPage={COUNT_PER_PAGE}
           onChangePage={onChangePage}
         />
