@@ -51,18 +51,6 @@ const ReviewContents = ({ gamePk }: { gamePk: number }) => {
     queryClient.invalidateQueries({ queryKey: ["reviews"] });
   }, [myReviewData]);
 
-  const onClickOrderHandler = async (order: "new" | "likes" | "dislikes") => {
-    const res = await getGameReviews(gamePk, currentPage, COUNT_PER_PAGE, order);
-
-    // 서버에서 내려오는 리뷰 데이터 중 빈 객체 제외
-    const allReviews = res?.results.all_reviews.filter(
-      (review: TReviewData) => Object.keys(review).length > 0 && review?.id !== myReview?.id,
-    );
-
-    setReviewList(allReviews);
-    setSelectedOrder(order);
-  };
-
   return (
     <>
       <section className="flex flex-col gap-3 mb-12">
@@ -70,19 +58,19 @@ const ReviewContents = ({ gamePk }: { gamePk: number }) => {
           <p className="text-3xl font-DungGeunMo text-white">Review</p>
           <div className="flex gap-3 text-xl font-semibold text-white">
             <p
-              onClick={() => onClickOrderHandler("new")}
+              onClick={() => setSelectedOrder("new")}
               className={`cursor-pointer ${selectedOrder === "new" ? "text-primary-500" : "text-white"}`}
             >
               최근 게시순
             </p>
             <p
-              onClick={() => onClickOrderHandler("likes")}
+              onClick={() => setSelectedOrder("likes")}
               className={`cursor-pointer ${selectedOrder === "likes" ? "text-primary-500" : "text-white"}`}
             >
               공감 많은순
             </p>
             <p
-              onClick={() => onClickOrderHandler("dislikes")}
+              onClick={() => setSelectedOrder("dislikes")}
               className={`cursor-pointer ${selectedOrder === "dislikes" ? "text-primary-500" : "text-white"}`}
             >
               비공감 많은 순
