@@ -49,14 +49,14 @@ const ScreenShotModal = ({ screenShotList, swiperRef }: Props) => {
 
   return (
     <Modal open={modalToggle} onClose={onClickModalToggleHandler} disableScrollLock={true}>
-      <Box className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-3xl outline-none border border-solid border-primary-500 bg-gray-800 p-8 max-w-[1200px] max-h-full overflow-auto">
+      <Box className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-3xl outline-none border border-solid border-primary-500 bg-gray-800 p-8 max-w-[750px] max-h-full overflow-auto">
         <Swiper
           pagination={{
             clickable: true,
           }}
-          loop={true}
+          loop={screenShotList && screenShotList?.length > 3 ? true : false}
           centeredSlides={true}
-          slidesPerView={2}
+          slidesPerView={screenShotList?.length === 1 ? 1 : 2}
           modules={[Pagination]}
           initialSlide={imageIndex}
           className="stillCutSwiper"

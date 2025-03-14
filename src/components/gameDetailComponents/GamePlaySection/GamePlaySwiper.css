@@ -1,5 +1,7 @@
 /* 게임 디테일 페이지 스크린샷 스와이퍼 */
-.gamescreenShotSwiper {
+.gamescreenShotSwiper,
+.descriptionSwiper,
+.stillCutSwipe {
   @apply w-full h-full;
 }
 
@@ -16,14 +18,9 @@
 }
 
 /* 게임 설명 상세보기, 게임 스크린샷샷 모달 스와이퍼 */
-.descriptionSwiper,
-.stillCutSwiper {
-  @apply relative w-full h-full;
-}
-
 .descriptionSwiper .swiper-wrapper,
 .stillCutSwiper .swiper-wrapper {
-  @apply h-[450px];
+  @apply h-[350px];
 }
 
 .descriptionSwiper .swiper-slide,
@@ -33,21 +30,21 @@
 
 .descriptionSwiper .swiper-slide img,
 .stillCutSwiper .swiper-slide img {
-  @apply w-[600px] h-[300px] object-cover bg-white;
+  @apply w-[400px] h-[200px] object-cover bg-white;
 }
 
 .descriptionSwiper .swiper-slide-active img,
 .stillCutSwiper .swiper-slide-active img {
-  @apply w-[600px] h-[350px] rounded-lg z-10 bg-white;
+  @apply w-[400px] h-[250px] rounded-lg z-10 bg-white;
 }
 
 .descriptionSwiper .swiper-pagination-bullet,
 .stillCutSwiper .swiper-pagination-bullet {
-  @apply !mr-2 w-4 h-4 bg-gray-100 opacity-100;
+  @apply !mr-2 w-3 h-3 bg-gray-100 opacity-100;
 }
 .descriptionSwiper .swiper-pagination-bullet-active,
 .stillCutSwiper .swiper-pagination-bullet-active {
-  @apply w-4 h-4 bg-primary-500;
+  @apply w-3 h-3 bg-primary-500;
 }
 
 .ql-editor strong {
