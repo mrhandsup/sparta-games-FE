@@ -29,14 +29,14 @@ const MyPage = () => {
 
   const user = isMyPage ? userData : data;
 
-  useEffect(() => {
-    if (!data) {
-      window.alert("존재하지 않는 사용자입니다.");
-      window.history.back();
-    }
-    if (isMyPage) setNavigation("log");
-    else setNavigation("develop");
-  }, [id, userData]);
+  // useEffect(() => {
+  //   if (!data) {
+  //     window.alert("존재하지 않는 사용자입니다.");
+  //     window.history.back();
+  //   }
+  //   if (isMyPage) setNavigation("log");
+  //   else setNavigation("develop");
+  // }, [id, userData]);
 
   return (
     user && (

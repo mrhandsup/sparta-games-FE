@@ -67,7 +67,11 @@ const ProfileHeader = (props: TProfileProps) => {
         {props.user.profile_image ? (
           <img
             className="bg-gray-700 min-w-[110px] w-[110px] min-h-[110px] h-[110px] rounded-md"
-            src={props.user.profile_image}
+            src={
+              import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
+                ? import.meta.env.VITE_PROXY_HOST + props.user.profile_image
+                : props.user.profile_image
+            }
           />
         ) : (
           <img src={defaultProfile} className="bg-gray-700 w-[110px] h-[110px] rounded-md p-3" />
