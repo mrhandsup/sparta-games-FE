@@ -173,7 +173,7 @@ const ReviewCard = ({ review, onClickModalToggleHandler, isMyReview = false, set
             </div>
           </div>
         </div>
-        <div className="w-full h-[72px] text-body-14 line-clamp-4 text-ellipsis">{review?.content}</div>
+        <div className="w-full h-[72px] text-body-14 line-clamp-4 text-ellipsis whitespace-pre">{review?.content}</div>
         <div className="flex justify-between items-end">
           <p className="text-[12px] leading-4 text-gray-300">{formatDate(review?.created_at)}</p>
           <div className="flex items-center gap-1 text-[11px] font-bold">
