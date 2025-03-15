@@ -19,6 +19,7 @@ import reviewDeleteImage from "../../../assets/gameDetail/ReviewDelete.svg";
 import exampleProfile from "../../../assets/gameDetail/example_profile.png";
 import SpartaModal from "../../../spartaDesignSystem/SpartaModal";
 import ReviewDetail from "./ReviewDetail";
+import { userStore } from "../../../share/store/userStore";
 
 type reviewDataProps = {
   review: TReviewData | undefined;
@@ -127,7 +128,9 @@ const ReviewCard = ({ review, onClickModalToggleHandler, isMyReview = false, set
         return "HARD";
     }
   };
+  const { userData } = userStore();
 
+  console.log(userData?.user_pk, review?.author_id);
   return (
     <>
       <div
@@ -136,7 +139,18 @@ const ReviewCard = ({ review, onClickModalToggleHandler, isMyReview = false, set
         }`}
       >
         <div className="flex gap-2">
-          <img src={exampleProfile} />
+          {userData?.user_pk === review?.author_id ? (
+            <img
+              className="w-12 h-12 rounded-md object-cover"
+              src={
+                import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
+                  ? import.meta.env.VITE_PROXY_HOST + userData?.profile_image
+                  : userData?.profile_image
+              }
+            />
+          ) : (
+            <img src={exampleProfile} />
+          )}
           <div className="flex flex-col gap-[2px]">
             <div className="flex items-center justify-between">
               {isMyReview ? (
@@ -173,7 +187,7 @@ const ReviewCard = ({ review, onClickModalToggleHandler, isMyReview = false, set
             </div>
           </div>
         </div>
-        <div className="w-full h-[72px] text-body-14 line-clamp-4 text-ellipsis">{review?.content}</div>
+        <div className="w-full h-[72px] text-body-14 line-clamp-4 text-ellipsis whitespace-pre">{review?.content}</div>
         <div className="flex justify-between items-end">
           <p className="text-[12px] leading-4 text-gray-300">{formatDate(review?.created_at)}</p>
           <div className="flex items-center gap-1 text-[11px] font-bold">

@@ -40,7 +40,7 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
       mode: "onChange",
     });
 
-  useGameEditSetValue({ previousGameData, isEditMode, setValue, trigger, reset });
+  useGameEditSetValue({ previousGameData, isEditMode, setValue, trigger, reset, resetField });
 
   const navigate = useNavigate();
   const { userData } = userStore();
@@ -159,23 +159,25 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
 
     if (data.gameFile instanceof FileList) {
       formData.append("gamefile", data.gameFile[0]);
-    } else if (typeof data.gameFile === "string" && previousGameData?.gamefile) {
+    } else if (typeof data.gameFile === "object" && previousGameData?.gamefile) {
       formData.append("gamefile", previousGameData?.gamefile);
     }
 
     if (data.thumbnail instanceof FileList) {
       formData.append("thumbnail", data.thumbnail[0]);
-    } else if (typeof data.gameFile === "string" && previousGameData?.thumbnail) {
-      formData.append("gamefile", previousGameData?.thumbnail);
+    } else if (typeof data.gameFile === "object" && previousGameData?.thumbnail) {
+      formData.append("thumbnail", previousGameData?.thumbnail);
     }
 
-    (data.stillCut as File[][]).forEach((screenshot, index) => {
-      if (screenshot instanceof FileList && screenshot.length > 0) {
-        formData.append("screenshots", screenshot[0]);
-      } else if (typeof screenshot === "string" && previousGameData?.screenshot[index]) {
-        formData.append("screenshots", previousGameData?.screenshot[index].src);
-      }
-    });
+    if (data.stillCut) {
+      (data.stillCut as File[][]).forEach((screenshot, index) => {
+        if (screenshot instanceof FileList && screenshot.length > 0) {
+          formData.append("screenshots", screenshot[0]);
+        } else if (typeof screenshot === "object" && previousGameData?.screenshot[index]) {
+          formData.append("screenshots", previousGameData?.screenshot[index].src);
+        }
+      });
+    }
 
     return formData;
   };

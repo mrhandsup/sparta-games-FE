@@ -19,7 +19,6 @@ export const userStore = create<Store>()((set) => ({
     try {
       const decoded_jwt = jwtDecode<{ user_id: number }>(accessToken);
       const userData = await getUserData(decoded_jwt.user_id);
-      console.log(userData);
       set({ userData: userData });
       if (userData?.is_staff) {
         sessionStorage.setItem("isAdmin", "true");

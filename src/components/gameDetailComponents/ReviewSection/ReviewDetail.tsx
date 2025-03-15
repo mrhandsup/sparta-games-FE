@@ -50,7 +50,7 @@ const ReviewDetail = ({ review, convertDifficulty, onClose }: Props) => {
             />
           </div>
         </div>
-        <p className="min-h-60 text-base font-Pretendard text-white">{review?.content}</p>
+        <p className="min-h-60 text-base font-Pretendard text-white whitespace-pre">{review?.content}</p>
       </div>
     </div>
   );

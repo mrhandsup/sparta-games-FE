@@ -62,6 +62,7 @@ const GameDetail = () => {
     // 클린업으로 쿼리 캐시 초기화
     return () => {
       queryClient.removeQueries({ queryKey: ["gameList"] });
+      queryClient.removeQueries({ queryKey: ["gameLog"] });
     };
   }, [gameDetailId]);
 
@@ -129,18 +130,20 @@ const GameDetail = () => {
         <DeleteCheck gamePk={gamePlayData?.id} onClose={onClickModalToggleHandlers[GAME_DELETE_CHECK_ID]} />
       </SpartaModal>
 
-      <SpartaReactionModal
-        isOpen={modalToggles[NO_ACTION_MODAL_ID]}
-        onClose={onClickModalToggleHandlers[NO_ACTION_MODAL_ID]}
-        modalId={NO_ACTION_MODAL_ID}
-        title="게임이 반려되었습니다."
-        content={rejectLogs.data?.content}
-        btn1={{
-          text: "확인",
-          onClick: () => onClickModalToggleHandlers[NO_ACTION_MODAL_ID](),
-        }}
-        type={"error"}
-      />
+      {rejectLogs.data && (
+        <SpartaReactionModal
+          isOpen={modalToggles[NO_ACTION_MODAL_ID]}
+          onClose={onClickModalToggleHandlers[NO_ACTION_MODAL_ID]}
+          modalId={NO_ACTION_MODAL_ID}
+          title="게임이 반려되었습니다."
+          content={rejectLogs.data?.content}
+          btn1={{
+            text: "확인",
+            onClick: () => onClickModalToggleHandlers[NO_ACTION_MODAL_ID](),
+          }}
+          type={"error"}
+        />
+      )}
     </>
   );
 };
