@@ -80,12 +80,14 @@ const AdminListItem = ({ idx, item, onClickShowMore, isDetail }: Props) => {
             width="w-[100px]"
             onClick={() => window.open(`/game-detail?id=${item.pk}`)}
           />
-          <div
-            className="bg-white rounded-md w-[47px] h-[47px] flex items-center  justify-center p-3 cursor-pointer"
-            onClick={() => downloadZip(item.pk)}
-          >
-            <LuDownload className="text-[30px]  text-black" />
-          </div>
+          {item.register_state === 0 && (
+            <div
+              className="bg-white rounded-md w-[47px] h-[47px] flex items-center  justify-center p-3 cursor-pointer"
+              onClick={() => downloadZip(item.pk)}
+            >
+              <LuDownload className="text-[30px]  text-black" />
+            </div>
+          )}
         </div>
       </div>
       {isDetail && (

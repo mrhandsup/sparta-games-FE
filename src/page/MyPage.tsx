@@ -21,22 +21,23 @@ const MyPage = () => {
   const { userData } = userStore();
   const isMyPage = id === userData?.user_pk.toString();
 
-  const { data } = useQuery<TUser>({
+  const { data, isError } = useQuery<TUser>({
     queryKey: ["userProfile", id],
     queryFn: () => getUserData(Number(id)),
     enabled: !!id && !isMyPage,
+    retry: 1,
   });
 
   const user = isMyPage ? userData : data;
 
-  // useEffect(() => {
-  //   if (!data) {
-  //     window.alert("존재하지 않는 사용자입니다.");
-  //     window.history.back();
-  //   }
-  //   if (isMyPage) setNavigation("log");
-  //   else setNavigation("develop");
-  // }, [id, userData]);
+  useEffect(() => {
+    if (isError) {
+      window.alert("존재하지 않는 사용자입니다.");
+      window.history.back();
+    }
+    if (isMyPage) setNavigation("log");
+    else setNavigation("develop");
+  }, [id, userData, isError]);
 
   return (
     user && (

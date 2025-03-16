@@ -12,7 +12,10 @@ const Profile = () => {
   } = useFormContext();
 
   const nickname = watch("nickname");
+  const game_category = watch("game_category");
+  const user_tech = watch("user_tech");
 
+  console.log(game_category, user_tech);
   // 닉네임 유효성 검사 규칙(4자 이상 10자 이하의 영숫자 조합 문자열 영어 필수 숫자 필수)
   const nicknameValidation = {
     required: "닉네임을 입력해주세요",
@@ -51,10 +54,8 @@ const Profile = () => {
       <SpartaChipSelect
         label="관심 게임 분야"
         options={GAME_CATEGORY}
-        error={!!errors.game_category}
         control={control}
         name="game_category"
-        pass={watch("game_category").length > 0}
         subLabel={{
           default: "관심있는 게임 분야를 선택해주세요",
           error: "태그를 하나 이상 선택해주세요",
@@ -67,8 +68,6 @@ const Profile = () => {
         label="관심 기술 분야"
         options={USER_TECH}
         control={control}
-        error={!!errors.user_tech}
-        pass={watch("user_tech").length > 0}
         name="user_tech"
         subLabel={{
           default: "관심있는 기술 분야를 선택해주세요.",
