@@ -9,6 +9,7 @@ import dino from "./assets/dino.svg";
 import "./App.css";
 import { userStore } from "./share/store/userStore";
 import { useEffect } from "react";
+import SpartaButton from "./spartaDesignSystem/SpartaButton";
 
 const queryClient = new QueryClient();
 
@@ -23,11 +24,18 @@ function App() {
     });
   }
 
-  if (isMobileWeb()) {
+  const is_mobile_user_first_time = localStorage.getItem("is_mobile_user_first_time");
+
+  const onClickOkDino = () => {
+    localStorage.setItem("is_mobile_user_first_time", "true");
+    window.location.reload();
+  };
+
+  if (isMobileWeb() && !is_mobile_user_first_time) {
     return (
-      <div className="relative min-w-fit min-h-full bg-gray-700 flex flex-col items-center justify-center">
-        <img src={dino} alt="publ" />
-        <p>데스크탑에서 접속해주세요.</p>
+      <div className="relative min-w-fit min-h-full bg-gray-700 flex flex-col items-center justify-center px-10">
+        <img src={dino} alt="publ" className="p-10" />
+        <SpartaButton onClick={onClickOkDino} content="스파르타 게임즈 접속" type="filled" />
       </div>
     );
   }
