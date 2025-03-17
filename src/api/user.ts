@@ -150,7 +150,6 @@ export const leaveUser = async (userId: number) => {
  * 비밀번호 찾기
  */
 export const resetPassword = async (email: string, code: number, new_password: string, new_password_check: string) => {
-  console.log(email, code, new_password, new_password_check);
   try {
     const res = await sparta_games.put("/users/api/reset-password/", {
       email,
