@@ -130,7 +130,6 @@ const ReviewCard = ({ review, onClickModalToggleHandler, isMyReview = false, set
   };
   const { userData } = userStore();
 
-  console.log(userData?.user_pk, review?.author_id);
   return (
     <>
       <div

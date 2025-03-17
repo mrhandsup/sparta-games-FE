@@ -103,7 +103,7 @@ const USER_TECH: selectConfig[] = [
   },
   {
     label: "All",
-    value: "All",
+    value: "ALL",
   },
   {
     label: "관심분야 없음",
