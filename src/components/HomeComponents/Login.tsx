@@ -14,6 +14,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SpartaReactionModal, { TSpartaReactionModalProps } from "../../spartaDesignSystem/SpartaReactionModal";
 import useModalToggles from "../../hook/useModalToggles";
+import closeBtn from "../../../src/assets/common/closeBtn.svg";
 
 type Props = {
   onClose: () => void;
@@ -92,9 +93,14 @@ function Login({ onClose }: Props) {
       <div className="w-[350px]">
         {!isLocalLogin && (
           <>
-            <h2 className="text-center font-bold text-heading-24 text-custom-red font-DungGeunMo text-primary-500">
-              간편로그인
-            </h2>
+            <div className="relative">
+              <h2 className="text-center font-bold text-heading-24 text-custom-red font-DungGeunMo text-primary-500">
+                간편로그인
+              </h2>
+              <div className="absolute right-0 bottom-0">
+                <img onClick={onClose} className="w-7 h-7 cursor-pointer" src={closeBtn} alt="닫기" />
+              </div>
+            </div>
             <div className="text-white text-center mt-5">쉽고 빠르게</div>
             <div className="text-white text-center mb-5 mt-1">스파르타 게임즈를 즐겨보세요!</div>
             {/* 간편로그인 버튼 그룹 */}
@@ -149,9 +155,14 @@ function Login({ onClose }: Props) {
         )}
         {isLocalLogin && (
           <>
-            <h2 className="text-center font-bold text-heading-24 text-custom-red font-DungGeunMo text-primary-500 mb-7">
-              이메일 로그인
-            </h2>
+            <div className="relative">
+              <h2 className="text-center font-bold text-heading-24 text-custom-red font-DungGeunMo text-primary-500 mb-7">
+                이메일 로그인
+              </h2>
+              <div className="absolute right-0 bottom-0">
+                <img onClick={onClose} className="w-7 h-7 cursor-pointer" src={closeBtn} alt="닫기" />
+              </div>
+            </div>
             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
               <div className="flex flex-col gap-[12px] mb-4">
                 <SpartaTextField
