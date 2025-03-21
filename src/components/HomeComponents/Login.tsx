@@ -12,6 +12,9 @@ import { userStore } from "../../share/store/userStore";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import SpartaReactionModal, { TSpartaReactionModalProps } from "../../spartaDesignSystem/SpartaReactionModal";
+import useModalToggles from "../../hook/useModalToggles";
+import closeBtn from "../../../src/assets/common/closeBtn.svg";
 
 type Props = {
   onClose: () => void;
@@ -30,10 +33,30 @@ function Login({ onClose }: Props) {
       password: "",
     },
   });
+  const NO_ACTION_MODAL_ID = "noActionModal";
 
   const { setUser } = userStore();
 
   const navigate = useNavigate();
+
+  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([NO_ACTION_MODAL_ID]);
+
+  const noActionData: { [key: string]: Partial<TSpartaReactionModalProps> } = {
+    loginfail: {
+      title: "잠시만요!",
+      content: "아이디 또는 비밀번호가 잘못 되었습니다. 아이디와 비밀번호를 정확히 입력해 주세요.",
+      btn1: {
+        text: "확인했습니다",
+        onClick: () => {
+          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+        },
+      },
+      type: "error",
+    },
+  };
+  const [noActionModalData, setNoActionModalData] = useState<Partial<TSpartaReactionModalProps>>(
+    noActionData.loginfail,
+  );
 
   const loginMutation = useMutation({
     mutationFn: ({ email, password }: { email: string; password: string }) => login(email, password),
@@ -51,7 +74,8 @@ function Login({ onClose }: Props) {
       }
     },
     onError: () => {
-      window.alert("로그인에 실패했습니다");
+      setNoActionModalData(noActionData.loginfail);
+      onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
     },
   });
 
@@ -69,9 +93,14 @@ function Login({ onClose }: Props) {
       <div className="w-[350px]">
         {!isLocalLogin && (
           <>
-            <h2 className="text-center font-bold text-heading-24 text-custom-red font-DungGeunMo text-primary-500">
-              간편로그인
-            </h2>
+            <div className="relative">
+              <h2 className="text-center font-bold text-heading-24 text-custom-red font-DungGeunMo text-primary-500">
+                간편로그인
+              </h2>
+              <div className="absolute right-0 bottom-0">
+                <img onClick={onClose} className="w-7 h-7 cursor-pointer" src={closeBtn} alt="닫기" />
+              </div>
+            </div>
             <div className="text-white text-center mt-5">쉽고 빠르게</div>
             <div className="text-white text-center mb-5 mt-1">스파르타 게임즈를 즐겨보세요!</div>
             {/* 간편로그인 버튼 그룹 */}
@@ -126,9 +155,14 @@ function Login({ onClose }: Props) {
         )}
         {isLocalLogin && (
           <>
-            <h2 className="text-center font-bold text-heading-24 text-custom-red font-DungGeunMo text-primary-500 mb-7">
-              이메일 로그인
-            </h2>
+            <div className="relative">
+              <h2 className="text-center font-bold text-heading-24 text-custom-red font-DungGeunMo text-primary-500 mb-7">
+                이메일 로그인
+              </h2>
+              <div className="absolute right-0 bottom-0">
+                <img onClick={onClose} className="w-7 h-7 cursor-pointer" src={closeBtn} alt="닫기" />
+              </div>
+            </div>
             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
               <div className="flex flex-col gap-[12px] mb-4">
                 <SpartaTextField
@@ -187,6 +221,27 @@ function Login({ onClose }: Props) {
           </>
         )}
       </div>
+
+      {noActionModalData && (
+        <SpartaReactionModal
+          isOpen={modalToggles[NO_ACTION_MODAL_ID]}
+          onClose={onClickModalToggleHandlers[NO_ACTION_MODAL_ID]}
+          modalId={NO_ACTION_MODAL_ID}
+          title={noActionModalData.title || ""}
+          content={noActionModalData.content || ""}
+          btn1={{
+            text: noActionModalData?.btn1?.text || "",
+            onClick: noActionModalData?.btn1?.onClick || (() => {}),
+          }}
+          btn2={
+            noActionModalData?.btn2 && {
+              text: noActionModalData?.btn2?.text || "",
+              onClick: noActionModalData?.btn2?.onClick || (() => {}),
+            }
+          }
+          type={noActionModalData.type}
+        />
+      )}
     </>
   );
 }

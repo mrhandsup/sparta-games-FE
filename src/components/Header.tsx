@@ -218,6 +218,7 @@ const Header = () => {
       <SpartaModal
         isOpen={modalToggles[LOGIN_MODAL_ID]}
         onClose={onClickModalToggleHandlers[LOGIN_MODAL_ID]}
+        closeOnClickOutside={false}
         modalId={LOGIN_MODAL_ID}
       >
         <Login onClose={onClickModalToggleHandlers[LOGIN_MODAL_ID]} />
