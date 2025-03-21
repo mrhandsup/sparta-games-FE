@@ -118,7 +118,11 @@ const GameDetail = () => {
         modalId={GAME_EDIT_CHECK_ID}
         closeOnClickOutside={false}
       >
-        <EditCheck gamePlayData={gamePlayData} onClose={onClickModalToggleHandlers[GAME_EDIT_CHECK_ID]} />
+        <EditCheck
+          gamePk={gameDetailId}
+          gamePlayData={gamePlayData}
+          onClose={onClickModalToggleHandlers[GAME_EDIT_CHECK_ID]}
+        />
       </SpartaModal>
 
       <SpartaModal

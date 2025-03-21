@@ -5,11 +5,12 @@ import closeBtnAlert from "../../../src/assets/common/closeBtnAlert.svg";
 import { TGamePlayData } from "../../types";
 
 type Props = {
+  gamePk: number;
   gamePlayData: TGamePlayData | undefined;
   onClose: () => void;
 };
 
-const EditCheck = ({ gamePlayData, onClose }: Props) => {
+const EditCheck = ({ gamePk, gamePlayData, onClose }: Props) => {
   const [inputValue, setInputValue] = useState("");
 
   const navigate = useNavigate();
@@ -65,7 +66,7 @@ const EditCheck = ({ gamePlayData, onClose }: Props) => {
         {isPhraseCorrect ? (
           <button
             onClick={() => {
-              navigate("/game-upload/edit", { state: { gameData: gamePlayData, isEditMode: true } });
+              navigate(`/game-edit/${gamePk}`, { state: { gameData: gamePlayData, isEditMode: true } });
             }}
             className="w-full"
           >
