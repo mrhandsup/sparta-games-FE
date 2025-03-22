@@ -1,8 +1,6 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { GAME_CATEGORY } from "../../constant/constant";
-import SpartaChipSelect from "../../spartaDesignSystem/SpartaChipSelect";
 import SpartaReactionModal, { TSpartaReactionModalProps } from "../../spartaDesignSystem/SpartaReactionModal";
 import SpartaModal from "../../spartaDesignSystem/SpartaModal";
 import useModalToggles from "../../hook/useModalToggles";
@@ -13,7 +11,6 @@ import UploadCheck from "./UploadCheck";
 import changeUrl from "../../util/changeUrl";
 import { checkFileExtension, checkFileSize, checkFileType } from "../../util/fileValidation";
 import { TGamePlayData, TGameUploadInput } from "../../types";
-import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "./Form.css";
 import JSZip from "jszip";
@@ -21,6 +18,7 @@ import GameUploadFields from "./GameUploadFields";
 import GameMediaFields from "./GameMediaFields";
 import GameDescriptionField from "./GameDescriptionField";
 import GameSubmitButton from "./GameSubmitButton";
+import { uploadErrorMessages } from "./uploadErrorMessages";
 
 type Props = {
   note: {
@@ -49,74 +47,17 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
   const navigate = useNavigate();
   const { userData } = userStore();
 
+  const [isUploading, setIsUploading] = useState(false);
+
   const { modalToggles, onClickModalToggleHandlers } = useModalToggles([
     GAME_UPLOAD_CHECK_ID,
     EDIT_SUCCESS_ID,
     NO_ACTION_MODAL_ID,
   ]);
 
-  const [isUploading, setIsUploading] = useState(false);
-  const noActionData: { [key: string]: Partial<TSpartaReactionModalProps> } = {
-    fileSizeWarning: {
-      title: "확인해주세요!",
-      content: "용량이 커서 파일을 업로드 할 수 없습니다.<br/>업로드할 파일이 500mb 이하인지 확인해주세요.",
-      btn1: {
-        text: "확인",
-        onClick: () => {
-          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-        },
-      },
-      type: "alert",
-    },
-
-    fileTypeWarning: {
-      title: "확인해주세요!",
-      content: "Zip 또는 7z 파일로 업로드 해주세요.",
-      btn1: {
-        text: "확인",
-        onClick: () => {
-          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-        },
-      },
-      type: "alert",
-    },
-
-    imageTypeWarning: {
-      title: "확인해주세요!",
-      content: "이미지 파일만 업로드 해주세요.",
-      btn1: {
-        text: "확인",
-        onClick: () => {
-          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-        },
-      },
-      type: "alert",
-    },
-
-    imageUploadWarning: {
-      title: "확인해주세요!",
-      content: "5mb 이하의 이미지 파일을 업로드해 주세요.",
-      btn1: {
-        text: "확인",
-        onClick: () => {
-          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-        },
-      },
-      type: "alert",
-    },
-
-    gameFileUploadWarning: {
-      title: "확인해주세요!",
-      content: "WebGL로 빌드된 게임파일을 업로드해주세요!",
-      btn1: {
-        text: "확인",
-        onClick: () => {
-          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-        },
-      },
-      type: "alert",
-    },
-  };
+  const noActionData = uploadErrorMessages(() => {
+    onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+  });
 
   const [noActionModalData, setNoActionModalData] = useState<Partial<TSpartaReactionModalProps>>(
     noActionData.fileUploadWarning,
@@ -131,25 +72,6 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
   useEffect(() => {
     trigger();
   }, [note]);
-
-  const handleEditorChange = (editorState: string) => {
-    // react-quill 내용 작성 중, 내용 모두 지울 경우 생기는 <p></br></p> 태그 제거
-    const plainText = editorState.replace(/<(.|\n)*?>/g, "").trim();
-
-    // 내용이 없을 경우 빈 문자열로 설정해서 isValid가 false가 되도록 함
-    const cleanedContent = plainText === "" ? "" : editorState;
-
-    setValue("content", cleanedContent, { shouldValidate: true });
-  };
-
-  const editorContent = watch("content");
-
-  const isEditFormValid =
-    watch("thumbnail")?.length > 0 &&
-    watch("gameFile")?.length > 0 &&
-    watch("category")?.length > 0 &&
-    watch("title") !== "" &&
-    watch("content") !== "";
 
   const [gameUploadResponse, setGameUploadResponse] = useState<number | undefined>(0);
 
@@ -270,7 +192,11 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
     const fileInput = document.getElementById(inputId) as HTMLInputElement;
 
     // JSZip을 활용하여 업로드한 파일이 WebGL 파일인지 유효성 검사
-    if (files[0].type === "application/zip" || files[0].type === "application/x-zip-compressed") {
+    if (
+      files[0].type === "application/zip" ||
+      files[0].type === "application/x-zip-compressed" ||
+      files[0].type === "application/x-7z-compressed"
+    ) {
       setIsUploading(true);
       const zip = await JSZip.loadAsync(files[0]);
       const fileNames = Object.keys(zip.files);

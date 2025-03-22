@@ -1,7 +1,7 @@
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
 import { UseFormSetValue, UseFormWatch } from "react-hook-form";
+import ReactQuill from "react-quill";
 import { TGameUploadInput } from "../../types";
+import "react-quill/dist/quill.snow.css";
 
 type Props = {
   watch: UseFormWatch<TGameUploadInput>;
