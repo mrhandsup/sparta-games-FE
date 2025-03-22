@@ -1,18 +1,12 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-
 import DifficultyChip from "../../common/chipComponents/DifficultyChip";
 import StarRating from "../../common/StarRating";
-
 import SpartaReactionModal, { TSpartaReactionModalProps } from "../../../spartaDesignSystem/SpartaReactionModal";
 import useModalToggles from "../../../hook/useModalToggles";
-
 import { deleteGameReview, postReviewLike } from "../../../api/review";
-
 import { TReviewData } from "../../../types";
-
 import { formatDate } from "../../../util/validation";
-
 import reviewDetailImage from "../../../assets/gameDetail/ReviewDetail.svg";
 import reviewEditImage from "../../../assets/gameDetail/ReviewEdit.svg";
 import reviewDeleteImage from "../../../assets/gameDetail/ReviewDelete.svg";
@@ -32,6 +26,15 @@ const ReviewCard = ({ review, onClickModalToggleHandler, isMyReview = false, set
   const REVIEW_DETAIL_MODAL_ID = "reviewDetailModal";
   const NO_ACTION_MODAL_ID = "noActionModal";
   const { modalToggles, onClickModalToggleHandlers } = useModalToggles([REVIEW_DETAIL_MODAL_ID, NO_ACTION_MODAL_ID]);
+
+  const { userData } = userStore();
+
+  const profileImage =
+    userData?.user_pk === review?.author_id && userData?.profile_image
+      ? import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
+        ? import.meta.env.VITE_PROXY_HOST + userData.profile_image
+        : userData.profile_image
+      : exampleProfile;
 
   const queryClient = useQueryClient();
 
@@ -128,7 +131,6 @@ const ReviewCard = ({ review, onClickModalToggleHandler, isMyReview = false, set
         return "HARD";
     }
   };
-  const { userData } = userStore();
 
   return (
     <>
@@ -138,18 +140,7 @@ const ReviewCard = ({ review, onClickModalToggleHandler, isMyReview = false, set
         }`}
       >
         <div className="flex gap-2">
-          {userData?.user_pk === review?.author_id ? (
-            <img
-              className="w-12 h-12 rounded-md object-cover"
-              src={
-                import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
-                  ? import.meta.env.VITE_PROXY_HOST + userData?.profile_image
-                  : userData?.profile_image
-              }
-            />
-          ) : (
-            <img src={exampleProfile} />
-          )}
+          <img className="w-12 h-12 rounded-md object-cover" src={profileImage} />
           <div className="flex flex-col gap-[2px]">
             <div className="flex items-center justify-between">
               {isMyReview ? (
