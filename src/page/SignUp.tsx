@@ -47,7 +47,7 @@ const SignUp = () => {
       sessionStorage.setItem("accessToken", data?.data.access);
       sessionStorage.setItem("refreshToken", data?.data.refresh);
       setUser(data?.data.access);
-      onClickModalToggleHandlers["completeSignUp"]();
+      () => onClickModalToggleHandlers["completeSignUp"]();
       navigate("/");
     },
     onError: () => {
