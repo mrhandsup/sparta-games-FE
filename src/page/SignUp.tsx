@@ -10,11 +10,15 @@ import SpartaButton from "../spartaDesignSystem/SpartaButton";
 import { useMutation } from "@tanstack/react-query";
 import { signUp } from "../api/login";
 import { userStore } from "../share/store/userStore";
+import useModalToggles from "../hook/useModalToggles";
+import SpartaReactionModal from "../spartaDesignSystem/SpartaReactionModal";
 
 const SignUp = () => {
   const [searchParams] = useSearchParams();
   const email = searchParams.get("email");
   const login_type = searchParams.get("login_type");
+
+  const { modalToggles, onClickModalToggleHandlers } = useModalToggles(["completeSignUp"]);
 
   const signupForm = useForm<Partial<TUserInformationInputForm>>({
     mode: "onChange",
@@ -43,6 +47,7 @@ const SignUp = () => {
       sessionStorage.setItem("accessToken", data?.data.access);
       sessionStorage.setItem("refreshToken", data?.data.refresh);
       setUser(data?.data.access);
+      onClickModalToggleHandlers["completeSignUp"]();
       navigate("/");
     },
     onError: () => {
@@ -102,6 +107,19 @@ const SignUp = () => {
           </FormProvider>
         </div>
       </div>
+      <SpartaReactionModal
+        isOpen={modalToggles["completeSignUp"]}
+        onClose={onClickModalToggleHandlers["completeSignUp"]}
+        modalId={"completeSignUp"}
+        title={"회원가입을 환영합니다!"}
+        content={
+          "다양한 개발자들의 게임을 즐길 수 있는<br/> 스파르타 게임즈에 오신것을 환영합니다!<br/> 댓글쓰기 및 게임업로드 기능이 활성화 되었습니다. <br/>다양한 게임을 즐겨보세요!"
+        }
+        btn1={{
+          text: "확인했습니다",
+          onClick: () => onClickModalToggleHandlers["completeSignUp"](),
+        }}
+      />
     </div>
   );
 };

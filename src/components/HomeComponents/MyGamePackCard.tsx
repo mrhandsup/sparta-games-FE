@@ -36,10 +36,10 @@ const MyGameCard = ({ item }: Props) => {
             : `[${userData?.nickname}] 님이 좋아할만한 게임`}
         </p>
         <div className="flex gap-3 font-DungGeunMo items-baseline mt-[8px]">
-          <p className="text-heading-24">[{item?.title ? item?.title : "test"}]</p>
+          <p className="text-heading-24">{item?.title ? item?.title : "test"}</p>
         </div>
         <div className="flex items-center gap-1.5 justify-between pt-1 pb-2">
-          <p className="text-[22.4px] font-DungGeunMo ">[{item?.maker_name || "Maker"}]</p>
+          <p className="text-[22.4px] font-DungGeunMo ">{item?.maker_name || "Maker"}</p>
           <div className="flex items-center gap-1.5">
             <p className="text-primary-400 font-DungGeunMo text-[22.4px]">{item?.star.toFixed(1)}</p>
             {item && <StarRating score={item.star} size="large" />}

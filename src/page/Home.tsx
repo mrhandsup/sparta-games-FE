@@ -59,7 +59,7 @@ const Home = () => {
                   className="w-[32px] h-[32px] "
                   style={{ backgroundImage: `url(${getIconUrl(data?.rand1.category_name)})` }}
                 />
-                <p className="font-DungGeunMo text-heading-32 font-[400] text-white">[{data?.rand1.category_name}]</p>
+                <p className="font-DungGeunMo text-heading-32 font-[400] text-white">{data?.rand1.category_name}</p>
               </div>
             </GameCardList>
           )}
@@ -70,7 +70,7 @@ const Home = () => {
                   className="w-[32px] h-[32px] "
                   style={{ backgroundImage: `url(${getIconUrl(data?.rand2.category_name)})` }}
                 />
-                <p className="font-DungGeunMo font-[400] text-heading-32 text-white">[{data?.rand2.category_name}]</p>
+                <p className="font-DungGeunMo font-[400] text-heading-32 text-white">{data?.rand2.category_name}</p>
               </div>
             </GameCardList>
           )}
@@ -81,7 +81,7 @@ const Home = () => {
                   className="w-[32px] h-[32px] "
                   style={{ backgroundImage: `url(${getIconUrl(data?.rand3.category_name)})` }}
                 />
-                <p className="font-DungGeunMo font-[400] text-heading-32 text-white">[{data?.rand3.category_name}]</p>
+                <p className="font-DungGeunMo font-[400] text-heading-32 text-white">{data?.rand3.category_name}</p>
               </div>
             </GameCardList>
           )}

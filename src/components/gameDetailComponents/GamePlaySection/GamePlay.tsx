@@ -156,10 +156,10 @@ const GamePlay = ({ gamePk, title, makerName, makerPk, gamePath }: Props) => {
       ) : (
         <div className="w-[880px]">
           <div className="flex flex-col gap-2 font-DungGeunMo text-[32px] text-white">
-            <p>[{title}]</p>
+            <p>{title}</p>
             <div className="flex justify-between">
               <p className="text-gray-100 text-[28px] cursor-pointer" onClick={() => navigate(`/my-page/${makerPk}`)}>
-                [{makerName}]
+                {makerName}
               </p>
               {gamePath && (
                 <div className="flex gap-6">

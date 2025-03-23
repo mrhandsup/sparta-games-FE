@@ -62,11 +62,11 @@ const MyGameCard = ({ item }: Props) => {
       <div className="ml-4 w-[55%] flex flex-col justify-between">
         <div className={` bg-gray-800 text-white  rounded-b-lg`}>
           <div className="text-title-22  font-DungGeunMo text-ellipsis overflow-hidden truncate font-[400]">
-            [{item?.title ? item?.title : "test"}]
+            {item?.title ? item?.title : "test"}
           </div>
           <div className="w-full text-sm font-normal flex items-center justify-between my-1">
             <p className="text-title-14 text-gray-200 truncate max-w-[55%] font-DungGeunMo font-[400]">
-              [{item?.maker_name || "Maker"}]
+              {item?.maker_name || "Maker"}
             </p>
             <div className="flex items-center gap-1.5">
               <p className="text-primary-400 font-DungGeunMo text-[18px] pt-0.5 font-[400]">{item?.star.toFixed(1)}</p>

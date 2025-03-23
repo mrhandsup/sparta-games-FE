@@ -38,7 +38,7 @@ const MypageLogModal = ({ user_name, user_pk, recent }: Props) => {
       <div className="flex items-center gap-4 justify-start ">
         <img src={log} />
         <p className="font-DungGeunMo text-heading-32 text-white font-[400]">
-          [{user_name}]의 {recent ? "Playlist" : "Bookmark"}
+          {user_name}의 {recent ? "Playlist" : "Bookmark"}
         </p>
       </div>
       <div className="flex gap-3">

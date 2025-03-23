@@ -82,7 +82,7 @@ const ProfileHeader = (props: TProfileProps) => {
               <span className="font-DungGeunMo text-body-20 bg-white px-2 py-1 rounded-md w-fit">
                 {userTech[0].label}
               </span>
-              <p className="font-DungGeunMo text-heading-40 text-white font-[400]">[{props.user.nickname}] 님!</p>
+              <p className="font-DungGeunMo text-heading-40 text-white font-[400]">{props.user.nickname} 님!</p>
             </div>
             {props.isMyPage && (
               <div className="w-[110px]">

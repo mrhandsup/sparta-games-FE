@@ -53,8 +53,8 @@ const AdminListItem = ({ idx, item, onClickShowMore, isDetail }: Props) => {
       <div className="flex items-center justify-between w-full">
         <div className="text-white flex gap-3 items-center">
           <div className="flex items-center gap-3 flex-col">
-            <p className="font-DungGeunMo text-[17px]">[{idx + 1}]</p>
-            <p className="font-DungGeunMo text-[11px]">[{item.category_name[0]}]</p>
+            <p className="font-DungGeunMo text-[17px]">{idx + 1}</p>
+            <p className="font-DungGeunMo text-[11px]">{item.category_name[0]}</p>
           </div>
           {isDetail && (
             <div className={`rounded-md px-5 py-4 text-black ${switchCaseByState().color}`}>
@@ -62,8 +62,8 @@ const AdminListItem = ({ idx, item, onClickShowMore, isDetail }: Props) => {
             </div>
           )}
           <div className="flex items-start gap-3 flex-col">
-            <p className="text-title-22">[{item.title}]</p>
-            <p>[{item.maker_name}]</p>
+            <p className="text-title-22">{item.title}</p>
+            <p>{item.maker_name}</p>
           </div>
         </div>
         <div className="flex gap-1">
