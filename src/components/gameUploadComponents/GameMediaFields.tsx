@@ -39,7 +39,7 @@ const GameMediaFields = ({ watch, register, formState, onChangeFileHandler }: Pr
           스틸컷 업로드<span className="text-body-14 text-alert-default">*선택</span>
         </div>
 
-        {["First", "Second", "Third", "Fourth", "Fifth"].map((order, index) => (
+        {Array.from({ length: 5 }, (_, index) => (
           <div key={index} className="flex gap-2">
             <div className="py-4 px-4 w-full bg-gray-700 border border-solid border-white rounded-md resize-none whitespace-nowrap overflow-hidden text-ellipsis">
               {watch(`stillCut.${index}`)?.length > 0
@@ -48,7 +48,7 @@ const GameMediaFields = ({ watch, register, formState, onChangeFileHandler }: Pr
             </div>
 
             <label
-              htmlFor={`stillCut${order}`}
+              htmlFor={`stillCut${index}`}
               className={`flex justify-center items-center ${
                 watch(`stillCut.${index}`)?.length > 0 ? "bg-alert-default" : "bg-gray-100"
               } text-black rounded-sm text-title-18 whitespace-nowrap cursor-pointer`}
@@ -61,7 +61,7 @@ const GameMediaFields = ({ watch, register, formState, onChangeFileHandler }: Pr
             </label>
 
             <input
-              id={`stillCut${order}`}
+              id={`stillCut${index}`}
               type="file"
               accept="image/*"
               {...register(`stillCut.${index}`, { onChange: onChangeFileHandler })}

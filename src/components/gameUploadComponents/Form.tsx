@@ -233,7 +233,6 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
             register={register}
             control={control}
             isUploading={isUploading}
-            previousGameData={previousGameData}
             onChangeFileHandler={onChangeFileHandler}
           />
 

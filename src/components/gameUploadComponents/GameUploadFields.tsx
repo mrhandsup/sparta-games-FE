@@ -1,7 +1,7 @@
 import { Control, UseFormRegister, UseFormWatch } from "react-hook-form";
 import { GAME_CATEGORY } from "../../constant/constant";
 import SpartaChipSelect from "../../spartaDesignSystem/SpartaChipSelect";
-import { TGamePlayData, TGameUploadInput } from "../../types";
+import { TGameUploadInput } from "../../types";
 import { ChangeEvent } from "react";
 
 type Props = {
@@ -9,30 +9,10 @@ type Props = {
   register: UseFormRegister<TGameUploadInput>;
   control: Control<TGameUploadInput>;
   isUploading: boolean;
-  previousGameData: TGamePlayData | undefined;
   onChangeFileHandler: (e: ChangeEvent<HTMLInputElement>) => Promise<void>;
 };
 
-const GameUploadFields = ({ watch, register, control, isUploading, previousGameData, onChangeFileHandler }: Props) => {
-  const extractFileName = (filePath: string | undefined, fileType: "imageFile" | "gameFile") => {
-    if (!filePath) return false;
-
-    const fileNameWithExtension = filePath.split("/").pop();
-
-    if (!fileNameWithExtension) return false;
-
-    const [name, extension] = fileNameWithExtension.split(".");
-
-    let finalName = "";
-    if (fileType === "imageFile") {
-      finalName = name.includes("_") ? name.split("_")[0] : name;
-    } else if (fileType === "gameFile") {
-      finalName = name.split("_")[1] || name;
-    }
-
-    return `${finalName}.${extension}`;
-  };
-
+const GameUploadFields = ({ watch, register, control, isUploading, onChangeFileHandler }: Props) => {
   return (
     <div className="flex flex-col gap-5 w-[760px]">
       <div className="flex flex-col gap-2">
@@ -42,10 +22,8 @@ const GameUploadFields = ({ watch, register, control, isUploading, previousGameD
 
         <div className="flex gap-2">
           <div className="py-4 px-4 w-full bg-gray-700 border border-solid border-white rounded-md resize-none whitespace-nowrap overflow-hidden text-ellipsis">
-            {typeof watch("thumbnail") === "object" && watch("thumbnail")?.length > 0
-              ? decodeURIComponent((watch("thumbnail")[0] as File)?.name)
-              : typeof watch("thumbnail") === "string"
-              ? decodeURIComponent(extractFileName(previousGameData?.thumbnail, "imageFile") as string)
+            {watch("thumbnail")?.length > 0
+              ? watch("thumbnail")[0]?.name
               : "1000px*800px이하의 이미지 파일을 권장합니다."}
           </div>
 
@@ -75,12 +53,12 @@ const GameUploadFields = ({ watch, register, control, isUploading, previousGameD
 
         <div className="flex gap-2">
           <div className="py-4 px-4 w-full bg-gray-700 border border-solid border-white rounded-md resize-none whitespace-nowrap overflow-hidden text-ellipsis">
-            {isUploading
+            {!watch("gameFile")
+              ? "파일을 불러오는 중입니다. 잠시만 기다려주세요."
+              : isUploading
               ? "파일을 검사중입니다."
-              : typeof watch("gameFile") === "object" && watch("gameFile")?.length > 0
-              ? decodeURIComponent((watch("gameFile")[0] as File)?.name)
-              : typeof watch("gameFile") === "string"
-              ? decodeURIComponent(extractFileName(previousGameData?.gamefile, "gameFile") as string)
+              : watch("gameFile")?.length > 0
+              ? (watch("gameFile")[0] as File)?.name
               : "500mb 이하 Zip파일로 업로드 해주세요."}
           </div>
 

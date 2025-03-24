@@ -90,11 +90,14 @@ const UploadCheck = ({ gameUploadResponse, handleSubmit, onSubmitHandler, onClos
           value={inputValue}
           onChange={handleInputChange}
           placeholder="즐거운 게임세상 스파르타게임즈!"
+          disabled={isLoading}
         />
       </div>
 
       <div
-        className={`flex h-12 rounded-md ${isPhraseCorrect ? "bg-primary-500" : "bg-gray-400"} text-center font-bold`}
+        className={`flex h-12 rounded-md ${
+          isPhraseCorrect && !isLoading ? "bg-primary-500" : "bg-gray-400"
+        } text-center font-bold`}
       >
         {isPhraseCorrect && !isEditMode ? (
           <button
