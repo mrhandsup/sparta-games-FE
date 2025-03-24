@@ -33,6 +33,19 @@ const Redirect = () => {
       type: "error",
     },
 
+    socialLoginError: {
+      title: "로그인 실패",
+      content: "해당 유저는 탈퇴 처리된 유저입니다.",
+      btn1: {
+        text: "확인했습니다.",
+        onClick: () => {
+          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+          navigate("/");
+        },
+      },
+      type: "error",
+    },
+
     isServerError: {
       title: "로그인 실패",
       content: "서버 오류가 발생했습니다. 나중에 다시 시도해주세요.",
@@ -80,6 +93,11 @@ const Redirect = () => {
     if (isError && axios.isAxiosError(error)) {
       if (error.response?.status === 400) {
         setNoActionModalData(noActionData.isClientError);
+        onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+
+        return;
+      } else if (error.response?.status === 401) {
+        setNoActionModalData(noActionData.socialLoginError);
         onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
 
         return;
