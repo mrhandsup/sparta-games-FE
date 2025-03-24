@@ -10,7 +10,7 @@ import { formatDate } from "../../../util/validation";
 import reviewDetailImage from "../../../assets/gameDetail/ReviewDetail.svg";
 import reviewEditImage from "../../../assets/gameDetail/ReviewEdit.svg";
 import reviewDeleteImage from "../../../assets/gameDetail/ReviewDelete.svg";
-import exampleProfile from "../../../assets/gameDetail/example_profile.png";
+import defaultProfile from "../../../assets/gameDetail/example_profile.png";
 import SpartaModal from "../../../spartaDesignSystem/SpartaModal";
 import ReviewDetail from "./ReviewDetail";
 import { userStore } from "../../../share/store/userStore";
@@ -30,11 +30,11 @@ const ReviewCard = ({ review, onClickModalToggleHandler, isMyReview = false, set
   const { userData } = userStore();
 
   const profileImage =
-    userData?.user_pk === review?.author_id && userData?.profile_image
+    userData?.user_pk === review?.author_id && userData?.profile_image && userData.profile_image !== "이미지 없음"
       ? import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
         ? import.meta.env.VITE_PROXY_HOST + userData.profile_image
         : userData.profile_image
-      : exampleProfile;
+      : defaultProfile;
 
   const queryClient = useQueryClient();
 
