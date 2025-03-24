@@ -149,7 +149,9 @@ const ProfileHeader = (props: TProfileProps) => {
                   content="사진 삭제"
                   size="small"
                   colorType="grey"
-                  disabled={props.user.profile_image === "이미지 없음" ? true : false}
+                  disabled={
+                    props.user.profile_image === "이미지 없음" || props.user.profile_image === "" ? true : false
+                  }
                   onClick={handleFileDelete}
                 />
               </div>
