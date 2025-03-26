@@ -47,8 +47,7 @@ const SignUp = () => {
       sessionStorage.setItem("accessToken", data?.data.access);
       sessionStorage.setItem("refreshToken", data?.data.refresh);
       setUser(data?.data.access);
-      () => onClickModalToggleHandlers["completeSignUp"]();
-      navigate("/");
+      onClickModalToggleHandlers["completeSignUp"]();
     },
     onError: () => {
       console.log("회원가입 실패");
@@ -117,7 +116,10 @@ const SignUp = () => {
         }
         btn1={{
           text: "확인했습니다",
-          onClick: () => onClickModalToggleHandlers["completeSignUp"](),
+          onClick: () => {
+            onClickModalToggleHandlers["completeSignUp"]();
+            navigate("/");
+          },
         }}
       />
     </div>

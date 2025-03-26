@@ -33,7 +33,7 @@ const Redirect = () => {
       type: "error",
     },
 
-    socialLoginError: {
+    deactivatedUserError: {
       title: "로그인 실패",
       content: "해당 유저는 탈퇴 처리된 유저입니다.",
       btn1: {
@@ -97,7 +97,7 @@ const Redirect = () => {
 
         return;
       } else if (error.response?.status === 401) {
-        setNoActionModalData(noActionData.socialLoginError);
+        setNoActionModalData(noActionData.deactivatedUserError);
         onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
 
         return;
