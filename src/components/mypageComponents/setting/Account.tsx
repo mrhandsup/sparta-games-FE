@@ -157,26 +157,26 @@ const Account = () => {
         isOpen={modalToggles[WITHDRAWAL_MODAL_ID]}
         onClose={onClickModalToggleHandlers[WITHDRAWAL_MODAL_ID]}
         closeOnClickOutside={false}
-        title="정말 회원을 탈퇴하시겠습니까?"
+        title="회원탈퇴 진행 시 꼭 확인해주세요!"
         type="error"
       >
         <>
           <div className="text-white flex flex-col gap-2">
-            <li>회원탈퇴 시 연동되어있던 정보는 전부 삭제됩니다.</li>
-            <li>다만 만들었던 게임은 본 서비스에서 계속해서 사용될 수 있어요</li>
-            <li>원하지 않을 경우, 게임 삭제를 먼저 진행해주신 후 회원탈퇴를 진행해주시기 바랍니다. </li>
             <li>
-              회원 탈퇴 후 2일이 지난 시점부터 재 가입이 가능합니다. 2일안에 계정 복구를 원하시면 관리자에게
-              문의해주세요!
+              회원탈퇴 시, 2일이 지난 후 회원정보가 삭제되며, 기간이 지나기 전까지의 업로드 게임 및 댓글은
+              정상노출됩니다.
             </li>
+            <li>이후 삭제되지 않은 댓글 및 등록된 게임이 있는 경우 관리자 계정으로 데이터가 이관되어 관리됩니다.</li>
+            <li>미리 지우고 싶은 댓글 및 게임이 있다면 탈퇴 전 삭제해주시기 바랍니다!</li>
+            <li>2일이 지나기 전 계정복구를 원하신다면 관리자에게 문의해주세요!</li>
             <li>
-              탈퇴를 희망하신다면, <span className="text-error-default">‘안녕 스파르타게임즈!</span>’ 라고 입력해주시기
-              바랍니다.
+              탈퇴를 희망하신다면 <span className="text-error-default">'스파르타 게임즈 회원탈퇴'</span>’ 문구를
+              입력해주세요.
             </li>
           </div>
           <input
             className="w-full h-10 rounded-md border border-solid bg-transparent border-gray-200 p-3 mt-[20px] mb-3 text-gray-200"
-            placeholder="안녕 스파르타게임즈!"
+            placeholder="스파르타 게임즈 회원탈퇴"
             {...register("withdrawal")}
           />
           <SpartaButton
@@ -185,7 +185,7 @@ const Account = () => {
             colorType="error"
             content="회원탈퇴"
             onClick={handleDeleteClick}
-            disabled={withdrawal !== "안녕 스파르타게임즈!"}
+            disabled={withdrawal !== "스파르타 게임즈 회원탈퇴"}
           />
         </>
       </SpartaModal>

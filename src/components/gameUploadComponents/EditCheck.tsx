@@ -15,7 +15,7 @@ const EditCheck = ({ gamePk, gamePlayData, onClose }: Props) => {
 
   const navigate = useNavigate();
 
-  const requiredPhrase = "업데이트를 진행하겠습니다";
+  const requiredPhrase = "게임을 수정하겠습니다";
   const isPhraseCorrect = inputValue === requiredPhrase;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,24 +30,17 @@ const EditCheck = ({ gamePk, gamePlayData, onClose }: Props) => {
         </div>
       </div>
 
-      <div className="">
-        <ul className="font-Pretendard text-white">
-          <li className="flex items-center gap-2 text-sm">
-            <span>·</span> 수정하기를 시작하길 경우, 수정하시는 범위에 따라 재검수가 있을 수 있습니다.
-          </li>
-          <li className="flex items-start gap-2 text-sm ms-4">
-            <span>·</span> 기본적인 내용수정의 경우 공식적인 재검수가 이루어 지지 않습니다만,
-            <br />
-            추후 내용 확인 후 부적절한 내용이 있을 경우 삭제될 수 있습니다.
-          </li>
-          <li className="flex items-center gap-2 text-sm ms-4">
-            <span>·</span> 게임파일이 변동될 경우, 필수적으로 재검수가 진행됩니다.
-          </li>
-          <li className="flex items-center gap-2 text-sm">
-            <span>·</span>수정을 하시기 위해서는<b className="text-alert-default">‘업데이트를 진행하겠습니다'</b>를
-            입력해주세요!
-          </li>
-        </ul>
+      <div className="text-white flex flex-col gap-2">
+        <li>
+          게임파일을 재업로드 할 시 <span className="text-alert-default">재검수</span>가 진행되어 시간이 소요됩니다.
+        </li>
+        <li className="ms-4">이외 기본적인 제목, 게임설명 수정 시 검수과정 없이 바로 업데이트가 진행됩니다.</li>
+        <li className=" ms-4">
+          일부 PC환경에서 썸네일과 스틸컷 파일이 불러와지지 않는 오류가 있으며, 현재 해결중에 있습니다.
+        </li>
+        <li>
+          수정을 하시기 위해서는 <b className="text-alert-default">‘게임을 수정하겠습니다'</b>를 입력해주세요!
+        </li>
       </div>
 
       <div className="mt-4 mb-3 p-3 border border-solid border-gray-100 rounded-md">
@@ -56,7 +49,7 @@ const EditCheck = ({ gamePk, gamePlayData, onClose }: Props) => {
           type="text"
           value={inputValue}
           onChange={handleInputChange}
-          placeholder="업데이트를 진행하겠습니다"
+          placeholder="게임을 수정하겠습니다"
         />
       </div>
 
