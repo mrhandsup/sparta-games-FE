@@ -4,7 +4,6 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import SpartaReactionModal, { TSpartaReactionModalProps } from "../../spartaDesignSystem/SpartaReactionModal";
 import SpartaModal from "../../spartaDesignSystem/SpartaModal";
 import useModalToggles from "../../hook/useModalToggles";
-import { useGameEditSetValue } from "../../hook/useGameEditSetValue";
 import { postGameList, putGameList } from "../../api/game";
 import { userStore } from "../../share/store/userStore";
 import UploadCheck from "./UploadCheck";
@@ -37,12 +36,10 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
   const EDIT_SUCCESS_ID = "editSuccessId";
   const NO_ACTION_MODAL_ID = "noActionModal";
 
-  const { register, watch, control, setValue, formState, handleSubmit, trigger, getValues, reset, resetField } =
+  const { register, watch, control, setValue, formState, handleSubmit, trigger, getValues, resetField } =
     useForm<TGameUploadInput>({
       mode: "onChange",
     });
-
-  useGameEditSetValue({ previousGameData, isEditMode, setValue, trigger, reset });
 
   const navigate = useNavigate();
   const { userData } = userStore();
@@ -73,6 +70,13 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
     trigger();
   }, [note]);
 
+  useEffect(() => {
+    if (previousGameData) {
+      setValue("category", previousGameData.category[0].name);
+      setValue("content", previousGameData.content);
+    }
+  }, [previousGameData, setValue]);
+
   const [gameUploadResponse, setGameUploadResponse] = useState<number | undefined>(0);
 
   const createFormData = (data: TGameUploadInput) => {
@@ -95,13 +99,25 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
       formData.append("thumbnail", previousGameData?.thumbnail);
     }
 
+    // if (data.stillCut) {
+    //   (data.stillCut as File[][]).forEach((screenshot, index) => {
+    //     if (screenshot instanceof FileList && screenshot.length > 0) {
+    //       formData.append("screenshots", screenshot[0]);
+    //     } else if (typeof screenshot === "object" && previousGameData?.screenshot[index]) {
+    //       formData.append("screenshots", previousGameData?.screenshot[index].src);
+    //     }
+    //   });
+    // }
+
     if (data.stillCut) {
       (data.stillCut as File[][]).forEach((screenshot, index) => {
-        if (screenshot instanceof FileList && screenshot.length > 0) {
-          formData.append("screenshots", screenshot[0]);
-        } else if (typeof screenshot === "object" && previousGameData?.screenshot[index]) {
-          formData.append("screenshots", previousGameData?.screenshot[index].src);
-        }
+        formData.append("new_screenshots", screenshot[0]);
+      });
+    }
+    if (previousGameData?.screenshot) {
+      previousGameData.screenshot.forEach((screenshot) => {
+        console.log("screenshot.id", screenshot.id);
+        formData.append("old_screenshots", screenshot.id); // 개별 추가
       });
     }
 
@@ -116,6 +132,7 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
 
   const onEditHandler = async (gamePk: number | undefined) => {
     const formData = createFormData(getValues());
+
     const res = await putGameList(formData, gamePk);
 
     if (res?.status === 400) {
@@ -234,6 +251,7 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
             control={control}
             isUploading={isUploading}
             onChangeFileHandler={onChangeFileHandler}
+            previousGameData={previousGameData}
           />
 
           <GameMediaFields
@@ -241,6 +259,7 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
             register={register}
             formState={formState}
             onChangeFileHandler={onChangeFileHandler}
+            previousGameData={previousGameData}
           />
         </div>
 
