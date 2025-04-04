@@ -17,8 +17,12 @@ const Footer = () => {
           <p>Contact</p>
         </div>
         <div className="flex gap-[60px] text-body-14 underline underline-offset-4">
-          <p>Privacy Policy</p>
-          <p>Terms of Service</p>
+          <a href="https://sticky-humerus-f66.notion.site/17a57166c44c80bda552eb514e3a503e" target="_blank">
+            Privacy Policy
+          </a>
+          <a href="https://sticky-humerus-f66.notion.site/17e57166c44c80b9bdd9e9c82601a217" target="_blank">
+            Terms of Service
+          </a>
         </div>
       </div>
     </footer>
