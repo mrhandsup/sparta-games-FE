@@ -15,13 +15,6 @@ type Props = {
 };
 
 const GameSubmitButton = ({ watch, formState, note, isEditMode, openUploadCheckModal, onEditRequest }: Props) => {
-  const isEditFormValid =
-    watch("thumbnail")?.length > 0 &&
-    watch("gameFile")?.length > 0 &&
-    watch("category")?.length > 0 &&
-    watch("title") !== "" &&
-    watch("content") !== "";
-
   return !isEditMode && note[1] && note[2] && note[3] && formState.isValid ? (
     <button
       onClick={openUploadCheckModal}
@@ -30,7 +23,7 @@ const GameSubmitButton = ({ watch, formState, note, isEditMode, openUploadCheckM
     >
       승인요청
     </button>
-  ) : isEditMode && isEditFormValid ? (
+  ) : isEditMode ? (
     <button
       onClick={onEditRequest}
       type="button"

@@ -14,7 +14,7 @@ const GameDescriptionField = ({ watch, setValue }: Props) => {
     // react-quill 내용 작성 중, 내용 모두 지울 경우 생기는 <p></br></p> 태그 제거
     const plainText = editorState.replace(/<(.|\n)*?>/g, "").trim();
 
-    // 내용이 없을 경우 빈 문자열로 설정해서 isValid가 false가 되도록 함
+    // 내용이 없을 경우 빈 문자열로 설정해서 isValid가 false가 되도록 함s
     const cleanedContent = plainText === "" ? "" : editorState;
 
     setValue("content", cleanedContent, { shouldValidate: true });
