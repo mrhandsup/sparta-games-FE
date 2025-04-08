@@ -67,7 +67,7 @@ const SpartaModal = ({
     >
       <div
         ref={modalRefs[modalId]}
-        className={`bg-gray-800 p-10 w-fit mx-4 transform transition-all duration-300 ease-in-out animate-modalSlideIn rounded-[20px] border-[1px] border-solid ${getStyledType()}`}
+        className={`bg-gray-800 p-10 w-fit max-w-[1200px] mx-4 transform transition-all duration-300 ease-in-out animate-modalSlideIn rounded-[20px] border-[1px] border-solid ${getStyledType()}`}
         onClick={(e) => e.stopPropagation()}
       >
         {title && (

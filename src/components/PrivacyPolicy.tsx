@@ -1,8 +1,8 @@
 const PrivacyPolicy = () => {
   return (
-    <div className="font-DungGeunMo text-white">
+    <div className="font-DungGeunMo text-white leading-5">
       <p className="text-3xl font-semibold my-3">0. 소개</p>
-      <p className="leading-5">
+      <p>
         스파르타 게임즈는 유저들의 개인정보를 존중하며, 해당 정책을 준수하여 이를 보호하기 위해 최선을 다하고 있습니다.
         이 정책들은 Sparta Games의 웹사이트를 접속하여 원활한 사용을 위해 수집/귀하가 제공할 수 있는 정보를
         수집,사용,유지,보호 및 공개하는 본 팀의 관행을 설명합니다. 귀하의 정보와 관련된 당사의 정책 및 관행과 당사가
@@ -14,7 +14,7 @@ const PrivacyPolicy = () => {
       <hr className="my-8" />
 
       <p className="text-3xl font-bold mb-2">1. 수집하는 개인정보 항목</p>
-      <p className="mb-4 leading-5">
+      <p>
         본 개인정보처리방침은 Sparta Games의 공식 웹사이트(www.sparta-games.net) 및 Google, Kakao, Discord 계정을 통한
         로그인(OAuth)을 사용하는 관련 서비스 전체에 적용됩니다.
       </p>
@@ -100,7 +100,7 @@ const PrivacyPolicy = () => {
       <hr className="my-8" />
 
       <p className="text-3xl font-bold mb-2">5. 권익침해 구제방법</p>
-      <p className="mb-4 leading-5">
+      <p className="mb-4">
         개인정보 침해로 인한 구제를 받기 위해 다음 기관에 분쟁해결이나 상담 등을 신청할 수 있습니다.
       </p>
       <ul className="ms-4 list-disc list-inside space-y-1">
