@@ -3,7 +3,7 @@ import { GAME_CATEGORY } from "../../constant/constant";
 import SpartaChipSelect from "../../spartaDesignSystem/SpartaChipSelect";
 import { TGamePlayData, TGameUploadInput } from "../../types";
 import { ChangeEvent } from "react";
-import { extractFileName } from "../../util/gameFileParser";
+import { extractFileName } from "../../util/extractFileName";
 
 type Props = {
   watch: UseFormWatch<TGameUploadInput>;

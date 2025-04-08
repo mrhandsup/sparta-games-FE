@@ -78,6 +78,14 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
   }, [previousGameData, setValue]);
 
   const [gameUploadResponse, setGameUploadResponse] = useState<number | undefined>(0);
+  const [screenShotIds, setScreenShotIds] = useState<number[]>([]);
+
+  useEffect(() => {
+    if (previousGameData?.screenshot) {
+      const ids = previousGameData.screenshot.map((item) => item.id);
+      setScreenShotIds(ids);
+    }
+  }, [previousGameData]);
 
   const createFormData = (data: TGameUploadInput) => {
     const formData = new FormData();
@@ -99,25 +107,14 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
       formData.append("thumbnail", previousGameData?.thumbnail);
     }
 
-    // if (data.stillCut) {
-    //   (data.stillCut as File[][]).forEach((screenshot, index) => {
-    //     if (screenshot instanceof FileList && screenshot.length > 0) {
-    //       formData.append("screenshots", screenshot[0]);
-    //     } else if (typeof screenshot === "object" && previousGameData?.screenshot[index]) {
-    //       formData.append("screenshots", previousGameData?.screenshot[index].src);
-    //     }
-    //   });
-    // }
-
     if (data.stillCut) {
-      (data.stillCut as File[][]).forEach((screenshot, index) => {
-        formData.append("new_screenshots", screenshot[0]);
+      data.stillCut.forEach((screenshot) => {
+        if (screenshot.length > 0) formData.append("new_screenshots", screenshot[0]);
       });
     }
     if (previousGameData?.screenshot) {
-      previousGameData.screenshot.forEach((screenshot) => {
-        console.log("screenshot.id", screenshot.id);
-        formData.append("old_screenshots", screenshot.id); // 개별 추가
+      screenShotIds.forEach((id) => {
+        formData.append("old_screenshots", String(id));
       });
     }
 
@@ -132,7 +129,9 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
 
   const onEditHandler = async (gamePk: number | undefined) => {
     const formData = createFormData(getValues());
-
+    for (const [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
+    }
     const res = await putGameList(formData, gamePk);
 
     if (res?.status === 400) {
@@ -210,9 +209,10 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
 
     // JSZip을 활용하여 업로드한 파일이 WebGL 파일인지 유효성 검사
     if (
-      files[0].type === "application/zip" ||
-      files[0].type === "application/x-zip-compressed" ||
-      files[0].type === "application/x-7z-compressed"
+      inputId === "gameFile" &&
+      (files[0].type === "application/zip" ||
+        files[0].type === "application/x-zip-compressed" ||
+        files[0].type === "application/x-7z-compressed")
     ) {
       setIsUploading(true);
       const zip = await JSZip.loadAsync(files[0]);
@@ -228,6 +228,7 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
       }
     }
 
+    // 파일 유효성(확장자, 크기) 검사
     for (const file of files) {
       const isValid = await handleFileValidation(file, inputId);
 
@@ -238,6 +239,16 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
         fileInput.value = "";
         resetField(inputId as "gameFile" | "thumbnail" | "stillCut");
       }
+    }
+
+    //스틸컷 이미지 수정
+    const index = Number(inputId.replace("stillCut", ""));
+    const oldScreenshotId = previousGameData?.screenshot[index]?.id;
+
+    if (oldScreenshotId) {
+      const updatedIds = screenShotIds.filter((id) => id !== oldScreenshotId);
+
+      setScreenShotIds(updatedIds);
     }
   };
 
