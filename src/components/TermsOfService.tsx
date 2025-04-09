@@ -1,7 +1,8 @@
 const TermsOfService = () => {
   return (
-    <div className="font-DungGeunMo text-white leading-5">
-      <h2 className="text-2xl font-bold mb-4">0. 서비스 안내</h2>
+    <div className="mt-14 px-8 font-DungGeunMo text-white leading-5">
+      <p className="text-3xl font-bold">서비스 이용약관</p>
+      <h2 className="text-2xl font-bold my-3">0. 서비스 안내</h2>
       <p>
         Sparta Games(이하 SPG)는 게임 개발자들을 위한 프로젝트 공유 및 커뮤니티 플랫폼입니다. 사이드 프로젝트로 시작된
         본 서비스는 게임 프로젝트 파일 공유와 개발자 간 자유로운 소통을 지원합니다.

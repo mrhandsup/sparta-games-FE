@@ -60,6 +60,9 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
     noActionData.fileUploadWarning,
   );
 
+  const [gameUploadResponse, setGameUploadResponse] = useState<number | undefined>(0);
+  const [screenShotIds, setScreenShotIds] = useState<number[]>([]);
+
   useEffect(() => {
     register("content", {
       required: "필수",
@@ -77,81 +80,12 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
     }
   }, [previousGameData, setValue]);
 
-  const [gameUploadResponse, setGameUploadResponse] = useState<number | undefined>(0);
-  const [screenShotIds, setScreenShotIds] = useState<number[]>([]);
-
   useEffect(() => {
     if (previousGameData?.screenshot) {
       const ids = previousGameData.screenshot.map((item) => item.id);
       setScreenShotIds(ids);
     }
   }, [previousGameData]);
-
-  const createFormData = (data: TGameUploadInput) => {
-    const formData = new FormData();
-
-    formData.append("title", data.title);
-    formData.append("category", data.category);
-    formData.append("content", data.content);
-    formData.append("youtube_url", data.video);
-
-    if (data.gameFile instanceof FileList) {
-      formData.append("gamefile", data.gameFile[0]);
-    } else if (typeof data.gameFile === "object" && previousGameData?.gamefile) {
-      formData.append("gamefile", previousGameData?.gamefile);
-    }
-
-    if (data.thumbnail instanceof FileList) {
-      formData.append("thumbnail", data.thumbnail[0]);
-    } else if (typeof data.gameFile === "object" && previousGameData?.thumbnail) {
-      formData.append("thumbnail", previousGameData?.thumbnail);
-    }
-
-    if (data.stillCut) {
-      data.stillCut.forEach((screenshot) => {
-        if (screenshot.length > 0) formData.append("new_screenshots", screenshot[0]);
-      });
-    }
-    if (previousGameData?.screenshot) {
-      screenShotIds.forEach((id) => {
-        formData.append("old_screenshots", String(id));
-      });
-    }
-
-    return formData;
-  };
-
-  const onSubmitHandler: SubmitHandler<TGameUploadInput> = async (data) => {
-    const formData = createFormData(data);
-    const res = await postGameList(formData);
-    setGameUploadResponse(res?.status);
-  };
-
-  const onEditHandler = async (gamePk: number | undefined) => {
-    const formData = createFormData(getValues());
-    for (const [key, value] of formData.entries()) {
-      console.log(`${key}:`, value);
-    }
-    const res = await putGameList(formData, gamePk);
-
-    if (res?.status === 400) {
-      setNoActionModalData({
-        title: "확인해주세요!",
-        content: `${res.data.error}`,
-        btn1: {
-          text: "확인",
-          onClick: () => {
-            onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-          },
-        },
-        type: "error",
-      });
-      onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-    } else if (res?.status === 200) {
-      setNoActionModalData(noActionData.editConfirm);
-      onClickModalToggleHandlers[EDIT_SUCCESS_ID]();
-    }
-  };
 
   const validateImageFile = async (file: File): Promise<boolean> => {
     if (!checkFileSize(file, MAX_IMAGE_SIZE)) {
@@ -241,7 +175,7 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
       }
     }
 
-    //스틸컷 이미지 수정
+    //스틸컷 이미지 수정 - 기존에 업로드한 이미지를 새로운 이미지로 업로드하면 기존 이미지의 id 제거
     const index = Number(inputId.replace("stillCut", ""));
     const oldScreenshotId = previousGameData?.screenshot[index]?.id;
 
@@ -249,6 +183,69 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
       const updatedIds = screenShotIds.filter((id) => id !== oldScreenshotId);
 
       setScreenShotIds(updatedIds);
+    }
+  };
+
+  const createFormData = (data: TGameUploadInput) => {
+    const formData = new FormData();
+
+    formData.append("title", data.title);
+    formData.append("category", data.category);
+    formData.append("content", data.content);
+    formData.append("youtube_url", data.video);
+
+    if (data.gameFile instanceof FileList) {
+      formData.append("gamefile", data.gameFile[0]);
+    } else if (typeof data.gameFile === "object" && previousGameData?.gamefile) {
+      formData.append("gamefile", previousGameData?.gamefile);
+    }
+
+    if (data.thumbnail instanceof FileList) {
+      formData.append("thumbnail", data.thumbnail[0]);
+    } else if (typeof data.gameFile === "object" && previousGameData?.thumbnail) {
+      formData.append("thumbnail", previousGameData?.thumbnail);
+    }
+
+    if (data.stillCut) {
+      data.stillCut.forEach((screenshot) => {
+        if (screenshot.length > 0) formData.append("new_screenshots", screenshot[0]);
+      });
+    }
+    if (previousGameData?.screenshot) {
+      screenShotIds.forEach((id) => {
+        formData.append("old_screenshots", String(id));
+      });
+    }
+
+    return formData;
+  };
+
+  const onSubmitHandler: SubmitHandler<TGameUploadInput> = async (data) => {
+    const formData = createFormData(data);
+    const res = await postGameList(formData);
+    setGameUploadResponse(res?.status);
+  };
+
+  const onEditHandler = async (gamePk: number | undefined) => {
+    const formData = createFormData(getValues());
+    const res = await putGameList(formData, gamePk);
+
+    if (res?.status === 400) {
+      setNoActionModalData({
+        title: "확인해주세요!",
+        content: `${res.data.error}`,
+        btn1: {
+          text: "확인",
+          onClick: () => {
+            onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+          },
+        },
+        type: "error",
+      });
+      onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+    } else if (res?.status === 200) {
+      setNoActionModalData(noActionData.editConfirm);
+      onClickModalToggleHandlers[EDIT_SUCCESS_ID]();
     }
   };
 
@@ -277,7 +274,6 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
         <GameDescriptionField watch={watch} setValue={setValue} />
 
         <GameSubmitButton
-          watch={watch}
           formState={formState}
           note={note}
           isEditMode={isEditMode}

@@ -1,7 +1,8 @@
 const PrivacyPolicy = () => {
   return (
-    <div className="font-DungGeunMo text-white leading-5">
-      <p className="text-3xl font-semibold my-3">0. 소개</p>
+    <div className="mt-14 px-8 font-DungGeunMo text-white leading-5">
+      <p className="text-3xl font-bold">개인정보 처리방침</p>
+      <p className="text-2xl font-semibold my-3">0. 소개</p>
       <p>
         스파르타 게임즈는 유저들의 개인정보를 존중하며, 해당 정책을 준수하여 이를 보호하기 위해 최선을 다하고 있습니다.
         이 정책들은 Sparta Games의 웹사이트를 접속하여 원활한 사용을 위해 수집/귀하가 제공할 수 있는 정보를
@@ -13,13 +14,13 @@ const PrivacyPolicy = () => {
 
       <hr className="my-8" />
 
-      <p className="text-3xl font-bold mb-2">1. 수집하는 개인정보 항목</p>
+      <p className="text-2xl font-bold mb-2">1. 수집하는 개인정보 항목</p>
       <p>
         본 개인정보처리방침은 Sparta Games의 공식 웹사이트(www.sparta-games.net) 및 Google, Kakao, Discord 계정을 통한
         로그인(OAuth)을 사용하는 관련 서비스 전체에 적용됩니다.
       </p>
 
-      <p className="text-2xl font-semibold my-3">1-1. 귀하가 제공하는 정보</p>
+      <p className="text-xl font-semibold my-3">1-1. 귀하가 제공하는 정보</p>
       <ul className="ms-4 list-disc list-inside space-y-1">
         <li>필수정보: 이메일 주소, 닉네임</li>
         <li>선택정보: 프로필 이미지, 생년월일</li>
@@ -27,7 +28,7 @@ const PrivacyPolicy = () => {
         <li>고객센터 문의 시 제공하는 정보</li>
       </ul>
 
-      <p className="text-2xl font-semibold my-3">1-2. 자동 수집되는 정보</p>
+      <p className="text-xl font-semibold my-3">1-2. 자동 수집되는 정보</p>
       <ul className="ms-4 list-disc list-inside space-y-1">
         <li>서비스 이용기록, 접속 로그</li>
         <li>IP 주소, 쿠키, 브라우저 유형</li>
@@ -36,15 +37,15 @@ const PrivacyPolicy = () => {
 
       <hr className="my-8" />
 
-      <p className="text-3xl font-bold">2. 개인정보의 수집 및 이용목적</p>
-      <p className="text-2xl font-semibold my-3">2-1. 서비스 제공 및 운영</p>
+      <p className="text-2xl font-bold">2. 개인정보의 수집 및 이용목적</p>
+      <p className="text-xl font-semibold my-3">2-1. 서비스 제공 및 운영</p>
       <ul className="ms-4 list-disc list-inside space-y-1">
         <li>회원가입 및 관리</li>
         <li>게임 서비스 제공</li>
         <li>공지사항 전달</li>
       </ul>
 
-      <p className="text-2xl font-semibold my-3">2-2. 서비스 개선 및 맞춤화</p>
+      <p className="text-xl font-semibold my-3">2-2. 서비스 개선 및 맞춤화</p>
       <ul className="ms-4 list-disc list-inside space-y-1">
         <li>서비스 이용 통계 분석</li>
         <li>맞춤형 콘텐츠 제공</li>
@@ -53,8 +54,8 @@ const PrivacyPolicy = () => {
 
       <hr className="my-8" />
 
-      <p className="text-3xl font-bold">3. 개인정보의 보유 및 파기</p>
-      <p className="text-2xl font-semibold my-3">3-1. 보유기간</p>
+      <p className="text-2xl font-bold">3. 개인정보의 보유 및 파기</p>
+      <p className="text-xl font-semibold my-3">3-1. 보유기간</p>
       <ul className="ms-4 list-disc list-inside space-y-1">
         <li>회원 탈퇴 시까지 개인정보를 보유</li>
         <li>
@@ -67,7 +68,7 @@ const PrivacyPolicy = () => {
         </li>
       </ul>
 
-      <p className="text-2xl font-semibold my-3">3-2. 파기절차 및 방법</p>
+      <p className="text-xl font-semibold my-3">3-2. 파기절차 및 방법</p>
       <ul className="ms-4 list-disc list-inside space-y-1">
         <li>파기절차: 목적 달성 시 지체없이 파기</li>
         <li>
@@ -81,8 +82,8 @@ const PrivacyPolicy = () => {
 
       <hr className="my-8" />
 
-      <p className="text-3xl font-bold">4. 이용자의 권리와 행사방법</p>
-      <p className="text-2xl font-semibold my-3">4-1. 권리내용</p>
+      <p className="text-2xl font-bold">4. 이용자의 권리와 행사방법</p>
+      <p className="text-xl font-semibold my-3">4-1. 권리내용</p>
       <ul className="ms-4 list-disc list-inside space-y-1">
         <li>개인정보 열람 요구</li>
         <li>개인정보 정정/삭제 요구</li>
@@ -90,7 +91,7 @@ const PrivacyPolicy = () => {
         <li>동의철회</li>
       </ul>
 
-      <p className="text-2xl font-semibold my-3">4-2. 행사방법</p>
+      <p className="text-xl font-semibold my-3">4-2. 행사방법</p>
       <ul className="ms-4 list-disc list-inside space-y-1">
         <li>개인정보 보호책임자에게 서면, 전화, 이메일로 연락</li>
         <li>회원정보 수정 페이지에서 직접 수정</li>
@@ -99,7 +100,7 @@ const PrivacyPolicy = () => {
 
       <hr className="my-8" />
 
-      <p className="text-3xl font-bold mb-2">5. 권익침해 구제방법</p>
+      <p className="text-2xl font-bold mb-2">5. 권익침해 구제방법</p>
       <p className="mb-4">
         개인정보 침해로 인한 구제를 받기 위해 다음 기관에 분쟁해결이나 상담 등을 신청할 수 있습니다.
       </p>

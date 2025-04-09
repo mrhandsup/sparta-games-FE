@@ -1,8 +1,7 @@
-import { FormState, UseFormWatch } from "react-hook-form";
+import { FormState } from "react-hook-form";
 import { TGameUploadInput } from "../../types";
 
 type Props = {
-  watch: UseFormWatch<TGameUploadInput>;
   formState: FormState<TGameUploadInput>;
   note: {
     1: boolean;
@@ -14,7 +13,7 @@ type Props = {
   onEditRequest: () => void;
 };
 
-const GameSubmitButton = ({ watch, formState, note, isEditMode, openUploadCheckModal, onEditRequest }: Props) => {
+const GameSubmitButton = ({ formState, note, isEditMode, openUploadCheckModal, onEditRequest }: Props) => {
   return !isEditMode && note[1] && note[2] && note[3] && formState.isValid ? (
     <button
       onClick={openUploadCheckModal}
