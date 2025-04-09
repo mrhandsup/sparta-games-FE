@@ -1,18 +1,7 @@
+import { Link } from "react-router-dom";
 import titleImage from "../assets/footerTitleImage.svg";
-import useModalToggles from "../hook/useModalToggles";
-import SpartaModal from "../spartaDesignSystem/SpartaModal";
-import PrivacyPolicy from "./PrivacyPolicy";
-import TermsOfService from "./TermsOfService";
 
 const Footer = () => {
-  const PRIVACY_POLICY_MODAL_ID = "privacypolicyModal";
-  const TERMS_OF_SERVICE_MODAL_ID = "termsofserviceModal";
-
-  // 모달
-  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([
-    PRIVACY_POLICY_MODAL_ID,
-    TERMS_OF_SERVICE_MODAL_ID,
-  ]);
   return (
     <footer className="flex justify-center mx-auto py-8 px-[130px] w-full bg-black text-gray-200 mt-[80px]">
       <div className="flex flex-col items-center gap-4">
@@ -29,50 +18,15 @@ const Footer = () => {
           <p>Contact</p>
         </div>
         <div className="flex gap-[60px] text-body-14 underline underline-offset-4">
-          <p
-            onClick={() => {
-              onClickModalToggleHandlers[PRIVACY_POLICY_MODAL_ID]();
-              document.body.classList.add("overflow-hidden");
-            }}
-            className="cursor-pointer"
-          >
-            Privacy Policy
-          </p>
-          <p
-            onClick={() => {
-              onClickModalToggleHandlers[TERMS_OF_SERVICE_MODAL_ID]();
-              document.body.classList.add("overflow-hidden");
-            }}
-            className="cursor-pointer"
-          >
-            Terms of Service
-          </p>
+          <Link to="/privacy-policy">
+            <p className="cursor-pointer">Privacy Policy</p>
+          </Link>
+
+          <Link to="/termsofservice">
+            <p className="cursor-pointer">Terms of Service</p>
+          </Link>
         </div>
       </div>
-
-      <SpartaModal
-        isOpen={modalToggles[PRIVACY_POLICY_MODAL_ID]}
-        onClose={() => {
-          onClickModalToggleHandlers[PRIVACY_POLICY_MODAL_ID]();
-          document.body.classList.remove("overflow-hidden");
-        }}
-        modalId={PRIVACY_POLICY_MODAL_ID}
-        title="개인정보 처리방침"
-      >
-        <PrivacyPolicy />
-      </SpartaModal>
-
-      <SpartaModal
-        isOpen={modalToggles[TERMS_OF_SERVICE_MODAL_ID]}
-        onClose={() => {
-          onClickModalToggleHandlers[TERMS_OF_SERVICE_MODAL_ID]();
-          document.body.classList.remove("overflow-hidden");
-        }}
-        modalId={PRIVACY_POLICY_MODAL_ID}
-        title="서비스 이용약관"
-      >
-        <TermsOfService />
-      </SpartaModal>
     </footer>
   );
 };

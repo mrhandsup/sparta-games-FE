@@ -16,6 +16,9 @@ import AdminGameLog from "../page/admin/AdminGameLog";
 import AdminLayout from "../components/layout/AdminLayout";
 import ResetPassword from "../page/ResetPassword";
 import FullWidthLayout from "../components/layout/FullWidthLayout";
+import PrivacyPolicy from "../components/PrivacyPolicy";
+import TermsOfService from "../components/TermsOfService";
+import Footer from "../components/Footer";
 
 const Router = () => {
   return (
@@ -31,6 +34,8 @@ const Router = () => {
           <Route path="/redirect/:service" element={<Redirect />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/reset" element={<ResetPassword />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/termsofservice" element={<TermsOfService />} />
           <Route element={<NonAuthLayout />}></Route>
 
           <Route element={<AuthLayout />}>
@@ -48,6 +53,8 @@ const Router = () => {
           <Route path="my-page/:id" element={<MyPage />} />
         </Route>
       </Routes>
+
+      <Footer />
     </BrowserRouter>
   );
 };
