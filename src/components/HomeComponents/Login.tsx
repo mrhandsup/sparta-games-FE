@@ -60,10 +60,11 @@ function Login({ onClose }: Props) {
 
   const loginMutation = useMutation({
     mutationFn: ({ email, password }: { email: string; password: string }) => login(email, password),
-    onSuccess: async (data) => {
-      sessionStorage.setItem("accessToken", data?.data.access);
-      sessionStorage.setItem("refreshToken", data?.data.refresh);
-      const userDataReturn = await setUser(data?.data.access);
+    onSuccess: async (response) => {
+      const { access, refresh } = response.data.data;
+      sessionStorage.setItem("accessToken", access);
+      sessionStorage.setItem("refreshToken", refresh);
+      const userDataReturn = await setUser(access);
 
       if (userDataReturn?.is_staff) {
         sessionStorage.setItem("isAdmin", "true");

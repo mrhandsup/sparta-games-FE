@@ -37,8 +37,6 @@ const ReviewContents = ({ gamePk }: { gamePk: number }) => {
     enabled: !!userData,
   });
 
-  console.log("allReviewData", allReviewData?.data.all_reviews);
-
   const allReviews = allReviewData?.data.all_reviews;
   const myReview = myReviewData?.data.my_review;
 
