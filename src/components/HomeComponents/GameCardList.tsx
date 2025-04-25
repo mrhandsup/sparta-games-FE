@@ -60,6 +60,7 @@ const GameCardList = ({
   emptyText = "데이터가 없습니다.",
 }: TGameCardListProps) => {
   const slicingData = data?.slice(0, maxNum);
+
   const baseClassName = "flex flex-col justify-evenly w-full h-[536px] item-center ";
 
   const navigate = useNavigate();
@@ -87,7 +88,7 @@ const GameCardList = ({
       <div className={`flex ${!containerClassName && "w-[1180px] h-[408px] mx-auto mt-2"} gap-4`}>
         {slicingData?.length != 0 && slicingData ? (
           slicingData.map((item) => (
-            <Link to={`/game-detail?id=${item.pk}`}>
+            <Link to={`/game-detail?id=${item.id}`}>
               <GameCard item={item} simple={simple} row={row} />
             </Link>
           ))

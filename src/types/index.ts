@@ -103,16 +103,21 @@ export type TUser = {
 };
 
 export type TGameData = {
-  pk: number;
+  id: number;
   title: string;
-  maker: number;
   thumbnail: string;
   star: number;
-  maker_name: string;
+  maker_data: {
+    id: number;
+    nickname: string;
+  };
   content: string;
-  chip_names: TGameChip[];
-  category_name: string[];
+  chips: TGameChip[];
   is_liked: boolean;
+  category_data: {
+    id: number;
+    name: string;
+  }[];
 };
 
 export type TGameAdminData = {
@@ -157,7 +162,7 @@ export type TGamePlayData = {
   }[];
 };
 
-export type TGameChip = "Daily Top" | "Review Top" | "Bookmark Top" | "Long Play" | "New Game";
+export type TGameChip = { id: number; name: "Daily Top" | "Review Top" | "Bookmark Top" | "Long Play" | "New Game" };
 
 export type TCategoryListResponse = {
   pk: number;
