@@ -148,13 +148,13 @@ const ReviewCard = ({ review, onClickModalToggleHandler, isMyReview = false, set
                   <p className="font-DungGeunMo text-lg text-primary-500">{review?.author_name}</p>
                   <img
                     onClick={onClickReviewEditHandler}
-                    className="absolute right-12 cursor-pointer"
+                    className="absolute top-4 right-12 cursor-pointer"
                     src={reviewEditImage}
                     alt="리뷰 수정"
                   />
                   <img
                     onClick={onClickReviewDeleteHandler}
-                    className="absolute right-4 cursor-pointer"
+                    className="absolute top-4 right-4 cursor-pointer"
                     src={reviewDeleteImage}
                     alt="리뷰 삭제"
                   />
@@ -164,7 +164,7 @@ const ReviewCard = ({ review, onClickModalToggleHandler, isMyReview = false, set
                   <p className="font-DungGeunMo text-lg">{review?.author_name}</p>
                   <img
                     onClick={onClickModalToggleHandlers[REVIEW_DETAIL_MODAL_ID]}
-                    className="absolute right-4 cursor-pointer"
+                    className="absolute top-4 right-4 cursor-pointer"
                     src={reviewDetailImage}
                     alt="리뷰 상세 보기"
                   />

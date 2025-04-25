@@ -54,7 +54,7 @@ export const postGameReviews = async (
 
 export const putGameReview = async (
   reviewId: number | undefined,
-  gamePk: number | undefined,
+  gameId: number | undefined,
   difficulty: number | undefined,
   star: number | null,
   preStar: number | undefined,
@@ -62,7 +62,7 @@ export const putGameReview = async (
 ) => {
   try {
     await sparta_games_auth.put(`/games/api/review/${reviewId}/`, {
-      game_pk: gamePk,
+      game_id: gameId,
       difficulty: difficulty,
       star: star,
       pre_star: preStar,
@@ -75,10 +75,10 @@ export const putGameReview = async (
   }
 };
 
-export const deleteGameReview = async (reviewId: number | undefined, game_pk: number | undefined) => {
+export const deleteGameReview = async (reviewId: number | undefined, game_id: number | undefined) => {
   try {
     const res = await sparta_games_auth.delete(`/games/api/review/${reviewId}/`, {
-      data: { game_pk },
+      data: { game_id },
     });
     return res;
   } catch (error) {
