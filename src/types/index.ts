@@ -141,15 +141,21 @@ export type TGameData = {
 };
 
 export type TGameAdminData = {
-  category_name: string[];
+  category_data: {
+    id: number;
+    name: string;
+  }[];
   game_register_logs: {
     content: string;
     created_at: string;
   }[];
-  pk: number;
+  id: number;
   register_state: number;
   title: string;
-  maker_name: string;
+  maker_data: {
+    id: number;
+    nickname: string;
+  };
 };
 
 export type TGamePlayData = TGameData & {
@@ -160,7 +166,10 @@ export type TGamePlayData = TGameData & {
   is_visible: boolean;
   review_cnt: number;
   base_control: string;
-  screenshot: [];
+  screenshot: {
+    id: number;
+    src: string;
+  }[];
   category: {
     id: number;
     name: string;
@@ -169,7 +178,15 @@ export type TGamePlayData = TGameData & {
 
 export type TGameChip = { id: number; name: "Daily Top" | "Review Top" | "Bookmark Top" | "Long Play" | "New Game" };
 
-export type TCategoryListResponse = {
-  pk: number;
+export type TCategoryItem = {
+  id: number;
   name: string;
-}[];
+};
+
+export type TCategoryListResponse = {
+  status: string;
+  message: string | null;
+  data: TCategoryItem[];
+  pagination: null;
+  error_code: null;
+};

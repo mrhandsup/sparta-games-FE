@@ -21,12 +21,12 @@ type Props = {
   gamePk?: number;
   title?: string;
   makerName?: string;
-  makerPk?: number;
+  makerId?: number;
   isLiked?: boolean;
   gamePath?: string;
 };
 
-const GamePlay = ({ gamePk, title, makerName, makerPk, gamePath }: Props) => {
+const GamePlay = ({ gamePk, title, makerName, makerId, gamePath }: Props) => {
   const BOOK_MARK_MODAL_ID = "bookMarkModal";
   const NO_ACTION_MODAL_ID = "noActionModal";
   const { modalToggles, onClickModalToggleHandlers } = useModalToggles([BOOK_MARK_MODAL_ID, NO_ACTION_MODAL_ID]);
@@ -158,7 +158,7 @@ const GamePlay = ({ gamePk, title, makerName, makerPk, gamePath }: Props) => {
           <div className="flex flex-col gap-2 font-DungGeunMo text-[32px] text-white">
             <p>{title}</p>
             <div className="flex justify-between">
-              <p className="text-gray-100 text-[28px] cursor-pointer" onClick={() => navigate(`/my-page/${makerPk}`)}>
+              <p className="text-gray-100 text-[28px] cursor-pointer" onClick={() => navigate(`/my-page/${makerId}`)}>
                 {makerName}
               </p>
               {gamePath && (

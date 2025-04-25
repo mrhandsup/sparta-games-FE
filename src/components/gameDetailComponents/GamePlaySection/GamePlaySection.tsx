@@ -13,7 +13,7 @@ type Props = {
 };
 
 const GamePlaySection = ({ gamePlayData }: Props) => {
-  const { id, title, maker_name, gamepath, youtube_url, screenshot, content, maker } = gamePlayData || {};
+  const { id, title, gamepath, youtube_url, screenshot, content, maker_data } = gamePlayData || {};
 
   const { userData } = userStore();
   const { playTimePk, setPlayTimePk } = usePlayTimeStore();
@@ -46,7 +46,13 @@ const GamePlaySection = ({ gamePlayData }: Props) => {
   return (
     <section className="mt-6">
       <div className="flex gap-5">
-        <GamePlay gamePk={id} title={title} makerName={maker_name} gamePath={gamepath} makerPk={maker} />
+        <GamePlay
+          gamePk={id}
+          title={title}
+          makerName={maker_data?.nickname}
+          gamePath={gamepath}
+          makerId={maker_data?.id}
+        />
         <GameMedia youtubeUrl={youtube_url} screenShot={screenshot} />
       </div>
       <GameDescription title={title} content={content} screenshot={screenshot} />

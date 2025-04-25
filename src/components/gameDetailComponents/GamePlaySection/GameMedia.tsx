@@ -14,6 +14,7 @@ type Props = {
   }[];
 };
 const GameMedia = ({ youtubeUrl, screenShot }: Props) => {
+  console.log("screenshot", screenShot);
   const getYouTubeVideoId = (url: string) => {
     try {
       if (!url.startsWith("http")) {

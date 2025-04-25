@@ -47,10 +47,11 @@ const AdminGameLog = () => {
     queryFn: getGameCategory,
   });
 
+  console.log("data,", data);
   const totalCount = (adminGameList.data && adminGameList.data.count) || 0;
 
   const checkAll = () => {
-    setCategory(data?.map((item) => item.pk) || []);
+    setCategory(data?.data.map((item) => item.id) || []);
   };
 
   const selectGame = (pk: number) => {
@@ -78,16 +79,16 @@ const AdminGameLog = () => {
             <p>{totalCount}</p>
           </div>
           <div className="flex flex-col px-6">
-            {data?.map((item, idx) => (
+            {data?.data.map((item, idx) => (
               <div key={idx} className="text-left text-body-18 mb-1 flex items-center gap-2 justify-between py-2">
                 <p>{item.name}</p>
                 <Switch
-                  checked={category.includes(item.pk)}
+                  checked={category.includes(item.id)}
                   onChange={(e) => {
                     if (e.target.checked) {
-                      setCategory([...category, item.pk]);
+                      setCategory([...category, item.id]);
                     } else {
-                      setCategory(category.filter((i) => i !== item.pk));
+                      setCategory(category.filter((i) => i !== item.id));
                     }
                   }}
                 />

@@ -8,15 +8,21 @@ import AdminGameRejectModal from "./AdminGameRejectModal";
 type Props = {
   idx: number;
   item: {
-    category_name: string[];
+    category_data: {
+      id: number;
+      name: string;
+    }[];
     game_register_logs: {
       content: string;
       created_at: string;
     }[];
-    pk: number;
+    id: number;
     register_state: number;
     title: string;
-    maker_name: string;
+    maker_data: {
+      id: number;
+      nickname: string;
+    };
   };
   onClickShowMore?: (pk: number) => void;
   isDetail?: boolean;
@@ -54,7 +60,7 @@ const AdminListItem = ({ idx, item, onClickShowMore, isDetail }: Props) => {
         <div className="text-white flex gap-3 items-center">
           <div className="flex items-center gap-3 flex-col">
             <p className="font-DungGeunMo text-[17px]">{idx + 1}</p>
-            <p className="font-DungGeunMo text-[11px]">{item.category_name[0]}</p>
+            <p className="font-DungGeunMo text-[11px]">{item.category_data[0].name}</p>
           </div>
           {isDetail && (
             <div className={`rounded-md px-5 py-4 text-black ${switchCaseByState().color}`}>
@@ -63,14 +69,14 @@ const AdminListItem = ({ idx, item, onClickShowMore, isDetail }: Props) => {
           )}
           <div className="flex items-start gap-3 flex-col">
             <p className="text-title-22">{item.title}</p>
-            <p>{item.maker_name}</p>
+            <p>{item.maker_data.nickname}</p>
           </div>
         </div>
         <div className="flex gap-1">
           {item.register_state === 0 && (
             <>
-              <AdminGameApproveModal game_pk={item.pk} />
-              <AdminGameRejectModal game_pk={item.pk} />
+              <AdminGameApproveModal game_pk={item.id} />
+              <AdminGameRejectModal game_pk={item.id} />
             </>
           )}
           <SpartaButton
@@ -78,12 +84,12 @@ const AdminListItem = ({ idx, item, onClickShowMore, isDetail }: Props) => {
             colorType="alert"
             size="medium"
             width="w-[100px]"
-            onClick={() => window.open(`/game-detail?id=${item.pk}`)}
+            onClick={() => window.open(`/game-detail?id=${item.id}`)}
           />
           {item.register_state === 0 && (
             <div
               className="bg-white rounded-md w-[47px] h-[47px] flex items-center  justify-center p-3 cursor-pointer"
-              onClick={() => downloadZip(item.pk)}
+              onClick={() => downloadZip(item.id)}
             >
               <LuDownload className="text-[30px]  text-black" />
             </div>
@@ -104,7 +110,7 @@ const AdminListItem = ({ idx, item, onClickShowMore, isDetail }: Props) => {
             )}
           </div>
           {item.game_register_logs.length !== 0 && (
-            <p className="cursor-pointer underline" onClick={() => onClickShowMore && onClickShowMore(item.pk)}>
+            <p className="cursor-pointer underline" onClick={() => onClickShowMore && onClickShowMore(item.id)}>
               더보기
             </p>
           )}
