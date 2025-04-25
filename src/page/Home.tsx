@@ -1,5 +1,5 @@
-import Hero from "../components/HomeComponents/Hero";
-import GameCardList from "../components/HomeComponents/GameCardList";
+import Hero from "../components/homeComponents/Hero";
+import GameCardList from "../components/homeComponents/GameCardList";
 
 import pixelMeteor from "../assets/homeImage/pixelMeteor.svg";
 import pixelPaperPlane from "../assets/homeImage/pixelPaperPlane.svg";

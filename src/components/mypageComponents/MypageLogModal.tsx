@@ -5,7 +5,7 @@ import { TListResponse } from "../../types";
 import log from "../../assets/Log.svg";
 import SpartaPagination from "../../spartaDesignSystem/SpartaPagination";
 import { Link } from "react-router-dom";
-import GameCard from "../HomeComponents/GameCard";
+import GameCard from "../homeComponents/GameCard";
 
 type Props = {
   user_name: string;

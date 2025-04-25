@@ -11,7 +11,6 @@ type Props = {
 };
 
 const GameCard = ({ item, simple, row }: Props) => {
-  console.log("@@@@@", item);
   const image =
     import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
       ? import.meta.env.VITE_PROXY_HOST + item?.thumbnail

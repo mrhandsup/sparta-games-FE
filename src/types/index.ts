@@ -102,6 +102,14 @@ export type TUser = {
   password_check: string;
 };
 
+export type TGameResponse = {
+  status: "success" | "fail" | "error";
+  message: string;
+  data: TGamePlayData;
+  pagination: null;
+  error_code: null;
+};
+
 export type TGameData = {
   id: number;
   title: string;
@@ -139,26 +147,18 @@ export type TListResponse = {
   results: TGameData[];
 };
 
-export type TGamePlayData = {
-  id: number;
-  category: {
-    pk: number;
-    name: string;
-  }[];
-  maker_name: string;
-  maker: number;
-  title: string;
-  is_liked: boolean;
-  thumbnail: string;
+export type TGamePlayData = TGameData & {
   youtube_url: string;
-  register_state: number;
-  content: string;
   gamefile: string;
   gamepath: string;
+  register_state: number;
+  is_visible: boolean;
+  review_cnt: number;
   base_control: string;
-  screenshot: {
+  screenshot: [];
+  category: {
     id: number;
-    src: string;
+    name: string;
   }[];
 };
 

@@ -1,7 +1,7 @@
 import { useSearchParams } from "react-router-dom";
 
 import Title from "../components/categoryComponents/Title";
-import GameCardList from "../components/HomeComponents/GameCardList";
+import GameCardList from "../components/homeComponents/GameCardList";
 import { useQuery } from "@tanstack/react-query";
 import { getGameListByCategory } from "../api/game";
 import { useState } from "react";

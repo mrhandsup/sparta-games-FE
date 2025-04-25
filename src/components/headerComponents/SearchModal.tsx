@@ -4,7 +4,7 @@ import { FaSearch } from "react-icons/fa";
 import balloon from "../../assets/headerImage/balloon.svg";
 import { searchGame } from "../../api/game";
 import type { TGameData } from "../../types";
-import GameCard from "../HomeComponents/GameCard";
+import GameCard from "../homeComponents/GameCard";
 import { useNavigate } from "react-router-dom";
 import SpartaPagination from "../../spartaDesignSystem/SpartaPagination";
 

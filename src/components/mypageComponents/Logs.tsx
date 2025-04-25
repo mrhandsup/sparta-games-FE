@@ -1,4 +1,4 @@
-import GameCardList from "../HomeComponents/GameCardList";
+import GameCardList from "../homeComponents/GameCardList";
 import { useQuery } from "@tanstack/react-query";
 import log from "../../assets/Log.svg";
 import { TListResponse, TUser } from "../../types";

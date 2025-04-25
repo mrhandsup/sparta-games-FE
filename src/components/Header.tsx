@@ -9,7 +9,7 @@ import { userStore } from "../share/store/userStore";
 import useModalToggles from "../hook/useModalToggles";
 import UserStatusPopover from "./headerComponents/UserStatusPopover";
 import SpartaModal from "../spartaDesignSystem/SpartaModal";
-import Login from "./HomeComponents/Login";
+import Login from "./homeComponents/Login";
 import SpartaReactionModal from "../spartaDesignSystem/SpartaReactionModal";
 import type { TSpartaReactionModalProps } from "../spartaDesignSystem/SpartaReactionModal";
 import { useState } from "react";
