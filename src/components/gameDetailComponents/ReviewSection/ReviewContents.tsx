@@ -37,8 +37,10 @@ const ReviewContents = ({ gamePk }: { gamePk: number }) => {
     enabled: !!userData,
   });
 
-  const allReviews = allReviewData?.results.all_reviews;
-  const myReview = myReviewData?.results.my_review;
+  console.log("allReviewData", allReviewData?.data.all_reviews);
+
+  const allReviews = allReviewData?.data.all_reviews;
+  const myReview = myReviewData?.data.my_review;
 
   useEffect(() => {
     if (allReviews) {
@@ -113,7 +115,7 @@ const ReviewContents = ({ gamePk }: { gamePk: number }) => {
           ))}
         </div>
         <SpartaPagination
-          dataTotalCount={allReviewData?.count}
+          dataTotalCount={allReviewData?.pagination.count}
           countPerPage={COUNT_PER_PAGE}
           onChangePage={onChangePage}
         />

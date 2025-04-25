@@ -56,16 +56,6 @@ export type TReviewData = {
   author_id: number;
 };
 
-export type TReviewResponse = {
-  count: number;
-  next: string | null;
-  previous: string | null;
-  results: {
-    all_reviews: TReviewData[];
-    my_review?: TReviewData;
-  };
-};
-
 export type ReviewFormData = {
   title: string;
   content: string;
@@ -102,12 +92,34 @@ export type TUser = {
   password_check: string;
 };
 
+export type TListResponse = {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: TGameData[];
+};
+
 export type TGameResponse = {
   status: "success" | "fail" | "error";
-  message: string;
+  message: string | null;
   data: TGamePlayData;
   pagination: null;
   error_code: null;
+};
+
+export type TReviewResponse = {
+  status: "success" | "fail" | "error";
+  message: string | null;
+  data: {
+    all_reviews: TReviewData[];
+    my_review?: TReviewData;
+  };
+  pagination: {
+    count: number;
+    next: string | null;
+    previous: string | null;
+  };
+  error_code: string | null;
 };
 
 export type TGameData = {
@@ -138,13 +150,6 @@ export type TGameAdminData = {
   register_state: number;
   title: string;
   maker_name: string;
-};
-
-export type TListResponse = {
-  count: number;
-  next: string | null;
-  previous: string | null;
-  results: TGameData[];
 };
 
 export type TGamePlayData = TGameData & {

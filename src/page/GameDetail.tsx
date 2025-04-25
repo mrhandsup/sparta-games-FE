@@ -49,7 +49,6 @@ const GameDetail = () => {
   });
 
   const gameCategory = gamePlayData?.data.category[0]?.name;
-  console.log("gamePlayData", gamePlayData);
 
   useEffect(() => {
     if (rejectLogs.data) {
