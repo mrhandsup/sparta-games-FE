@@ -7,7 +7,7 @@ import GamePlaySection from "../components/gameDetailComponents/GamePlaySection/
 import ReviewContents from "../components/gameDetailComponents/ReviewSection/ReviewContents";
 import { userStore } from "../share/store/userStore";
 import useModalToggles from "../hook/useModalToggles";
-import { TGameResponse } from "../types";
+import { TGamePlayDataResponse } from "../types";
 import SpartaButton from "../spartaDesignSystem/SpartaButton";
 import CaretLeft from "../assets/CaretLeft";
 import SpartaReactionModal from "../spartaDesignSystem/SpartaReactionModal";
@@ -32,7 +32,7 @@ const GameDetail = () => {
 
   const { userData } = userStore();
 
-  const { data: gamePlayData, isLoading } = useQuery<TGameResponse>({
+  const { data: gamePlayData, isLoading } = useQuery<TGamePlayDataResponse>({
     queryKey: ["gameList"],
     queryFn: () => getGameDetail(gameDetailId),
   });

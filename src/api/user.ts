@@ -1,5 +1,5 @@
 import axios from "axios";
-import { TUser, TUserInformationInputForm } from "../types";
+import { TUserData, TUserInformationInputForm } from "../types";
 import { sparta_games, sparta_games_auth } from "./axios";
 
 /**
@@ -21,7 +21,7 @@ export const getUserData = async (userId: number) => {
 export const updateUserData = async (
   userId: number,
   data: Partial<TUserInformationInputForm> | FormData,
-): Promise<TUser> => {
+): Promise<TUserData> => {
   try {
     const res = await sparta_games_auth.put(`/users/api/${userId}/`, data, {
       headers: { "Content-Type": "multipart/form-data" },

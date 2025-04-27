@@ -47,7 +47,6 @@ const AdminGameLog = () => {
     queryFn: getGameCategory,
   });
 
-  console.log("data,", data);
   const totalCount = (adminGameList.data && adminGameList.data.count) || 0;
 
   const checkAll = () => {
@@ -173,7 +172,7 @@ const AdminGameLog = () => {
           title="게임 로그"
           closeOnClickOutside
         >
-          <AdminLogsModal game_pk={selectedGame} />
+          <AdminLogsModal game_id={selectedGame} />
         </SpartaModal>
       )}
     </div>

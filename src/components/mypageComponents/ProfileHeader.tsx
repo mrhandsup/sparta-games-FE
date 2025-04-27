@@ -1,4 +1,4 @@
-import { TUser } from "../../types";
+import { TUserData } from "../../types";
 import { convertToConfigObjects } from "../../util/convertToConfigObjects";
 import { USER_TECH } from "../../constant/constant";
 import SpartaButton from "../../spartaDesignSystem/SpartaButton";
@@ -11,7 +11,7 @@ import SpartaReactionModal, { TSpartaReactionModalProps } from "../../spartaDesi
 import useModalToggles from "../../hook/useModalToggles";
 
 type TProfileProps = {
-  user: TUser;
+  user: TUserData;
   isMyPage: boolean;
 };
 

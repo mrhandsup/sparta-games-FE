@@ -6,10 +6,10 @@ import { approveRegisterGame } from "../../api/direct";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 type Props = {
-  game_pk: number;
+  game_id: number;
 };
 
-const AdminGameApproveModal = ({ game_pk }: Props) => {
+const AdminGameApproveModal = ({ game_id }: Props) => {
   const { modalToggles, onClickModalToggleHandlers } = useModalToggles(["approveModal"]);
   const queryClient = useQueryClient();
 
@@ -27,7 +27,7 @@ const AdminGameApproveModal = ({ game_pk }: Props) => {
     return () => {
       setComplete(false);
     };
-  }, [modalToggles, game_pk]);
+  }, [modalToggles, game_id]);
 
   return (
     <div>
@@ -51,7 +51,7 @@ const AdminGameApproveModal = ({ game_pk }: Props) => {
         btn1={{
           text: complete ? "확인" : "승인",
           onClick: () => {
-            complete ? onClickModalToggleHandlers["approveModal"]() : approveRegisterGameMutation.mutate(game_pk);
+            complete ? onClickModalToggleHandlers["approveModal"]() : approveRegisterGameMutation.mutate(game_id);
           },
         }}
         btn2={

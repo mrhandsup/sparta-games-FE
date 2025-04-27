@@ -1,12 +1,12 @@
 import { create } from "zustand";
 import { jwtDecode } from "jwt-decode";
 import { getUserData } from "../../api/user";
-import { TUser } from "../../types";
+import { TUserData } from "../../types";
 
 type Store = {
-  userData?: TUser;
-  setUser: (accessToken?: string) => Promise<TUser | undefined>;
-  setUserData: (key: keyof TUser, value: any) => void;
+  userData?: TUserData;
+  setUser: (accessToken?: string) => Promise<TUserData | undefined>;
+  setUserData: (key: keyof TUserData, value: any) => void;
   logout: () => void;
 };
 
@@ -29,7 +29,7 @@ export const userStore = create<Store>()((set) => ({
       set({ userData: undefined });
     }
   },
-  setUserData: (key: keyof TUser, value: any) => {
+  setUserData: (key: keyof TUserData, value: any) => {
     set((state) => {
       if (!state.userData) return state;
       return {

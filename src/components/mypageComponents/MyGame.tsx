@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getUserGameList, getUserGameMadeList } from "../../api/user";
-import { TListResponse, TUser } from "../../types";
+import { TGameDataResponse, TUserData } from "../../types";
 import MyGameCard from "./MyGameCard";
 import log from "../../assets/Log.svg";
 import { useState } from "react";
@@ -8,7 +8,7 @@ import SpartaPagination from "../../spartaDesignSystem/SpartaPagination";
 import { useParams } from "react-router-dom";
 
 type TMyGameProps = {
-  user: TUser;
+  user: TUserData;
   isMyPage: boolean;
 };
 
@@ -16,7 +16,7 @@ const MyGame = (props: TMyGameProps) => {
   const [page, setPage] = useState<number>(1);
   const { id } = useParams();
   //* Hooks
-  const myGameData = useQuery<TListResponse>({
+  const myGameData = useQuery<TGameDataResponse>({
     queryKey: ["myGameList", props.user.user_pk, page],
     queryFn: () => (props.isMyPage ? getUserGameMadeList(props.user.user_pk, page) : getUserGameList(Number(id), page)),
   });

@@ -75,8 +75,8 @@ const AdminListItem = ({ idx, item, onClickShowMore, isDetail }: Props) => {
         <div className="flex gap-1">
           {item.register_state === 0 && (
             <>
-              <AdminGameApproveModal game_pk={item.id} />
-              <AdminGameRejectModal game_pk={item.id} />
+              <AdminGameApproveModal game_id={item.id} />
+              <AdminGameRejectModal game_id={item.id} />
             </>
           )}
           <SpartaButton

@@ -3,13 +3,13 @@ import { getRegisterGameDetail } from "../../api/direct";
 import { formatToKST } from "../../util/formatToKST";
 
 type Props = {
-  game_pk: number;
+  game_id: number;
 };
 
-function AdminLogsModal({ game_pk }: Props) {
+function AdminLogsModal({ game_id }: Props) {
   const { data } = useQuery({
-    queryKey: ["gameLog", game_pk],
-    queryFn: () => getRegisterGameDetail(game_pk),
+    queryKey: ["gameLog", game_id],
+    queryFn: () => getRegisterGameDetail(game_id),
   });
   return (
     <div className="w-[600px] pt-2">

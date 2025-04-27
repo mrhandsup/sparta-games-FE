@@ -1,13 +1,13 @@
 import axios from "axios";
 import { sparta_games, sparta_games_auth } from "./axios";
-import { TUser } from "../types";
+import { TUserData } from "../types";
 
 export const getGameReviews = async (
   gamePk: number,
   page?: number,
   limit?: number,
   order?: "new" | "likes" | "dislikes",
-  userData?: TUser,
+  userData?: TUserData,
 ) => {
   try {
     const client = userData ? sparta_games_auth : sparta_games;

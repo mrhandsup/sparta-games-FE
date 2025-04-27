@@ -71,15 +71,7 @@ const ReviewRegisterModal = ({ gamePk, modalToggle, onClickModalToggleHandler, m
 
   const onClickReviewEditHandler = () => {
     const difficulty = convertDifficulty(selectedDifficulty, false) as number;
-    console.log(
-      "@@@@@@@@@@@@@AWdasdasd",
-      myReview?.id,
-      myReview?.game_id,
-      difficulty,
-      ratingValue,
-      myReview?.star,
-      editorContent,
-    );
+
     eventHandler.onSubmitReviewEditHandler(
       myReview?.id,
       myReview?.game_id,

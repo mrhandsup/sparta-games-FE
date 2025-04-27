@@ -4,7 +4,6 @@ import GameChip from "../common/chipComponents/GameChip";
 import SpartaButton from "../../spartaDesignSystem/SpartaButton";
 import { userStore } from "../../share/store/userStore";
 import { useNavigate } from "react-router-dom";
-import DOMPurify from "dompurify";
 import removeHTMLTags from "../../util/removeHTMLTags";
 
 type Props = { item?: TGameData };
@@ -20,7 +19,7 @@ const MyGameCard = ({ item }: Props) => {
       : item?.thumbnail;
 
   return (
-    <section key={item?.pk} className={`relative flex items-center w-full h-[475px] bg-gray-800`}>
+    <section key={item?.id} className={`relative flex items-center w-full h-[475px] bg-gray-800`}>
       <div
         className="w-[50%] h-[475px] bg-cover bg-center bg-no-repeat relative"
         style={{
@@ -39,15 +38,15 @@ const MyGameCard = ({ item }: Props) => {
           <p className="text-heading-24">{item?.title ? item?.title : "test"}</p>
         </div>
         <div className="flex items-center gap-1.5 justify-between pt-1 pb-2">
-          <p className="text-[22.4px] font-DungGeunMo ">{item?.maker_name || "Maker"}</p>
+          <p className="text-[22.4px] font-DungGeunMo ">{item?.maker_data.nickname || "Maker"}</p>
           <div className="flex items-center gap-1.5">
             <p className="text-primary-400 font-DungGeunMo text-[22.4px]">{item?.star.toFixed(1)}</p>
             {item && <StarRating score={item.star} size="large" />}
           </div>
         </div>
         <div className="flex gap-3">
-          {item?.chip_names?.map((chip) => (
-            <GameChip key={chip} chipName={chip} size="large" />
+          {item?.chips?.map((chip) => (
+            <GameChip key={chip.id} chipName={chip.name} size="large" />
           ))}
         </div>
         <div className="min-h-40 ">
@@ -57,7 +56,7 @@ const MyGameCard = ({ item }: Props) => {
         </div>
         <SpartaButton
           content="플레이하기"
-          onClick={() => navigate(`/game-detail?id=${item?.pk}`)}
+          onClick={() => navigate(`/game-detail?id=${item?.id}`)}
           size="medium"
           colorType="primary"
         />

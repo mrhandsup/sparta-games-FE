@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useState } from "react";
+import { useState } from "react";
 import { getUserRecentGameList, getUserLikedGameList } from "../../api/user";
-import { TListResponse } from "../../types";
+import { TGameDataResponse } from "../../types";
 import log from "../../assets/Log.svg";
 import SpartaPagination from "../../spartaDesignSystem/SpartaPagination";
 import { Link } from "react-router-dom";
@@ -15,12 +15,12 @@ type Props = {
 
 const MypageLogModal = ({ user_name, user_pk, recent }: Props) => {
   const [page, setPage] = useState<number>(1);
-  const myRecentGameData = useQuery<TListResponse>({
+  const myRecentGameData = useQuery<TGameDataResponse>({
     queryKey: ["myRecentGameList", user_pk, page],
     queryFn: () => getUserRecentGameList(user_pk, page),
   });
 
-  const myLikedData = useQuery<TListResponse>({
+  const myLikedData = useQuery<TGameDataResponse>({
     queryKey: ["myLikesList", user_pk, page],
     queryFn: () => getUserLikedGameList(user_pk, page),
   });
@@ -44,7 +44,7 @@ const MypageLogModal = ({ user_name, user_pk, recent }: Props) => {
       <div className="flex gap-3">
         {data?.map((item, idx) => (
           <div key={idx} className="cursor-pointer">
-            <Link to={`/game-detail?id=${item.pk}`}>
+            <Link to={`/game-detail?id=${item.id}`}>
               <GameCard item={item} />
             </Link>
           </div>

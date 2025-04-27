@@ -47,7 +47,7 @@ const GamePlaySection = ({ gamePlayData }: Props) => {
     <section className="mt-6">
       <div className="flex gap-5">
         <GamePlay
-          gamePk={id}
+          gameId={id}
           title={title}
           makerName={maker_data?.nickname}
           gamePath={gamepath}

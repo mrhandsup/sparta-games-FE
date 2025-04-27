@@ -42,7 +42,6 @@ const ProfileModal = ({ onSuccess, onError }: Props) => {
 
   const profileMutation = useMutation({
     mutationFn: async (formData: ProfileFormData) => {
-      console.log("userData", userData);
       if (!userData?.user_pk) throw new Error("사용자 ID가 없습니다.");
 
       const updateData: Partial<TUserInformationInputForm> = {

@@ -50,7 +50,7 @@ const SignUp = () => {
       onClickModalToggleHandlers["completeSignUp"]();
     },
     onError: () => {
-      console.log("회원가입 실패");
+      window.alert("회원가입 실패");
     },
   });
 

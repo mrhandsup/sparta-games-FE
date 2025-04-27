@@ -1,7 +1,7 @@
 import GameCardList from "../homeComponents/GameCardList";
 import { useQuery } from "@tanstack/react-query";
 import log from "../../assets/Log.svg";
-import { TListResponse, TUser } from "../../types";
+import { TGameDataResponse, TUserData } from "../../types";
 import { getUserLikedGameList, getUserRecentGameList } from "../../api/user";
 import useModalToggles from "../../hook/useModalToggles";
 import MypageLogModal from "./MypageLogModal";
@@ -9,19 +9,19 @@ import SpartaModal from "../../spartaDesignSystem/SpartaModal";
 import { useState } from "react";
 
 type TLogsProps = {
-  user: TUser;
+  user: TUserData;
 };
 
 const Logs = (props: TLogsProps) => {
   const { modalToggles, onClickModalToggleHandlers } = useModalToggles(["gameLogModal"]);
 
   //* Hooks
-  const myRecentGameData = useQuery<TListResponse>({
+  const myRecentGameData = useQuery<TGameDataResponse>({
     queryKey: ["myRecentGameList", props.user.user_pk],
     queryFn: () => getUserRecentGameList(props.user.user_pk),
   });
 
-  const myLikedData = useQuery<TListResponse>({
+  const myLikedData = useQuery<TGameDataResponse>({
     queryKey: ["myLikesList", props.user.user_pk],
     queryFn: () => getUserLikedGameList(props.user.user_pk),
   });

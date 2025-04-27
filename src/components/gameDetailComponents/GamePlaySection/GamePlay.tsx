@@ -8,7 +8,7 @@ import SpartaReactionModal, { TSpartaReactionModalProps } from "../../../spartaD
 import useModalToggles from "../../../hook/useModalToggles";
 import { userStore } from "../../../share/store/userStore";
 
-import { TGameData, TListResponse } from "../../../types";
+import { TGameData, TGameDataResponse } from "../../../types";
 
 import randomgame from "../../../assets/gameDetail/randomgame.svg";
 import expand from "../../../assets/gameDetail/expand.svg";
@@ -18,7 +18,7 @@ import bookmarkfill from "../../../assets/gameDetail/bookmarkfill.svg";
 import Preview from "../../../assets/gameDetail/Priview.jpg";
 
 type Props = {
-  gamePk?: number;
+  gameId?: number;
   title?: string;
   makerName?: string;
   makerId?: number;
@@ -26,7 +26,7 @@ type Props = {
   gamePath?: string;
 };
 
-const GamePlay = ({ gamePk, title, makerName, makerId, gamePath }: Props) => {
+const GamePlay = ({ gameId, title, makerName, makerId, gamePath }: Props) => {
   const BOOK_MARK_MODAL_ID = "bookMarkModal";
   const NO_ACTION_MODAL_ID = "noActionModal";
   const { modalToggles, onClickModalToggleHandlers } = useModalToggles([BOOK_MARK_MODAL_ID, NO_ACTION_MODAL_ID]);
@@ -104,17 +104,17 @@ const GamePlay = ({ gamePk, title, makerName, makerId, gamePath }: Props) => {
 
   const { userData } = userStore();
 
-  const { data, isLoading } = useQuery<TListResponse>({
+  const { data, isLoading } = useQuery<TGameDataResponse>({
     queryKey: ["isBookMarked"],
     queryFn: () => getMyBookmarkList(userData?.user_pk),
     enabled: !!userData,
   });
 
   const bookMarkedGames = data?.results;
-  const currentBookMarkedGame = bookMarkedGames?.some((game: TGameData) => game.pk === gamePk);
+  const currentBookMarkedGame = bookMarkedGames?.some((game: TGameData) => game.id === gameId);
 
   const bookMarkMutation = useMutation({
-    mutationFn: () => postBookMark(gamePk),
+    mutationFn: () => postBookMark(gameId),
 
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["isBookMarked"] });
