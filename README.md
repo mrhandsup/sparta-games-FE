@@ -7,7 +7,6 @@
 
 ##### 배포 사이트: https://www.sparta-games.net/
 ##### 테스트 계정(유저): sparta.games.master.users@sparta-games.net / VdXFtK3YCwcOsRTIRJ1sm
-##### 테스트 계정(관리자): sparta.games.master@gmail.com / VdXFtK3YCwcOsRTIRJ1sm
 
 ## 👯Participants
 
