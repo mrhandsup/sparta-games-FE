@@ -6,7 +6,7 @@ const AdminLayout = () => {
   const isAdmin = sessionStorage.getItem("isAdmin");
   useEffect(() => {
     if (!isAdmin) {
-      alert("관리자만 접근 가능합니다.");
+      // alert("관리자만 접근 가능합니다.");
       window.location.href = "/";
     }
   }, [isAdmin]);

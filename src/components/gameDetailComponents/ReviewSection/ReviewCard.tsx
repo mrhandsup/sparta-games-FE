@@ -30,10 +30,12 @@ const ReviewCard = ({ review, onClickModalToggleHandler, isMyReview = false, set
   const { userData } = userStore();
 
   const profileImage =
-    userData?.user_pk === review?.author_id && userData?.profile_image && userData.profile_image !== "이미지 없음"
+    userData?.data.user_id === review?.author_id &&
+    userData?.data.profile_image &&
+    userData.data.profile_image !== "이미지 없음"
       ? import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
-        ? import.meta.env.VITE_PROXY_HOST + userData.profile_image
-        : userData.profile_image
+        ? import.meta.env.VITE_PROXY_HOST + userData.data.profile_image
+        : userData.data.profile_image
       : defaultProfile;
 
   const queryClient = useQueryClient();
@@ -148,13 +150,13 @@ const ReviewCard = ({ review, onClickModalToggleHandler, isMyReview = false, set
                   <p className="font-DungGeunMo text-lg text-primary-500">{review?.author_name}</p>
                   <img
                     onClick={onClickReviewEditHandler}
-                    className="absolute right-12 cursor-pointer"
+                    className="absolute top-4 right-12 cursor-pointer"
                     src={reviewEditImage}
                     alt="리뷰 수정"
                   />
                   <img
                     onClick={onClickReviewDeleteHandler}
-                    className="absolute right-4 cursor-pointer"
+                    className="absolute top-4 right-4 cursor-pointer"
                     src={reviewDeleteImage}
                     alt="리뷰 삭제"
                   />
@@ -164,7 +166,7 @@ const ReviewCard = ({ review, onClickModalToggleHandler, isMyReview = false, set
                   <p className="font-DungGeunMo text-lg">{review?.author_name}</p>
                   <img
                     onClick={onClickModalToggleHandlers[REVIEW_DETAIL_MODAL_ID]}
-                    className="absolute right-4 cursor-pointer"
+                    className="absolute top-4 right-4 cursor-pointer"
                     src={reviewDetailImage}
                     alt="리뷰 상세 보기"
                   />

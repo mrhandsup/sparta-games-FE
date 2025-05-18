@@ -130,7 +130,7 @@ const UploadCheck = ({ gameUploadResponse, handleSubmit, onSubmitHandler, onClos
               잠시만 기다려주세요🙂
             </span>
             <button
-              onClick={() => navigate(`/my-page/${userData?.user_pk}`)}
+              onClick={() => navigate(`/my-page/${userData?.data.user_id}`)}
               className="w-full py-3 bg-primary-500 font-extrabold"
             >
               확인

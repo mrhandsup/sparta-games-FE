@@ -15,7 +15,6 @@ const Profile = () => {
   const game_category = watch("game_category");
   const user_tech = watch("user_tech");
 
-  console.log(game_category, user_tech);
   // 닉네임 유효성 검사 규칙(4자 이상 10자 이하의 영숫자 조합 문자열 영어 필수 숫자 필수)
   const nicknameValidation = {
     required: "닉네임을 입력해주세요",

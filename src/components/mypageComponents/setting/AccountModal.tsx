@@ -22,7 +22,7 @@ const AccountModal = ({ onSuccess }: Props) => {
   const signupForm = useForm<Partial<TUserInformationInputForm>>({
     mode: "onChange",
     defaultValues: {
-      email: userData?.email,
+      email: userData?.data.email,
       password: "",
       new_password: "",
       new_password_check: "",
@@ -90,10 +90,10 @@ const AccountModal = ({ onSuccess }: Props) => {
   });
 
   const onSubmit = async (data: Partial<TUserInformationInputForm>) => {
-    if (!userData?.user_pk) return;
+    if (!userData?.data.user_id) return;
 
     passwordMutation.mutate({
-      userId: userData.user_pk,
+      userId: userData.data.user_id,
       password: data.password!,
       new_password: data.new_password!,
       new_password_check: data.new_password_check!,

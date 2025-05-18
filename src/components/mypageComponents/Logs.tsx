@@ -1,7 +1,7 @@
-import GameCardList from "../HomeComponents/GameCardList";
+import GameCardList from "../homeComponents/GameCardList";
 import { useQuery } from "@tanstack/react-query";
 import log from "../../assets/Log.svg";
-import { TListResponse, TUser } from "../../types";
+import { TGameDataResponse, TUserData } from "../../types";
 import { getUserLikedGameList, getUserRecentGameList } from "../../api/user";
 import useModalToggles from "../../hook/useModalToggles";
 import MypageLogModal from "./MypageLogModal";
@@ -9,26 +9,26 @@ import SpartaModal from "../../spartaDesignSystem/SpartaModal";
 import { useState } from "react";
 
 type TLogsProps = {
-  user: TUser;
+  user: TUserData;
 };
 
 const Logs = (props: TLogsProps) => {
   const { modalToggles, onClickModalToggleHandlers } = useModalToggles(["gameLogModal"]);
 
   //* Hooks
-  const myRecentGameData = useQuery<TListResponse>({
-    queryKey: ["myRecentGameList", props.user.user_pk],
-    queryFn: () => getUserRecentGameList(props.user.user_pk),
+  const myRecentGameData = useQuery<TGameDataResponse>({
+    queryKey: ["myRecentGameList", props.user.user_id],
+    queryFn: () => getUserRecentGameList(props.user.user_id),
   });
 
-  const myLikedData = useQuery<TListResponse>({
-    queryKey: ["myLikesList", props.user.user_pk],
-    queryFn: () => getUserLikedGameList(props.user.user_pk),
+  const myLikedData = useQuery<TGameDataResponse>({
+    queryKey: ["myLikesList", props.user.user_id],
+    queryFn: () => getUserLikedGameList(props.user.user_id),
   });
 
-  const recentGameData = myRecentGameData.data && myRecentGameData.data?.results;
+  const recentGameData = myRecentGameData.data && myRecentGameData.data?.data;
 
-  const likedData = myLikedData.data && myLikedData.data?.results;
+  const likedData = myLikedData.data && myLikedData.data?.data;
 
   //* Styles
   const LogsClassName = "bg-gray-800 rounded-xl px-7 py-5 flex flex-col gap-4 justify-start items-start w-full";
@@ -87,7 +87,7 @@ const Logs = (props: TLogsProps) => {
         closeOnClickOutside
         type="primary"
       >
-        <MypageLogModal user_name={props.user.nickname} user_pk={props.user.user_pk} recent={isRecent} />
+        <MypageLogModal user_name={props.user.nickname} user_id={props.user.user_id} recent={isRecent} />
       </SpartaModal>
     </div>
   );

@@ -9,7 +9,7 @@ import { userStore } from "../share/store/userStore";
 import useModalToggles from "../hook/useModalToggles";
 import UserStatusPopover from "./headerComponents/UserStatusPopover";
 import SpartaModal from "../spartaDesignSystem/SpartaModal";
-import Login from "./HomeComponents/Login";
+import Login from "./homeComponents/Login";
 import SpartaReactionModal from "../spartaDesignSystem/SpartaReactionModal";
 import type { TSpartaReactionModalProps } from "../spartaDesignSystem/SpartaReactionModal";
 import { useState } from "react";
@@ -141,7 +141,7 @@ const Header = () => {
       {/* 제목 */}
       <section className="flex items-center gap-4">
         <img src={logo} alt="스파르타 게임 아이콘" className="w-12 h-12 rounded-full" />
-        <Link to={userData && userData.is_staff ? "/admin/dashboard" : "/"}>
+        <Link to={userData && userData.data.is_staff ? "/admin/dashboard" : "/"}>
           <h1>
             <img src={titleImage} />
           </h1>
@@ -150,7 +150,7 @@ const Header = () => {
       {/* 메뉴 */}
       <section className="flex items-center gap-10 text-heading-24 font-normal font-DungGeunMo text-white">
         {/* 검색 */}
-        {!userData?.is_staff && (
+        {!userData?.data.is_staff && (
           <img
             src={balloon}
             alt="검색 아이콘"
@@ -159,7 +159,7 @@ const Header = () => {
           />
         )}
         {/* 카테고리 */}
-        {!userData?.is_staff && (
+        {!userData?.data.is_staff && (
           <div className="relative">
             <p onClick={onClickModalToggleHandlers.category} className="cursor-pointer hover:text-primary-500">
               카테고리
@@ -173,7 +173,7 @@ const Header = () => {
           </div>
         )}
         {/* 일반 유저 , 어드민 메뉴 */}
-        {userData && userData.is_staff
+        {userData && userData.data.is_staff
           ? adminUserMenu.map((menu, index) => (
               <div key={index} onClick={menu.onClick} className="cursor-pointer hover:text-primary-500">
                 <p>{menu.text}</p>
@@ -186,9 +186,9 @@ const Header = () => {
             ))}
 
         {/* 유저 액션 */}
-        {!userData?.is_staff && (
+        {!userData?.data.is_staff && (
           <div className="cursor-pointer relative" ref={modalRefs.userStatus}>
-            {userData ? (
+            {userData?.data ? (
               <p onClick={onClickModalToggleHandlers.userStatus} className="hover:text-primary-500">
                 마이페이지
               </p>
@@ -201,7 +201,7 @@ const Header = () => {
             {modalToggles.userStatus && (
               <UserStatusPopover
                 isLogin={!!userData}
-                userId={userData?.user_pk}
+                userId={userData?.data.user_id}
                 modalRef={modalRefs.userStatus}
                 onClickModalToggleHandler={onClickModalToggleHandlers.userStatus}
                 loginHandler={() => onClickModalToggleHandlers[LOGIN_MODAL_ID]()}

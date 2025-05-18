@@ -75,14 +75,14 @@ const useReview = () => {
 
   const onSubmitReviewEditHandler = async (
     reviewId: number | undefined,
-    gamePk: number | undefined,
+    gameId: number | undefined,
     difficulty: number | undefined,
     star: number | null,
     preStar: number | undefined,
     content: string,
   ) => {
-    await putGameReview(reviewId, gamePk, difficulty, star, preStar, content);
-    queryClient.invalidateQueries({ queryKey: ["reviews", "my_review", gamePk] });
+    await putGameReview(reviewId, gameId, difficulty, star, preStar, content);
+    queryClient.invalidateQueries({ queryKey: ["reviews", "my_review", gameId] });
 
     setNoActionModalData(noActionData.editSuccess);
     onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();

@@ -7,7 +7,7 @@ import GamePlaySection from "../components/gameDetailComponents/GamePlaySection/
 import ReviewContents from "../components/gameDetailComponents/ReviewSection/ReviewContents";
 import { userStore } from "../share/store/userStore";
 import useModalToggles from "../hook/useModalToggles";
-import { TGamePlayData } from "../types";
+import { TGamePlayDataResponse } from "../types";
 import SpartaButton from "../spartaDesignSystem/SpartaButton";
 import CaretLeft from "../assets/CaretLeft";
 import SpartaReactionModal from "../spartaDesignSystem/SpartaReactionModal";
@@ -32,7 +32,7 @@ const GameDetail = () => {
 
   const { userData } = userStore();
 
-  const { data: gamePlayData, isLoading } = useQuery<TGamePlayData>({
+  const { data: gamePlayData, isLoading } = useQuery<TGamePlayDataResponse>({
     queryKey: ["gameList"],
     queryFn: () => getGameDetail(gameDetailId),
   });
@@ -44,11 +44,11 @@ const GameDetail = () => {
       !!gameDetailId &&
       !!userData &&
       !!gamePlayData &&
-      userData.user_pk === gamePlayData.maker &&
-      gamePlayData.register_state === 2,
+      userData.data.user_id === gamePlayData.data.maker_data.id &&
+      gamePlayData.data.register_state === 2,
   });
 
-  const gameCategory = gamePlayData?.category[0]?.name;
+  const gameCategory = gamePlayData?.data.category[0]?.name;
 
   useEffect(() => {
     if (rejectLogs.data) {
@@ -80,7 +80,7 @@ const GameDetail = () => {
               <p>{gameCategory}</p>
             </Link>
 
-            {userData?.user_pk === gamePlayData?.maker && (
+            {userData?.data.user_id === gamePlayData?.data.maker_data.id && (
               <>
                 <div className="flex gap-2">
                   <span>
@@ -103,8 +103,8 @@ const GameDetail = () => {
               </>
             )}
           </div>
-          <GamePlaySection gamePlayData={gamePlayData} />
-          {gamePlayData?.register_state === 1 ? (
+          <GamePlaySection gamePlayData={gamePlayData?.data} />
+          {gamePlayData?.data.register_state === 1 ? (
             <ReviewContents gamePk={gameDetailId} />
           ) : (
             <p className="my-10 font-DungGeunMo text-3xl text-gray-100">*댓글기능은 검수 통과 후 활성화 됩니다.</p>
@@ -120,7 +120,7 @@ const GameDetail = () => {
       >
         <EditCheck
           gamePk={gameDetailId}
-          gamePlayData={gamePlayData}
+          gamePlayData={gamePlayData?.data}
           onClose={onClickModalToggleHandlers[GAME_EDIT_CHECK_ID]}
         />
       </SpartaModal>
@@ -131,7 +131,7 @@ const GameDetail = () => {
         modalId={GAME_DELETE_CHECK_ID}
         closeOnClickOutside={false}
       >
-        <DeleteCheck gamePk={gamePlayData?.id} onClose={onClickModalToggleHandlers[GAME_DELETE_CHECK_ID]} />
+        <DeleteCheck gamePk={gamePlayData?.data.id} onClose={onClickModalToggleHandlers[GAME_DELETE_CHECK_ID]} />
       </SpartaModal>
 
       {rejectLogs.data && (

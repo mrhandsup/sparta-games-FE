@@ -25,9 +25,9 @@ const Account = () => {
   ]);
 
   const withDrawalMutation = useMutation({
-    mutationFn: async (user_pk: number) => {
-      if (!userData?.user_pk) throw new Error("사용자 ID가 없습니다.");
-      return leaveUser(user_pk);
+    mutationFn: async (user_id: number) => {
+      if (!userData?.data.user_id) throw new Error("사용자 ID가 없습니다.");
+      return leaveUser(user_id);
     },
     onSuccess: () => {
       logout();
@@ -55,7 +55,7 @@ const Account = () => {
         text: "확인했습니다",
         onClick: () => {
           onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-          userData && withDrawalMutation.mutate(userData?.user_pk);
+          userData && withDrawalMutation.mutate(userData?.data.user_id);
         },
       },
       type: "alert",
@@ -90,7 +90,7 @@ const Account = () => {
     DISCORD: "디스코드",
   };
 
-  const socialName = socialLoginConfig[userData?.login_type as keyof typeof socialLoginConfig];
+  const socialName = socialLoginConfig[userData?.data.login_type as keyof typeof socialLoginConfig];
 
   return (
     <div className="bg-gray-800 rounded-xl px-7 py-5 flex flex-col gap-4 justify-start items-start">
@@ -100,9 +100,9 @@ const Account = () => {
             <img src={log} alt="로고" />
             <p className="font-DungGeunMo text-heading-32 text-white font-[400]">계정정보 수정</p>
           </div>
-          {userData?.login_type == "DEFAULT" && (
+          {userData?.data.login_type == "DEFAULT" && (
             <button
-              disabled={userData?.login_type !== "DEFAULT"}
+              disabled={userData?.data.login_type !== "DEFAULT"}
               className={`border-gray-300 border-2 w-[20%] h-10 rounded-md text-gray-300 font-bold hover:bg-gray-700 transition-colors `}
               onClick={() => onClickModalToggleHandlers[CHANGE_PASSWORD_MODAL_ID]()}
             >
@@ -114,7 +114,7 @@ const Account = () => {
           <div className="flex justify-between items-center">
             <label className="text-gray-100">아이디</label>
             <input
-              value={userData?.email}
+              value={userData?.data.email}
               disabled
               placeholder="spartagames@sparta.com"
               className={`py-3 px-4 bg-gray-700 border border-solid rounded-md w-[50%] text-gray-200`}
@@ -129,7 +129,7 @@ const Account = () => {
               disabled
               type="password"
               placeholder={
-                userData?.login_type !== "DEFAULT" ? `${socialName} 간편로그인으로 이용하고 계십니다.` : "*****"
+                userData?.data.login_type !== "DEFAULT" ? `${socialName} 간편로그인으로 이용하고 계십니다.` : "*****"
               }
               className={`py-3 px-4 bg-gray-700 border border-solid rounded-md w-[50%] text-white border-gray-200`}
             />

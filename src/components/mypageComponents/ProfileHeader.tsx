@@ -1,4 +1,4 @@
-import { TUser } from "../../types";
+import { TUserData } from "../../types";
 import { convertToConfigObjects } from "../../util/convertToConfigObjects";
 import { USER_TECH } from "../../constant/constant";
 import SpartaButton from "../../spartaDesignSystem/SpartaButton";
@@ -11,7 +11,7 @@ import SpartaReactionModal, { TSpartaReactionModalProps } from "../../spartaDesi
 import useModalToggles from "../../hook/useModalToggles";
 
 type TProfileProps = {
-  user: TUser;
+  user: TUserData;
   isMyPage: boolean;
 };
 
@@ -57,7 +57,7 @@ const ProfileHeader = (props: TProfileProps) => {
       if (!formData) {
         throw new Error("No file selected");
       }
-      return await updateUserData(props.user.user_pk, formData);
+      return await updateUserData(props.user.user_id, formData);
     },
     onSuccess: (data) => {
       if (data.profile_image === "이미지 없음") {

@@ -30,9 +30,9 @@ const ProfileModal = ({ onSuccess, onError }: Props) => {
     formState: { errors },
   } = useForm<ProfileFormData>({
     defaultValues: {
-      nickname: userData?.nickname || "",
-      user_tech: userData?.user_tech || "",
-      game_category: userData?.game_category || [],
+      nickname: userData?.data.nickname || "",
+      user_tech: userData?.data.user_tech || "",
+      game_category: userData?.data.game_category || [],
     },
   });
 
@@ -42,7 +42,7 @@ const ProfileModal = ({ onSuccess, onError }: Props) => {
 
   const profileMutation = useMutation({
     mutationFn: async (formData: ProfileFormData) => {
-      if (!userData?.user_pk) throw new Error("사용자 ID가 없습니다.");
+      if (!userData?.data.user_id) throw new Error("사용자 ID가 없습니다.");
 
       const updateData: Partial<TUserInformationInputForm> = {
         nickname: formData.nickname,
@@ -50,7 +50,7 @@ const ProfileModal = ({ onSuccess, onError }: Props) => {
         game_category: formData.game_category.join(","),
       };
 
-      return updateUserData(userData.user_pk, updateData);
+      return updateUserData(userData.data.user_id, updateData);
     },
     onSuccess: () => {
       const token = sessionStorage.getItem("accessToken");

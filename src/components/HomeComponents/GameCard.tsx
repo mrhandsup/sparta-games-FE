@@ -2,7 +2,6 @@ import { FaBookmark } from "react-icons/fa";
 import StarRating from "../common/StarRating";
 import { TGameData } from "../../types";
 import GameChip from "../common/chipComponents/GameChip";
-import DOMPurify from "dompurify";
 import removeHTMLTags from "../../util/removeHTMLTags";
 
 type Props = {
@@ -19,7 +18,7 @@ const GameCard = ({ item, simple, row }: Props) => {
 
   return (
     <section
-      key={item?.pk}
+      key={item?.id}
       className={`relative flex ${
         row ? "flex-row" : "flex-col"
       } border-gray-100 border-[0.7px] rounded-lg border-solid`}
@@ -37,7 +36,7 @@ const GameCard = ({ item, simple, row }: Props) => {
       border-gray-100 border-b-[0.7px] border-r-[0.95px] border-solid
       "
       >
-        {item?.category_name[0]}
+        {item?.category_data[0].name}
       </div>
       {/* 북마크 */}
       <div className="absolute top-[-1px] right-4  rounded-tl-md rounded-br-lg font-DungGeunMo text-white w-fit font-light">
@@ -52,7 +51,7 @@ const GameCard = ({ item, simple, row }: Props) => {
           {item?.title ? item?.title : "test"}
         </div>
         <div className="text-sm font-normal flex items-center justify-between my-1.5">
-          <p className="text-body-14 font-medium text-gray-200 truncate max-w-[55%]">{item?.maker_name}</p>
+          <p className="text-body-14 font-medium text-gray-200 truncate max-w-[55%]">{item?.maker_data.nickname}</p>
           <div className="flex items-center gap-1.5">
             <p className="text-primary-300 font-DungGeunMo  pt-0.5 text-[14px] font-[400]">{item?.star.toFixed(1)}</p>
             {item && <StarRating score={item.star} />}
@@ -70,8 +69,8 @@ const GameCard = ({ item, simple, row }: Props) => {
             </div>
             <div className="flex gap-1">
               {/* <Easy /> */}
-              {item?.chip_names?.map((chip) => (
-                <GameChip key={chip} chipName={chip} />
+              {item?.chips?.map((chip) => (
+                <GameChip key={chip.id} chipName={chip.name} />
               ))}
             </div>
           </div>

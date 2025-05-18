@@ -6,10 +6,10 @@ import SpartaModal from "../../spartaDesignSystem/SpartaModal";
 import { useEffect, useState } from "react";
 
 type Props = {
-  game_pk: number;
+  game_id: number;
 };
 
-const AdminGameRejectModal = ({ game_pk }: Props) => {
+const AdminGameRejectModal = ({ game_id }: Props) => {
   const { modalToggles, onClickModalToggleHandlers } = useModalToggles(["rejectModal"]);
 
   const queryClient = useQueryClient();
@@ -30,7 +30,7 @@ const AdminGameRejectModal = ({ game_pk }: Props) => {
       setComplete(false);
       setRejectContent("");
     };
-  }, [modalToggles, game_pk]);
+  }, [modalToggles, game_id]);
 
   return (
     <div>
@@ -80,7 +80,7 @@ const AdminGameRejectModal = ({ game_pk }: Props) => {
               size="medium"
               width="w-full"
               onClick={() => {
-                rejectRegisterGameMutation.mutate({ id: game_pk, content: rejectContent });
+                rejectRegisterGameMutation.mutate({ id: game_id, content: rejectContent });
               }}
               type="filled"
             />

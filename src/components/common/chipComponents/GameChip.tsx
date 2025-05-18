@@ -5,7 +5,7 @@ type Props = {
   /**
    * 게임 카테고리
    */
-  chipName: TGameChip | "NORMAL" | "EASY" | "HARD";
+  chipName: TGameChip["name"] | "NORMAL" | "EASY" | "HARD";
   size?: "small" | "large";
 };
 
