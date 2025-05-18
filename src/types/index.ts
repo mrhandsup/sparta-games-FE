@@ -28,12 +28,16 @@ export type TUserDataResponse = {
   status: "success" | "fail" | "error";
   message: string | null;
   data: TUserData;
-  pagination: null;
-  error_code: null;
+  pagination: {
+    count: number;
+    next: string | null;
+    previous: string | null;
+  };
+  error_code: string | null;
 };
 
 export type TUserData = {
-  user_pk: number;
+  user_id: number;
   nickname: string;
   email: string;
   profile_image: string;
@@ -48,10 +52,15 @@ export type TUserData = {
 };
 
 export type TGameDataResponse = {
-  count: number;
-  next: string | null;
-  previous: string | null;
-  results: TGameData[];
+  status: "success" | "fail" | "error";
+  message: string | null;
+  data: TGameData[];
+  pagination: {
+    count: number;
+    next: string | null;
+    previous: string | null;
+  };
+  error_code: string | null;
 };
 
 export type TGameData = {
@@ -78,8 +87,12 @@ export type TGamePlayDataResponse = {
   status: "success" | "fail" | "error";
   message: string | null;
   data: TGamePlayData;
-  pagination: null;
-  error_code: null;
+  pagination: {
+    count: number;
+    next: string | null;
+    previous: string | null;
+  };
+  error_code: string | null;
 };
 
 export type TGamePlayData = TGameData & {
@@ -139,11 +152,15 @@ export type TReviewInputForm = {
 };
 
 export type TCategoryListResponse = {
-  status: string;
+  status: "success" | "fail" | "error";
   message: string | null;
   data: TCategoryItem[];
-  pagination: null;
-  error_code: null;
+  pagination: {
+    count: number;
+    next: string | null;
+    previous: string | null;
+  };
+  error_code: string | null;
 };
 
 export type TCategoryItem = {

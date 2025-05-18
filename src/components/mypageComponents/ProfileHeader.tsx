@@ -57,7 +57,7 @@ const ProfileHeader = (props: TProfileProps) => {
       if (!formData) {
         throw new Error("No file selected");
       }
-      return await updateUserData(props.user.user_pk, formData);
+      return await updateUserData(props.user.user_id, formData);
     },
     onSuccess: (data) => {
       if (data.profile_image === "이미지 없음") {

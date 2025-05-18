@@ -30,10 +30,12 @@ const ReviewCard = ({ review, onClickModalToggleHandler, isMyReview = false, set
   const { userData } = userStore();
 
   const profileImage =
-    userData?.user_pk === review?.author_id && userData?.profile_image && userData.profile_image !== "이미지 없음"
+    userData?.data.user_id === review?.author_id &&
+    userData?.data.profile_image &&
+    userData.data.profile_image !== "이미지 없음"
       ? import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
-        ? import.meta.env.VITE_PROXY_HOST + userData.profile_image
-        : userData.profile_image
+        ? import.meta.env.VITE_PROXY_HOST + userData.data.profile_image
+        : userData.data.profile_image
       : defaultProfile;
 
   const queryClient = useQueryClient();

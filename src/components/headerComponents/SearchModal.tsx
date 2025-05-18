@@ -17,7 +17,7 @@ const SearchModal = ({ onClose }: Props) => {
   const [page, setPage] = useState<number>(1);
   const { data } = useQuery<{
     count: number;
-    results: {
+    data: {
       all_games: TGameData[];
     };
   }>({
@@ -44,12 +44,12 @@ const SearchModal = ({ onClose }: Props) => {
       </div>
       {/* 검색 결과 */}
       <div className="flex flex-wrap gap-3 mb-5">
-        {data && data.results && data.results.all_games && data.results.all_games.length > 0 ? (
-          data?.results.all_games.map((item, idx) => (
+        {data && data.data && data.data.all_games && data.data.all_games.length > 0 ? (
+          data?.data.all_games.map((item, idx) => (
             <div
               onClick={() => {
                 onClose();
-                navigate(`/game-detail?id=${item.pk}`);
+                navigate(`/game-detail?id=${item.id}`);
               }}
               className="cursor-pointer"
             >

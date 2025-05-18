@@ -26,7 +26,7 @@ const Category = () => {
     <main className="w-full">
       <Title category={searchParams.get("category")!} />
       <div className="h-fit pb-10">
-        <GameCardList data={data?.results} />
+        <GameCardList data={data?.data} />
         <SpartaPagination dataTotalCount={totalCount} countPerPage={16} onChangePage={(e, page) => setPage(page)} />
       </div>
     </main>

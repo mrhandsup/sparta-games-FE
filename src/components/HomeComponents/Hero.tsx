@@ -1,7 +1,7 @@
 import heroImage from "../../assets/homeImage/heroImage.svg";
 import { userStore } from "../../share/store/userStore";
 import { useQuery } from "@tanstack/react-query";
-import type { TGameData } from "../../types";
+import type { TGameDataResponse } from "../../types";
 import useModalToggles from "../../hook/useModalToggles";
 import SpartaModal from "../../spartaDesignSystem/SpartaModal";
 import { Autoplay } from "swiper/modules";
@@ -19,11 +19,13 @@ import "./HeroSwiper.css";
 const Hero = () => {
   const { userData } = userStore();
 
-  const { data } = useQuery<TGameData[]>({
+  const { data } = useQuery<TGameDataResponse>({
     queryKey: ["userGamePackList", userData],
-    queryFn: () => getUserGamePackList(userData?.user_pk || 0),
-    enabled: !!userData?.user_pk,
+    queryFn: () => getUserGamePackList(userData?.data.user_id || 0),
+    enabled: !!userData?.data.user_id,
   });
+
+  const gameData = data?.data;
 
   // 모달
   const LOGIN_MODAL_ID = "loginModal";
@@ -60,7 +62,7 @@ const Hero = () => {
         </section>
       )}
       {/* 로그인 후 && 북마크 게임 x */}
-      {userData && data?.length == 0 && (
+      {userData && data?.data?.length == 0 && (
         <section className="flex flex-col items-center  w-full h-[475px]  text-white  justify-center relative gap-4  max-w-[1440px] mx-auto">
           <div className="absolute bg-hero-image bg-cover bg-center opacity-20 justify-center w-full h-full"></div>
           <p className="font-DungGeunMo text-heading-28 text-primary-400 mb-24">[User Name]의 Game Pack</p>
@@ -70,19 +72,19 @@ const Hero = () => {
         </section>
       )}
       {/* 로그인 후 && 북마크 게임 o */}
-      {userData && data && data?.length !== 0 && (
+      {userData && gameData && gameData?.length !== 0 && (
         <section className="flex flex-col items-center w-full h-[475px]  text-white justify-center gap-4 mb-10 bg-red-500  max-w-[1440px] mx-auto">
           <Swiper
             className="heroSwiper"
             ref={swiperRef}
-            loop={data?.length > 1 ? true : false}
+            loop={gameData?.length > 1 ? true : false}
             pagination={{
               clickable: true,
             }}
             autoplay={{ delay: 2000, disableOnInteraction: false }}
-            modules={[Autoplay, ...(data?.length > 1 ? [Pagination] : [])]}
+            modules={[Autoplay, ...(gameData?.length > 1 ? [Pagination] : [])]}
           >
-            {data?.map((data, index) => (
+            {gameData?.map((data, index) => (
               <SwiperSlide key={index}>
                 <MyGamePackCard item={data} />
               </SwiperSlide>

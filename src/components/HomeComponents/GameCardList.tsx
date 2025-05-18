@@ -84,7 +84,6 @@ const GameCardList = ({
           )}
         </p>
       )}
-
       <div className={`flex ${!containerClassName && "w-[1180px] h-[408px] mx-auto mt-2"} gap-4`}>
         {slicingData?.length != 0 && slicingData ? (
           slicingData.map((item) => (

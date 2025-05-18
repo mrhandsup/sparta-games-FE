@@ -16,13 +16,13 @@ const MyGame = (props: TMyGameProps) => {
   const [page, setPage] = useState<number>(1);
   const { id } = useParams();
   //* Hooks
-  const myGameData = useQuery<TGameDataResponse>({
-    queryKey: ["myGameList", props.user.user_pk, page],
-    queryFn: () => (props.isMyPage ? getUserGameMadeList(props.user.user_pk, page) : getUserGameList(Number(id), page)),
+  const { data } = useQuery<TGameDataResponse>({
+    queryKey: ["myGameList", props.user.user_id, page],
+    queryFn: () => (props.isMyPage ? getUserGameMadeList(props.user.user_id, page) : getUserGameList(Number(id), page)),
   });
 
-  const gameData = (myGameData.data && myGameData.data.results) || [];
-  const totalCount = (myGameData.data && myGameData.data.count) || 0;
+  const gameData = (data && data?.data) || [];
+  const totalCount = (data && data.pagination.count) || 0;
 
   return (
     <div className="bg-gray-800 rounded-xl px-7 py-5 flex flex-col gap-4 justify-start items-center">

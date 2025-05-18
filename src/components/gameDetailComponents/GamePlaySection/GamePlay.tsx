@@ -106,11 +106,11 @@ const GamePlay = ({ gameId, title, makerName, makerId, gamePath }: Props) => {
 
   const { data, isLoading } = useQuery<TGameDataResponse>({
     queryKey: ["isBookMarked"],
-    queryFn: () => getMyBookmarkList(userData?.user_pk),
+    queryFn: () => getMyBookmarkList(userData?.data.user_id),
     enabled: !!userData,
   });
 
-  const bookMarkedGames = data?.results;
+  const bookMarkedGames = data?.data;
   const currentBookMarkedGame = bookMarkedGames?.some((game: TGameData) => game.id === gameId);
 
   const bookMarkMutation = useMutation({

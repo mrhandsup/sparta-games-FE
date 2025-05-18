@@ -5,7 +5,7 @@ import useModalToggles from "../../hook/useModalToggles";
 import { deleteGameList } from "../../api/game";
 import SpartaReactionModal from "../../spartaDesignSystem/SpartaReactionModal";
 import { userStore } from "../../share/store/userStore";
-import { useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from "@tanstack/react-query";
 
 type Props = {
   gamePk: number | undefined;
@@ -99,7 +99,7 @@ const DeleteCheck = ({ gamePk, onClose }: Props) => {
           text: "확인했습니다.",
           onClick: () => {
             onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-            navigate(`/my-page/${userData?.user_pk}`);
+            navigate(`/my-page/${userData?.data.user_id}`);
           },
         }}
         type={"error"}

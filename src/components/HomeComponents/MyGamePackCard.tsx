@@ -31,8 +31,8 @@ const MyGameCard = ({ item }: Props) => {
       <div className="w-[50%] px-10">
         <p className="text-title-18 font-DungGeunMo text-primary-400">
           {item?.is_liked
-            ? `[${userData?.nickname}] 님이 즐겨찾기한 게임`
-            : `[${userData?.nickname}] 님이 좋아할만한 게임`}
+            ? `[${userData?.data.nickname}] 님이 즐겨찾기한 게임`
+            : `[${userData?.data.nickname}] 님이 좋아할만한 게임`}
         </p>
         <div className="flex gap-3 font-DungGeunMo items-baseline mt-[8px]">
           <p className="text-heading-24">{item?.title ? item?.title : "test"}</p>

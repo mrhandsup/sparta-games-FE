@@ -9,27 +9,27 @@ import GameCard from "../homeComponents/GameCard";
 
 type Props = {
   user_name: string;
-  user_pk: number;
+  user_id: number;
   recent: boolean;
 };
 
-const MypageLogModal = ({ user_name, user_pk, recent }: Props) => {
+const MypageLogModal = ({ user_name, user_id, recent }: Props) => {
   const [page, setPage] = useState<number>(1);
   const myRecentGameData = useQuery<TGameDataResponse>({
-    queryKey: ["myRecentGameList", user_pk, page],
-    queryFn: () => getUserRecentGameList(user_pk, page),
+    queryKey: ["myRecentGameList", user_id, page],
+    queryFn: () => getUserRecentGameList(user_id, page),
   });
 
   const myLikedData = useQuery<TGameDataResponse>({
-    queryKey: ["myLikesList", user_pk, page],
-    queryFn: () => getUserLikedGameList(user_pk, page),
+    queryKey: ["myLikesList", user_id, page],
+    queryFn: () => getUserLikedGameList(user_id, page),
   });
 
-  const recentGameData = myRecentGameData.data && myRecentGameData.data?.results;
-  const recentGameCount = myRecentGameData.data && myRecentGameData.data?.count;
+  const recentGameData = myRecentGameData.data && myRecentGameData.data?.data;
+  const recentGameCount = myRecentGameData.data && myRecentGameData.data?.pagination.count;
 
-  const likedData = myLikedData.data && myLikedData.data?.results;
-  const likedCount = myLikedData.data && myLikedData.data?.count;
+  const likedData = myLikedData.data && myLikedData.data?.data;
+  const likedCount = myLikedData.data && myLikedData.data?.pagination.count;
 
   const data = recent ? recentGameData : likedData;
 

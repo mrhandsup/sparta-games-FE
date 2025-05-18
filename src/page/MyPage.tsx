@@ -7,7 +7,7 @@ import MyGame from "../components/mypageComponents/MyGame";
 import { useParams } from "react-router-dom";
 import { getUserData } from "../api/user";
 import { useQuery } from "@tanstack/react-query";
-import { TUserData } from "../types";
+import { TUserDataResponse } from "../types";
 
 const MyPage = () => {
   const [navigation, setNavigation] = useState<"log" | "develop" | "setting">("log");
@@ -19,16 +19,17 @@ const MyPage = () => {
   };
 
   const { userData } = userStore();
-  const isMyPage = id === userData?.user_pk.toString();
 
-  const { data, isError } = useQuery<TUserData>({
+  const isMyPage = id === userData?.data.user_id.toString();
+
+  const { data, isError } = useQuery<TUserDataResponse>({
     queryKey: ["userProfile", id],
     queryFn: () => getUserData(Number(id)),
     enabled: !!id && !isMyPage,
     retry: 1,
   });
 
-  const user = isMyPage ? userData : data;
+  const user = isMyPage ? userData?.data : data?.data;
 
   useEffect(() => {
     if (isError) {

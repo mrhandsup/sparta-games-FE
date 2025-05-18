@@ -326,7 +326,7 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
             className="w-full rounded-md transition-colors duration-200 box-border h-10 text-title-16 font-normal bg-alert-default hover:bg-alert-hover"
             onClick={() => {
               onClickModalToggleHandlers[EDIT_SUCCESS_ID]();
-              navigate(`/my-page/${userData?.user_pk}`);
+              navigate(`/my-page/${userData?.data.user_id}`);
             }}
           >
             확인

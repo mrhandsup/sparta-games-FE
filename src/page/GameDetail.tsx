@@ -44,7 +44,7 @@ const GameDetail = () => {
       !!gameDetailId &&
       !!userData &&
       !!gamePlayData &&
-      userData.user_pk === gamePlayData.data.maker_data.id &&
+      userData.data.user_id === gamePlayData.data.maker_data.id &&
       gamePlayData.data.register_state === 2,
   });
 
@@ -80,7 +80,7 @@ const GameDetail = () => {
               <p>{gameCategory}</p>
             </Link>
 
-            {userData?.user_pk === gamePlayData?.data.maker_data.id && (
+            {userData?.data.user_id === gamePlayData?.data.maker_data.id && (
               <>
                 <div className="flex gap-2">
                   <span>
