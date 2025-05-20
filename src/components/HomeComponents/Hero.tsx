@@ -39,7 +39,7 @@ const Hero = () => {
       {!userData && (
         <section className="flex items-center gap-[60px] w-full h-[475px] bg-gray-800 max-w-[1440px] mx-auto">
           <img src={heroImage} />
-          <div className="flex flex-col justify-center gap-4 items-center w-[50%] px-20">
+          <div className="flex flex-col justify-center gap-4 items-center w-[50%] ps-14">
             <h2 className="font-DungGeunMo text-heading-32 text-primary-500 ">★ Welcome to Sparta Games ★</h2>
 
             <div className="flex flex-col items-center text-body-18 my-5 text-white">

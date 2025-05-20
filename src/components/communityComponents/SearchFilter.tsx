@@ -1,42 +1,32 @@
-import { useState } from "react";
+import ArrowButton from "../../assets/communityImage/ArrowBottom.svg";
+import FilterReset from "../../assets/communityImage/Reset.svg";
+import SpartaButton from "../../spartaDesignSystem/SpartaButton";
 
 const SearchFilter = () => {
-  const [check, setCheck] = useState("");
-
-  const onClickCheckHandler = (arg: string) => {
-    if (check === arg) {
-      setCheck("");
-      return;
-    }
-    setCheck(arg);
-  };
-
   return (
-    <section className="flex gap-3 mt-[75px] px-[130px]">
-      <div className="flex gap-5">
-        <p
-          onClick={() => onClickCheckHandler("최근 게시순")}
-          className={`text-body-22 text-white cursor-pointer ${check === "최근 게시순" && "text-title-22"}`}
-        >
-          최근 게시순
-        </p>
-        <p
-          onClick={() => onClickCheckHandler("공감 많은순")}
-          className={`text-body-22 text-white cursor-pointer ${check === "공감 많은순" && "text-title-22"}`}
-        >
-          공감 많은순
-        </p>
-        <p
-          onClick={() => onClickCheckHandler("댓글 많은 순")}
-          className={`text-body-22 text-white cursor-pointer ${check === "댓글 많은 순" && "text-title-22"}`}
-        >
-          댓글 많은 순
-        </p>
-        {/* 로그인 구현 후 로그인된 유저의 경우 밑의 나의 게시글 필터가 활성화되게 변경 */}
-        {/* <p>나의 게시글</p> */}
+    <div className="flex justify-between mt-14">
+      <div className="flex items-center gap-8 cursor-pointer">
+        <div className="flex gap-3">
+          <p className="font-DungGeunMo text-body-22 text-white">포지션</p>
+          <img src={ArrowButton} alt="포지션 목록 열기" />
+        </div>
+        <div className="flex gap-3">
+          <p className="font-DungGeunMo text-body-22 text-white">프로젝트 목적</p>
+          <img src={ArrowButton} alt="프로젝트 목적 목록 열기" />
+        </div>
+        <div className="flex gap-3">
+          <p className="font-DungGeunMo text-body-22 text-white">프로젝트 기간</p>
+          <img src={ArrowButton} alt="프로젝트 기간 목록 열기" />
+        </div>
       </div>
-      <div></div>
-    </section>
+      <div className="flex items-center gap-6">
+        <div className="flex gap-2">
+          <img src={FilterReset} alt="필터 초기화" />
+          <p className="font-DungGeunMo text-body-22 text-white">초기화</p>
+        </div>
+        <SpartaButton content="글 등록하기" type="filled" size="medium" width="w-[200px]" />
+      </div>
+    </div>
   );
 };
 

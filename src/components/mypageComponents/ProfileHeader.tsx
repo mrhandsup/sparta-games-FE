@@ -22,7 +22,7 @@ const ProfileHeader = (props: TProfileProps) => {
   const noActionData: { [key: string]: Partial<TSpartaReactionModalProps> } = {
     updateSuccess: {
       title: "완료",
-      content: "프로필 이미지 수정이 완료되었습니다.",
+      content: "프로필 정이 완료되었습니다.",
       btn1: {
         text: "확인했습니다",
         onClick: () => {
