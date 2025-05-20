@@ -145,7 +145,7 @@ const Account = (props: Props) => {
     } else if (res?.status === 400) {
       setNoActionModalData({
         title: "이메일 인증 실패",
-        content: res.data.error,
+        content: res.data.message,
         btn1: {
           text: "확인했습니다",
           onClick: () => {

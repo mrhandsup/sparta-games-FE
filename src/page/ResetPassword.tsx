@@ -164,7 +164,7 @@ const ResetPassword = (props: Props) => {
     } else if (res?.status === 400) {
       setNoActionModalData({
         title: "이메일 인증 실패",
-        content: res.data.error,
+        content: res.data.message,
         btn1: {
           text: "확인했습니다",
           onClick: () => {
@@ -187,7 +187,7 @@ const ResetPassword = (props: Props) => {
     } else if (res?.status === 400) {
       setNoActionModalData({
         title: "비밀번호 변경 실패",
-        content: res.data.error,
+        content: res.data.message,
         btn1: {
           text: "확인했습니다",
           onClick: () => {

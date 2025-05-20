@@ -230,10 +230,11 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
     const formData = createFormData(getValues());
     const res = await putGameList(formData, gamePk);
 
+    console.log("res", res);
     if (res?.status === 400) {
       setNoActionModalData({
         title: "확인해주세요!",
-        content: `${res.data.error}`,
+        content: `${res.data.message}`,
         btn1: {
           text: "확인",
           onClick: () => {
