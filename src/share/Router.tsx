@@ -26,11 +26,11 @@ const Router = () => {
       <Routes>
         <Route element={<FullWidthLayout />}>
           <Route path="/" element={<Home />} />
+          <Route path="/community" element={<Community />} />
         </Route>
         <Route element={<Layout />}>
           <Route path="/game-detail" element={<GameDetail />} />
           <Route path="/category" element={<Category />} />
-          <Route path="/community" element={<Community />} />
           <Route path="/redirect/:service" element={<Redirect />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/reset" element={<ResetPassword />} />

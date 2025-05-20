@@ -154,7 +154,7 @@ const GamePlay = ({ gameId, title, makerName, makerId, gamePath }: Props) => {
       {isLoading ? (
         <div className="w-full h-[500px] flex justify-center items-center"></div>
       ) : (
-        <div className="w-[880px]">
+        <div className="w-[75%]">
           <div className="flex flex-col gap-2 font-DungGeunMo text-[32px] text-white">
             <p>{title}</p>
             <div className="flex justify-between">
@@ -182,7 +182,7 @@ const GamePlay = ({ gameId, title, makerName, makerId, gamePath }: Props) => {
             </div>
           </div>
 
-          <div className="mt-5 w-full h-[560px] bg-gray-400 rounded-xl" ref={fullScreenRef}>
+          <div className="mt-5 w-full h-[625px] bg-gray-400 rounded-xl" ref={fullScreenRef}>
             {gamePath ? (
               <iframe src={gameUrl} width="100%" height="100%" className="rounded-xl" />
             ) : (

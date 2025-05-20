@@ -39,7 +39,7 @@ const GameUpload = () => {
         <p>스파르타 게임즈에 게임을 등록합니다</p>
       </div>
       {isEditMode ? (
-        <div className="w-[1180px] mx-auto px-9 py-5 rounded-3xl bg-gray-800">
+        <div className="w-full px-9 py-5 rounded-3xl bg-gray-800">
           <span className="text-xl font-bold text-alert-default">
             현재 수정중입니다. 게임파일이 변경될 경우 자동으로 재검수 요청에 들어갑니다.
           </span>
@@ -47,7 +47,6 @@ const GameUpload = () => {
       ) : (
         <Note state={note} onClickHandler={onClickNoteToggleHandler} />
       )}
-      {/* isEditMode 일 경우 editGameForm 아니면 createGameForm */}
       <Form note={note} previousGameData={previousGameData} isEditMode={isEditMode} />
     </main>
   );

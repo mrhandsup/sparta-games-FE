@@ -42,8 +42,8 @@ const GameMedia = ({ youtubeUrl, screenShot }: Props) => {
   const swiperRef = useRef(null);
 
   return (
-    <div className="flex flex-col gap-5 w-[280px]">
-      <div className="flex flex-col gap-3 p-4 w-full bg-gray-800 rounded-2xl">
+    <div className="flex flex-col gap-5 w-[25%]">
+      <div className="flex flex-col gap-3 p-8 w-full bg-gray-800 rounded-2xl">
         <p className="font-DungGeunMo text-[24px] text-white">플레이 영상</p>
         {youtubeUrl ? (
           <div className="relative p-20 rounded-lg overflow-hidden">
@@ -57,7 +57,7 @@ const GameMedia = ({ youtubeUrl, screenShot }: Props) => {
         )}
       </div>
 
-      <div className="flex flex-col gap-3 p-4 w-full bg-gray-800 rounded-2xl overflow-hidden">
+      <div className="flex flex-col gap-3 p-8 w-full bg-gray-800 rounded-2xl overflow-hidden">
         <p className="font-DungGeunMo text-[24px] text-white">스틸컷</p>
         {screenShot && screenShot.length > 0 ? (
           <div className="h-[340px] overflow-hidden cursor-pointer">
