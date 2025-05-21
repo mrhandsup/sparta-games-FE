@@ -69,10 +69,14 @@ const SearchFilter = ({ isProfileTab }: Props) => {
 
   return (
     <>
-      <div className="flex items-center gap-2 mt-12 mb-4">
-        <SpartaCheckBox checked={isChecked} onToggle={handleToggle} />
-        <p className="font-DungGeunMo text-body-22 text-white">모집중</p>
-      </div>
+      {isProfileTab ? (
+        <div className="flex items-center gap-2 mt-12 mb-4">
+          <SpartaCheckBox checked={isChecked} onToggle={handleToggle} />
+          <p className="font-DungGeunMo text-body-22 text-white">모집중</p>
+        </div>
+      ) : (
+        <div className="mt-12 "></div>
+      )}
       <div className="flex justify-between">
         <div className="flex items-center gap-8 cursor-pointer">
           <div onClick={() => onClickNavHandler("포지션")} className="flex gap-3 relative">
