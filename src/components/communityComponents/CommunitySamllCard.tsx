@@ -1,9 +1,9 @@
 import heroImage from "../../assets/communityImage/heroImage.png";
 import defaultProfile from "../../assets/common/defaultProfile.svg";
 
-export default function CommunitySmallCardList() {
+export default function CommunitySamllCard() {
   return (
-    <div className="flex gap-5 p-6 w-[800px] mx-auto border border-solid border-gray-400 rounded-lg">
+    <div className="flex gap-5 p-6  mx-auto border border-solid border-gray-400 rounded-lg">
       <div className="relative w-full">
         <div className="absolute flex items-center justify-center w-16 h-5 rounded-tl-md rounded-br-md bg-white border border-solidborder-gray-400">
           <p className="font-DungGeunMo text-xs">모집중</p>
@@ -24,14 +24,14 @@ export default function CommunitySmallCardList() {
           <div className="px-2 py-1 rounded-[4px] bg-white">
             <p>Modeler</p>
           </div>
-          <p className="text-white font-bold">+3</p>
+          <p className="text-white text-lg">+3</p>
         </div>
 
         <div className="flex gap-2">
-          <div className="flex items-center px-1.5 py-1.5 bg-gray-100 text-black font-bold rounded-md text-[11px]">
+          <div className="flex items-center px-1.5 py-1.5 bg-gray-100 text-black font-bold rounded-md text-[13px]">
             🔥 취업용 포트폴리오
           </div>
-          <div className="flex items-center px-1.5 py-1.5 bg-gray-600 text-white font-bold rounded-md text-[11px]">
+          <div className="flex items-center px-1.5 py-1.5 bg-gray-600 text-white font-bold rounded-md text-[13px]">
             6개월 이내
           </div>
         </div>

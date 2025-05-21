@@ -1,10 +1,12 @@
 import CardList from "../components/communityComponents/CardList";
 import CommunityHero from "../components/communityComponents/CommunityHero";
 import CommunityList from "../components/communityComponents/CommunityList";
-import CommunitySmallCardList from "../components/communityComponents/CommunitySamllCardList";
+import CommunitySamllCard from "../components/communityComponents/CommunitySamllCard";
 import Navigation from "../components/communityComponents/Navigation";
 import SearchFilter from "../components/communityComponents/SearchFilter";
 import pixelMeteor from "../assets/homeImage/pixelMeteor.svg";
+import CommunityCard from "../components/communityComponents/CommunityCard";
+import SpartaPagination from "../spartaDesignSystem/SpartaPagination";
 
 const Community = () => {
   return (
@@ -20,22 +22,34 @@ const Community = () => {
               <p className="font-DungGeunMo text-[32px] font-[400] text-white">추천 게시글</p>
             </div>
           </p>
-          <div className="space-y-4">
-            <div className="flex gap-4">
-              <CommunitySmallCardList />
-              <CommunitySmallCardList />
-            </div>
-            <div className="flex gap-4">
-              <CommunitySmallCardList />
-              <CommunitySmallCardList />
-            </div>
+          <div className="grid grid-cols-2 gap-5">
+            <CommunitySamllCard />
+            <CommunitySamllCard />
+            <CommunitySamllCard />
+            <CommunitySamllCard />
           </div>
         </div>
         <Navigation />
         <SearchFilter />
+        <div className="grid grid-cols-4 gap-5">
+          <CommunityCard />
+          <CommunityCard />
+          <CommunityCard />
+          <CommunityCard />
+          <CommunityCard />
+          <CommunityCard />
+          <CommunityCard />
+          <CommunityCard />
+          <CommunityCard />
+          <CommunityCard />
+        </div>
+
+        <div className="mt-10">
+          <SpartaPagination dataTotalCount={5} countPerPage={1} onChangePage={() => {}} />
+        </div>
       </div>
+      {/* <CommunityList /> */}
       {/* <CardList /> */}
-      <CommunityList />
     </main>
   );
 };
