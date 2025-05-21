@@ -1,4 +1,3 @@
-import { AiFillCaretRight } from "react-icons/ai";
 import CardList from "../components/communityComponents/CardList";
 import CommunityHero from "../components/communityComponents/CommunityHero";
 import CommunityList from "../components/communityComponents/CommunityList";
@@ -20,7 +19,6 @@ const Community = () => {
               <img src={pixelMeteor} />
               <p className="font-DungGeunMo text-[32px] font-[400] text-white">추천 게시글</p>
             </div>
-            <AiFillCaretRight className="w-8 h-8 text-white cursor-pointer" />
           </p>
           <div className="space-y-4">
             <div className="flex gap-4">
@@ -34,7 +32,6 @@ const Community = () => {
           </div>
         </div>
         <Navigation />
-
         <SearchFilter />
       </div>
       {/* <CardList /> */}

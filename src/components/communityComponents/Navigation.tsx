@@ -19,7 +19,7 @@ const Navigation = () => {
 
       <div className="flex gap-4 px-6 py-5 rounded-full bg-gray-800">
         <img src={balloon} alt="검색 아이콘" className="cursor-pointer hover:text-primary-500" />
-        <p className="text-2xl text-white">제목 또는 글 내용 검색하기</p>
+        <input type="text" placeholder="제목 또는 글 내용 검색하기" className="bg-gray-800 text-2xl text-white" />
       </div>
     </nav>
   );
