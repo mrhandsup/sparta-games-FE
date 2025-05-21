@@ -5,9 +5,11 @@ import FilterReset from "../../assets/communityImage/Reset.svg";
 import SpartaButton from "../../spartaDesignSystem/SpartaButton";
 import { USER_TECH } from "../../constant/constant";
 import deleteIcon from "../../assets/common/DeleteIcon.svg";
-import CheckBox from "../common/CheckBox";
 import SpartaCheckBox from "../../spartaDesignSystem/SpartaCheckBox";
 
+type Props = {
+  isProfileTab: boolean;
+};
 type FilterCategory = "position" | "purpose" | "period";
 
 interface SelectedFilter {
@@ -15,7 +17,7 @@ interface SelectedFilter {
   value: string;
 }
 
-const SearchFilter = () => {
+const SearchFilter = ({ isProfileTab }: Props) => {
   const [filterCliked, setFilterCliked] = useState("");
 
   const [selectedFilters, setSelectedFilters] = useState<SelectedFilter[]>([]);
@@ -76,17 +78,26 @@ const SearchFilter = () => {
           <div onClick={() => onClickNavHandler("포지션")} className="flex gap-3 relative">
             <p
               className={`font-DungGeunMo text-body-22 ${
-                filterCliked === "포지션" ? "text-primary-400" : "text-white"
+                filterCliked === "포지션" || selectedFilters.some((item) => item.category === "position")
+                  ? "text-primary-400"
+                  : "text-white"
               }`}
             >
               포지션
             </p>
-            <img src={filterCliked === "포지션" ? ArrowButtonFill : ArrowButton} alt="포지션 목록 열기" />
+            <img
+              src={
+                filterCliked === "포지션" || selectedFilters.some((item) => item.category === "position")
+                  ? ArrowButtonFill
+                  : ArrowButton
+              }
+              alt="포지션 목록 열기"
+            />
 
             <div
               className={`${
                 filterCliked === "포지션" ? "block" : "hidden"
-              } absolute top-10  flex gap-5 p-4 bg-gray-700 rounded-md`}
+              } absolute top-10  flex gap-5 p-4 bg-gray-700 rounded-md z-10`}
             >
               <div className="flex flex-col items-center w-[180px]">
                 {USER_TECH.map((item, id) => (
@@ -104,17 +115,26 @@ const SearchFilter = () => {
           <div onClick={() => onClickNavHandler("프로젝트 목적")} className="flex gap-3 relative">
             <p
               className={`font-DungGeunMo text-body-22 ${
-                filterCliked === "프로젝트 목적" ? "text-primary-400" : "text-white"
+                filterCliked === "프로젝트 목적" || selectedFilters.some((item) => item.category === "purpose")
+                  ? "text-primary-400"
+                  : "text-white"
               }`}
             >
               프로젝트 목적
             </p>
-            <img src={filterCliked === "프로젝트 목적" ? ArrowButtonFill : ArrowButton} alt="프로젝트 목적 목록 열기" />
+            <img
+              src={
+                filterCliked === "프로젝트 목적" || selectedFilters.some((item) => item.category === "purpose")
+                  ? ArrowButtonFill
+                  : ArrowButton
+              }
+              alt="프로젝트 목적 목록 열기"
+            />
 
             <div
               className={`${
                 filterCliked === "프로젝트 목적" ? "block" : "hidden"
-              } absolute top-10  flex gap-5 p-4 bg-gray-700 rounded-md`}
+              } absolute top-10  flex gap-5 p-4 bg-gray-700 rounded-md z-10`}
             >
               <div className="flex flex-col items-center w-[180px]">
                 {PROJECT_PURPOSE.map((item, id) => (
@@ -133,17 +153,26 @@ const SearchFilter = () => {
           <div onClick={() => onClickNavHandler("프로젝트 기간")} className="flex gap-3 relative">
             <p
               className={`font-DungGeunMo text-body-22 ${
-                filterCliked === "프로젝트 기간" ? "text-primary-400" : "text-white"
+                filterCliked === "프로젝트 기간" || selectedFilters.some((item) => item.category === "period")
+                  ? "text-primary-400"
+                  : "text-white"
               }`}
             >
-              프로젝트 기간
+              {isProfileTab ? "참여 가능 기간" : "프로젝트 기간"}
             </p>
-            <img src={filterCliked === "프로젝트 기간" ? ArrowButtonFill : ArrowButton} alt="프로젝트 기간 목록 열기" />
+            <img
+              src={
+                filterCliked === "프로젝트 기간" || selectedFilters.some((item) => item.category === "period")
+                  ? ArrowButtonFill
+                  : ArrowButton
+              }
+              alt="프로젝트 기간 목록 열기"
+            />
 
             <div
               className={`${
                 filterCliked === "프로젝트 기간" ? "block" : "hidden"
-              } absolute top-10  flex gap-5 p-4 bg-gray-700 rounded-md`}
+              } absolute top-10  flex gap-5 p-4 bg-gray-700 rounded-md z-10`}
             >
               <div className="flex flex-col items-center w-[180px]">
                 {PROJECT_PERIOD.map((item, id) => (
@@ -174,7 +203,7 @@ const SearchFilter = () => {
       </div>
 
       {/* 필터링 태그 UI */}
-      <div className="flex gap-3 mt-4">
+      <div className="flex gap-3 mt-4 my-7">
         {selectedFilters.map((item) => (
           <div className="flex">
             <div key={`${item.category}-${item.value}`} className=" bg-white text-black px-3 py-1 rounded-md">

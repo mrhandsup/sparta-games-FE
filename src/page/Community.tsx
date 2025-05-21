@@ -1,14 +1,15 @@
-import CardList from "../components/communityComponents/CardList";
 import CommunityHero from "../components/communityComponents/CommunityHero";
-import CommunityList from "../components/communityComponents/CommunityList";
 import CommunitySamllCard from "../components/communityComponents/CommunitySamllCard";
 import Navigation from "../components/communityComponents/Navigation";
 import SearchFilter from "../components/communityComponents/SearchFilter";
 import pixelMeteor from "../assets/homeImage/pixelMeteor.svg";
 import CommunityCard from "../components/communityComponents/CommunityCard";
 import SpartaPagination from "../spartaDesignSystem/SpartaPagination";
+import { useState } from "react";
 
 const Community = () => {
+  const [selectedTab, setSelectedTab] = useState<"팀원 모집" | "프로필 등록">("팀원 모집");
+
   return (
     <main>
       <div className="bg-gray-800 w-full">
@@ -29,19 +30,21 @@ const Community = () => {
             <CommunitySamllCard />
           </div>
         </div>
-        <Navigation />
-        <SearchFilter />
+        <Navigation selectedTab={selectedTab} onTabChange={setSelectedTab} />
+        <SearchFilter isProfileTab={selectedTab === "프로필 등록"} />
         <div className="grid grid-cols-4 gap-5">
-          <CommunityCard />
-          <CommunityCard />
-          <CommunityCard />
-          <CommunityCard />
-          <CommunityCard />
-          <CommunityCard />
-          <CommunityCard />
-          <CommunityCard />
-          <CommunityCard />
-          <CommunityCard />
+          <CommunityCard isProfileTab={selectedTab === "프로필 등록"} />
+          <CommunityCard isProfileTab={selectedTab === "프로필 등록"} />
+          <CommunityCard isProfileTab={selectedTab === "프로필 등록"} />
+          <CommunityCard isProfileTab={selectedTab === "프로필 등록"} />
+          <CommunityCard isProfileTab={selectedTab === "프로필 등록"} />
+          <CommunityCard isProfileTab={selectedTab === "프로필 등록"} />
+          <CommunityCard isProfileTab={selectedTab === "프로필 등록"} />
+          <CommunityCard isProfileTab={selectedTab === "프로필 등록"} />
+          <CommunityCard isProfileTab={selectedTab === "프로필 등록"} />
+          <CommunityCard isProfileTab={selectedTab === "프로필 등록"} />
+          <CommunityCard isProfileTab={selectedTab === "프로필 등록"} />
+          <CommunityCard isProfileTab={selectedTab === "프로필 등록"} />
         </div>
 
         <div className="mt-10">
