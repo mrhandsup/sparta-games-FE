@@ -7,7 +7,7 @@ import useModalToggles from "../../../hook/useModalToggles";
 import { deleteGameReview, postReviewLike } from "../../../api/review";
 import { TReviewData } from "../../../types";
 import { formatDate } from "../../../util/validation";
-import reviewDetailImage from "../../../assets/gameDetail/ReviewDetail.svg";
+import reviewDetailImage from "../../../assets/common/arrow/triangleArrowRight.svg";
 import reviewEditImage from "../../../assets/gameDetail/ReviewEdit.svg";
 import reviewDeleteImage from "../../../assets/gameDetail/ReviewDelete.svg";
 import defaultProfile from "../../../assets/gameDetail/example_profile.png";

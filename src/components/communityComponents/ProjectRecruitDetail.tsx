@@ -1,11 +1,25 @@
+import { useState } from "react";
+
 import SpartaButton from "../../spartaDesignSystem/SpartaButton";
 import defaultProfile from "../../assets/common/defaultProfile.svg";
 import exampleImage from "../../assets/category/Survival.png";
+import backIcon from "../../assets/common/arrow/triangleArrowLeft.svg";
+import SpartaTabNav from "../../spartaDesignSystem/SpartaTabNav";
+
+type SortTab = "recent" | "oldest";
+
+const SORT_LABELS: Record<SortTab, string> = {
+  recent: "최신순",
+  oldest: "오래된 순",
+};
 
 export default function ProjectRecruitDetail() {
+  const [sortTab, setSortTab] = useState<SortTab>("recent");
+
   return (
     <div className="w-[1180px] mx-auto">
-      <div className="flex justify-between items-center mt-20">
+      <img onClick={() => window.history.back()} className="my-6 cursor-pointer" src={backIcon} alt="뒤로가기" />
+      <div className="flex justify-between items-center">
         <div className="flex items-center gap-4">
           <div className="px-2 py-1 rounded-[4px] font-DungGeunMo text-black bg-white">
             <p>모집중</p>
@@ -105,8 +119,9 @@ export default function ProjectRecruitDetail() {
       </div>
 
       {/* 댓글 부분 */}
-
-      <div className=" mb-10 p-9 bg-gray-800 rounded-xl"></div>
+      <div className=" mb-10 p-9 bg-gray-800 rounded-xl">
+        <SpartaTabNav selectedTab={sortTab} onTabChange={setSortTab} tabLabels={SORT_LABELS} />
+      </div>
     </div>
   );
 }
