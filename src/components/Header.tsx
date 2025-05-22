@@ -100,8 +100,9 @@ const Header = () => {
     {
       text: "커뮤니티",
       onClick: () => {
-        setNoActionModalData(noActionData.community);
-        onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+        navigate("/team-building");
+        // setNoActionModalData(noActionData.community);
+        // onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
       },
     },
   ];
@@ -137,7 +138,7 @@ const Header = () => {
   ];
 
   return (
-    <header className="max-w-[1440px] flex justify-between items-center py-5 px-[30px] w-full h-20">
+    <header className="max-w-[1440px] flex justify-between items-center py-5 w-full h-20">
       {/* 제목 */}
       <section className="flex items-center gap-4">
         <img src={logo} alt="스파르타 게임 아이콘" className="w-12 h-12 rounded-full" />

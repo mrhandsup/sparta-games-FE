@@ -13,7 +13,7 @@ type Props = {
 
 const GameMediaFields = ({ watch, register, formState, onChangeFileHandler, previousGameData }: Props) => {
   return (
-    <div className="flex flex-col gap-[26px] w-[380px]">
+    <div className="flex flex-col gap-[26px] w-[30%]">
       <div className="flex flex-col gap-2">
         <div className="flex items-end gap-2 text-heading-20 text-white">
           플레이 영상<span className="text-body-14 text-alert-default">*선택</span>

@@ -73,7 +73,7 @@ const GameDetail = () => {
           <img src={loading} className="w-[300px] h-[300px]" alt="로딩 중" />
         </div>
       ) : (
-        <main className="mx-[130px]">
+        <main>
           <div className="flex justify-between mt-10 items-center font-DungGeunMo text-[24px] text-gray-300">
             <Link to={`/category?category=${gameCategory}`} className="flex gap-3">
               <CaretLeft />
@@ -87,7 +87,7 @@ const GameDetail = () => {
                     <SpartaButton
                       content={"수정하기"}
                       colorType={"alert"}
-                      width={"w-[134px]"}
+                      width={"w-[170px]"}
                       size={"medium"}
                       onClick={() => onClickModalToggleHandlers[GAME_EDIT_CHECK_ID]()}
                     />
@@ -95,7 +95,7 @@ const GameDetail = () => {
                   <SpartaButton
                     content={"삭제하기"}
                     colorType={"error"}
-                    width={"w-[134px]"}
+                    width={"w-[170px]"}
                     size={"medium"}
                     onClick={() => onClickModalToggleHandlers[GAME_DELETE_CHECK_ID]()}
                   />

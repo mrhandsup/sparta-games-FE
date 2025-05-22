@@ -252,7 +252,7 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmitHandler)} className="mx-[130px]">
+      <form onSubmit={handleSubmit(onSubmitHandler)}>
         <div className="flex gap-10 my-10 text-gray-300 text-body-18">
           <GameUploadFields
             watch={watch}

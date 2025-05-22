@@ -19,6 +19,7 @@ import FullWidthLayout from "../components/layout/FullWidthLayout";
 import PrivacyPolicy from "../components/PrivacyPolicy";
 import TermsOfService from "../components/TermsOfService";
 import Footer from "../components/Footer";
+import ProjectRecruitDetail from "../components/communityComponents/ProjectRecruitDetail";
 
 const Router = () => {
   return (
@@ -26,16 +27,17 @@ const Router = () => {
       <Routes>
         <Route element={<FullWidthLayout />}>
           <Route path="/" element={<Home />} />
+          <Route path="/team-building" element={<Community />} />
         </Route>
         <Route element={<Layout />}>
           <Route path="/game-detail" element={<GameDetail />} />
           <Route path="/category" element={<Category />} />
-          <Route path="/community" element={<Community />} />
           <Route path="/redirect/:service" element={<Redirect />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/reset" element={<ResetPassword />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/termsofservice" element={<TermsOfService />} />
+          <Route path="/team-building/project-recruit/:id" element={<ProjectRecruitDetail />} />
           <Route element={<NonAuthLayout />}></Route>
 
           <Route element={<AuthLayout />}>

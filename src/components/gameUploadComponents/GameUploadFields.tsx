@@ -16,7 +16,7 @@ type Props = {
 
 const GameUploadFields = ({ watch, register, control, isUploading, onChangeFileHandler, previousGameData }: Props) => {
   return (
-    <div className="flex flex-col gap-5 w-[760px]">
+    <div className="flex flex-col gap-5 w-[70%]">
       <div className="flex flex-col gap-2">
         <div className="flex items-end gap-2 text-heading-20 text-white">
           썸네일 업로드<span className="text-body-14 text-primary-500">*필수</span>
