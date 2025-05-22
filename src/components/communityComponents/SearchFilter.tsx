@@ -1,6 +1,6 @@
 import { useState } from "react";
-import ArrowButton from "../../assets/communityImage/ArrowBottom.svg";
-import ArrowButtonFill from "../../assets/communityImage/ArrowBottomFill.svg";
+import ArrowButton from "../../assets/common/arrow/triangleArrowBottom.svg";
+import ArrowButtonFill from "../../assets/common/arrow/triangleArrowBottomActive.svg";
 import FilterReset from "../../assets/communityImage/Reset.svg";
 import SpartaButton from "../../spartaDesignSystem/SpartaButton";
 import { USER_TECH } from "../../constant/constant";
@@ -19,8 +19,12 @@ interface SelectedFilter {
 
 const SearchFilter = ({ isProfileTab }: Props) => {
   const [filterCliked, setFilterCliked] = useState("");
-
+  const [isChecked, setIsChecked] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState<SelectedFilter[]>([]);
+
+  const handleToggle = () => {
+    setIsChecked((prev) => !prev);
+  };
 
   const onClickNavHandler = (filterName: string) => {
     setFilterCliked((prev) => (prev === filterName ? "" : filterName));
@@ -61,12 +65,6 @@ const SearchFilter = ({ isProfileTab }: Props) => {
     { id: 4, value: "1년 이상" },
   ];
 
-  const [isChecked, setIsChecked] = useState(false);
-
-  const handleToggle = () => {
-    setIsChecked((prev) => !prev);
-  };
-
   return (
     <>
       {isProfileTab ? (
@@ -79,10 +77,10 @@ const SearchFilter = ({ isProfileTab }: Props) => {
       )}
       <div className="flex justify-between">
         <div className="flex items-center gap-8 cursor-pointer">
-          <div onClick={() => onClickNavHandler("포지션")} className="flex gap-3 relative">
+          <div onClick={() => onClickNavHandler("position")} className="flex gap-3 relative">
             <p
               className={`font-DungGeunMo text-body-22 ${
-                filterCliked === "포지션" || selectedFilters.some((item) => item.category === "position")
+                filterCliked === "position" || selectedFilters.some((item) => item.category === "position")
                   ? "text-primary-400"
                   : "text-white"
               }`}
@@ -91,7 +89,7 @@ const SearchFilter = ({ isProfileTab }: Props) => {
             </p>
             <img
               src={
-                filterCliked === "포지션" || selectedFilters.some((item) => item.category === "position")
+                filterCliked === "position" || selectedFilters.some((item) => item.category === "position")
                   ? ArrowButtonFill
                   : ArrowButton
               }
@@ -100,7 +98,7 @@ const SearchFilter = ({ isProfileTab }: Props) => {
 
             <div
               className={`${
-                filterCliked === "포지션" ? "block" : "hidden"
+                filterCliked === "position" ? "block" : "hidden"
               } absolute top-10  flex gap-5 p-4 bg-gray-700 rounded-md z-10`}
             >
               <div className="flex flex-col items-center w-[180px]">
@@ -116,10 +114,10 @@ const SearchFilter = ({ isProfileTab }: Props) => {
               </div>
             </div>
           </div>
-          <div onClick={() => onClickNavHandler("프로젝트 목적")} className="flex gap-3 relative">
+          <div onClick={() => onClickNavHandler("purpose")} className="flex gap-3 relative">
             <p
               className={`font-DungGeunMo text-body-22 ${
-                filterCliked === "프로젝트 목적" || selectedFilters.some((item) => item.category === "purpose")
+                filterCliked === "purpose" || selectedFilters.some((item) => item.category === "purpose")
                   ? "text-primary-400"
                   : "text-white"
               }`}
@@ -128,7 +126,7 @@ const SearchFilter = ({ isProfileTab }: Props) => {
             </p>
             <img
               src={
-                filterCliked === "프로젝트 목적" || selectedFilters.some((item) => item.category === "purpose")
+                filterCliked === "purpose" || selectedFilters.some((item) => item.category === "purpose")
                   ? ArrowButtonFill
                   : ArrowButton
               }
@@ -137,7 +135,7 @@ const SearchFilter = ({ isProfileTab }: Props) => {
 
             <div
               className={`${
-                filterCliked === "프로젝트 목적" ? "block" : "hidden"
+                filterCliked === "purpose" ? "block" : "hidden"
               } absolute top-10  flex gap-5 p-4 bg-gray-700 rounded-md z-10`}
             >
               <div className="flex flex-col items-center w-[180px]">
@@ -154,10 +152,10 @@ const SearchFilter = ({ isProfileTab }: Props) => {
             </div>
           </div>
 
-          <div onClick={() => onClickNavHandler("프로젝트 기간")} className="flex gap-3 relative">
+          <div onClick={() => onClickNavHandler("period")} className="flex gap-3 relative">
             <p
               className={`font-DungGeunMo text-body-22 ${
-                filterCliked === "프로젝트 기간" || selectedFilters.some((item) => item.category === "period")
+                filterCliked === "period" || selectedFilters.some((item) => item.category === "period")
                   ? "text-primary-400"
                   : "text-white"
               }`}
@@ -166,7 +164,7 @@ const SearchFilter = ({ isProfileTab }: Props) => {
             </p>
             <img
               src={
-                filterCliked === "프로젝트 기간" || selectedFilters.some((item) => item.category === "period")
+                filterCliked === "period" || selectedFilters.some((item) => item.category === "period")
                   ? ArrowButtonFill
                   : ArrowButton
               }
@@ -175,7 +173,7 @@ const SearchFilter = ({ isProfileTab }: Props) => {
 
             <div
               className={`${
-                filterCliked === "프로젝트 기간" ? "block" : "hidden"
+                filterCliked === "period" ? "block" : "hidden"
               } absolute top-10  flex gap-5 p-4 bg-gray-700 rounded-md z-10`}
             >
               <div className="flex flex-col items-center w-[180px]">
