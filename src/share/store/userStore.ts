@@ -5,7 +5,7 @@ import { TUserData, TUserDataResponse } from "../../types";
 
 type Store = {
   userData?: TUserDataResponse;
-  setUser: (accessToken?: string) => Promise<TUserData | undefined>;
+  setUser: (accessToken?: string) => Promise<TUserDataResponse | undefined>;
   setUserData: (key: keyof TUserData, value: any) => void;
   logout: () => void;
 };
@@ -21,7 +21,7 @@ export const userStore = create<Store>()((set) => ({
       const userData = await getUserData(decoded_jwt.user_id);
       set({ userData: userData });
 
-      if (userData?.data.is_staff) {
+      if (userData?.data?.is_staff) {
         sessionStorage.setItem("isAdmin", "true");
       }
       return userData;

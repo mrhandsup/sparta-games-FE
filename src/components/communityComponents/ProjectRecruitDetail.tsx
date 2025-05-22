@@ -121,6 +121,10 @@ export default function ProjectRecruitDetail() {
       {/* 댓글 부분 */}
       <div className=" mb-10 p-9 bg-gray-800 rounded-xl">
         <SpartaTabNav selectedTab={sortTab} onTabChange={setSortTab} tabLabels={SORT_LABELS} />
+        <div className="flex gap-5 mt-10 font-DungGeunMo text-white">
+          <p className="text-3xl">댓글</p>
+          <span className="text-xl">8</span>
+        </div>
       </div>
     </div>
   );
