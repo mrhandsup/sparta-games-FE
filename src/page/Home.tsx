@@ -36,6 +36,9 @@ const Home = () => {
 
   const gameListData = data?.data;
 
+  console.log("게임리스트 데이터입니다!!!!!!!!!", data);
+  console.log("유저 데이터입니다!!!!!!!!!", userData);
+  console.log("아무거나 찍어보겠습니다!!!!!!!!!!!!!!!!");
   return (
     gameListData && (
       <main>
