@@ -1,7 +1,6 @@
 import SocialLoginBtn from "../modal/login/SocialLoginBtn";
 import googleIcon from "../../assets/common/googleIcon.svg";
 import discordIcon from "../../assets/common/discordIcon.svg";
-import naverIcon from "../../assets/common/naverIcon.svg";
 import kakaoIcon from "../../assets/common/kakaoIcon.svg";
 import SpartaButton from "../../spartaDesignSystem/SpartaButton";
 import SpartaTextField from "../../spartaDesignSystem/SpartaTextField";
@@ -66,7 +65,7 @@ function Login({ onClose }: Props) {
       sessionStorage.setItem("refreshToken", refresh);
       const userDataReturn = await setUser(access);
 
-      if (userDataReturn?.is_staff) {
+      if (userDataReturn?.data.is_staff) {
         sessionStorage.setItem("isAdmin", "true");
         window.location.href = "/admin/dashboard";
       } else {
