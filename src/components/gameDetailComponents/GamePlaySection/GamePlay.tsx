@@ -110,7 +110,7 @@ const GamePlay = ({ gameId, title, makerName, makerId, gamePath }: Props) => {
     enabled: !!userData,
   });
 
-  const bookMarkedGames = data?.data;
+  const bookMarkedGames = data?.data ?? [];
   const currentBookMarkedGame = bookMarkedGames?.some((game: TGameData) => game.id === gameId);
 
   const bookMarkMutation = useMutation({

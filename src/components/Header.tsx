@@ -32,7 +32,6 @@ const Header = () => {
   // 유저 정보
   const { userData, logout } = userStore();
 
-  console.log("asdsasad", userData && userData.data.is_staff);
   const navigate = useNavigate();
 
   // 단순 모달 데이터 config
@@ -101,9 +100,9 @@ const Header = () => {
     {
       text: "커뮤니티",
       onClick: () => {
-        navigate("/team-building");
-        // setNoActionModalData(noActionData.community);
-        // onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+        // navigate("/team-building");
+        setNoActionModalData(noActionData.community);
+        onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
       },
     },
   ];

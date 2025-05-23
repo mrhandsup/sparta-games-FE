@@ -1,4 +1,28 @@
 //공용으로 쓰는 타입의 경우 이 파일의 작성 그렇지 않을경우 분리해서 작성
+
+export type TRandGame = {
+  category_name: string;
+  game_list: TGameData[];
+};
+
+export type TMainHttpResponse = {
+  status: "success" | "fail" | "error";
+  message: string | null;
+  data: {
+    trending_games: TGameData[];
+    recent: TGameData[];
+    rand1: TRandGame;
+    rand2: TRandGame;
+    rand3: TRandGame;
+  };
+  pagination: {
+    count: number;
+    next: string | null;
+    previous: string | null;
+  };
+  error_code: string | null;
+};
+
 export type TGameUploadInput = {
   title: string;
   category: string;

@@ -25,7 +25,7 @@ const Hero = () => {
     enabled: !!userData?.data.user_id,
   });
 
-  const gameData = data?.data;
+  const gameData = data?.data ?? [];
 
   // 모달
   const LOGIN_MODAL_ID = "loginModal";

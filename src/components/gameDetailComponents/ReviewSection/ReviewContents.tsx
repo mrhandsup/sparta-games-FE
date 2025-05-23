@@ -7,7 +7,7 @@ import { TReviewData, TReviewResponse } from "../../../types";
 import { getGameMyReview, getGameReviews } from "../../../api/review";
 import SpartaPagination from "../../../spartaDesignSystem/SpartaPagination";
 import usePageHandler from "../../../hook/usePageHandler ";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useModalToggle from "../../../hook/useModalToggle";
 
 const ReviewContents = ({ gamePk }: { gamePk: number }) => {
@@ -27,7 +27,7 @@ const ReviewContents = ({ gamePk }: { gamePk: number }) => {
     queryKey: ["reviews", currentPage, selectedOrder],
     queryFn: () =>
       userData
-        ? getGameReviews(gamePk, currentPage, COUNT_PER_PAGE, selectedOrder, userData)
+        ? getGameReviews(gamePk, currentPage, COUNT_PER_PAGE, selectedOrder, userData.data)
         : getGameReviews(gamePk, currentPage, COUNT_PER_PAGE, selectedOrder),
   });
 
@@ -37,8 +37,11 @@ const ReviewContents = ({ gamePk }: { gamePk: number }) => {
     enabled: !!userData,
   });
 
-  const allReviews = allReviewData?.data.all_reviews;
-  const myReview = myReviewData?.data.my_review;
+  const allReviews = useMemo(() => {
+    return allReviewData?.data.all_reviews ?? [];
+  }, [allReviewData]);
+
+  const myReview = myReviewData?.data.my_review ?? null;
 
   useEffect(() => {
     if (allReviews) {

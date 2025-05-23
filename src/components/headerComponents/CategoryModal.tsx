@@ -14,7 +14,7 @@ const CategoryModal = ({ modalRef, onClickModalToggleHandler }: props) => {
     queryFn: getGameCategory,
   });
 
-  const categoryList = data?.data;
+  const categoryList = data?.data ?? [];
 
   return (
     <div

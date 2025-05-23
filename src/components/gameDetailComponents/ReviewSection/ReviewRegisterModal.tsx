@@ -19,7 +19,7 @@ type Props = {
   gamePk: number;
   modalToggle: boolean;
   onClickModalToggleHandler: () => void;
-  myReview: TReviewData | undefined;
+  myReview: TReviewData | null;
   isRegister: boolean;
 };
 
