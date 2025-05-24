@@ -54,7 +54,7 @@ const AccountModal = ({ onSuccess }: Props) => {
     },
     pattern: {
       value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,32}$/,
-      message: "8~32자의 영문 대소문자, 숫자를 포함해야 합니다",
+      message: "8~32자의 영문 소문자, 숫자, 특수문자를 포함해야 합니다",
     },
   };
 
