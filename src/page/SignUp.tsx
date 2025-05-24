@@ -56,6 +56,8 @@ const SignUp = () => {
 
   const onSubmit = (data: Partial<TUserInformationInputForm>) => {
     // "FPS,Action"
+
+    console.log("data", data);
     const game_category = data.game_category?.toString();
     signUpMutation.mutate({ ...data, game_category });
   };
