@@ -188,7 +188,7 @@ function Login({ onClose }: Props) {
                   }}
                   subLabel={{
                     default: "비밀번호를 입력해주세요",
-                    error: "8~32자의 영문 대소문자, 숫자를 포함해야 합니다",
+                    error: "8~32자의 영문, 숫자, 특수문자를 포함해야 합니다",
                     pass: "사용 가능한 비밀번호입니다",
                   }}
                   passwordType

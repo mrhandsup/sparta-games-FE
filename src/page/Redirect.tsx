@@ -17,7 +17,7 @@ const Redirect = () => {
   const code = searchParams.get("code");
 
   const navigate = useNavigate();
-  const { setUser } = userStore();
+  const { userData, setUser } = userStore();
 
   const [noActionModalData, setNoActionModalData] = useState<Partial<TSpartaReactionModalProps>>({});
 
@@ -35,6 +35,8 @@ const Redirect = () => {
         return;
     }
   };
+
+  console.log("userData", userData);
 
   const { data, error, isError } = useQuery<any>({
     queryKey: ["loginData", code],
@@ -105,12 +107,10 @@ const Redirect = () => {
     if (data?.data?.message?.includes("회원가입")) {
       //회원가입 페이지로 이동
       navigate(`/signup?email=${email}&login_type=${logint_tpye}`);
-      // window.alert("회원가입 페이지로 이동");
     } else {
-      sessionStorage.setItem("accessToken", data.data?.data.access);
-      sessionStorage.setItem("refreshToken", data.data?.data.refresh);
+      sessionStorage.setItem("accessToken", data?.data.data.access);
+      sessionStorage.setItem("refreshToken", data?.data.data.refresh);
       //메인 페이지로 이동
-
       setUser(data.data?.data.access);
       navigate("/");
     }

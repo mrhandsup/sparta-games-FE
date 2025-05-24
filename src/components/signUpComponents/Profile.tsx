@@ -38,7 +38,7 @@ const Profile = () => {
         type="medium"
         register={register("nickname", nicknameValidation)}
         subLabel={{
-          default: "4~10자 이하 영/한/숫자 사용 가능합니다.",
+          default: "12자 이하 영/한/숫자 사용 가능합니다.",
           error: errors.nickname?.message as string,
           pass: nickname && !errors.nickname ? "사용 가능한 닉네임입니다" : "",
         }}
