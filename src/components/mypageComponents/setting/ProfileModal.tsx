@@ -71,12 +71,12 @@ const ProfileModal = ({ onSuccess, onError }: Props) => {
       message: "닉네임은 4자 이상이어야 합니다",
     },
     maxLength: {
-      value: 10,
-      message: "닉네임은 10자 이하여야 합니다",
+      value: 12,
+      message: "닉네임은 12자 이하여야 합니다",
     },
     pattern: {
       value: /^[a-zA-Z0-9가-힣]*$/,
-      message: "닉네임은 4~10자 이하 영/한/숫자만 사용 가능합니다.",
+      message: "닉네임은 12자 이하 영/한/숫자만 사용 가능합니다.",
     },
   };
 
@@ -94,7 +94,7 @@ const ProfileModal = ({ onSuccess, onError }: Props) => {
         type="medium"
         register={register("nickname", nicknameValidation)}
         subLabel={{
-          default: "4~10자 이하의 영숫자 조합 문자열을 입력해주세요.",
+          default: "12자 이하의 문자를 입력해주세요.",
           error: errors.nickname?.message as string,
           pass: nickname && !errors.nickname ? "사용 가능한 닉네임입니다" : "",
         }}

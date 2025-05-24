@@ -12,8 +12,6 @@ const Profile = () => {
   } = useFormContext();
 
   const nickname = watch("nickname");
-  const game_category = watch("game_category");
-  const user_tech = watch("user_tech");
 
   // 닉네임 유효성 검사 규칙(4자 이상 10자 이하의 영숫자 조합 문자열 영어 필수 숫자 필수)
   const nicknameValidation = {
@@ -23,12 +21,12 @@ const Profile = () => {
       message: "닉네임은 4자 이상이어야 합니다",
     },
     maxLength: {
-      value: 10,
-      message: "닉네임은 10자 이하여야 합니다",
+      value: 12,
+      message: "닉네임은 12자 이하여야 합니다",
     },
     pattern: {
       value: /^[a-zA-Z0-9가-힣]*$/,
-      message: "닉네임은 4~10자 이하 영/한/숫자만 사용 가능합니다.",
+      message: "닉네임은 12자 이하 영/한/숫자만 사용 가능합니다.",
     },
   };
 
@@ -40,7 +38,7 @@ const Profile = () => {
         type="medium"
         register={register("nickname", nicknameValidation)}
         subLabel={{
-          default: "4~10자 이하 영/한/숫자 사용 가능합니다.",
+          default: "12자 이하 영/한/숫자 사용 가능합니다.",
           error: errors.nickname?.message as string,
           pass: nickname && !errors.nickname ? "사용 가능한 닉네임입니다" : "",
         }}

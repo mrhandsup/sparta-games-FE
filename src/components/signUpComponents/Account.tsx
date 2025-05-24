@@ -47,30 +47,6 @@ const Account = (props: Props) => {
       },
       type: "primary",
     },
-
-    duplicateEmail: {
-      title: "인증번호 전송 실패",
-      content: "이미 가입한 이메일입니다.",
-      btn1: {
-        text: "확인했습니다",
-        onClick: () => {
-          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-        },
-      },
-      type: "error",
-    },
-
-    successVerify: {
-      title: "이메일 인증 완료",
-      content: "이메일 인증이 완료되었습니다.",
-      btn1: {
-        text: "확인했습니다",
-        onClick: () => {
-          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-        },
-      },
-      type: "primary",
-    },
   };
 
   // 단순 모달 데이터
@@ -99,8 +75,8 @@ const Account = (props: Props) => {
       message: "비밀번호는 최대 32자까지 가능합니다",
     },
     pattern: {
-      value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,32}$/,
-      message: "8~32자의 영문 대소문자, 숫자를 포함해야 합니다",
+      value: /^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+{};:,<.>]).{8,32}$/,
+      message: "8~32자의 영문 소문자, 숫자, 특수문자를 포함해야 합니다",
     },
   };
 
@@ -129,7 +105,17 @@ const Account = (props: Props) => {
       onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
     } else if (res?.status === 400) {
       setIsEmailVerifying(false);
-      setNoActionModalData(noActionData.duplicateEmail);
+      setNoActionModalData({
+        title: "인증번호 전송 실패",
+        content: res?.data.message,
+        btn1: {
+          text: "확인했습니다",
+          onClick: () => {
+            onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+          },
+        },
+        type: "error",
+      });
       onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
     }
   };
@@ -140,7 +126,17 @@ const Account = (props: Props) => {
     if (res?.status === 200) {
       setIsVerifySuccess(true);
 
-      setNoActionModalData(noActionData.successVerify);
+      setNoActionModalData({
+        title: "이메일 인증 완료",
+        content: res.data.message,
+        btn1: {
+          text: "확인했습니다",
+          onClick: () => {
+            onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+          },
+        },
+        type: "primary",
+      });
       onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
     } else if (res?.status === 400) {
       setNoActionModalData({

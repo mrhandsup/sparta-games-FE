@@ -38,7 +38,6 @@ export const googleLogin = async (code: string) => {
         AUTHORIZATION: code,
       },
     });
-
     return response;
   } catch (error) {
     throw error;

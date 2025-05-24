@@ -17,53 +17,9 @@ const Redirect = () => {
   const code = searchParams.get("code");
 
   const navigate = useNavigate();
-  const { setUser } = userStore();
+  const { userData, setUser } = userStore();
 
-  const noActionData: { [key: string]: Partial<TSpartaReactionModalProps> } = {
-    isClientError: {
-      title: "로그인 실패",
-      content: "기존에 이메일 로그인 방식으로 가입했습니다.",
-      btn1: {
-        text: "확인했습니다.",
-        onClick: () => {
-          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-          navigate("/");
-        },
-      },
-      type: "error",
-    },
-
-    deactivatedUserError: {
-      title: "로그인 실패",
-      content: "해당 유저는 탈퇴 처리된 유저입니다.",
-      btn1: {
-        text: "확인했습니다.",
-        onClick: () => {
-          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-          navigate("/");
-        },
-      },
-      type: "error",
-    },
-
-    isServerError: {
-      title: "로그인 실패",
-      content: "서버 오류가 발생했습니다. 나중에 다시 시도해주세요.",
-      btn1: {
-        text: "확인했습니다.",
-        onClick: () => {
-          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-          navigate("/");
-        },
-      },
-
-      type: "error",
-    },
-  };
-
-  const [noActionModalData, setNoActionModalData] = useState<Partial<TSpartaReactionModalProps>>(
-    noActionData.isClientError,
-  );
+  const [noActionModalData, setNoActionModalData] = useState<Partial<TSpartaReactionModalProps>>({});
 
   const switchFetchApiByService = (service: string) => {
     switch (service) {
@@ -80,6 +36,8 @@ const Redirect = () => {
     }
   };
 
+  console.log("userData", userData);
+
   const { data, error, isError } = useQuery<any>({
     queryKey: ["loginData", code],
     queryFn: () => {
@@ -89,20 +47,56 @@ const Redirect = () => {
     retry: false,
   });
 
+  const email = data?.data?.data.email;
+  const logint_tpye = data?.data?.data.login_type;
+
   useEffect(() => {
     if (isError && axios.isAxiosError(error)) {
       if (error.response?.status === 400) {
-        setNoActionModalData(noActionData.isClientError);
+        setNoActionModalData({
+          title: "로그인 실패",
+          content: error?.response.data?.message,
+          btn1: {
+            text: "확인했습니다.",
+            onClick: () => {
+              onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+              navigate("/");
+            },
+          },
+          type: "error",
+        });
         onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
 
         return;
       } else if (error.response?.status === 401) {
-        setNoActionModalData(noActionData.deactivatedUserError);
+        setNoActionModalData({
+          title: "로그인 실패",
+          content: error?.response.data?.message,
+          btn1: {
+            text: "확인했습니다.",
+            onClick: () => {
+              onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+              navigate("/");
+            },
+          },
+          type: "error",
+        });
         onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
 
         return;
       } else if (error.response?.status === 500) {
-        setNoActionModalData(noActionData.isServerError);
+        setNoActionModalData({
+          title: "로그인 실패",
+          content: error?.response.data?.message,
+          btn1: {
+            text: "확인했습니다.",
+            onClick: () => {
+              onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+              navigate("/");
+            },
+          },
+          type: "error",
+        });
         onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
 
         return;
@@ -112,13 +106,12 @@ const Redirect = () => {
     if (!data) return;
     if (data?.data?.message?.includes("회원가입")) {
       //회원가입 페이지로 이동
-      navigate(`/signup?email=${data.data?.email}&login_type=${data.data?.login_type}`);
-      // window.alert("회원가입 페이지로 이동");
+      navigate(`/signup?email=${email}&login_type=${logint_tpye}`);
     } else {
-      sessionStorage.setItem("accessToken", data.data?.access);
-      sessionStorage.setItem("refreshToken", data.data?.refresh);
+      sessionStorage.setItem("accessToken", data?.data.data.access);
+      sessionStorage.setItem("refreshToken", data?.data.data.refresh);
       //메인 페이지로 이동
-      setUser(data?.data.access);
+      setUser(data.data?.data.access);
       navigate("/");
     }
   }, [data, isError]);
