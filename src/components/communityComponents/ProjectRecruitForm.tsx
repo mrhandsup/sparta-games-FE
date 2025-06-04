@@ -14,12 +14,16 @@ import SpartaButton from "../../spartaDesignSystem/SpartaButton";
 import SpartaCheckBox from "../../spartaDesignSystem/SpartaCheckBox";
 import SpartaRadioGroup from "../../spartaDesignSystem/SpartaRadioGroup";
 
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+
 export default function ProjectRecruitForm() {
   const {
     register,
     watch,
     handleSubmit,
     control,
+    setValue,
     formState: { errors },
   } = useForm();
 
@@ -78,6 +82,19 @@ export default function ProjectRecruitForm() {
   const [period, setPeriod] = useState("3months");
   const [method, setMethod] = useState("online");
   const [purpose, setPurpose] = useState("portfolio");
+
+  const editorContent = watch("content");
+
+  const handleEditorChange = (editorState: string) => {
+    // react-quill 내용 작성 중, 내용 모두 지울 경우 생기는 <p></br></p> 태그 제거
+    const plainText = editorState.replace(/<(.|\n)*?>/g, "").trim();
+
+    // 내용이 없을 경우 빈 문자열로 설정해서 isValid가 false가 되도록 함s
+    const cleanedContent = plainText === "" ? "" : editorState;
+
+    setValue("content", cleanedContent, { shouldValidate: true });
+  };
+
   return (
     <div className="mx-auto mt-16">
       <div className="flex items-center justify-center gap-4">
@@ -175,6 +192,44 @@ export default function ProjectRecruitForm() {
             </div>
           </div>
         </div>
+
+        <div className="w-full mt-10 mb-6 p-9 bg-gray-800 rounded-xl">
+          <p className="font-DungGeunMo text-xl text-primary-400">상세내용 작성</p>
+
+          <div className="mt-5">
+            <SpartaTextField
+              label="글 제목"
+              type="small"
+              inputProps={{
+                placeholder: "핵심 내용을 간략하게 적어보세요.",
+              }}
+            />
+          </div>
+
+          <div className="flex flex-col gap-[10px] my-5 formContent">
+            <div className="flex items-end gap-2 font-semibold text-gray-100">프로젝트 소개</div>
+
+            <ReactQuill
+              theme="snow"
+              value={editorContent}
+              onChange={handleEditorChange}
+              modules={{
+                toolbar: [
+                  [{ header: [1, 2] }],
+                  [{ size: ["small", false, "large", "huge"] }],
+                  ["bold", "italic", "underline"],
+                  [{ list: "ordered" }, { list: "bullet" }],
+                  [{ color: [] }, { background: [] }],
+                  ["image"],
+                ],
+              }}
+              placeholder="프로젝트에 대해 자세히 적어주세요.&#10;예시를 참고해 작성한다면 좋은 팀원을 구할 수 있을거에요.&#10;&#10;예시)&#10;• 프로젝트의 게임 분야 (FPS, RPG 등)&#10;• 프로젝트를 시작하게 된 배경&#10;• 프로젝트의 목표&#10;• 프로젝트에 할애할 수 있는 시간&#10;• 그동안 나의 경험과 강점 (다른 프로젝트를 해봤어요, 열정이 넘쳐요 등)&#10;• 우리 팀의 분위기와 강점 (이미 합류한 팀원이 있다면 적어주세요.)&#10;• 프로젝트 관련 주의사항"
+              className="text-white"
+            />
+          </div>
+        </div>
+
+        <SpartaButton content="글 등록하기" type="filled" />
       </div>
     </div>
   );
