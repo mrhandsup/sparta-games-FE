@@ -3,15 +3,15 @@ import checkBox from "../../src/assets/checkBox.svg";
 
 type Props = {
   checked: boolean;
-  onToggle: () => void;
+  onClick: () => void;
 };
 
-export default function SpartaCheckBox({ checked, onToggle }: Props) {
+export default function SpartaCheckBox({ checked, onClick }: Props) {
   return (
     <img
       src={checked ? checkBox : nonCheckBox}
       alt={checked ? "선택됨" : "선택 안 됨"}
-      onClick={onToggle}
+      onClick={onClick}
       className="cursor-pointer w-6 h-6"
     />
   );

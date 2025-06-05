@@ -20,16 +20,22 @@ import type { TProjectRecruitForm } from "../../types";
 
 import recruitImage from "../../assets/gameDetail/ReviewEdit.svg";
 import calendar from "../../assets/common/calender.svg";
+import defaultProfile from "../../assets/common/defaultProfile.svg";
 
 export default function ProjectRecruitForm() {
-  const { register, watch, handleSubmit, control, setValue, formState } = useForm<TProjectRecruitForm>({
+  const { register, watch, handleSubmit, control, setValue, formState, trigger } = useForm<TProjectRecruitForm>({
     mode: "onChange",
   });
+  const imageWatch = watch("image");
 
   const [isChecked, setIsChecked] = useState(false);
+  const [selectBasicImage, setSelectBasicImage] = useState(false);
 
-  const handleToggle = () => {
+  const onClickSelectBasicImage = () => {
     setIsChecked((prev) => !prev);
+    setSelectBasicImage((prev) => !prev);
+    setValue("image", "defaultImage");
+    trigger();
   };
 
   const CustomInput = forwardRef<HTMLInputElement, { value?: Date | string | null; onClick?: () => void }>(
@@ -78,6 +84,7 @@ export default function ProjectRecruitForm() {
     console.log("폼 유효성 상태:", formState.isValid);
   }, [formState.isValid]);
 
+  console.log(Array.isArray(imageWatch), imageWatch?.length, typeof watch("image"));
   return (
     <div className="mx-auto mt-16">
       <div className="flex items-center justify-center gap-4">
@@ -130,14 +137,17 @@ export default function ProjectRecruitForm() {
                   type="small"
                   inputProps={{
                     placeholder:
-                      watch("image")?.length > 0 ? watch("image")[0]?.name : "1000px*800px 5mb 이하 사진파일",
+                      typeof watch("image") !== "string" && imageWatch?.length > 0
+                        ? (imageWatch[0] as File).name
+                        : "1000px*800px 5mb 이하 사진파일",
                     readOnly: true,
                   }}
                   btnContent={
                     <SpartaButton
                       content="업로드"
+                      disabled={selectBasicImage}
                       type="filled"
-                      colorType={watch("image")?.length > 0 ? "primary" : "grey"}
+                      colorType={typeof watch("image") !== "string" && imageWatch?.length > 0 ? "primary" : "grey"}
                       size="medium"
                       btnType="button"
                       onClick={onClickUploadImage}
@@ -149,12 +159,12 @@ export default function ProjectRecruitForm() {
                   id="project-image"
                   type="file"
                   accept="image/*"
-                  {...register("image", { required: "프로젝트 이미지를 업로드해주세요." })}
+                  {...register("image", { required: !selectBasicImage ? "프로젝트 이미지를 업로드해주세요." : false })}
                   className="hidden"
                 />
 
                 <div className="flex items-center gap-2 mt-3">
-                  <SpartaCheckBox checked={isChecked} onToggle={handleToggle} />
+                  <SpartaCheckBox checked={isChecked} onClick={onClickSelectBasicImage} />
                   <p className=" text-md text-gray-50">스파르타 기본 이미지 사용</p>
                 </div>
               </div>

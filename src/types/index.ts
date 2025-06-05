@@ -10,7 +10,7 @@ export type TProjectRecruitForm = {
 } & {
   date: Date;
   contact: string;
-  image: File[];
+  image: string | File[];
   title: string;
   content: string;
 };
