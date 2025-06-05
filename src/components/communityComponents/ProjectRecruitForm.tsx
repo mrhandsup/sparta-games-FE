@@ -1,32 +1,28 @@
-import { forwardRef, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import DatePicker from "react-datepicker";
 
-import { USER_TECH } from "../../constant/constant";
 import SpartaChipSelect from "../../spartaDesignSystem/SpartaChipSelect";
 import SpartaTextField from "../../spartaDesignSystem/SpartaTextField";
-
-import recruitImage from "../../assets/gameDetail/ReviewEdit.svg";
-import calendar from "../../assets/common/calender.svg";
-
-import "react-datepicker/dist/react-datepicker.css";
 import SpartaButton from "../../spartaDesignSystem/SpartaButton";
 import SpartaCheckBox from "../../spartaDesignSystem/SpartaCheckBox";
 import SpartaRadioGroup from "../../spartaDesignSystem/SpartaRadioGroup";
 
+import { getFormattedDate } from "../../util/getFormattedDate";
+import { USER_TECH } from "../../constant/constant";
+
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { getFormattedDate } from "../../util/getFormattedDate";
+
+import type { TProjectRecruitForm } from "../../types";
+
+import recruitImage from "../../assets/gameDetail/ReviewEdit.svg";
+import calendar from "../../assets/common/calender.svg";
 
 export default function ProjectRecruitForm() {
-  const {
-    register,
-    watch,
-    handleSubmit,
-    control,
-    setValue,
-    formState: { errors },
-  } = useForm({
+  const { register, watch, handleSubmit, control, setValue, formState } = useForm<TProjectRecruitForm>({
     mode: "onChange",
   });
 
@@ -36,7 +32,7 @@ export default function ProjectRecruitForm() {
     setIsChecked((prev) => !prev);
   };
 
-  const CustomInput = forwardRef<HTMLInputElement, { value?: string | null; onClick?: () => void }>(
+  const CustomInput = forwardRef<HTMLInputElement, { value?: Date | string | null; onClick?: () => void }>(
     ({ value, onClick }, ref) => (
       <SpartaTextField
         label="마감기한"
@@ -58,12 +54,18 @@ export default function ProjectRecruitForm() {
 
   const editorContent = watch("content");
 
-  const handleEditorChange = (editorState: string) => {
+  useEffect(() => {
+    register("content", {
+      required: "프로젝트 내용을 입력해주세요.",
+    });
+  }, [register]);
+
+  const handleEditorChange = (content: string) => {
     // react-quill 내용 작성 중, 내용 모두 지울 경우 생기는 <p></br></p> 태그 제거
-    const plainText = editorState.replace(/<(.|\n)*?>/g, "").trim();
+    const plainText = content.replace(/<(.|\n)*?>/g, "").trim();
 
     // 내용이 없을 경우 빈 문자열로 설정해서 isValid가 false가 되도록 함
-    const cleanedContent = plainText === "" ? "" : editorState;
+    const cleanedContent = plainText === "" ? "" : content;
 
     setValue("content", cleanedContent, { shouldValidate: true });
   };
@@ -71,6 +73,10 @@ export default function ProjectRecruitForm() {
   const onSubmit = (data: any) => {
     console.log("제출된 데이터:", data);
   };
+
+  useEffect(() => {
+    console.log("폼 유효성 상태:", formState.isValid);
+  }, [formState.isValid]);
 
   return (
     <div className="mx-auto mt-16">
@@ -86,11 +92,18 @@ export default function ProjectRecruitForm() {
 
             <div className="flex gap-10 mt-5">
               <div className="flex flex-col gap-4 basis-1/2">
-                <SpartaChipSelect label="구하는 포지션" options={USER_TECH} control={control} name="position" />
+                <SpartaChipSelect
+                  label="구하는 포지션"
+                  options={USER_TECH}
+                  control={control}
+                  rules={{ required: "포지션을 선택해주세요" }}
+                  name="position"
+                />
 
                 <Controller
                   name="date"
                   control={control}
+                  rules={{ required: "날짜를 선택해주세요" }}
                   render={({ field: { onChange, value, ref } }) => (
                     <DatePicker
                       selected={value}
@@ -106,7 +119,7 @@ export default function ProjectRecruitForm() {
                 <SpartaTextField
                   label="연락방법"
                   type="small"
-                  register={register("contact")}
+                  register={register("contact", { required: "연락방법을 입력해주세요." })}
                   inputProps={{
                     placeholder: "디스코드, 카카오톡 등 링크를 입력해주세요.",
                   }}
@@ -136,7 +149,7 @@ export default function ProjectRecruitForm() {
                   id="project-image"
                   type="file"
                   accept="image/*"
-                  {...register("image", { required: "필수" })}
+                  {...register("image", { required: "프로젝트 이미지를 업로드해주세요." })}
                   className="hidden"
                 />
 
@@ -164,7 +177,7 @@ export default function ProjectRecruitForm() {
               <SpartaTextField
                 label="글 제목"
                 type="small"
-                register={register("title")}
+                register={register("title", { required: "프로젝트 제목을 입력해주세요." })}
                 inputProps={{
                   placeholder: "핵심 내용을 간략하게 적어보세요.",
                 }}
@@ -194,7 +207,7 @@ export default function ProjectRecruitForm() {
             </div>
           </div>
 
-          <SpartaButton content="글 등록하기" type="filled" />
+          <SpartaButton disabled={!formState.isValid} content="글 등록하기" type="filled" />
         </div>
       </form>
     </div>

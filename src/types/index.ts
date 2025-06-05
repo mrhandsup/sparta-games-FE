@@ -1,5 +1,20 @@
 //공용으로 쓰는 타입의 경우 이 파일의 작성 그렇지 않을경우 분리해서 작성
 
+import radioGroupsData from "../util/constance/radioGroupsData";
+
+export type RadioGroupKey = keyof typeof radioGroupsData;
+export type RadioGroupData = typeof radioGroupsData;
+
+export type TProjectRecruitForm = {
+  [K in keyof RadioGroupData]: string;
+} & {
+  date: Date;
+  contact: string;
+  image: File[];
+  title: string;
+  content: string;
+};
+
 export type TRandGame = {
   category_name: string;
   game_list: TGameData[];

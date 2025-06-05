@@ -16,6 +16,10 @@ type Props = {
    */
   control: any;
   /**
+   * rules from react-hook-form
+   */
+  rules?: any;
+  /**
    * field name for form
    */
   name: string;
@@ -45,7 +49,18 @@ type Props = {
   error?: boolean;
 };
 
-const SpartaChipSelect = ({ label, options, control, name, pass, subLabel, multiple, maxCount, error }: Props) => {
+const SpartaChipSelect = ({
+  label,
+  options,
+  control,
+  rules,
+  name,
+  pass,
+  subLabel,
+  multiple,
+  maxCount,
+  error,
+}: Props) => {
   const ITEM_HEIGHT = 40;
 
   const MenuProps = {
@@ -140,6 +155,7 @@ const SpartaChipSelect = ({ label, options, control, name, pass, subLabel, multi
       <Controller
         name={name}
         control={control}
+        rules={rules}
         defaultValue={multiple ? [] : ""}
         render={({ field: { onChange, value } }) => (
           <FormControl className={`w-full ${pass ? "border-primary-500" : "border-gray-100"}`}>

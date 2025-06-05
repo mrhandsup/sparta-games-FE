@@ -1,21 +1,42 @@
 type SpartaRadioGroupItemProps = {
   /**
-   * 텍스트필드의 라벨
+   * Input 제목
    */
-  label: string;
+  label?: string;
   /**
-   * 텍스트필드의 크기
+   * Input 내부 글씨 크기
    */
   size?: "small" | "medium" | "large";
+  /**
+   * Input 스타일 타입 (기본 / 채워짐)
+   */
   type?: "standard" | "filled";
+  /**
+   * Input 색상 타입
+   */
   colorType?: "primary" | "alert" | "error" | "grey";
+  /**
+   * Input 크기 조절용 스타일 속성 (너비, 높이 등)
+   */
   width?: string;
+  /**
+   * Input name 속성
+   */
   name: string;
+  /**
+   * 화면에 보여질 라디오 옵션 배열
+   */
   options: {
     label: string;
     value: string;
   }[];
+  /**
+   * 현재 선택된 값
+   */
   value: string;
+  /**
+   * 값이 변경될 때 호출되는 콜백
+   */
   onChange: (value: string) => void;
 };
 

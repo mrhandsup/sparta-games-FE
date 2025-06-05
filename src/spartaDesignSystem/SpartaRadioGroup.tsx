@@ -2,22 +2,22 @@ import { Controller, Control, UseFormWatch, UseFormSetValue } from "react-hook-f
 import { SpartaRadioGroupItem } from "./SpartaRadioGroupItem";
 import radioGroupsData from "../util/constance/radioGroupsData";
 import { useEffect } from "react";
-
-type RadioGroupKey = keyof typeof radioGroupsData;
+import type { TProjectRecruitForm, RadioGroupKey } from "../types";
 
 type SpartaRadioGroupProps = {
   groupsToShow: RadioGroupKey[];
-  control: Control<any>;
-  watch: UseFormWatch<any>;
-  setValue: UseFormSetValue<any>;
+  control: Control<TProjectRecruitForm>;
+  watch: UseFormWatch<TProjectRecruitForm>;
+  setValue: UseFormSetValue<TProjectRecruitForm>;
 };
 
 export default function SpartaRadioGroup({ groupsToShow, control, watch, setValue }: SpartaRadioGroupProps) {
   useEffect(() => {
     Object.entries(radioGroupsData).forEach(([name, data]) => {
-      const currentValue = watch(name);
+      const key = name as RadioGroupKey;
+      const currentValue = watch(key);
       if (currentValue === undefined && data.options.length > 0) {
-        setValue(name, data.defaultValue || data.options[0].value);
+        setValue(key, data.options[0].value);
       }
     });
   }, [setValue, watch]);
