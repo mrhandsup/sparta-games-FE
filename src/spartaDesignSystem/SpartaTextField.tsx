@@ -48,6 +48,14 @@ type Props = {
    * 버튼 컨텐츠
    */
   btnContent?: React.ReactNode;
+  /**
+   * 인풋 우측 아이콘
+   */
+  rightIcon?: string;
+  /**
+   * 아이콘 클릭시 이벤트
+   */
+  onRightIconClick?: () => void;
 };
 
 const SpartaTextField = ({
@@ -61,6 +69,8 @@ const SpartaTextField = ({
   onClear,
   passwordType,
   btnContent,
+  rightIcon,
+  onRightIconClick,
 }: Props) => {
   const subLabelBranch = () => {
     if (error && !pass) {
@@ -140,8 +150,18 @@ const SpartaTextField = ({
               )}{" "}
             </button>
           )}
+
+          {rightIcon && (
+            <button
+              type="button"
+              onClick={onRightIconClick}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-200 transition-colors"
+            >
+              <img src={rightIcon} alt="날짜 선택" className="w-5 h-5" />
+            </button>
+          )}
         </div>
-        {btnContent && <div className="w-[20%]">{btnContent}</div>}
+        {btnContent && <div className="w-[20%] ">{btnContent}</div>}
       </div>
     </div>
   );

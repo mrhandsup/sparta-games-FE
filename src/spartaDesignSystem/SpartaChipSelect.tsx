@@ -16,6 +16,10 @@ type Props = {
    */
   control: any;
   /**
+   * rules from react-hook-form
+   */
+  rules?: any;
+  /**
    * field name for form
    */
   name: string;
@@ -45,7 +49,18 @@ type Props = {
   error?: boolean;
 };
 
-const SpartaChipSelect = ({ label, options, control, name, pass, subLabel, multiple, maxCount, error }: Props) => {
+const SpartaChipSelect = ({
+  label,
+  options,
+  control,
+  rules,
+  name,
+  pass,
+  subLabel,
+  multiple,
+  maxCount,
+  error,
+}: Props) => {
   const ITEM_HEIGHT = 40;
 
   const MenuProps = {
@@ -140,10 +155,12 @@ const SpartaChipSelect = ({ label, options, control, name, pass, subLabel, multi
       <Controller
         name={name}
         control={control}
+        rules={rules}
         defaultValue={multiple ? [] : ""}
         render={({ field: { onChange, value } }) => (
           <FormControl className={`w-full ${pass ? "border-primary-500" : "border-gray-100"}`}>
             <Select
+              displayEmpty
               multiple={multiple}
               value={value || (multiple ? [] : "")}
               onChange={(event: SelectChangeEvent<string[] | string>) => {
@@ -167,6 +184,9 @@ const SpartaChipSelect = ({ label, options, control, name, pass, subLabel, multi
               }}
               input={<OutlinedInput placeholder="선택해주세요" />}
               renderValue={(selected) => {
+                if (!selected || selected === "") {
+                  return <span style={{ color: "#6B7280" }}>구하는 포지션을 선택해주세요.</span>;
+                }
                 if (multiple) {
                   const selectedArray = Array.isArray(selected) ? selected : [selected];
                   return (

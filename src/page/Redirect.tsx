@@ -17,7 +17,7 @@ const Redirect = () => {
   const code = searchParams.get("code");
 
   const navigate = useNavigate();
-  const { userData, setUser } = userStore();
+  const { setUser } = userStore();
 
   const [noActionModalData, setNoActionModalData] = useState<Partial<TSpartaReactionModalProps>>({});
 
@@ -35,8 +35,6 @@ const Redirect = () => {
         return;
     }
   };
-
-  console.log("userData", userData);
 
   const { data, error, isError } = useQuery<any>({
     queryKey: ["loginData", code],

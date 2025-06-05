@@ -65,7 +65,6 @@ const SignUp = () => {
       sessionStorage.setItem("accessToken", data?.data.data.access);
       sessionStorage.setItem("refreshToken", data?.data.data.refresh);
       setUser(data?.data.data.access);
-      // onClickModalToggleHandlers["completeSignUp"]();
 
       setNoActionModalData(noActionData.completeSignUp);
       onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import ArrowButton from "../../assets/common/arrow/triangleArrowBottom.svg";
 import ArrowButtonFill from "../../assets/common/arrow/triangleArrowBottomActive.svg";
 import FilterReset from "../../assets/communityImage/Reset.svg";
@@ -21,6 +22,8 @@ const SearchFilter = ({ isProfileTab }: Props) => {
   const [filterCliked, setFilterCliked] = useState("");
   const [isChecked, setIsChecked] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState<SelectedFilter[]>([]);
+
+  const navigate = useNavigate();
 
   const handleToggle = () => {
     setIsChecked((prev) => !prev);
@@ -200,7 +203,13 @@ const SearchFilter = ({ isProfileTab }: Props) => {
             <img src={FilterReset} alt="필터 초기화" />
             <p className="font-DungGeunMo text-body-22 text-white">초기화</p>
           </div>
-          <SpartaButton content="글 등록하기" type="filled" size="medium" width="w-[200px]" />
+          <SpartaButton
+            content="글 등록하기"
+            type="filled"
+            size="medium"
+            width="w-[200px]"
+            onClick={() => navigate("/team-building/create")}
+          />
         </div>
       </div>
 

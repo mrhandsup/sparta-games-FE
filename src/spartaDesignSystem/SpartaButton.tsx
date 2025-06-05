@@ -5,6 +5,7 @@ type Props = {
   type?: "standard" | "filled";
   size?: "small" | "medium" | "large";
   colorType?: "primary" | "alert" | "error" | "grey";
+  btnType?: "submit" | "reset" | "button" | undefined;
   onClick?: () => void;
 };
 
@@ -15,6 +16,7 @@ const SpartaButton = ({
   type = "standard",
   size = "large",
   colorType = "primary",
+  btnType = "submit",
   onClick,
 }: Props) => {
   const getButtonStyles = (): string => {
@@ -58,7 +60,7 @@ const SpartaButton = ({
   };
 
   return (
-    <button type="submit" disabled={disabled} onClick={onClick} className={getButtonStyles()}>
+    <button type={btnType} disabled={disabled} onClick={onClick} className={getButtonStyles()}>
       <span>{content}</span>
     </button>
   );

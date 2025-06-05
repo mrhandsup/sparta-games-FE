@@ -134,5 +134,25 @@ const GAME_CHIP = {
   HARD: "🟥 HARD",
 };
 
-export { CATEGORY, USER_TECH, GAME_CATEGORY, USER_TYPE, GAME_CHIP };
+const EDITOR_FORMATS = [
+  "header",
+  "bold",
+  "italic",
+  "underline",
+  "strike",
+  "blockquote",
+  "list",
+  "bullet",
+  "indent",
+  "link",
+  "image",
+  "align",
+  "color",
+  "background",
+  "float",
+  "height",
+  "width",
+];
+
+export { CATEGORY, USER_TECH, GAME_CATEGORY, USER_TYPE, GAME_CHIP, EDITOR_FORMATS };
 export type { selectConfig };
