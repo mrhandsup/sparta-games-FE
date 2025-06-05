@@ -1,16 +1,20 @@
+import { forwardRef, useState } from "react";
 import { Control, Controller, UseFormRegister, UseFormSetValue, UseFormTrigger, UseFormWatch } from "react-hook-form";
+
 import SpartaChipSelect from "../../spartaDesignSystem/SpartaChipSelect";
-import { USER_TECH } from "../../constant/constant";
-import DatePicker from "react-datepicker";
 import SpartaTextField from "../../spartaDesignSystem/SpartaTextField";
 import SpartaButton from "../../spartaDesignSystem/SpartaButton";
 import SpartaCheckBox from "../../spartaDesignSystem/SpartaCheckBox";
 import SpartaRadioGroup from "../../spartaDesignSystem/SpartaRadioGroup";
-import { forwardRef, useState } from "react";
+
 import { getFormattedDate } from "../../util/getFormattedDate";
-import calendar from "../../assets/common/calender.svg";
+import { USER_TECH } from "../../constant/constant";
 import { TProjectRecruitForm } from "../../types";
+
+import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+
+import calendar from "../../assets/common/calender.svg";
 
 type Props = {
   control: Control<TProjectRecruitForm>;
