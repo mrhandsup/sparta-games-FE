@@ -11,10 +11,10 @@ const GameDescriptionField = ({ watch, setValue }: Props) => {
   const editorContent = watch("content");
 
   const handleEditorChange = (editorState: string) => {
-    // react-quill 내용 작성 중, 내용 모두 지울 경우 생기는 <p></br></p> 태그 제거
+    // react-quill 내용 작성 중, 내용 모두 지울 경우 생기는 <p></br></p> 태그 제거하여 빈 문자열로 설정
     const plainText = editorState.replace(/<(.|\n)*?>/g, "").trim();
 
-    // 내용이 없을 경우 빈 문자열로 설정해서 isValid가 false가 되도록 함s
+    // 내용이 없을 경우 빈 문자열로 설정해서 isValid가 false가 되도록 함
     const cleanedContent = plainText === "" ? "" : editorState;
 
     setValue("content", cleanedContent, { shouldValidate: true });
