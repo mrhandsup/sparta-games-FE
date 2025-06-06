@@ -12,7 +12,9 @@ import { ROLE_CHOICES } from "../../constant/constant";
 import { TProjectRecruitForm } from "../../types";
 
 import DatePicker from "react-datepicker";
+import { ko } from "date-fns/locale";
 import "react-datepicker/dist/react-datepicker.css";
+import "./reactDatePickerCustomStyle.css";
 
 import calendar from "../../assets/common/calender.svg";
 
@@ -78,6 +80,7 @@ export default function ProjectBasicInfoForm({ control, watch, setValue, registe
                 selected={value}
                 onChange={(date) => onChange(date)}
                 customInput={<CustomInput ref={ref} value={value} />}
+                locale={ko}
                 showPopperArrow={false}
                 popperPlacement="bottom-end"
                 portalId="datepicker-portal"
