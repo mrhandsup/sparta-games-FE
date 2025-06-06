@@ -20,7 +20,7 @@ export type TProfileRegisterForm = {
 } & {
   profileImage: string | File[];
   tech: string;
-  link: string;
+  link: string[];
 };
 
 export type TRandGame = {
