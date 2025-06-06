@@ -98,7 +98,7 @@ const SpartaTextField = ({
     } else if (!error && pass) {
       return "border-primary-500";
     } else {
-      return "border-gray-500";
+      return "border-gray-400";
     }
   };
 

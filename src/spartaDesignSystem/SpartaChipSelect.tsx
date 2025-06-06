@@ -78,10 +78,10 @@ const SpartaChipSelect = ({
   };
   const selectStyles = {
     "& .MuiOutlinedInput-notchedOutline": {
-      borderColor: pass ? "#2DFF29" : error ? "#FF5C5C" : "#6B7280", // primary-500 또는 gray-500
+      borderColor: pass ? "#2DFF29" : error ? "#FF5C5C" : "#737373", // primary-500 또는 gray-400
     },
     "&:hover .MuiOutlinedInput-notchedOutline": {
-      borderColor: pass ? "#2DFF29" : error ? "#FF5C5C" : "#6B7280",
+      borderColor: pass ? "#2DFF29" : error ? "#FF5C5C" : "#737373",
     },
     "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
       borderColor: error ? "#FF5C5C" : "#2DFF29", // primary-500

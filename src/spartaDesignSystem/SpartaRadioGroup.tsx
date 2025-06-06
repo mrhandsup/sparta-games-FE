@@ -1,23 +1,28 @@
-import { Controller, Control, UseFormWatch, UseFormSetValue } from "react-hook-form";
+import { Controller, Control, UseFormWatch, UseFormSetValue, FieldValues } from "react-hook-form";
 import { SpartaRadioGroupItem } from "./SpartaRadioGroupItem";
 import radioGroupsData from "../util/constance/radioGroupsData";
 import { useEffect } from "react";
-import type { TProjectRecruitForm, RadioGroupKey } from "../types";
+import type { Path, PathValue } from "react-hook-form";
 
-type SpartaRadioGroupProps = {
-  groupsToShow: RadioGroupKey[];
-  control: Control<TProjectRecruitForm>;
-  watch: UseFormWatch<TProjectRecruitForm>;
-  setValue: UseFormSetValue<TProjectRecruitForm>;
+type SpartaRadioGroupProps<T extends FieldValues> = {
+  groupsToShow: Path<T>[];
+  control: Control<T>;
+  watch: UseFormWatch<T>;
+  setValue: UseFormSetValue<T>;
 };
 
-export default function SpartaRadioGroup({ groupsToShow, control, watch, setValue }: SpartaRadioGroupProps) {
+export default function SpartaRadioGroup<T extends FieldValues>({
+  groupsToShow,
+  control,
+  watch,
+  setValue,
+}: SpartaRadioGroupProps<T>) {
   useEffect(() => {
     Object.entries(radioGroupsData).forEach(([name, data]) => {
-      const key = name as RadioGroupKey;
+      const key = name as Path<T>;
       const currentValue = watch(key);
       if (currentValue === undefined && data.options.length > 0) {
-        setValue(key, data.options[0].value);
+        setValue(key, data.options[0].value as PathValue<T, typeof key>);
       }
     });
   }, [setValue, watch]);
@@ -25,7 +30,7 @@ export default function SpartaRadioGroup({ groupsToShow, control, watch, setValu
   return (
     <>
       {groupsToShow.map((groupName) => {
-        const group = radioGroupsData[groupName];
+        const group = radioGroupsData[groupName as keyof typeof radioGroupsData];
         if (!group) return null;
 
         return (

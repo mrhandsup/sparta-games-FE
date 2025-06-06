@@ -15,6 +15,14 @@ export type TProjectRecruitForm = {
   content: string;
 };
 
+export type TProfileRegisterForm = {
+  [K in keyof RadioGroupData]: string;
+} & {
+  profileImage: string | File[];
+  tech: string;
+  link: string;
+};
+
 export type TRandGame = {
   category_name: string;
   game_list: TGameData[];

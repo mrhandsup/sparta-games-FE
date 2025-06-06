@@ -21,6 +21,7 @@ import TermsOfService from "../components/TermsOfService";
 import Footer from "../components/Footer";
 import ProjectRecruitDetail from "../components/communityComponents/ProjectRecruitDetail";
 import ProjectRecruitForm from "../components/communityComponents/ProjectRecruitForm";
+import ProfileRegisterForm from "../components/communityComponents/ProfileRegisterForm";
 
 const Router = () => {
   return (
@@ -30,6 +31,7 @@ const Router = () => {
           <Route path="/" element={<Home />} />
           <Route path="/team-building" element={<Community />} />
           <Route path="/team-building/create" element={<ProjectRecruitForm />} />
+          <Route path="/team-building/profile-create" element={<ProfileRegisterForm />} />
         </Route>
         <Route element={<Layout />}>
           <Route path="/game-detail" element={<GameDetail />} />

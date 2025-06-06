@@ -25,6 +25,15 @@ const radioGroupsData = {
       { label: "둘 다 가능", value: "both" },
     ],
   },
+
+  jobStatus: {
+    label: "현재 상태",
+    options: [
+      { label: "취준생", value: "jobSeeker" },
+      { label: "대학생", value: "student" },
+      { label: "현직자", value: "employed" },
+    ],
+  },
 };
 
 export default radioGroupsData;

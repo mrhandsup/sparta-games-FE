@@ -70,7 +70,7 @@ const SearchFilter = ({ isProfileTab }: Props) => {
 
   return (
     <>
-      {isProfileTab ? (
+      {!isProfileTab ? (
         <div className="flex items-center gap-2 mt-12 mb-4">
           <SpartaCheckBox checked={isChecked} onClick={handleToggle} />
           <p className="font-DungGeunMo text-body-22 text-white">모집중</p>
@@ -208,7 +208,7 @@ const SearchFilter = ({ isProfileTab }: Props) => {
             type="filled"
             size="medium"
             width="w-[200px]"
-            onClick={() => navigate("/team-building/create")}
+            onClick={() => navigate(`${isProfileTab ? "/team-building/profile-create" : "/team-building/create"}`)}
           />
         </div>
       </div>
