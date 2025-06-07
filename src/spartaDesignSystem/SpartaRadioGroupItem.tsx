@@ -85,7 +85,7 @@ export function SpartaRadioGroupItem({
   return (
     <div className="flex flex-col gap-2">
       <div className="flex gap-2 items-baseline">
-        <label className="text-gray-100 text-title-16">{label}</label>
+        <label className="text-gray-50 text-title-16">{label}</label>
       </div>
 
       <div className="flex gap-3">

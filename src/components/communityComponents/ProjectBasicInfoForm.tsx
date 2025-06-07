@@ -8,11 +8,13 @@ import SpartaCheckBox from "../../spartaDesignSystem/SpartaCheckBox";
 import SpartaRadioGroup from "../../spartaDesignSystem/SpartaRadioGroup";
 
 import { getFormattedDate } from "../../util/getFormattedDate";
-import { USER_TECH } from "../../constant/constant";
+import { ROLE_CHOICES } from "../../constant/constant";
 import { TProjectRecruitForm } from "../../types";
 
 import DatePicker from "react-datepicker";
+import { ko } from "date-fns/locale";
 import "react-datepicker/dist/react-datepicker.css";
+import "./reactDatePickerCustomStyle.css";
 
 import calendar from "../../assets/common/calender.svg";
 
@@ -63,7 +65,7 @@ export default function ProjectBasicInfoForm({ control, watch, setValue, registe
         <div className="flex flex-col gap-4 basis-1/2">
           <SpartaChipSelect
             label="구하는 포지션"
-            options={USER_TECH}
+            options={ROLE_CHOICES}
             control={control}
             rules={{ required: "포지션을 선택해주세요" }}
             name="position"
@@ -78,6 +80,7 @@ export default function ProjectBasicInfoForm({ control, watch, setValue, registe
                 selected={value}
                 onChange={(date) => onChange(date)}
                 customInput={<CustomInput ref={ref} value={value} />}
+                locale={ko}
                 showPopperArrow={false}
                 popperPlacement="bottom-end"
                 portalId="datepicker-portal"

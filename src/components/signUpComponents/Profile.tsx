@@ -44,22 +44,24 @@ const Profile = () => {
         }}
         inputProps={{
           placeholder: "닉네임을 입력해주세요",
+          className: "text-white placeholder-white",
         }}
         pass={nickname && !errors.nickname}
         error={!!errors.nickname}
       />
       <SpartaChipSelect
-        label="관심 게임 분야"
+        label="추천받을 게임분야"
         options={GAME_CATEGORY}
         control={control}
         name="game_category"
         subLabel={{
-          default: "관심있는 게임 분야를 선택해주세요",
+          default: "추천받을 게임분야를 3개까지 선택할 수 있어요",
           error: "태그를 하나 이상 선택해주세요",
           pass: "태그가 선택되었습니다",
         }}
         multiple
         maxCount={3}
+        placeHolderText="게임분야를 선택해주세요"
       />
       <SpartaChipSelect
         label="관심 기술 분야"
@@ -71,6 +73,7 @@ const Profile = () => {
           error: "태그를 하나 이상 선택해주세요",
           pass: "태그가 선택되었습니다",
         }}
+        placeHolderText="게임분야를 선택해주세요"
       />
     </>
   );

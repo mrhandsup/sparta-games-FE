@@ -4,7 +4,7 @@ import ArrowButton from "../../assets/common/arrow/triangleArrowBottom.svg";
 import ArrowButtonFill from "../../assets/common/arrow/triangleArrowBottomActive.svg";
 import FilterReset from "../../assets/communityImage/Reset.svg";
 import SpartaButton from "../../spartaDesignSystem/SpartaButton";
-import { USER_TECH } from "../../constant/constant";
+import { ROLE_CHOICES } from "../../constant/constant";
 import deleteIcon from "../../assets/common/DeleteIcon.svg";
 import SpartaCheckBox from "../../spartaDesignSystem/SpartaCheckBox";
 
@@ -70,9 +70,9 @@ const SearchFilter = ({ isProfileTab }: Props) => {
 
   return (
     <>
-      {isProfileTab ? (
+      {!isProfileTab ? (
         <div className="flex items-center gap-2 mt-12 mb-4">
-          <SpartaCheckBox checked={isChecked} onToggle={handleToggle} />
+          <SpartaCheckBox checked={isChecked} onClick={handleToggle} />
           <p className="font-DungGeunMo text-body-22 text-white">모집중</p>
         </div>
       ) : (
@@ -105,7 +105,7 @@ const SearchFilter = ({ isProfileTab }: Props) => {
               } absolute top-10  flex gap-5 p-4 bg-gray-700 rounded-md z-10`}
             >
               <div className="flex flex-col items-center w-[180px]">
-                {USER_TECH.map((item, id) => (
+                {ROLE_CHOICES.map((item, id) => (
                   <p
                     onClick={() => onClickDisplaySelectedTags("position", item.value as string)}
                     key={id}
@@ -208,7 +208,7 @@ const SearchFilter = ({ isProfileTab }: Props) => {
             type="filled"
             size="medium"
             width="w-[200px]"
-            onClick={() => navigate("/team-building/create")}
+            onClick={() => navigate(`${isProfileTab ? "/team-building/profile-create" : "/team-building/create"}`)}
           />
         </div>
       </div>

@@ -64,6 +64,49 @@ const GAME_CATEGORY: selectConfig[] = [
   },
 ];
 
+const ROLE_CHOICES: selectConfig[] = [
+  {
+    label: "Director",
+    value: "DIR",
+  },
+  {
+    label: "Project Manager",
+    value: "PM",
+  },
+  {
+    label: "2D Artist",
+    value: "A2D",
+  },
+  {
+    label: "3D Artist",
+    value: "A3D",
+  },
+  {
+    label: "UXUI Designer",
+    value: "UXUI",
+  },
+  {
+    label: "Client Dev",
+    value: "CLNT",
+  },
+  {
+    label: "Engine Dev",
+    value: "ENG",
+  },
+  {
+    label: "Server / Network Dev",
+    value: "SRVR",
+  },
+  {
+    label: "Sound / Audio",
+    value: "AUD",
+  },
+  {
+    label: "QA / Test",
+    value: "QA",
+  },
+];
+
 const USER_TECH: selectConfig[] = [
   {
     label: "Director(PM/PO)",
@@ -154,5 +197,5 @@ const EDITOR_FORMATS = [
   "width",
 ];
 
-export { CATEGORY, USER_TECH, GAME_CATEGORY, USER_TYPE, GAME_CHIP, EDITOR_FORMATS };
+export { CATEGORY, USER_TECH, ROLE_CHOICES, GAME_CATEGORY, USER_TYPE, GAME_CHIP, EDITOR_FORMATS };
 export type { selectConfig };

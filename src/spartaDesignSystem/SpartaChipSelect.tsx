@@ -47,6 +47,10 @@ type Props = {
    * 에러 상태
    */
   error?: boolean;
+  /**
+   * 인풋 placeholder 텍스트
+   */
+  placeHolderText?: string;
 };
 
 const SpartaChipSelect = ({
@@ -60,6 +64,7 @@ const SpartaChipSelect = ({
   multiple,
   maxCount,
   error,
+  placeHolderText,
 }: Props) => {
   const ITEM_HEIGHT = 40;
 
@@ -73,10 +78,10 @@ const SpartaChipSelect = ({
   };
   const selectStyles = {
     "& .MuiOutlinedInput-notchedOutline": {
-      borderColor: pass ? "#2DFF29" : error ? "#FF5C5C" : "#6B7280", // primary-500 또는 gray-500
+      borderColor: pass ? "#2DFF29" : error ? "#FF5C5C" : "#737373", // primary-500 또는 gray-400
     },
     "&:hover .MuiOutlinedInput-notchedOutline": {
-      borderColor: pass ? "#2DFF29" : error ? "#FF5C5C" : "#6B7280",
+      borderColor: pass ? "#2DFF29" : error ? "#FF5C5C" : "#737373",
     },
     "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
       borderColor: error ? "#FF5C5C" : "#2DFF29", // primary-500
@@ -129,7 +134,7 @@ const SpartaChipSelect = ({
     } else if (error) {
       return "text-error-default";
     } else {
-      return "text-gray-500";
+      return "text-alert-default";
     }
   };
 
@@ -146,10 +151,10 @@ const SpartaChipSelect = ({
   return (
     <div className="flex flex-col gap-2">
       <div className="flex gap-2 items-baseline">
-        <label className="text-gray-100 text-title-16">{label}</label>
-        <p className={`text-caption-16 ${colorBranch()}`}>
+        <label className="text-white text-title-16">{label}</label>
+        <p className={`text-caption-14 ${colorBranch()}`}>
           {subLabelBranch()}
-          {multiple && maxCount && `(최대 ${maxCount}개 선택 가능)`}
+          {/* {multiple && maxCount && `(최대 ${maxCount}개 선택 가능)`} */}
         </p>
       </div>
       <Controller
@@ -185,10 +190,13 @@ const SpartaChipSelect = ({
               input={<OutlinedInput placeholder="선택해주세요" />}
               renderValue={(selected) => {
                 if (!selected || selected === "") {
-                  return <span style={{ color: "#6B7280" }}>구하는 포지션을 선택해주세요.</span>;
+                  return <span style={{ color: "#6B7280" }}>{placeHolderText}</span>;
                 }
                 if (multiple) {
                   const selectedArray = Array.isArray(selected) ? selected : [selected];
+                  if (selectedArray.length === 0) {
+                    return <span className="font-DungGeunMo text-gray-200">{placeHolderText}</span>;
+                  }
                   return (
                     <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
                       {selectedArray.map((value) => {
