@@ -10,7 +10,7 @@ import { GAME_CATEGORY, ROLE_CHOICES } from "../../constant/constant";
 import { TProfileRegisterForm } from "../../types";
 
 import profileImageUpload from "../../assets/communityImage/profileImageUpload.png";
-import addBtn from "../../assets/common/Plus_gray.svg";
+import addBtn from "../../assets/common/plus_gray.svg";
 import removeBtn from "../../assets/common/deleteIcon_trash.png";
 import defaultImage from "../../assets/common/defaultProfile.svg";
 
