@@ -134,7 +134,7 @@ const SpartaChipSelect = ({
     } else if (error) {
       return "text-error-default";
     } else {
-      return "text-gray-500";
+      return "text-alert-default";
     }
   };
 
@@ -194,7 +194,6 @@ const SpartaChipSelect = ({
                 }
                 if (multiple) {
                   const selectedArray = Array.isArray(selected) ? selected : [selected];
-                  console.log("selectedArray", selectedArray);
                   if (selectedArray.length === 0) {
                     return <span className="font-DungGeunMo text-gray-200">{placeHolderText}</span>;
                   }

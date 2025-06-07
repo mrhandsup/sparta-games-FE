@@ -19,8 +19,13 @@ export type TProfileRegisterForm = {
   [K in keyof RadioGroupData]: string;
 } & {
   profileImage: string | File[];
+  position: string;
   tech: string;
+  favoriteGenre: string;
   link: string[];
+  contact: string;
+  title: string;
+  content: string;
 };
 
 export type TRandGame = {

@@ -88,7 +88,7 @@ const SpartaTextField = ({
     } else if (!error && pass) {
       return "text-primary-500";
     } else {
-      return "text-gray-500";
+      return "text-alert-default";
     }
   };
 
@@ -108,7 +108,7 @@ const SpartaTextField = ({
     <div className="flex flex-col gap-2">
       <div className="flex gap-2 items-baseline">
         <label
-          className={`text-white ${
+          className={`text-gray-50 ${
             type === "large" ? "text-heading-24" : type === "medium" ? "text-title-18" : "text-title-16"
           }`}
         >
@@ -125,7 +125,7 @@ const SpartaTextField = ({
             {...inputProps}
             className={`w-full py-3 px-4 border border-solid ${inputBorderBranch()} rounded-md ${
               type === "small" ? "text-body-16" : "text-body-18"
-            } text-white bg-transparent ${onClear ? "pr-10" : ""} ${inputProps?.className || ""}`}
+            } text-gray-50 bg-transparent ${onClear ? "pr-10" : ""} ${inputProps?.className || ""}`}
             type={!passwordType || showPassword ? "text" : "password"}
           />
           {!inputProps.disabled && onClear && !passwordType && (

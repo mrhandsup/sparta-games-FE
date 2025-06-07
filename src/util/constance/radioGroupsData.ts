@@ -34,6 +34,16 @@ const radioGroupsData = {
       { label: "현직자", value: "employed" },
     ],
   },
+
+  availablePeriod: {
+    label: "참여가능 기간",
+    options: [
+      { label: "3개월 이내", value: "3months" },
+      { label: "6개월 이내", value: "6months" },
+      { label: "1년 이내", value: "1year" },
+      { label: "1년 이상", value: "moreThan1year" },
+    ],
+  },
 };
 
 export default radioGroupsData;
