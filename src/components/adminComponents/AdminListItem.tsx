@@ -97,9 +97,9 @@ const AdminListItem = ({ idx, item, onClickShowMore, isDetail }: Props) => {
         </div>
       </div>
       {isDetail && (
-        <div className="w-full flex bg-gray-500 mt-2 rounded-lg p-2 font-DungGeunMo text-left justify-between">
+        <div className="w-full flex items-center bg-gray-500 mt-2 rounded-lg p-2 font-DungGeunMo text-left justify-between">
           <div className="flex items-center gap-3">
-            <p>latest log :</p>
+            <p className="w-28">latest log</p>
 
             {item.game_register_logs.length === 0 ? (
               <p>no log</p>
@@ -110,7 +110,7 @@ const AdminListItem = ({ idx, item, onClickShowMore, isDetail }: Props) => {
             )}
           </div>
           {item.game_register_logs.length !== 0 && (
-            <p className="cursor-pointer underline" onClick={() => onClickShowMore && onClickShowMore(item.id)}>
+            <p className="w-16 cursor-pointer underline" onClick={() => onClickShowMore && onClickShowMore(item.id)}>
               더보기
             </p>
           )}

@@ -15,8 +15,8 @@ function AdminLogsModal({ game_id }: Props) {
   return (
     <div className="w-[600px] pt-2">
       <div className="w-full border-gray-100 rounded-lg border-[1px] border-solid items-center flex px-4 py-4 overflow-auto flex-col gap-2 max-h-[400px]">
-        {data && data.results && data.results.length > 0 ? (
-          data.results.map((item: any, idx: number) => (
+        {data && data.data && data.data.length > 0 ? (
+          data.data.map((item: any, idx: number) => (
             <div key={idx} className="text-white  flex items-center gap-3 w-full">
               <p>{formatToKST(item.created_at)}</p>
               <p>{item.content}</p>

@@ -6,13 +6,13 @@ import { TGameAdminData } from "../../types";
 import { AiFillCaretRight } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 
-type Props = {};
-
-const AdminDashBoard = (props: Props) => {
+const AdminDashBoard = () => {
   const { data } = useQuery<{
-    state_ready: number;
-    state_ok: number;
-    state_deny: number;
+    data: {
+      state_ready: number;
+      state_ok: number;
+      state_deny: number;
+    };
   }>({
     queryKey: ["registerGameStat"],
     queryFn: getRegisterGameStat,
@@ -37,22 +37,22 @@ const AdminDashBoard = (props: Props) => {
       <div className="flex gap-10 w-full">
         <div className="w-[25%] bg-gray-800 rounded-3xl p-10 text-white text-center h-fit">
           <div className="font-DungGeunMo text-[32px] text-white">검수 대기중</div>
-          <div className="font-DungGeunMo text-[128px] text-white my-7">{data?.state_ready}</div>
+          <div className="font-DungGeunMo text-[128px] text-white my-7">{data?.data.state_ready}</div>
           <div className="text-left text-body-18 mb-1">게임관리</div>
           <div className="flex justify-between text-body-18 mb-1">
             <p>승인된 게임</p>
-            <p>{data?.state_ok}</p>
+            <p>{data?.data.state_ok}</p>
           </div>
           <div className="flex justify-between text-body-18">
             <p>반려된 게임</p>
-            <p>{data?.state_deny}</p>
+            <p>{data?.data.state_deny}</p>
           </div>
         </div>
         <div className="w-[72%] bg-gray-800 rounded-3xl p-10 text-white text-center flex flex-col gap-3">
-          {adminGameList.data?.results?.game_register_list.map((item: TGameAdminData, idx: number) => (
+          {adminGameList.data?.data.map((item: TGameAdminData, idx: number) => (
             <AdminListItem key={idx} idx={idx} item={item} />
           ))}
-          {adminGameList.data?.results?.game_register_list.length === 0 && (
+          {adminGameList.data?.data.length === 0 && (
             <div className="font-DungGeunMo text-[24px] text-white m-auto">검수 대기중인 게임이 없습니다.</div>
           )}
         </div>

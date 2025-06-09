@@ -140,7 +140,7 @@ const GameDetail = () => {
           onClose={onClickModalToggleHandlers[NO_ACTION_MODAL_ID]}
           modalId={NO_ACTION_MODAL_ID}
           title="게임이 반려되었습니다."
-          content={rejectLogs.data?.content}
+          content={rejectLogs?.data?.data.content}
           btn1={{
             text: "확인",
             onClick: () => onClickModalToggleHandlers[NO_ACTION_MODAL_ID](),
