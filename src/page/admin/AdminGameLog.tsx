@@ -47,7 +47,7 @@ const AdminGameLog = () => {
     queryFn: getGameCategory,
   });
 
-  const totalCount = (adminGameList.data && adminGameList.data.count) || 0;
+  const totalCount = (adminGameList?.data?.pagination !== null && adminGameList?.data?.pagination.count) || 0;
 
   const checkAll = () => {
     setCategory(data?.data.map((item) => item.id) || []);
@@ -153,10 +153,10 @@ const AdminGameLog = () => {
               />
             </div>
           </div>
-          {adminGameList.data?.results?.game_register_list.map((item: TGameAdminData, idx: number) => (
+          {adminGameList?.data?.data.map((item: TGameAdminData, idx: number) => (
             <AdminListItem key={idx} idx={idx} item={item} onClickShowMore={selectGame} isDetail />
           ))}
-          {!adminGameList.data?.results?.game_register_list.length && (
+          {!adminGameList?.data?.data.length && (
             <p className="text-white font-DungGeunMo text-heading-28 flex items-center justify-center w-full py-24">
               검색 결과가 없습니다.
             </p>
