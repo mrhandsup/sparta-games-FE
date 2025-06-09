@@ -134,7 +134,7 @@ const SpartaChipSelect = ({
     } else if (error) {
       return "text-error-default";
     } else {
-      return "text-alert-default";
+      return "text-gray-100";
     }
   };
 

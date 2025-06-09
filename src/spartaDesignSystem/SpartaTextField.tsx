@@ -88,7 +88,7 @@ const SpartaTextField = ({
     } else if (!error && pass) {
       return "text-primary-500";
     } else {
-      return "text-alert-default";
+      return "text-gray-100";
     }
   };
 
