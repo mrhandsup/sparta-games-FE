@@ -8,9 +8,10 @@ import { useParams } from "react-router-dom";
 import { getUserData } from "../api/user";
 import { useQuery } from "@tanstack/react-query";
 import { TUserDataResponse } from "../types";
+import MyTeamBuildingProflie from "../components/mypageComponents/MyTeamBuildingProflie";
 
 const MyPage = () => {
-  const [navigation, setNavigation] = useState<"log" | "develop" | "setting">("log");
+  const [navigation, setNavigation] = useState<"log" | "teambuilding" | "develop" | "setting">("log");
   const { id } = useParams();
 
   const navigationButtonConfig = {
@@ -59,6 +60,16 @@ const MyPage = () => {
                   활동목록
                 </button>
               )}
+
+              <button
+                className={`w-full h-12 rounded-xl text-heading-20  ${
+                  navigation === "teambuilding" ? navigationButtonConfig.clicked : navigationButtonConfig.unClicked
+                }`}
+                onClick={() => setNavigation("teambuilding")}
+              >
+                팀빌딩 프로필
+              </button>
+
               <button
                 className={`w-full h-12 rounded-xl text-heading-20  ${
                   navigation === "develop" ? navigationButtonConfig.clicked : navigationButtonConfig.unClicked
@@ -82,6 +93,8 @@ const MyPage = () => {
             <div className="w-[79%]">
               {navigation === "log" ? (
                 <Logs user={user} />
+              ) : navigation === "teambuilding" ? (
+                <MyTeamBuildingProflie />
               ) : navigation === "develop" ? (
                 <MyGame user={user} isMyPage={isMyPage} />
               ) : (
