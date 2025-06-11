@@ -46,6 +46,12 @@ const Home = () => {
               <p className="font-DungGeunMo text-heading-32 font-[400] text-white">새롭게 등록된 게임</p>
             </div>
           </GameCardList>
+          <GameCardList data={gameListData?.data.updated} noNavigation>
+            <div className="flex items-center gap-3">
+              <img src={pixelPaperPlane} />
+              <p className="font-DungGeunMo text-heading-32 font-[400] text-white">최근 업데이트된 게임</p>
+            </div>
+          </GameCardList>
           {gameListData.data.rand1.game_list.length > 0 && (
             <GameCardList
               data={gameListData?.data.rand1.game_list}
