@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import ArrowButton from "../../assets/common/arrow/triangleArrowBottom.svg";
-import ArrowButtonFill from "../../assets/common/arrow/triangleArrowBottomActive.svg";
-import FilterReset from "../../assets/communityImage/Reset.svg";
-import SpartaButton from "../../spartaDesignSystem/SpartaButton";
-import { ROLE_CHOICES } from "../../constant/constant";
-import deleteIcon from "../../assets/common/DeleteIcon.svg";
-import SpartaCheckBox from "../../spartaDesignSystem/SpartaCheckBox";
+
+import SpartaButton from "../../../spartaDesignSystem/SpartaButton";
+import SpartaCheckBox from "../../../spartaDesignSystem/SpartaCheckBox";
+
+import { ROLE_CHOICES } from "../../../constant/constant";
+
+import ArrowButton from "../../../assets/common/arrow/triangleArrowBottom.svg";
+import ArrowButtonFill from "../../../assets/common/arrow/triangleArrowBottomActive.svg";
+import FilterReset from "../../../assets/communityImage/Reset.svg";
+import deleteIcon from "../../../assets/common/DeleteIcon.svg";
 
 type Props = {
   isProfileTab: boolean;
@@ -208,7 +211,11 @@ const SearchFilter = ({ isProfileTab }: Props) => {
             type="filled"
             size="medium"
             width="w-[200px]"
-            onClick={() => navigate(`${isProfileTab ? "/team-building/profile-create" : "/team-building/create"}`)}
+            onClick={() =>
+              navigate(
+                `${isProfileTab ? "/community/team-building/profile-create" : "/community/team-building/create"}`,
+              )
+            }
           />
         </div>
       </div>

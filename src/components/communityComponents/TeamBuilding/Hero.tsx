@@ -1,11 +1,13 @@
-import { userStore } from "../../share/store/userStore";
-import useModalToggles from "../../hook/useModalToggles";
-import SpartaModal from "../../spartaDesignSystem/SpartaModal";
-import SpartaButton from "../../spartaDesignSystem/SpartaButton";
-import Login from "../homeComponents/Login";
-import heroImage from "../../assets/communityImage/heroImage.png";
+import { userStore } from "../../../share/store/userStore";
 
-const CommunityHero = () => {
+import useModalToggles from "../../../hook/useModalToggles";
+import SpartaModal from "../../../spartaDesignSystem/SpartaModal";
+import SpartaButton from "../../../spartaDesignSystem/SpartaButton";
+import Login from "../../homeComponents/Login";
+
+import heroImage from "../../../assets/communityImage/heroImage.png";
+
+const Hero = () => {
   const { userData } = userStore();
 
   // 모달
@@ -70,4 +72,4 @@ const CommunityHero = () => {
   );
 };
 
-export default CommunityHero;
+export default Hero;

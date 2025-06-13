@@ -1,7 +1,7 @@
-import heroImage from "../../assets/communityImage/heroImage.png";
-import defaultProfile from "../../assets/common/defaultProfile.svg";
+import heroImage from "../../../assets/communityImage/heroImage.png";
+import defaultProfile from "../../../assets/common/defaultProfile.svg";
 
-export default function CommunitySamllCard() {
+export default function RecommandedCard() {
   return (
     <div className="flex gap-5 p-6  mx-auto border border-solid border-gray-400 rounded-lg">
       <div className="relative w-full">

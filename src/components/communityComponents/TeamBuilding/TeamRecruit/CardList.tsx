@@ -1,19 +1,19 @@
 import { useNavigate } from "react-router-dom";
-import defaultImage from "../../assets/category/Rhythm.png";
-import defaultProfile from "../../assets/common/defaultProfile.svg";
+import defaultImage from "../../../../assets/category/Rhythm.png";
+import defaultProfile from "../../../../assets/common/defaultProfile.svg";
 
 type Props = {
   isProfileTab: boolean;
 };
 
-export default function CommunityCard({ isProfileTab }: Props) {
+export default function CardList({ isProfileTab }: Props) {
   const navigate = useNavigate();
 
   return (
     <section // key={item?.id}
       className=" relative h-[450px] border-gray-100 border-[0.7px] rounded-lg border-solid cursor-pointer"
       onClick={() => {
-        navigate("/team-building/project-recruit/1");
+        navigate("/community/team-building/team-recruit/1");
       }}
     >
       <img src={defaultImage} alt="썸네일" className="h-[55%] object-cover" />

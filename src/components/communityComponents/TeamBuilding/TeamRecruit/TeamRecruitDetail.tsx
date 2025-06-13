@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
-import SpartaTabNav from "../../spartaDesignSystem/SpartaTabNav";
-import SpartaButton from "../../spartaDesignSystem/SpartaButton";
+import { useForm } from "react-hook-form";
 
-import defaultProfile from "../../assets/common/defaultProfile.svg";
-import exampleImage from "../../assets/category/Survival.png";
-import backIcon from "../../assets/common/arrow/triangleArrowLeft.svg";
-import SpartaPagination from "../../spartaDesignSystem/SpartaPagination";
+import SpartaTabNav from "../../../../spartaDesignSystem/SpartaTabNav";
+import SpartaButton from "../../../../spartaDesignSystem/SpartaButton";
+import SpartaPagination from "../../../../spartaDesignSystem/SpartaPagination";
+
+import defaultProfile from "../../../../assets/common/defaultProfile.svg";
+import exampleImage from "../../../../assets/category/Survival.png";
+import backIcon from "../../../../assets/common/arrow/triangleArrowLeft.svg";
 
 type SortTab = "recent" | "oldest";
 
@@ -15,7 +16,7 @@ const SORT_LABELS: Record<SortTab, string> = {
   oldest: "오래된 순",
 };
 
-export default function ProjectRecruitDetail() {
+export default function TeamRecruitDetail() {
   const [sortTab, setSortTab] = useState<SortTab>("recent");
   const [isEdit, setIsEdit] = useState(false);
   const {

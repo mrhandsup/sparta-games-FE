@@ -1,22 +1,22 @@
 import { forwardRef, useState } from "react";
 import { Control, Controller, UseFormRegister, UseFormSetValue, UseFormTrigger, UseFormWatch } from "react-hook-form";
 
-import SpartaChipSelect from "../../spartaDesignSystem/SpartaChipSelect";
-import SpartaTextField from "../../spartaDesignSystem/SpartaTextField";
-import SpartaButton from "../../spartaDesignSystem/SpartaButton";
-import SpartaCheckBox from "../../spartaDesignSystem/SpartaCheckBox";
-import SpartaRadioGroup from "../../spartaDesignSystem/SpartaRadioGroup";
+import SpartaChipSelect from "../../../../spartaDesignSystem/SpartaChipSelect";
+import SpartaTextField from "../../../../spartaDesignSystem/SpartaTextField";
+import SpartaButton from "../../../../spartaDesignSystem/SpartaButton";
+import SpartaCheckBox from "../../../../spartaDesignSystem/SpartaCheckBox";
+import SpartaRadioGroup from "../../../../spartaDesignSystem/SpartaRadioGroup";
 
-import { getFormattedDate } from "../../util/getFormattedDate";
-import { ROLE_CHOICES } from "../../constant/constant";
-import { TProjectRecruitForm } from "../../types";
+import { getFormattedDate } from "../../../../util/getFormattedDate";
+import { ROLE_CHOICES } from "../../../../constant/constant";
+import { TProjectRecruitForm } from "../../../../types";
 
 import DatePicker from "react-datepicker";
 import { ko } from "date-fns/locale";
 import "react-datepicker/dist/react-datepicker.css";
 import "./reactDatePickerCustomStyle.css";
 
-import calendar from "../../assets/common/calender.svg";
+import calendar from "../../../../assets/common/calender.svg";
 
 type Props = {
   control: Control<TProjectRecruitForm>;
@@ -25,7 +25,7 @@ type Props = {
   register: UseFormRegister<TProjectRecruitForm>;
   trigger: UseFormTrigger<TProjectRecruitForm>;
 };
-export default function ProjectBasicInfoForm({ control, watch, setValue, register, trigger }: Props) {
+export default function RecruitFormBasicInfo({ control, watch, setValue, register, trigger }: Props) {
   const [selectBasicImage, setSelectBasicImage] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
 

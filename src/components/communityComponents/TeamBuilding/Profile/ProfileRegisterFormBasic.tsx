@@ -2,17 +2,17 @@ import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from "reac
 import { Control, UseFormRegister, UseFormSetValue, UseFormWatch } from "react-hook-form";
 import { FormControl, MenuItem, OutlinedInput, Select, SelectChangeEvent, styled } from "@mui/material";
 
-import SpartaChipSelect from "../../spartaDesignSystem/SpartaChipSelect";
-import SpartaRadioGroup from "../../spartaDesignSystem/SpartaRadioGroup";
-import SpartaTextField from "../../spartaDesignSystem/SpartaTextField";
+import SpartaChipSelect from "../../../../spartaDesignSystem/SpartaChipSelect";
+import SpartaRadioGroup from "../../../../spartaDesignSystem/SpartaRadioGroup";
+import SpartaTextField from "../../../../spartaDesignSystem/SpartaTextField";
 
-import { GAME_CATEGORY, ROLE_CHOICES } from "../../constant/constant";
-import { TProfileRegisterForm } from "../../types";
+import { GAME_CATEGORY, ROLE_CHOICES } from "../../../../constant/constant";
+import { TProfileRegisterForm } from "../../../../types";
 
-import profileImageUpload from "../../assets/communityImage/profileImageUpload.png";
-import addBtn from "../../assets/common/plus_gray.svg";
-import removeBtn from "../../assets/common/deleteIcon_trash.png";
-import defaultImage from "../../assets/common/defaultProfile.svg";
+import profileImageUpload from "../../../../assets/communityImage/profileImageUpload.png";
+import addBtn from "../../../../assets/common/plus_gray.svg";
+import removeBtn from "../../../../assets/common/deleteIcon_trash.png";
+import defaultImage from "../../../../assets/common/defaultProfile.svg";
 
 type LinkItem = {
   link: string;

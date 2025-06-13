@@ -1,14 +1,14 @@
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import CommunityProjectTitle from "../common/CommunityProjectTitle";
+import CommunityProjectTitle from "../../../common/CommunityProjectTitle";
 import ProfileRegisterFormProject from "./ProfileRegisterFormProject";
 import PorfileRegisterFormBasic from "./ProfileRegisterFormBasic";
-import SpartaButton from "../../spartaDesignSystem/SpartaButton";
+import SpartaButton from "../../../../spartaDesignSystem/SpartaButton";
 
-import { TProfileRegisterForm } from "../../types";
+import { TProfileRegisterForm } from "../../../../types";
 
-import recruitImage from "../../assets/gameDetail/ReviewEdit.svg";
+import recruitImage from "../../../../assets/gameDetail/ReviewEdit.svg";
 
 export default function ProfileRegisterForm() {
   const {

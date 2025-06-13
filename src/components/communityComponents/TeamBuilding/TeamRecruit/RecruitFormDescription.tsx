@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useRef } from "react";
 import { UseFormRegister, UseFormSetValue, UseFormWatch } from "react-hook-form";
 
-import SpartaTextField from "../../spartaDesignSystem/SpartaTextField";
+import SpartaTextField from "../../../../spartaDesignSystem/SpartaTextField";
 
-import { TProjectRecruitForm } from "../../types";
+import { TProjectRecruitForm } from "../../../../types";
 
 import ReactQuill from "react-quill";
 import { Quill } from "react-quill";
@@ -14,7 +14,7 @@ Quill.register("modules/imageActions", ImageActions);
 Quill.register("modules/imageFormats", ImageFormats);
 
 import "react-quill/dist/quill.snow.css";
-import { EDITOR_FORMATS } from "../../constant/constant";
+import { EDITOR_FORMATS } from "../../../../constant/constant";
 
 type Props = {
   watch: UseFormWatch<TProjectRecruitForm>;
@@ -22,7 +22,7 @@ type Props = {
   register: UseFormRegister<TProjectRecruitForm>;
 };
 
-export default function ProjectDescriptionForm({ register, watch, setValue }: Props) {
+export default function RecruitFormDescription({ register, watch, setValue }: Props) {
   const quillRef = useRef<ReactQuill | null>(null);
 
   useEffect(() => {
