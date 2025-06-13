@@ -22,6 +22,7 @@ import ProjectRecruitForm from "../components/communityComponents/TeamBuilding/T
 import ProfileRegisterForm from "../components/communityComponents/TeamBuilding/Profile/ProfileRegisterForm";
 import TeamBuilding from "../page/TeamBuilding";
 import TeamRecruitDetail from "../components/communityComponents/TeamBuilding/TeamRecruit/TeamRecruitDetail";
+import TeamBuildingProfile from "../page/TeamBuildingProfile";
 
 const Router = () => {
   return (
@@ -32,6 +33,7 @@ const Router = () => {
           <Route path="/community/team-building" element={<TeamBuilding />} />
           <Route path="/community/team-building/create" element={<ProjectRecruitForm />} />
           <Route path="/community/team-building/profile-create" element={<ProfileRegisterForm />} />
+          <Route path="/community/team-building/profile-detail/:id" element={<TeamBuildingProfile />} />
         </Route>
         <Route element={<Layout />}>
           <Route path="/game-detail" element={<GameDetail />} />

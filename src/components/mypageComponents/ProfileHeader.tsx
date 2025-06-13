@@ -1,6 +1,5 @@
 import { TUserData } from "../../types";
-import { convertToConfigObjects } from "../../util/convertToConfigObjects";
-import { USER_TECH } from "../../constant/constant";
+
 import SpartaButton from "../../spartaDesignSystem/SpartaButton";
 import defaultProfile from "../../assets/common/defaultProfile.svg";
 import { useMutation } from "@tanstack/react-query";
@@ -15,7 +14,7 @@ type NavigationType = "log" | "teambuilding" | "develop" | "setting";
 type TProfileProps = {
   user: TUserData;
   isMyPage: boolean;
-  setNavigation: React.Dispatch<React.SetStateAction<NavigationType>>;
+  setNavigation?: React.Dispatch<React.SetStateAction<NavigationType>>;
 };
 
 const ProfileHeader = (props: TProfileProps) => {

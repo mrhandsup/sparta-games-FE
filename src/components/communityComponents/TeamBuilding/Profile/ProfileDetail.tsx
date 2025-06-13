@@ -1,13 +1,16 @@
 import { useNavigate } from "react-router-dom";
-import SpartaButton from "../../spartaDesignSystem/SpartaButton";
+import SpartaButton from "../../../../spartaDesignSystem/SpartaButton";
 
-import defaultProfile from "../../assets/common/defaultProfile.svg";
-import portfolioImage from "../../assets/portfolioImage.png";
-import linkImage from "../../assets/linkImage.png";
-import githubImage from "../../assets/githubImage.png";
-import notionImage from "../../assets/notionImage.png";
+import defaultProfile from "../../../../assets/common/defaultProfile.svg";
+import portfolioImage from "../../../../assets/portfolioImage.png";
+import linkImage from "../../../../assets/linkImage.png";
+import githubImage from "../../../../assets/githubImage.png";
+import notionImage from "../../../../assets/notionImage.png";
 
-export default function MyTeamBuildingProflie() {
+type Props = {
+  user?: boolean;
+};
+export default function ProfileDetail({ user }: Props) {
   const navigate = useNavigate();
 
   return (
@@ -48,7 +51,7 @@ export default function MyTeamBuildingProflie() {
             />
             <p className="font-DungGeunMo text-heading-24 text-white font-normal">[닉네임]님의 팀빌딩 프로필</p>
           </div>
-          <div className="flex justify-end items-center ">
+          <div className={`flex justify-end items-center ${user ? "block" : "hidden"}`}>
             <SpartaButton content="팀빌딩 프로필 수정" size="small" colorType="grey" width="w-[170px]" />
           </div>
         </div>
@@ -158,7 +161,9 @@ export default function MyTeamBuildingProflie() {
           </div>
         </div>
       </div>
-      <p className="mt-5 text-right text-error-default underline cursor-pointer ">커리어 프로필 삭제하기</p>
+      <p className={`mt-5 text-right text-error-default underline cursor-pointer ${user ? "block" : "hidden"}`}>
+        커리어 프로필 삭제하기
+      </p>
     </>
   );
 }

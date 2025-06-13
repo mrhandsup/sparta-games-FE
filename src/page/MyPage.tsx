@@ -8,7 +8,7 @@ import { useParams } from "react-router-dom";
 import { getUserData } from "../api/user";
 import { useQuery } from "@tanstack/react-query";
 import { TUserDataResponse } from "../types";
-import MyTeamBuildingProflie from "../components/mypageComponents/MyTeamBuildingProflie";
+import ProfileDetail from "../components/communityComponents/TeamBuilding/Profile/ProfileDetail";
 
 const MyPage = () => {
   const [navigation, setNavigation] = useState<"log" | "teambuilding" | "develop" | "setting">("log");
@@ -92,7 +92,7 @@ const MyPage = () => {
               {navigation === "log" ? (
                 <Logs user={user} />
               ) : navigation === "teambuilding" ? (
-                <MyTeamBuildingProflie />
+                <ProfileDetail />
               ) : navigation === "develop" ? (
                 <MyGame user={user} isMyPage={isMyPage} />
               ) : (
