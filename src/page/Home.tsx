@@ -7,6 +7,7 @@ import { TMainHttpResponse } from "../types";
 
 import pixelMeteor from "../assets/homeImage/pixelMeteor.svg";
 import pixelPaperPlane from "../assets/homeImage/pixelPaperPlane.svg";
+import pixel100Badge from "../assets/homeImage/pixel100Badge.png";
 import loading from "../assets/common/loading.gif";
 
 const Home = () => {
@@ -44,6 +45,12 @@ const Home = () => {
             <div className="flex items-center gap-3">
               <img src={pixelPaperPlane} />
               <p className="font-DungGeunMo text-heading-32 font-[400] text-white">새롭게 등록된 게임</p>
+            </div>
+          </GameCardList>
+          <GameCardList data={gameListData?.data.updated} noNavigation>
+            <div className="flex items-center gap-3">
+              <img src={pixel100Badge} />
+              <p className="font-DungGeunMo text-heading-32 font-[400] text-white">업데이트된 게임</p>
             </div>
           </GameCardList>
           {gameListData.data.rand1.game_list.length > 0 && (
