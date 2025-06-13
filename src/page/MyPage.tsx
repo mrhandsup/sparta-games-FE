@@ -58,6 +58,7 @@ const MyPage = () => {
                 </button>
               )}
 
+              {/* TODO: 팀빌딩 프로필 설정에 따른 해당 메뉴 표시 유무 분기 처리 */}
               <button
                 className={`w-full h-12 rounded-xl text-heading-20  ${
                   navigation === "teambuilding" ? navigationButtonConfig.clicked : navigationButtonConfig.unClicked
@@ -87,7 +88,7 @@ const MyPage = () => {
               )}
             </div>
             <div className="w-[79%]">
-              <ProfileHeader user={user} isMyPage={isMyPage} />
+              <ProfileHeader user={user} isMyPage={isMyPage} setNavigation={setNavigation} />
               {navigation === "log" ? (
                 <Logs user={user} />
               ) : navigation === "teambuilding" ? (

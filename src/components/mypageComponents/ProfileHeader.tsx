@@ -10,9 +10,12 @@ import { userStore } from "../../share/store/userStore";
 import SpartaReactionModal, { TSpartaReactionModalProps } from "../../spartaDesignSystem/SpartaReactionModal";
 import useModalToggles from "../../hook/useModalToggles";
 
+type NavigationType = "log" | "teambuilding" | "develop" | "setting";
+
 type TProfileProps = {
   user: TUserData;
   isMyPage: boolean;
+  setNavigation: React.Dispatch<React.SetStateAction<NavigationType>>;
 };
 
 const ProfileHeader = (props: TProfileProps) => {
@@ -140,7 +143,7 @@ const ProfileHeader = (props: TProfileProps) => {
               </p>
             </div>
             {props.isMyPage && (
-              <div className="flex flex-col gap-1">
+              <div className="flex flex-col gap-1 ">
                 <input
                   type="file"
                   ref={fileInputRef}
@@ -152,15 +155,15 @@ const ProfileHeader = (props: TProfileProps) => {
                   content="수정하기"
                   size="small"
                   colorType="grey"
-                  onClick={() => fileInputRef.current?.click()}
-                  width="w-[120px] rounded-sm"
+                  onClick={() => props.setNavigation("setting")}
+                  width="w-[120px] rounded-sm hover:text-alert-default hover:border-alert-default"
                 />
                 <SpartaButton
                   content={isProfileImage ? "이미지 삭제" : "이미지 변경"}
                   size="small"
                   colorType="grey"
                   onClick={isProfileImage ? handleFileDelete : () => fileInputRef.current?.click()}
-                  width="w-[120px] rounded-sm"
+                  width="w-[120px] rounded-sm hover:text-alert-default hover:border-alert-default"
                 />
               </div>
             )}
