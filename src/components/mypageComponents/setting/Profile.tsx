@@ -1,15 +1,16 @@
 import { useState } from "react";
-import log from "../../../assets/Log.svg";
 
 import { userStore } from "../../../share/store/userStore";
 import { convertToConfigObjects } from "../../../util/convertToConfigObjects";
-
-import { USER_TECH } from "../../../constant/constant";
-
 import useModalToggles from "../../../hook/useModalToggles";
+
 import SpartaModal from "../../../spartaDesignSystem/SpartaModal";
 import ProfileModal from "./ProfileModal";
 import SpartaReactionModal, { TSpartaReactionModalProps } from "../../../spartaDesignSystem/SpartaReactionModal";
+
+import { USER_TECH } from "../../../constant/constant";
+
+import log from "../../../assets/highlightIcon.svg";
 
 const Profile = () => {
   //* Hooks

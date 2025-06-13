@@ -47,8 +47,8 @@ const ProfileHeader = (props: TProfileProps) => {
   );
 
   const { setUserData } = userStore();
-  //* Utils
-  const userTech = convertToConfigObjects(USER_TECH, [props.user.user_tech]);
+
+  const [isProfileImage, setIsProfileImage] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -68,6 +68,7 @@ const ProfileHeader = (props: TProfileProps) => {
         onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
       }
       setUserData("profile_image", data.profile_image);
+      setIsProfileImage((prev) => !prev);
     },
     onError: (error) => {
       console.error("프로필 이미지 업데이트 실패:", error);
@@ -75,7 +76,7 @@ const ProfileHeader = (props: TProfileProps) => {
     },
   });
 
-  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeProfileImage = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
@@ -111,11 +112,11 @@ const ProfileHeader = (props: TProfileProps) => {
   };
 
   return (
-    <div className="bg-gray-800 h-[176px] px-32 py-3 w-full">
-      <div className="max-w-[1440px] mx-auto flex items-center ">
+    <div className="max-w-[1440px] mx-auto pb-7">
+      <div className="flex items-center">
         {props.user.profile_image && props.user.profile_image !== "이미지 없음" ? (
           <img
-            className="bg-gray-700 min-w-[110px] w-[110px] min-h-[110px] h-[110px] rounded-md"
+            className="bg-gray-700 w-[80px] h-[80px] rounded-md object-cover"
             src={
               import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
                 ? import.meta.env.VITE_PROXY_HOST + props.user.profile_image
@@ -123,49 +124,47 @@ const ProfileHeader = (props: TProfileProps) => {
             }
           />
         ) : (
-          <img
-            src={defaultProfile}
-            className="bg-gray-700 min-w-[110px] w-[110px] min-h-[110px] h-[110px] rounded-md p-3"
-          />
+          <img src={defaultProfile} className="bg-gray-700 w-[80px] h-[80px] rounded-md p-3" />
         )}
         <div className="flex flex-col gap-3 ml-3 w-full">
           <div className="flex items-center justify-between w-full">
-            <div className="flex items-center">
-              <span className="font-DungGeunMo text-body-20 bg-white px-2 py-1 rounded-md w-fit">
-                {userTech[0].label}
-              </span>
-              <p className="font-DungGeunMo text-heading-40 text-white font-[400]">{props.user.nickname} 님!</p>
+            <div className="flex flex-col gap-2">
+              <p className="font-DungGeunMo text-heading-40 text-white font-[400]">{props.user.nickname}</p>
+              <p className="flex items-center gap-2">
+                <p className="font-DungGeunMo text-alert-hover text-heading-20 font-[400]">추천받을 게임분야</p>
+                {props.user.game_category.map((category, index) => (
+                  <span key={index} className="font-DungGeunMo text-body-20 bg-white px-2 py-1  rounded-md w-fit">
+                    {category}
+                  </span>
+                ))}
+              </p>
             </div>
             {props.isMyPage && (
-              <div className="flex gap-3 w-[220px]">
-                <input type="file" ref={fileInputRef} onChange={handleFileChange} accept="image/*" className="hidden" />
+              <div className="flex flex-col gap-1">
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={onChangeProfileImage}
+                  accept="image/*"
+                  className="hidden"
+                />
                 <SpartaButton
-                  content="사진 변경"
+                  content="수정하기"
                   size="small"
                   colorType="grey"
                   onClick={() => fileInputRef.current?.click()}
+                  width="w-[120px] rounded-sm"
                 />
                 <SpartaButton
-                  content="사진 삭제"
+                  content={isProfileImage ? "이미지 삭제" : "이미지 변경"}
                   size="small"
                   colorType="grey"
-                  disabled={
-                    props.user.profile_image === "이미지 없음" || props.user.profile_image === "" ? true : false
-                  }
-                  onClick={handleFileDelete}
+                  onClick={isProfileImage ? handleFileDelete : () => fileInputRef.current?.click()}
+                  width="w-[120px] rounded-sm"
                 />
               </div>
             )}
           </div>
-          {/* 관심 게임 분야 */}
-          <p className="flex gap-2 items-center">
-            <p className="font-DungGeunMo text-alert-hover text-heading-24 font-[400]">관심게임분야</p>
-            {props.user.game_category.map((category, index) => (
-              <span key={index} className="font-DungGeunMo text-body-20 bg-white px-2 py-1  rounded-md w-fit">
-                {category}
-              </span>
-            ))}
-          </p>
         </div>
       </div>
 

@@ -1,14 +1,19 @@
 import { useState } from "react";
-import log from "../../../assets/Log.svg";
+import { useForm } from "react-hook-form";
+import { useMutation } from "@tanstack/react-query";
+
+import { leaveUser } from "../../../api/user";
+
 import { userStore } from "../../../share/store/userStore";
+
 import useModalToggles from "../../../hook/useModalToggles";
 import SpartaModal from "../../../spartaDesignSystem/SpartaModal";
 import AccountModal from "./AccountModal";
 import SpartaReactionModal, { TSpartaReactionModalProps } from "../../../spartaDesignSystem/SpartaReactionModal";
-import { useForm } from "react-hook-form";
+
 import SpartaButton from "../../../spartaDesignSystem/SpartaButton";
-import { leaveUser } from "../../../api/user";
-import { useMutation } from "@tanstack/react-query";
+
+import log from "../../../assets/highlightIcon.svg";
 
 const Account = () => {
   //* Hooks
@@ -98,7 +103,7 @@ const Account = () => {
         <div className="flex justify-between w-full">
           <div className="flex items-center gap-4 h-12">
             <img src={log} alt="로고" />
-            <p className="font-DungGeunMo text-heading-32 text-white font-[400]">계정정보 수정</p>
+            <p className="font-DungGeunMo text-heading-32 text-white font-[400]">계정정보 </p>
           </div>
           {userData?.data.login_type == "DEFAULT" && (
             <button
@@ -147,7 +152,7 @@ const Account = () => {
         isOpen={modalToggles[CHANGE_PASSWORD_MODAL_ID]}
         onClose={onClickModalToggleHandlers[CHANGE_PASSWORD_MODAL_ID]}
         closeOnClickOutside={false}
-        title="비밀번호 변경"
+        title="비밀번호 수정"
         type="primary"
       >
         <AccountModal onSuccess={onSuccessChangePassword} />

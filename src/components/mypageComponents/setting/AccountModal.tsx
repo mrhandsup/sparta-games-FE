@@ -53,7 +53,7 @@ const AccountModal = ({ onSuccess }: Props) => {
       message: "비밀번호는 최대 32자까지 가능합니다",
     },
     pattern: {
-      value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,32}$/,
+      value: /^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=[\]{};':"\\|,.<>/?]).{8,32}$/,
       message: "8~32자의 영문 소문자, 숫자, 특수문자를 포함해야 합니다",
     },
   };
@@ -115,6 +115,7 @@ const AccountModal = ({ onSuccess }: Props) => {
         inputProps={{
           placeholder: "spartagames@sparta.com",
           disabled: true,
+          className: "!text-gray-400 ",
         }}
       />
       <SpartaTextField
@@ -124,14 +125,7 @@ const AccountModal = ({ onSuccess }: Props) => {
         inputProps={{
           placeholder: "*****",
         }}
-        subLabel={{
-          default: "비밀번호를 입력해주세요",
-          error: errors.password?.message as string,
-          pass: password && !errors.password ? "사용 가능한 비밀번호입니다" : "",
-        }}
         passwordType
-        error={!!errors.password}
-        pass={(password && !errors.password) as boolean}
       />
       <SpartaTextField
         label="새 비밀번호"
