@@ -39,6 +39,7 @@ export type TMainHttpResponse = {
   data: {
     trending_games: TGameData[];
     recent: TGameData[];
+    updated: TGameData[];
     rand1: TRandGame;
     rand2: TRandGame;
     rand3: TRandGame;

@@ -7,7 +7,6 @@ import Home from "../page/Home";
 import Category from "../page/Category";
 import GameDetail from "../page/GameDetail";
 import MyPage from "../page/MyPage";
-import Community from "../page/Community";
 import GameUpload from "../page/GameUpload";
 import Redirect from "../page/Redirect";
 import SignUp from "../page/SignUp";
@@ -19,9 +18,10 @@ import FullWidthLayout from "../components/layout/FullWidthLayout";
 import PrivacyPolicy from "../components/PrivacyPolicy";
 import TermsOfService from "../components/TermsOfService";
 import Footer from "../components/Footer";
-import ProjectRecruitDetail from "../components/communityComponents/ProjectRecruitDetail";
-import ProjectRecruitForm from "../components/communityComponents/ProjectRecruitForm";
-import ProfileRegisterForm from "../components/communityComponents/ProfileRegisterForm";
+import ProjectRecruitForm from "../components/communityComponents/TeamBuilding/TeamRecruit/RecruitForm";
+import ProfileRegisterForm from "../components/communityComponents/TeamBuilding/Profile/ProfileRegisterForm";
+import TeamBuilding from "../page/TeamBuilding";
+import TeamRecruitDetail from "../components/communityComponents/TeamBuilding/TeamRecruit/TeamRecruitDetail";
 
 const Router = () => {
   return (
@@ -29,9 +29,9 @@ const Router = () => {
       <Routes>
         <Route element={<FullWidthLayout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/team-building" element={<Community />} />
-          <Route path="/team-building/create" element={<ProjectRecruitForm />} />
-          <Route path="/team-building/profile-create" element={<ProfileRegisterForm />} />
+          <Route path="/community/team-building" element={<TeamBuilding />} />
+          <Route path="/community/team-building/create" element={<ProjectRecruitForm />} />
+          <Route path="/community/team-building/profile-create" element={<ProfileRegisterForm />} />
         </Route>
         <Route element={<Layout />}>
           <Route path="/game-detail" element={<GameDetail />} />
@@ -41,7 +41,7 @@ const Router = () => {
           <Route path="/reset" element={<ResetPassword />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/termsofservice" element={<TermsOfService />} />
-          <Route path="/team-building/project-recruit/:id" element={<ProjectRecruitDetail />} />
+          <Route path="/community/team-building/team-recruit/:id" element={<TeamRecruitDetail />} />
           <Route element={<NonAuthLayout />}></Route>
 
           <Route element={<AuthLayout />}>

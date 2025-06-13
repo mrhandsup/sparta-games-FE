@@ -100,7 +100,7 @@ const Header = () => {
     {
       text: "커뮤니티",
       onClick: () => {
-        // navigate("/team-building");
+        // navigate("/community/team-building");
         setNoActionModalData(noActionData.community);
         onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
       },

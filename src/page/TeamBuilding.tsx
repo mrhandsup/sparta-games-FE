@@ -1,13 +1,14 @@
 import { useState } from "react";
 
-import CommunityHero from "../components/communityComponents/CommunityHero";
-import CommunitySamllCard from "../components/communityComponents/CommunitySamllCard";
-import SearchFilter from "../components/communityComponents/SearchFilter";
+import SearchFilter from "../components/communityComponents/TeamBuilding/SearchFilter";
 import pixelMeteor from "../assets/homeImage/pixelMeteor.svg";
-import CommunityCard from "../components/communityComponents/CommunityCard";
 import SpartaPagination from "../spartaDesignSystem/SpartaPagination";
 import SpartaTabNav from "../spartaDesignSystem/SpartaTabNav";
 import balloon from "../assets/headerImage/balloon.svg";
+import Hero from "../components/communityComponents/TeamBuilding/Hero";
+import RecommandedCard from "../components/communityComponents/TeamBuilding/RecommandedCard";
+import TeamRecruitCard from "../components/communityComponents/TeamBuilding/TeamRecruit/CardList";
+import CardList from "../components/communityComponents/TeamBuilding/TeamRecruit/CardList";
 
 type TabValue = "teamRecruit" | "profileRegister";
 
@@ -16,13 +17,13 @@ const TAB_LABELS: Record<TabValue, string> = {
   profileRegister: "프로필 등록",
 };
 
-const Community = () => {
+export default function TeamBuilding() {
   const [selectedTab, setSelectedTab] = useState<TabValue>("teamRecruit");
 
   return (
     <main>
       <div className="bg-gray-800 w-full">
-        <CommunityHero />
+        <Hero />
       </div>
       <div className="mx-auto mt-16 max-w-[1440px]">
         <div className="flex flex-col gap-8">
@@ -33,10 +34,10 @@ const Community = () => {
             </div>
           </p>
           <div className="grid grid-cols-2 gap-5">
-            <CommunitySamllCard />
-            <CommunitySamllCard />
-            <CommunitySamllCard />
-            <CommunitySamllCard />
+            <RecommandedCard />
+            <RecommandedCard />
+            <RecommandedCard />
+            <RecommandedCard />
           </div>
         </div>
         <div className="flex items-center justify-between mx-auto mt-16 max-w-[1440px]">
@@ -49,18 +50,18 @@ const Community = () => {
 
         <SearchFilter isProfileTab={selectedTab === "profileRegister"} />
         <div className="grid grid-cols-4 gap-5">
-          <CommunityCard isProfileTab={selectedTab === "profileRegister"} />
-          <CommunityCard isProfileTab={selectedTab === "profileRegister"} />
-          <CommunityCard isProfileTab={selectedTab === "profileRegister"} />
-          <CommunityCard isProfileTab={selectedTab === "profileRegister"} />
-          <CommunityCard isProfileTab={selectedTab === "profileRegister"} />
-          <CommunityCard isProfileTab={selectedTab === "profileRegister"} />
-          <CommunityCard isProfileTab={selectedTab === "profileRegister"} />
-          <CommunityCard isProfileTab={selectedTab === "profileRegister"} />
-          <CommunityCard isProfileTab={selectedTab === "profileRegister"} />
-          <CommunityCard isProfileTab={selectedTab === "profileRegister"} />
-          <CommunityCard isProfileTab={selectedTab === "profileRegister"} />
-          <CommunityCard isProfileTab={selectedTab === "profileRegister"} />
+          <CardList isProfileTab={selectedTab === "profileRegister"} />
+          <CardList isProfileTab={selectedTab === "profileRegister"} />
+          <CardList isProfileTab={selectedTab === "profileRegister"} />
+          <CardList isProfileTab={selectedTab === "profileRegister"} />
+          <CardList isProfileTab={selectedTab === "profileRegister"} />
+          <CardList isProfileTab={selectedTab === "profileRegister"} />
+          <CardList isProfileTab={selectedTab === "profileRegister"} />
+          <CardList isProfileTab={selectedTab === "profileRegister"} />
+          <CardList isProfileTab={selectedTab === "profileRegister"} />
+          <CardList isProfileTab={selectedTab === "profileRegister"} />
+          <CardList isProfileTab={selectedTab === "profileRegister"} />
+          <CardList isProfileTab={selectedTab === "profileRegister"} />
         </div>
 
         <div className="mt-10">
@@ -71,6 +72,4 @@ const Community = () => {
       {/* <CardList /> */}
     </main>
   );
-};
-
-export default Community;
+}

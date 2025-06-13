@@ -1,10 +1,10 @@
 import { Control, UseFormRegister, UseFormSetValue, UseFormWatch } from "react-hook-form";
 
-import SpartaRadioGroup from "../../spartaDesignSystem/SpartaRadioGroup";
-import SpartaTextField from "../../spartaDesignSystem/SpartaTextField";
+import SpartaRadioGroup from "../../../../spartaDesignSystem/SpartaRadioGroup";
+import SpartaTextField from "../../../../spartaDesignSystem/SpartaTextField";
 
-import { TProfileRegisterForm } from "../../types";
-import { EDITOR_FORMATS } from "../../constant/constant";
+import { TProfileRegisterForm } from "../../../../types";
+import { EDITOR_FORMATS } from "../../../../constant/constant";
 import { useEffect, useMemo, useRef } from "react";
 import ReactQuill from "react-quill";
 

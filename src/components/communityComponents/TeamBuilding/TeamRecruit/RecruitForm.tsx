@@ -1,15 +1,15 @@
 import { useForm } from "react-hook-form";
 
-import ProjectBasicInfoForm from "./ProjectBasicInfoForm";
-import ProjectDescriptionForm from "./ProjectDescriptionForm";
-import SpartaButton from "../../spartaDesignSystem/SpartaButton";
+import CommunityProjectTitle from "../../../common/CommunityProjectTitle";
+import RecruitFormBasicInfo from "./RecruitFormBasicInfo";
+import RecruitFormDescription from "./RecruitFormDescription";
+import SpartaButton from "../../../../spartaDesignSystem/SpartaButton";
 
-import type { TProjectRecruitForm } from "../../types";
+import type { TProjectRecruitForm } from "../../../../types";
 
-import recruitImage from "../../assets/gameDetail/ReviewEdit.svg";
-import CommunityProjectTitle from "../common/CommunityProjectTitle";
+import recruitImage from "../../../../assets/gameDetail/ReviewEdit.svg";
 
-export default function ProjectRecruitForm() {
+export default function RecruitForm() {
   const { register, watch, handleSubmit, control, setValue, formState, trigger } = useForm<TProjectRecruitForm>({
     mode: "onChange",
   });
@@ -24,14 +24,14 @@ export default function ProjectRecruitForm() {
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="w-[1180px] mx-auto">
-          <ProjectBasicInfoForm
+          <RecruitFormBasicInfo
             control={control}
             watch={watch}
             setValue={setValue}
             register={register}
             trigger={trigger}
           />
-          <ProjectDescriptionForm register={register} watch={watch} setValue={setValue} />
+          <RecruitFormDescription register={register} watch={watch} setValue={setValue} />
           <SpartaButton disabled={!formState.isValid} content="글 등록하기" type="filled" />
         </div>
       </form>
