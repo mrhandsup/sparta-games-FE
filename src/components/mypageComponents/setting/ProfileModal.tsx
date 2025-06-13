@@ -94,7 +94,7 @@ const ProfileModal = ({ onSuccess, onError }: Props) => {
         type="medium"
         register={register("nickname", nicknameValidation)}
         subLabel={{
-          default: "12자 이하의 문자를 입력해주세요.",
+          default: "영/한 관계없이 10글자 내외로 입력해주세요",
           error: errors.nickname?.message as string,
           pass: nickname && !errors.nickname ? "사용 가능한 닉네임입니다" : "",
         }}
@@ -105,7 +105,7 @@ const ProfileModal = ({ onSuccess, onError }: Props) => {
         error={!!errors.nickname}
       />
       <SpartaChipSelect
-        label="관심 게임 분야"
+        label="추천받을 게임분야"
         options={GAME_CATEGORY}
         control={control}
         name="game_category"
@@ -113,23 +113,12 @@ const ProfileModal = ({ onSuccess, onError }: Props) => {
         subLabel={{
           default: "관심있는 게임 분야를 선택해주세요",
           error: "태그를 하나 이상 선택해주세요",
-          pass: "태그가 선택되었습니다",
+          pass: "추천받을 게임분야를 3개까지 선택할 수 있어요",
         }}
         multiple
         maxCount={3}
       />
-      <SpartaChipSelect
-        label="관심 기술 분야"
-        options={USER_TECH}
-        control={control}
-        pass={!!user_tech && user_tech.length > 0}
-        name="user_tech"
-        subLabel={{
-          default: "관심있는 기술 분야를 선택해주세요.",
-          error: "태그를 하나 이상 선택해주세요",
-          pass: "태그가 선택되었습니다",
-        }}
-      />
+
       <SpartaButton
         content="변경하기"
         size="medium"

@@ -1,14 +1,11 @@
 import { useState } from "react";
 
 import { userStore } from "../../../share/store/userStore";
-import { convertToConfigObjects } from "../../../util/convertToConfigObjects";
 import useModalToggles from "../../../hook/useModalToggles";
 
 import SpartaModal from "../../../spartaDesignSystem/SpartaModal";
 import ProfileModal from "./ProfileModal";
 import SpartaReactionModal, { TSpartaReactionModalProps } from "../../../spartaDesignSystem/SpartaReactionModal";
-
-import { USER_TECH } from "../../../constant/constant";
 
 import log from "../../../assets/highlightIcon.svg";
 
@@ -75,8 +72,8 @@ const Profile = () => {
             disabled
           />
         </div>
-        <div className="flex justify-between ">
-          <label className="text-gray-100">관심게임분야</label>
+        <div className="flex justify-between items-center">
+          <label className="text-gray-100">추천받을 게임분야</label>
           <div className="w-[50%]">
             <div className="flex gap-2 items-center p-2 border-gray-200 border-2 rounded-md border-solid bg-gray-700">
               {userData?.data.game_category.map((category, idx) => (
@@ -85,14 +82,6 @@ const Profile = () => {
                 </span>
               ))}
             </div>
-          </div>
-        </div>
-        <div className="flex justify-between items-center">
-          <label className="text-gray-100">관심기술분야</label>
-          <div className="flex gap-2 items-center p-2 border-gray-200 border-2 rounded-md border-solid bg-gray-700 w-[50%]">
-            <span className="font-DungGeunMo text-body-20 bg-white px-2 py-1  rounded-md w-fit">
-              {userData?.data.user_tech && convertToConfigObjects(USER_TECH, [userData.data.user_tech])[0].label}
-            </span>
           </div>
         </div>
       </div>
