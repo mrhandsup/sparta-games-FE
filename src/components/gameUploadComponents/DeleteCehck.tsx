@@ -71,7 +71,7 @@ const DeleteCheck = ({ gamePk, onClose }: Props) => {
           type="text"
           value={inputValue}
           onChange={handleInputChange}
-          placeholder="게임을 삭제하겠습니다다"
+          placeholder="게임을 삭제하겠습니다"
         />
       </div>
 

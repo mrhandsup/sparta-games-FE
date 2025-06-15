@@ -6,12 +6,18 @@ import portfolioImage from "../../../../assets/portfolioImage.png";
 import linkImage from "../../../../assets/linkImage.png";
 import githubImage from "../../../../assets/githubImage.png";
 import notionImage from "../../../../assets/notionImage.png";
+import SpartaModal from "../../../../spartaDesignSystem/SpartaModal";
+import DeleteCheck from "./DeleteCheck";
+import useModalToggles from "../../../../hook/useModalToggles";
 
 type Props = {
   user?: boolean;
 };
 export default function ProfileDetail({ user }: Props) {
   const navigate = useNavigate();
+
+  const GAME_DELETE_CHECK_ID = "gameDeleteCheckId";
+  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([GAME_DELETE_CHECK_ID]);
 
   return (
     <>
@@ -160,9 +166,21 @@ export default function ProfileDetail({ user }: Props) {
           </div>
         </div>
       </div>
-      <p className={`mt-5 text-right text-error-default underline cursor-pointer ${user ? "block" : "hidden"}`}>
-        커리어 프로필 삭제하기
+      <p
+        onClick={() => onClickModalToggleHandlers[GAME_DELETE_CHECK_ID]()}
+        className={`mt-5 text-right text-error-default underline cursor-pointer ${user ? "hidden" : "block"}`}
+      >
+        팀빌딩 프로필 삭제하기
       </p>
+
+      <SpartaModal
+        isOpen={modalToggles[GAME_DELETE_CHECK_ID]}
+        onClose={onClickModalToggleHandlers[GAME_DELETE_CHECK_ID]}
+        modalId={GAME_DELETE_CHECK_ID}
+        closeOnClickOutside={false}
+      >
+        <DeleteCheck onClose={onClickModalToggleHandlers[GAME_DELETE_CHECK_ID]} />
+      </SpartaModal>
     </>
   );
 }

@@ -16,7 +16,7 @@ const SORT_LABELS: Record<SortTab, string> = {
   oldest: "오래된 순",
 };
 
-export default function RecruitCommentSection({ onClickDeleteComment }: Porps) {
+export default function RecruitCommentSection({ onClickDeleteComment }: Props) {
   const { register, handleSubmit, watch } = useForm();
 
   const onSubmit = (data: unknown) => console.log(data);
