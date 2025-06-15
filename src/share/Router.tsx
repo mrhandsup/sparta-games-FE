@@ -44,6 +44,7 @@ const Router = () => {
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/termsofservice" element={<TermsOfService />} />
           <Route path="/community/team-building/team-recruit/:id" element={<TeamRecruitDetail />} />
+          <Route path="/community/team-building/team-recruit/edit/:id" element={<TeamRecruitDetail />} />
           <Route element={<NonAuthLayout />}></Route>
 
           <Route element={<AuthLayout />}>

@@ -35,7 +35,7 @@ const AdminGameApproveModal = ({ game_id }: Props) => {
         content="승인"
         colorType="primary"
         size="medium"
-        width="w-[80px]"
+        customStyle="w-[80px]"
         onClick={() => onClickModalToggleHandlers["approveModal"]()}
       />
       <SpartaReactionModal

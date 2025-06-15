@@ -83,7 +83,7 @@ const AdminListItem = ({ idx, item, onClickShowMore, isDetail }: Props) => {
             content="미리보기"
             colorType="alert"
             size="medium"
-            width="w-[100px]"
+            customStyle="w-[100px]"
             onClick={() => window.open(`/game-detail?id=${item.id}`)}
           />
           {item.register_state === 0 && (

@@ -190,8 +190,8 @@ const Header = () => {
         {!userData?.data.is_staff && (
           <div className="cursor-pointer relative" ref={modalRefs.userStatus}>
             {userData?.data ? (
-              <p onClick={onClickModalToggleHandlers.userStatus} className="hover:text-primary-500">
-                마이페이지
+              <p onClick={onClickModalToggleHandlers.userStatus} className="text-primary-500">
+                {userData.data.nickname}
               </p>
             ) : (
               <p onClick={onClickModalToggleHandlers[LOGIN_MODAL_ID]} className="hover:text-primary-500">

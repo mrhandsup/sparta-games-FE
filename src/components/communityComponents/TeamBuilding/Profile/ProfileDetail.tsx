@@ -33,7 +33,6 @@ export default function ProfileDetail({ user }: Props) {
           <SpartaButton
             content="커리어 프로필 등록하기"
             type="filled"
-            width="w-full"
             onClick={() => {
               navigate("/team-building/profile-create");
             }}
@@ -52,7 +51,7 @@ export default function ProfileDetail({ user }: Props) {
             <p className="font-DungGeunMo text-heading-24 text-white font-normal">[닉네임]님의 팀빌딩 프로필</p>
           </div>
           <div className={`flex justify-end items-center ${user ? "block" : "hidden"}`}>
-            <SpartaButton content="팀빌딩 프로필 수정" size="small" colorType="grey" width="w-[170px]" />
+            <SpartaButton content="팀빌딩 프로필 수정" size="small" colorType="grey" customStyle="w-[170px]" />
           </div>
         </div>
 

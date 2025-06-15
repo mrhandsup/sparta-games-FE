@@ -1,6 +1,6 @@
 type Props = {
   content: string;
-  width?: string;
+  customStyle?: string;
   disabled?: boolean;
   type?: "standard" | "filled";
   size?: "small" | "medium" | "large";
@@ -11,7 +11,7 @@ type Props = {
 
 const SpartaButton = ({
   disabled = false,
-  width = "w-full",
+  customStyle = "w-full",
   content,
   type = "standard",
   size = "large",
@@ -34,7 +34,7 @@ const SpartaButton = ({
     };
 
     if (disabled) {
-      return `${baseStyles} ${disabledStyles[type]} ${sizeStyles[size]} ${width}`;
+      return `${baseStyles} ${disabledStyles[type]} ${sizeStyles[size]} ${customStyle}`;
     }
 
     const colorDict = {
@@ -56,7 +56,7 @@ const SpartaButton = ({
       },
     };
 
-    return `${baseStyles} ${colorDict[colorType][type]} ${sizeStyles[size]} ${width} hover:shadow-md`;
+    return `${baseStyles} ${colorDict[colorType][type]} ${sizeStyles[size]} ${customStyle} hover:shadow-md`;
   };
 
   return (

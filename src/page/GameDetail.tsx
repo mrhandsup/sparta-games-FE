@@ -87,7 +87,7 @@ const GameDetail = () => {
                     <SpartaButton
                       content={"수정하기"}
                       colorType={"alert"}
-                      width={"w-[170px]"}
+                      customStyle="w-[170px]"
                       size={"medium"}
                       onClick={() => onClickModalToggleHandlers[GAME_EDIT_CHECK_ID]()}
                     />
@@ -95,7 +95,7 @@ const GameDetail = () => {
                   <SpartaButton
                     content={"삭제하기"}
                     colorType={"error"}
-                    width={"w-[170px]"}
+                    customStyle="w-[170px]"
                     size={"medium"}
                     onClick={() => onClickModalToggleHandlers[GAME_DELETE_CHECK_ID]()}
                   />

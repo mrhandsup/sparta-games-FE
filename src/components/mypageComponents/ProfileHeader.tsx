@@ -14,7 +14,7 @@ type NavigationType = "log" | "teambuilding" | "develop" | "setting";
 type TProfileProps = {
   user: TUserData;
   isMyPage: boolean;
-  setNavigation?: React.Dispatch<React.SetStateAction<NavigationType>>;
+  setNavigation: React.Dispatch<React.SetStateAction<NavigationType>>;
 };
 
 const ProfileHeader = (props: TProfileProps) => {
@@ -155,14 +155,14 @@ const ProfileHeader = (props: TProfileProps) => {
                   size="small"
                   colorType="grey"
                   onClick={() => props.setNavigation("setting")}
-                  width="w-[120px] rounded-sm hover:text-alert-default hover:border-alert-default"
+                  customStyle="w-[120px] rounded-sm hover:text-alert-default hover:border-alert-default"
                 />
                 <SpartaButton
                   content={isProfileImage ? "이미지 삭제" : "이미지 변경"}
                   size="small"
                   colorType="grey"
                   onClick={isProfileImage ? handleFileDelete : () => fileInputRef.current?.click()}
-                  width="w-[120px] rounded-sm hover:text-alert-default hover:border-alert-default"
+                  customStyle="w-[120px] rounded-sm hover:text-alert-default hover:border-alert-default"
                 />
               </div>
             )}
