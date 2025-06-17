@@ -70,7 +70,6 @@ export type TUserInformationInputForm = {
   new_password: string;
   new_password_check: string;
   game_category: string;
-  user_tech: string;
   is_maker: boolean;
   code?: string;
   login_type: string;
@@ -98,7 +97,6 @@ export type TUserData = {
   is_maker: boolean;
   introduce: string;
   login_type: string;
-  user_tech: string;
   game_category: any[];
   password: string;
   password_check: string;
