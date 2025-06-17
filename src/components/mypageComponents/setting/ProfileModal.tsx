@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { GAME_CATEGORY, USER_TECH } from "../../../constant/constant";
+import { GAME_CATEGORY } from "../../../constant/constant";
 import SpartaChipSelect from "../../../spartaDesignSystem/SpartaChipSelect";
 import SpartaTextField from "../../../spartaDesignSystem/SpartaTextField";
 import SpartaButton from "../../../spartaDesignSystem/SpartaButton";
@@ -10,7 +10,6 @@ import { TUserInformationInputForm } from "../../../types";
 
 interface ProfileFormData {
   nickname: string;
-  user_tech: string;
   game_category: string[];
 }
 
@@ -31,13 +30,11 @@ const ProfileModal = ({ onSuccess, onError }: Props) => {
   } = useForm<ProfileFormData>({
     defaultValues: {
       nickname: userData?.data.nickname || "",
-      user_tech: userData?.data.user_tech || "",
       game_category: userData?.data.game_category || [],
     },
   });
 
   const nickname = watch("nickname");
-  const user_tech = watch("user_tech");
   const game_category = watch("game_category");
 
   const profileMutation = useMutation({
@@ -46,7 +43,6 @@ const ProfileModal = ({ onSuccess, onError }: Props) => {
 
       const updateData: Partial<TUserInformationInputForm> = {
         nickname: formData.nickname,
-        user_tech: formData.user_tech,
         game_category: formData.game_category.join(","),
       };
 
@@ -84,8 +80,7 @@ const ProfileModal = ({ onSuccess, onError }: Props) => {
     profileMutation.mutate(data);
   });
 
-  const isFormValid =
-    nickname && !errors.nickname && user_tech && user_tech.length > 0 && game_category && game_category.length > 0;
+  const isFormValid = nickname && !errors.nickname && game_category && game_category.length > 0;
 
   return (
     <div className="flex flex-col gap-3 min-w-[500px]">

@@ -1,7 +1,7 @@
 import SpartaTextField from "../../spartaDesignSystem/SpartaTextField";
 import { useFormContext } from "react-hook-form";
 import SpartaChipSelect from "../../spartaDesignSystem/SpartaChipSelect";
-import { GAME_CATEGORY, USER_TECH } from "../../constant/constant";
+import { GAME_CATEGORY } from "../../constant/constant";
 
 const Profile = () => {
   const {
@@ -21,12 +21,12 @@ const Profile = () => {
       message: "닉네임은 4자 이상이어야 합니다",
     },
     maxLength: {
-      value: 12,
-      message: "닉네임은 12자 이하여야 합니다",
+      value: 10,
+      message: "닉네임은 10자 이하여야 합니다",
     },
     pattern: {
       value: /^[a-zA-Z0-9가-힣]*$/,
-      message: "닉네임은 12자 이하 영/한/숫자만 사용 가능합니다.",
+      message: "닉네임은 10자 이하 영/한/숫자만 사용 가능합니다.",
     },
   };
 
@@ -38,7 +38,7 @@ const Profile = () => {
         type="medium"
         register={register("nickname", nicknameValidation)}
         subLabel={{
-          default: "12자 이하 영/한/숫자 사용 가능합니다.",
+          default: "4자 이상 10자 이하 영/한/숫자 사용 가능합니다.",
           error: errors.nickname?.message as string,
           pass: nickname && !errors.nickname ? "사용 가능한 닉네임입니다" : "",
         }}
@@ -61,18 +61,6 @@ const Profile = () => {
         }}
         multiple
         maxCount={3}
-        placeHolderText="게임분야를 선택해주세요"
-      />
-      <SpartaChipSelect
-        label="관심 기술 분야"
-        options={USER_TECH}
-        control={control}
-        name="user_tech"
-        subLabel={{
-          default: "관심있는 기술 분야를 선택해주세요.",
-          error: "태그를 하나 이상 선택해주세요",
-          pass: "태그가 선택되었습니다",
-        }}
         placeHolderText="게임분야를 선택해주세요"
       />
     </>

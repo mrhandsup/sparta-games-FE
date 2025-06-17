@@ -97,7 +97,6 @@ const ProfileHeader = (props: TProfileProps) => {
     const formData = new FormData();
     formData.append("image", file);
     formData.append("nickname", props.user.nickname);
-    formData.append("user_tech", props.user.user_tech);
     formData.append("game_category", props.user.game_category.join(","));
 
     updateProfileMutation.mutate(formData);
@@ -107,7 +106,6 @@ const ProfileHeader = (props: TProfileProps) => {
     const formData = new FormData();
     formData.append("image", "");
     formData.append("nickname", props.user.nickname);
-    formData.append("user_tech", props.user.user_tech);
     formData.append("game_category", props.user.game_category.join(","));
 
     updateProfileMutation.mutate(formData);

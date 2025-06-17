@@ -16,6 +16,8 @@ import { useState } from "react";
 import { AxiosError } from "axios";
 
 const SignUp = () => {
+  const [isEmailVerifySuccess, setIsEmailVerifySuccess] = useState(false);
+
   const [searchParams] = useSearchParams();
   const email = searchParams.get("email");
   const login_type = searchParams.get("login_type");
@@ -46,14 +48,12 @@ const SignUp = () => {
       password: "",
       password_check: "",
       nickname: "",
-      user_tech: "",
       game_category: "",
       code: "",
       is_maker: false,
     },
   });
 
-  const user_tech = signupForm.watch("user_tech");
   const game_category = signupForm.watch("game_category");
 
   const navigate = useNavigate();
@@ -121,7 +121,7 @@ const SignUp = () => {
                 </p>
               </>
             ) : (
-              <Account />
+              <Account isEmailVerifySuccess={isEmailVerifySuccess} setIsEmailVerifySuccess={setIsEmailVerifySuccess} />
             )}
             <Profile />
             <SpartaButton
@@ -130,11 +130,7 @@ const SignUp = () => {
               colorType="primary"
               onClick={signupForm.handleSubmit(onSubmit)}
               disabled={
-                !signupForm.formState.isValid ||
-                !user_tech ||
-                user_tech === "" ||
-                !game_category ||
-                game_category.length === 0
+                !signupForm.formState.isValid || !isEmailVerifySuccess || !game_category || game_category.length === 0
               }
               content="회원가입"
             />

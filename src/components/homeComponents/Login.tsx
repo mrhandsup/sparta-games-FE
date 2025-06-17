@@ -174,7 +174,7 @@ function Login({ onClose }: Props) {
                   }}
                   subLabel={{
                     default: "이메일을 입력해주세요",
-                    error: "올바른 이메일 형식이 아닙니다",
+                    error: "",
                     pass: "",
                   }}
                 />
@@ -188,8 +188,8 @@ function Login({ onClose }: Props) {
                   }}
                   subLabel={{
                     default: "비밀번호를 입력해주세요",
-                    error: "8~32자의 영문, 숫자, 특수문자를 포함해야 합니다",
-                    pass: "사용 가능한 비밀번호입니다",
+                    error: "",
+                    pass: "",
                   }}
                   passwordType
                 />
