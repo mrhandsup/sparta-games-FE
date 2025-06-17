@@ -1,7 +1,7 @@
 import SpartaTextField from "../../spartaDesignSystem/SpartaTextField";
 import { useFormContext } from "react-hook-form";
 import SpartaChipSelect from "../../spartaDesignSystem/SpartaChipSelect";
-import { GAME_CATEGORY, USER_TECH } from "../../constant/constant";
+import { GAME_CATEGORY } from "../../constant/constant";
 
 const Profile = () => {
   const {
