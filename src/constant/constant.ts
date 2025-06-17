@@ -107,53 +107,6 @@ const ROLE_CHOICES: selectConfig[] = [
   },
 ];
 
-const USER_TECH: selectConfig[] = [
-  {
-    label: "Director(PM/PO)",
-    value: "DIR",
-  },
-  {
-    label: "2D Graphic",
-    value: "2DG",
-  },
-  {
-    label: "Concept Art",
-    value: "CA",
-  },
-  {
-    label: "UX/UI",
-    value: "UXUI",
-  },
-  {
-    label: "Artist",
-    value: "ART",
-  },
-  {
-    label: "3D Graphic",
-    value: "3DG",
-  },
-  {
-    label: "Modeler",
-    value: "MDL",
-  },
-  {
-    label: "Frontend",
-    value: "FE",
-  },
-  {
-    label: "Backend",
-    value: "BE",
-  },
-  {
-    label: "All",
-    value: "ALL",
-  },
-  {
-    label: "관심분야 없음",
-    value: "NONE",
-  },
-];
-
 const USER_TYPE: selectConfig[] = [
   {
     label: "플레이어",
@@ -197,5 +150,5 @@ const EDITOR_FORMATS = [
   "width",
 ];
 
-export { CATEGORY, USER_TECH, ROLE_CHOICES, GAME_CATEGORY, USER_TYPE, GAME_CHIP, EDITOR_FORMATS };
+export { CATEGORY, ROLE_CHOICES, GAME_CATEGORY, USER_TYPE, GAME_CHIP, EDITOR_FORMATS };
 export type { selectConfig };
