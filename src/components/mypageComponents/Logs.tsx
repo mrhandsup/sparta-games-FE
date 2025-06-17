@@ -36,7 +36,7 @@ const Logs = (props: TLogsProps) => {
   const [isRecent, setIsRecent] = useState<boolean>(true);
 
   return (
-    <div className="flex flex-col gap-10">
+    <div className="flex flex-col gap-7">
       {/* 즐겨찾는 게임 */}
       {
         <GameCardList

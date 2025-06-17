@@ -124,7 +124,7 @@ const AdminGameLog = () => {
                 colorType="grey"
                 type={state == undefined ? "filled" : "standard"}
                 size="small"
-                width="w-[60px]"
+                customStyle="w-[60px]"
                 onClick={() => setState(undefined)}
               />
               <SpartaButton
@@ -132,14 +132,14 @@ const AdminGameLog = () => {
                 colorType="alert"
                 type={state == 0 ? "filled" : "standard"}
                 size="small"
-                width="w-[60px]"
+                customStyle="w-[60px]"
                 onClick={() => setState(0)}
               />
               <SpartaButton
                 content="승인"
                 colorType="primary"
                 size="small"
-                width="w-[60px]"
+                customStyle="w-[60px]"
                 type={state == 1 ? "filled" : "standard"}
                 onClick={() => setState(1)}
               />
@@ -148,7 +148,7 @@ const AdminGameLog = () => {
                 colorType="error"
                 type={state == 2 ? "filled" : "standard"}
                 size="small"
-                width="w-[60px]"
+                customStyle="w-[60px]"
                 onClick={() => setState(2)}
               />
             </div>

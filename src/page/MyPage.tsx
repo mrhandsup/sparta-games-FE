@@ -8,9 +8,10 @@ import { useParams } from "react-router-dom";
 import { getUserData } from "../api/user";
 import { useQuery } from "@tanstack/react-query";
 import { TUserDataResponse } from "../types";
+import ProfileDetail from "../components/communityComponents/TeamBuilding/Profile/ProfileDetail";
 
 const MyPage = () => {
-  const [navigation, setNavigation] = useState<"log" | "develop" | "setting">("log");
+  const [navigation, setNavigation] = useState<"log" | "teambuilding" | "develop" | "setting">("log");
   const { id } = useParams();
 
   const navigationButtonConfig = {
@@ -43,11 +44,8 @@ const MyPage = () => {
   return (
     user && (
       <div className="w-full">
-        {/* 헤더 */}
-        <ProfileHeader user={user} isMyPage={isMyPage} />
         <div className="relative flex flex-col mx-auto max-w-[1440px] min-w-[1440px]">
           <div className="flex gap-9 py-11 w-[83%] mx-auto">
-            {/* 네비게이션 */}
             <div className="bg-gray-800 w-[13%] p-2 rounded-xl h-fit">
               {isMyPage && (
                 <button
@@ -59,6 +57,17 @@ const MyPage = () => {
                   활동목록
                 </button>
               )}
+
+              {/* TODO: 팀빌딩 프로필 설정에 따른 해당 메뉴 표시 유무 분기 처리 */}
+              <button
+                className={`w-full h-12 rounded-xl text-heading-20  ${
+                  navigation === "teambuilding" ? navigationButtonConfig.clicked : navigationButtonConfig.unClicked
+                }`}
+                onClick={() => setNavigation("teambuilding")}
+              >
+                팀빌딩 프로필
+              </button>
+
               <button
                 className={`w-full h-12 rounded-xl text-heading-20  ${
                   navigation === "develop" ? navigationButtonConfig.clicked : navigationButtonConfig.unClicked
@@ -78,10 +87,12 @@ const MyPage = () => {
                 </button>
               )}
             </div>
-            {/* 내용 */}
             <div className="w-[79%]">
+              <ProfileHeader user={user} isMyPage={isMyPage} setNavigation={setNavigation} />
               {navigation === "log" ? (
                 <Logs user={user} />
+              ) : navigation === "teambuilding" ? (
+                <ProfileDetail />
               ) : navigation === "develop" ? (
                 <MyGame user={user} isMyPage={isMyPage} />
               ) : (

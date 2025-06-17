@@ -13,7 +13,9 @@ export default function CardList({ isProfileTab }: Props) {
     <section // key={item?.id}
       className=" relative h-[450px] border-gray-100 border-[0.7px] rounded-lg border-solid cursor-pointer"
       onClick={() => {
-        navigate("/community/team-building/team-recruit/1");
+        isProfileTab
+          ? navigate("/community/team-building/profile-detail/1")
+          : navigate("/community/team-building/team-recruit/1");
       }}
     >
       <img src={defaultImage} alt="썸네일" className="h-[55%] object-cover" />

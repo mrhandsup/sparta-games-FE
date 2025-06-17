@@ -210,7 +210,7 @@ const SearchFilter = ({ isProfileTab }: Props) => {
             content="글 등록하기"
             type="filled"
             size="medium"
-            width="w-[200px]"
+            customStyle="w-[200px]"
             onClick={() =>
               navigate(
                 `${isProfileTab ? "/community/team-building/profile-create" : "/community/team-building/create"}`,

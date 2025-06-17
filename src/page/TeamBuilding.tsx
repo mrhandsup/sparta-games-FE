@@ -1,14 +1,15 @@
 import { useState } from "react";
 
 import SearchFilter from "../components/communityComponents/TeamBuilding/SearchFilter";
-import pixelMeteor from "../assets/homeImage/pixelMeteor.svg";
 import SpartaPagination from "../spartaDesignSystem/SpartaPagination";
 import SpartaTabNav from "../spartaDesignSystem/SpartaTabNav";
-import balloon from "../assets/headerImage/balloon.svg";
+
 import Hero from "../components/communityComponents/TeamBuilding/Hero";
 import RecommandedCard from "../components/communityComponents/TeamBuilding/RecommandedCard";
-import TeamRecruitCard from "../components/communityComponents/TeamBuilding/TeamRecruit/CardList";
 import CardList from "../components/communityComponents/TeamBuilding/TeamRecruit/CardList";
+
+import pixelMeteor from "../assets/homeImage/pixelMeteor.svg";
+import balloon from "../assets/headerImage/balloon.svg";
 
 type TabValue = "teamRecruit" | "profileRegister";
 

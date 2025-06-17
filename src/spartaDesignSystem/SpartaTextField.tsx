@@ -106,7 +106,11 @@ const SpartaTextField = ({
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex gap-2 items-baseline">
+      <div
+        className={`flex gap-2 items-baseline ${
+          subLabel?.error && subLabel?.error?.length > 23 ? "flex-col" : undefined
+        }`}
+      >
         <label
           className={`text-gray-50 ${
             type === "large" ? "text-heading-24" : type === "medium" ? "text-title-18" : "text-title-16"

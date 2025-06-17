@@ -38,7 +38,7 @@ const AdminGameRejectModal = ({ game_id }: Props) => {
         content="반려"
         colorType="error"
         size="medium"
-        width="w-[80px]"
+        customStyle="w-[80px]"
         onClick={() => onClickModalToggleHandlers["rejectModal"]()}
       />
       <SpartaModal
@@ -55,7 +55,6 @@ const AdminGameRejectModal = ({ game_id }: Props) => {
               content="확인"
               colorType="error"
               size="medium"
-              width="w-full"
               onClick={() => {
                 onClickModalToggleHandlers["rejectModal"]();
               }}
@@ -78,7 +77,6 @@ const AdminGameRejectModal = ({ game_id }: Props) => {
               colorType="error"
               disabled={rejectContent == ""}
               size="medium"
-              width="w-full"
               onClick={() => {
                 rejectRegisterGameMutation.mutate({ id: game_id, content: rejectContent });
               }}
@@ -88,7 +86,6 @@ const AdminGameRejectModal = ({ game_id }: Props) => {
               content="취소"
               colorType="grey"
               size="medium"
-              width="w-full"
               onClick={() => {
                 onClickModalToggleHandlers["rejectModal"]();
               }}
