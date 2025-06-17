@@ -46,14 +46,12 @@ const SignUp = () => {
       password: "",
       password_check: "",
       nickname: "",
-      user_tech: "",
       game_category: "",
       code: "",
       is_maker: false,
     },
   });
 
-  const user_tech = signupForm.watch("user_tech");
   const game_category = signupForm.watch("game_category");
 
   const navigate = useNavigate();
@@ -129,13 +127,7 @@ const SignUp = () => {
               size="medium"
               colorType="primary"
               onClick={signupForm.handleSubmit(onSubmit)}
-              disabled={
-                !signupForm.formState.isValid ||
-                !user_tech ||
-                user_tech === "" ||
-                !game_category ||
-                game_category.length === 0
-              }
+              disabled={!signupForm.formState.isValid || !game_category || game_category.length === 0}
               content="회원가입"
             />
           </FormProvider>
