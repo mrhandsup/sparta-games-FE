@@ -39,7 +39,7 @@ export default function RecruitFormBasicInfo({ control, watch, setValue, registe
   const onClickSelectBasicImage = () => {
     setIsChecked((prev) => !prev);
     setSelectBasicImage((prev) => !prev);
-    setValue("thumbnail", "defaultImage");
+    setValue("thumbnail_basic", "default");
     trigger();
   };
 
@@ -90,7 +90,7 @@ export default function RecruitFormBasicInfo({ control, watch, setValue, registe
                 dayClassName={(date) => {
                   const today = startOfDay(new Date());
                   if (isBefore(date, today)) {
-                    return "text-gray-400 cursor-not-allowed"; // ✅ 오버라이드 강제 적용
+                    return "text-gray-400 cursor-not-allowed";
                   }
                   return "";
                 }}

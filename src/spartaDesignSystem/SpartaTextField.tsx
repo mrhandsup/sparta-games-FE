@@ -103,7 +103,6 @@ const SpartaTextField = ({
   };
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  console.log(subLabel?.error, subLabel?.error?.length);
   return (
     <div className="flex flex-col gap-2">
       <div
