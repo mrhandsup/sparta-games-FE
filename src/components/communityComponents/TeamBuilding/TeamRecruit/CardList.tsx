@@ -29,8 +29,6 @@ export default function CardList({ post, profileImage, isProfileTab }: Props) {
       : post.duration === "1Y"
       ? "1년 이내"
       : "1년 이상";
-  console.log("post", post);
-  console.log("이미지 경로: ", import.meta.env.VITE_PROXY_HOST + post.thumbnail);
 
   return (
     <section
@@ -39,7 +37,7 @@ export default function CardList({ post, profileImage, isProfileTab }: Props) {
       onClick={() => {
         isProfileTab
           ? navigate("/community/team-building/profile-detail/1")
-          : navigate("/community/team-building/team-recruit/1");
+          : navigate(`/community/team-building/team-recruit/${post.id}`);
       }}
     >
       <img src={defaultImage} alt="썸네일" className="h-[55%] object-cover" />

@@ -32,8 +32,9 @@ export default function TeamBuilding() {
   });
 
   const teamBuildPosts = data?.data.team_build_posts;
+  const recommandedPosts = data?.data.recommended_posts;
   const profileImage = userData?.data.profile_image;
-  console.log("데이터 불러오기 성공!", data?.data.team_build_posts);
+  console.log("데이터 불러오기 성공!", recommandedPosts);
 
   return (
     <main>
@@ -49,10 +50,9 @@ export default function TeamBuilding() {
             </div>
           </p>
           <div className="grid grid-cols-2 gap-5">
-            <RecommandedCard />
-            <RecommandedCard />
-            <RecommandedCard />
-            <RecommandedCard />
+            {recommandedPosts?.map((post) => (
+              <RecommandedCard post={post} profileImage={profileImage} />
+            ))}
           </div>
         </div>
         <div className="flex items-center justify-between mx-auto mt-16 max-w-[1440px]">
@@ -72,11 +72,9 @@ export default function TeamBuilding() {
         </div>
 
         <div className="mt-10">
-          <SpartaPagination dataTotalCount={5} countPerPage={1} onChangePage={() => {}} />
+          <SpartaPagination dataTotalCount={5} countPerPage={data?.pagination.count} onChangePage={() => {}} />
         </div>
       </div>
-      {/* <CommunityList /> */}
-      {/* <CardList /> */}
     </main>
   );
 }
