@@ -18,14 +18,15 @@ export default function SpartaRadioGroup<T extends FieldValues>({
   setValue,
 }: SpartaRadioGroupProps<T>) {
   useEffect(() => {
-    Object.entries(radioGroupsData).forEach(([name, data]) => {
+    groupsToShow.forEach((name) => {
       const key = name as Path<T>;
       const currentValue = watch(key);
-      if (currentValue === undefined && data.options.length > 0) {
-        setValue(key, data.options[0].value as PathValue<T, typeof key>);
+      const groupData = radioGroupsData[key as keyof typeof radioGroupsData];
+      if (currentValue === undefined && groupData.options.length > 0) {
+        setValue(key, groupData.options[0].value as PathValue<T, typeof key>);
       }
     });
-  }, [setValue, watch]);
+  }, [groupsToShow, setValue, watch]);
 
   return (
     <>

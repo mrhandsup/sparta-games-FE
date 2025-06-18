@@ -13,6 +13,7 @@ import { TProjectRecruitForm } from "../../../../types";
 
 import DatePicker from "react-datepicker";
 import { ko } from "date-fns/locale";
+import { format, startOfDay, isBefore } from "date-fns";
 import "react-datepicker/dist/react-datepicker.css";
 import "./reactDatePickerCustomStyle.css";
 
@@ -29,7 +30,7 @@ export default function RecruitFormBasicInfo({ control, watch, setValue, registe
   const [selectBasicImage, setSelectBasicImage] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
 
-  const imageWatch = watch("image");
+  const imageWatch = watch("thumbnail");
 
   const onClickUploadImage = () => {
     document.getElementById("project-image")?.click();
@@ -38,7 +39,7 @@ export default function RecruitFormBasicInfo({ control, watch, setValue, registe
   const onClickSelectBasicImage = () => {
     setIsChecked((prev) => !prev);
     setSelectBasicImage((prev) => !prev);
-    setValue("image", "defaultImage");
+    setValue("thumbnail", "defaultImage");
     trigger();
   };
 
@@ -68,20 +69,31 @@ export default function RecruitFormBasicInfo({ control, watch, setValue, registe
             options={ROLE_CHOICES}
             control={control}
             rules={{ required: "포지션을 선택해주세요" }}
-            name="position"
+            name="want_roles"
             placeHolderText="구하는 포지션을 선택해주세요."
             multiple
           />
 
           <Controller
-            name="date"
+            name="deadline"
             control={control}
             rules={{ required: "날짜를 선택해주세요" }}
             render={({ field: { onChange, value, ref } }) => (
               <DatePicker
                 selected={value}
-                onChange={(date) => onChange(date)}
+                onChange={(date) => {
+                  const formattedDate = date ? format(date, "yyyy-MM-dd") : "";
+                  onChange(formattedDate);
+                }}
                 customInput={<CustomInput ref={ref} value={value} />}
+                minDate={new Date()}
+                dayClassName={(date) => {
+                  const today = startOfDay(new Date());
+                  if (isBefore(date, today)) {
+                    return "text-gray-400 cursor-not-allowed"; // ✅ 오버라이드 강제 적용
+                  }
+                  return "";
+                }}
                 locale={ko}
                 showPopperArrow={false}
                 popperPlacement="bottom-end"
@@ -104,7 +116,7 @@ export default function RecruitFormBasicInfo({ control, watch, setValue, registe
             type="small"
             inputProps={{
               placeholder:
-                typeof watch("image") !== "string" && imageWatch?.length > 0
+                typeof watch("thumbnail") !== "string" && imageWatch?.length > 0
                   ? (imageWatch[0] as File).name
                   : "1000px*800px 5mb 이하 사진파일",
               readOnly: true,
@@ -114,7 +126,7 @@ export default function RecruitFormBasicInfo({ control, watch, setValue, registe
                 content="업로드"
                 disabled={selectBasicImage}
                 type="filled"
-                colorType={typeof watch("image") !== "string" && imageWatch?.length > 0 ? "primary" : "grey"}
+                colorType={typeof watch("thumbnail") !== "string" && imageWatch?.length > 0 ? "primary" : "grey"}
                 size="medium"
                 btnType="button"
                 onClick={onClickUploadImage}
@@ -126,7 +138,7 @@ export default function RecruitFormBasicInfo({ control, watch, setValue, registe
             id="project-image"
             type="file"
             accept="image/*"
-            {...register("image", { required: !selectBasicImage ? "프로젝트 이미지를 업로드해주세요." : false })}
+            {...register("thumbnail", { required: !selectBasicImage ? "프로젝트 이미지를 업로드해주세요." : false })}
             className="hidden"
           />
 
@@ -138,7 +150,7 @@ export default function RecruitFormBasicInfo({ control, watch, setValue, registe
 
         <div className="flex flex-col gap-4 basis-1/2">
           <SpartaRadioGroup
-            groupsToShow={["projectPurpose", "projectPeriod", "projectMethod"]}
+            groupsToShow={["purpose", "duration", "meeting_type"]}
             control={control}
             watch={watch}
             setValue={setValue}

@@ -1,5 +1,5 @@
 const radioGroupsData = {
-  projectPurpose: {
+  purpose: {
     label: "프로젝트 목적",
     options: [
       { label: "포트폴리오", value: "portfolio" },
@@ -8,7 +8,7 @@ const radioGroupsData = {
       { label: "상용화", value: "commercial" },
     ],
   },
-  projectPeriod: {
+  duration: {
     label: "프로젝트 기간",
     options: [
       { label: "3개월 이내", value: "3months" },
@@ -17,7 +17,7 @@ const radioGroupsData = {
       { label: "1년 이상", value: "moreThan1year" },
     ],
   },
-  projectMethod: {
+  meeting_type: {
     label: "진행방식",
     options: [
       { label: "온라인", value: "online" },

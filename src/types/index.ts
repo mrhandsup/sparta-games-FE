@@ -8,9 +8,11 @@ export type RadioGroupData = typeof radioGroupsData;
 export type TProjectRecruitForm = {
   [K in keyof RadioGroupData]: string;
 } & {
-  date: Date;
+  want_roles: string[];
+  deadline: Date;
   contact: string;
-  image: string | File[];
+  thumbnail: string | File[];
+  thumbnail_basic: "default";
   title: string;
   content: string;
 };
