@@ -10,6 +10,10 @@ import CardList from "../components/communityComponents/TeamBuilding/TeamRecruit
 
 import pixelMeteor from "../assets/homeImage/pixelMeteor.svg";
 import balloon from "../assets/headerImage/balloon.svg";
+import { useQuery } from "@tanstack/react-query";
+import { getTeamBuild } from "../api/teambuilding";
+import { TTeamBuildResponse } from "../types";
+import { userStore } from "../share/store/userStore";
 
 type TabValue = "teamRecruit" | "profileRegister";
 
@@ -19,7 +23,17 @@ const TAB_LABELS: Record<TabValue, string> = {
 };
 
 export default function TeamBuilding() {
+  const { userData } = userStore();
   const [selectedTab, setSelectedTab] = useState<TabValue>("teamRecruit");
+
+  const { data } = useQuery<TTeamBuildResponse>({
+    queryKey: ["teamBuilding"],
+    queryFn: () => getTeamBuild(),
+  });
+
+  const teamBuildPosts = data?.data.team_build_posts;
+  const profileImage = userData?.data.profile_image;
+  console.log("데이터 불러오기 성공!", data?.data.team_build_posts);
 
   return (
     <main>
@@ -51,18 +65,10 @@ export default function TeamBuilding() {
 
         <SearchFilter isProfileTab={selectedTab === "profileRegister"} />
         <div className="grid grid-cols-4 gap-5">
-          <CardList isProfileTab={selectedTab === "profileRegister"} />
-          <CardList isProfileTab={selectedTab === "profileRegister"} />
-          <CardList isProfileTab={selectedTab === "profileRegister"} />
-          <CardList isProfileTab={selectedTab === "profileRegister"} />
-          <CardList isProfileTab={selectedTab === "profileRegister"} />
-          <CardList isProfileTab={selectedTab === "profileRegister"} />
-          <CardList isProfileTab={selectedTab === "profileRegister"} />
-          <CardList isProfileTab={selectedTab === "profileRegister"} />
-          <CardList isProfileTab={selectedTab === "profileRegister"} />
-          <CardList isProfileTab={selectedTab === "profileRegister"} />
-          <CardList isProfileTab={selectedTab === "profileRegister"} />
-          <CardList isProfileTab={selectedTab === "profileRegister"} />
+          {teamBuildPosts &&
+            teamBuildPosts.map((post) => (
+              <CardList post={post} profileImage={profileImage} isProfileTab={selectedTab === "profileRegister"} />
+            ))}
         </div>
 
         <div className="mt-10">

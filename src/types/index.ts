@@ -2,6 +2,42 @@
 
 import radioGroupsData from "../util/constance/radioGroupsData";
 
+export type TTeamBuildResponse = {
+  status: "success" | "fail" | "error";
+  message: string | null;
+  data: {
+    team_build_posts: TTeamBuildPostData[];
+    recommended_posts: TTeamBuildRecommenedPostData[];
+  };
+  pagination: {
+    count: number;
+    next: string | null;
+    previous: string | null;
+  };
+  error_code: string | null;
+};
+
+export type TTeamBuildPostData = {
+  id: number;
+  author_data: {
+    id: number;
+    nickname: string;
+    image: string | null;
+  };
+  deadline: string;
+  duration: string;
+  purpose: "PORTFOLIO" | "CONTEST" | "STUDY" | "COMMERCIAL";
+  status_chip: "모집중";
+  thumbnail: string;
+  title: string;
+  want_roles: string[];
+  is_visible: boolean;
+};
+
+export type TTeamBuildRecommenedPostData = TTeamBuildPostData & {
+  content: string;
+};
+
 export type RadioGroupKey = keyof typeof radioGroupsData;
 export type RadioGroupData = typeof radioGroupsData;
 
