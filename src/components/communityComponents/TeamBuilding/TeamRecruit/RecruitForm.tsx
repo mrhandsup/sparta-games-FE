@@ -14,6 +14,7 @@ import useModalToggles from "../../../../hook/useModalToggles";
 import SpartaReactionModal, { TSpartaReactionModalProps } from "../../../../spartaDesignSystem/SpartaReactionModal";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { AxiosError } from "axios";
 
 export default function RecruitForm() {
   const { register, watch, handleSubmit, control, setValue, formState, trigger } = useForm<TProjectRecruitForm>({
@@ -68,6 +69,13 @@ export default function RecruitForm() {
       onClickModalToggleHandlers[CONFIRM_MODAL_ID]();
       setNoActionModalData(noActionData.uploadSuccess);
       onClickModalToggleHandlers[SUCCESS_MODAL_ID]();
+    },
+    onError: (error: AxiosError) => {
+      if (error.response && error.response.status === 400) {
+        window.alert(`${(error.response?.data as { message?: string })?.message}`);
+      } else {
+        window.alert("알 수 없는 오류가 발생했습니다. 잠시후에 다시 시도해주세요.");
+      }
     },
   });
 

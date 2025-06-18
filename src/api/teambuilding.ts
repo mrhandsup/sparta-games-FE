@@ -12,9 +12,8 @@ export const postTeamBuild = async (formData: FormData) => {
     return res?.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      window.alert("오류가 발생했습니다. 관리자에게 문의해주세요.");
-
-      return error.response;
+      throw error;
     }
+    throw error;
   }
 };
