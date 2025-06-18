@@ -69,6 +69,8 @@ export default function RecruitFormBasicInfo({ control, watch, setValue, registe
             control={control}
             rules={{ required: "포지션을 선택해주세요" }}
             name="position"
+            placeHolderText="구하는 포지션을 선택해주세요."
+            multiple
           />
 
           <Controller
