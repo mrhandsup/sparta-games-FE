@@ -5,8 +5,22 @@ import SpartaPagination from "../../../../spartaDesignSystem/SpartaPagination";
 import useModalToggles from "../../../../hook/useModalToggles";
 import SpartaReactionModal, { TSpartaReactionModalProps } from "../../../../spartaDesignSystem/SpartaReactionModal";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { TTeamBuildDetailResponse } from "../../../../types";
+import { getTeamBuildDetail } from "../../../../api/teambuilding";
+import { useLocation } from "react-router-dom";
 
 export default function TeamRecruitDetail() {
+  const location = useLocation();
+  const { post } = location.state || {};
+
+  const { data } = useQuery<TTeamBuildDetailResponse>({
+    queryKey: ["teamBuildngDetail", post?.id],
+    queryFn: () => getTeamBuildDetail(post?.id),
+  });
+
+  const postDetail = data?.data;
+
   const CLOSE_RECRUIT_MODAL = "closeRecruitModal";
   const NO_ACTION_MODAL_ID = "noActionModal";
   const { modalToggles, onClickModalToggleHandlers } = useModalToggles([CLOSE_RECRUIT_MODAL, NO_ACTION_MODAL_ID]);
@@ -101,8 +115,12 @@ export default function TeamRecruitDetail() {
   return (
     <>
       <div className="w-[1180px] mx-auto">
-        <RecruitHeader onClickCloseRecruit={onClickCloseRecruit} onClickDeleteRecruit={onClickDeleteRecruit} />
-        <RecruitDetailInfo />
+        <RecruitHeader
+          postDetail={postDetail}
+          onClickCloseRecruit={onClickCloseRecruit}
+          onClickDeleteRecruit={onClickDeleteRecruit}
+        />
+        <RecruitDetailInfo postDetail={postDetail} />
         <RecruitCommentSection onClickDeleteComment={onClickDeleteComment} />
         <SpartaPagination dataTotalCount={5} countPerPage={1} onChangePage={() => {}} />
       </div>

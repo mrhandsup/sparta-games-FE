@@ -2,12 +2,27 @@
 
 import radioGroupsData from "../util/constance/radioGroupsData";
 
-export type TTeamBuildResponse = {
+export type TCommonTeamBuildPost = {
+  id: number;
+  title: string;
+  want_roles: string[];
+  purpose: "PORTFOLIO" | "CONTEST" | "STUDY" | "COMMERCIAL";
+  duration: string;
+  deadline: string;
+  thumbnail: string;
+  author_data: {
+    id: number;
+    nickname: string;
+    image: string | null;
+  };
+};
+
+export type TTeamBuildPostResponse = {
   status: "success" | "fail" | "error";
   message: string | null;
   data: {
-    team_build_posts: TTeamBuildPostData[];
-    recommended_posts: TTeamBuildRecommenedPostData[];
+    team_build_posts: TTeamBuildPostListItem[];
+    recommended_posts: TTeamBuildRecommenedPostListItem[];
   };
   pagination: {
     count: number;
@@ -17,24 +32,32 @@ export type TTeamBuildResponse = {
   error_code: string | null;
 };
 
-export type TTeamBuildPostData = {
-  id: number;
-  author_data: {
-    id: number;
-    nickname: string;
-    image: string | null;
-  };
-  deadline: string;
-  duration: string;
-  purpose: "PORTFOLIO" | "CONTEST" | "STUDY" | "COMMERCIAL";
+export type TTeamBuildPostListItem = TCommonTeamBuildPost & {
   status_chip: "모집중";
-  thumbnail: string;
-  title: string;
-  want_roles: string[];
   is_visible: boolean;
 };
 
-export type TTeamBuildRecommenedPostData = TTeamBuildPostData & {
+export type TTeamBuildDetailResponse = {
+  status: "success" | "fail" | "error";
+  message: string | null;
+  data: TTeamBuildPostDetail;
+
+  pagination: {
+    count: number;
+    next: string | null;
+    previous: string | null;
+  };
+  error_code: string | null;
+};
+
+export type TTeamBuildPostDetail = TCommonTeamBuildPost & {
+  contact: string;
+  content: string;
+  meeting_type: string;
+  create_dt: string;
+};
+
+export type TTeamBuildRecommenedPostListItem = TTeamBuildPostListItem & {
   content: string;
 };
 

@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import defaultImage from "../../../../assets/category/Rhythm.png";
 import defaultProfile from "../../../../assets/common/defaultProfile.svg";
-import { TTeamBuildPostData } from "../../../../types";
+import { TTeamBuildPostListItem } from "../../../../types";
 
 type Props = {
-  post: TTeamBuildPostData;
+  post: TTeamBuildPostListItem;
   profileImage: string | undefined;
   isProfileTab: boolean;
 };
@@ -37,7 +37,11 @@ export default function CardList({ post, profileImage, isProfileTab }: Props) {
       onClick={() => {
         isProfileTab
           ? navigate("/community/team-building/profile-detail/1")
-          : navigate(`/community/team-building/team-recruit/${post.id}`);
+          : navigate(`/community/team-building/team-recruit/${post.id}`, {
+              state: {
+                post,
+              },
+            });
       }}
     >
       <div className="h-[55%] relative">

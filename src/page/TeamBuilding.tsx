@@ -12,7 +12,7 @@ import pixelMeteor from "../assets/homeImage/pixelMeteor.svg";
 import balloon from "../assets/headerImage/balloon.svg";
 import { useQuery } from "@tanstack/react-query";
 import { getTeamBuild } from "../api/teambuilding";
-import { TTeamBuildResponse } from "../types";
+import { TTeamBuildPostResponse } from "../types";
 import { userStore } from "../share/store/userStore";
 import usePageHandler from "../hook/usePageHandler ";
 
@@ -31,7 +31,7 @@ export default function TeamBuilding() {
   const { userData } = userStore();
   const { currentPage, onChangePage } = usePageHandler();
 
-  const { data } = useQuery<TTeamBuildResponse>({
+  const { data } = useQuery<TTeamBuildPostResponse>({
     queryKey: ["teamBuilding", currentPage],
     queryFn: () => getTeamBuild(userData?.data.user_id, "", "", "", "", currentPage, COUNT_PER_PAGE),
   });
@@ -39,7 +39,6 @@ export default function TeamBuilding() {
   const teamBuildPosts = data?.data.team_build_posts;
   const recommandedPosts = data?.data.recommended_posts;
   const profileImage = userData?.data.profile_image;
-  console.log("데이터 불러오기 성공!", data);
 
   return (
     <main>

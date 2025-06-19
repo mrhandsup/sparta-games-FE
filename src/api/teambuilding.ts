@@ -52,13 +52,17 @@ export const getTeamBuild = async (
   }
 };
 
-export const getGameMyReview = async (gamePk: number, page?: number, limit?: number) => {
+/**
+ * 팀빌딩 모집글 상세조회
+ */
+export const getTeamBuildDetail = async (postId: number) => {
   try {
-    const res = await sparta_games_auth.get(`/games/api/list/${gamePk}/reviews/?page=${page}&limit=${limit}`);
-    return res.data;
+    const res = await sparta_games.get(`/teams/api/teambuild/${postId}`);
+    return res?.data;
   } catch (error) {
-    if (error instanceof Error) {
-      window.alert(error.message);
+    if (axios.isAxiosError(error)) {
+      throw error;
     }
+    throw error;
   }
 };

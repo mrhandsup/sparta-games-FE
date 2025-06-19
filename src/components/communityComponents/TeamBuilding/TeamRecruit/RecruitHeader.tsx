@@ -4,12 +4,14 @@ import SpartaButton from "../../../../spartaDesignSystem/SpartaButton";
 
 import backIcon from "../../../../assets/common/arrow/triangleArrowLeft.svg";
 import defaultProfile from "../../../../assets/common/defaultProfile.svg";
+import { TTeamBuildPostDetail } from "../../../../types";
 
 type Props = {
+  postDetail: TTeamBuildPostDetail | undefined;
   onClickCloseRecruit: () => void;
   onClickDeleteRecruit: () => void;
 };
-export default function RecruitHeader({ onClickCloseRecruit, onClickDeleteRecruit }: Props) {
+export default function RecruitHeader({ postDetail, onClickCloseRecruit, onClickDeleteRecruit }: Props) {
   const navigate = useNavigate();
 
   return (
@@ -20,7 +22,7 @@ export default function RecruitHeader({ onClickCloseRecruit, onClickDeleteRecrui
           <div className="px-2 py-1 rounded-[4px] font-DungGeunMo text-black bg-white">
             <p>모집중</p>
           </div>
-          <p className="font-DungGeunMo text-white text-2xl">ㅇㅇ게임즈 팀원 구합니다</p>
+          <p className="w-[800px] line-clamp-3 font-DungGeunMo text-white text-2xl">{postDetail?.title}</p>
         </div>
 
         <div className="flex gap-3 w-[300px]">
@@ -51,9 +53,9 @@ export default function RecruitHeader({ onClickCloseRecruit, onClickDeleteRecrui
       <div className="flex items-center justify-between gap-2 mt-5">
         <div className="flex items-center gap-1">
           <img src={defaultProfile} className="w-8 h-8 border-2 border-solid border-gray-400 rounded-full" />
-          <p className="font-DungGeunMo text-gray-100 text-xl">[작성자명]</p>
+          <p className="font-DungGeunMo text-gray-100 text-xl">[{postDetail?.author_data.nickname}]</p>
         </div>
-        <span className="text-white text-xl">2025.05.30</span>
+        <span className="text-white text-xl">{postDetail?.create_dt.split("T")[0]}</span>
       </div>
     </>
   );
