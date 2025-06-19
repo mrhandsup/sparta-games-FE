@@ -130,7 +130,10 @@ const SignUp = () => {
               colorType="primary"
               onClick={signupForm.handleSubmit(onSubmit)}
               disabled={
-                !signupForm.formState.isValid || !isEmailVerifySuccess || !game_category || game_category.length === 0
+                !signupForm.formState.isValid ||
+                (!email && !isEmailVerifySuccess) ||
+                !game_category ||
+                game_category.length === 0
               }
               content="회원가입"
             />
