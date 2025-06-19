@@ -1,5 +1,5 @@
 import axios from "axios";
-import { sparta_games_auth } from "./axios";
+import { sparta_games, sparta_games_auth } from "./axios";
 
 /**
  * 팀빌딩 모집 등록
@@ -22,6 +22,7 @@ export const postTeamBuild = async (formData: FormData) => {
  * 팀빌딩 모집글 목록 조회
  */
 export const getTeamBuild = async (
+  userId?: number,
   status_chip?: string,
   roles?: string,
   purpose?: string,
@@ -30,6 +31,7 @@ export const getTeamBuild = async (
   limit?: number,
 ) => {
   try {
+    const client = userId ? sparta_games_auth : sparta_games;
     const params = new URLSearchParams();
 
     if (status_chip) params.append("status_chip", status_chip);
@@ -39,7 +41,7 @@ export const getTeamBuild = async (
     if (page !== undefined) params.append("page", String(page));
     if (limit !== undefined) params.append("limit", String(limit));
 
-    const res = await sparta_games_auth.get(`/teams/api/teambuild/?${params.toString()}`);
+    const res = await client.get(`/teams/api/teambuild/?${params.toString()}`);
 
     return res?.data;
   } catch (error) {

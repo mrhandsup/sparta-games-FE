@@ -14,6 +14,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getTeamBuild } from "../api/teambuilding";
 import { TTeamBuildResponse } from "../types";
 import { userStore } from "../share/store/userStore";
+import usePageHandler from "../hook/usePageHandler ";
 
 type TabValue = "teamRecruit" | "profileRegister";
 
@@ -23,18 +24,22 @@ const TAB_LABELS: Record<TabValue, string> = {
 };
 
 export default function TeamBuilding() {
-  const { userData } = userStore();
+  const COUNT_PER_PAGE = 12;
+
   const [selectedTab, setSelectedTab] = useState<TabValue>("teamRecruit");
 
+  const { userData } = userStore();
+  const { currentPage, onChangePage } = usePageHandler();
+
   const { data } = useQuery<TTeamBuildResponse>({
-    queryKey: ["teamBuilding"],
-    queryFn: () => getTeamBuild(),
+    queryKey: ["teamBuilding", currentPage],
+    queryFn: () => getTeamBuild(userData?.data.user_id, "", "", "", "", currentPage, COUNT_PER_PAGE),
   });
 
   const teamBuildPosts = data?.data.team_build_posts;
   const recommandedPosts = data?.data.recommended_posts;
   const profileImage = userData?.data.profile_image;
-  console.log("데이터 불러오기 성공!", recommandedPosts);
+  console.log("데이터 불러오기 성공!", data);
 
   return (
     <main>
@@ -63,7 +68,7 @@ export default function TeamBuilding() {
           </div>
         </div>
 
-        <SearchFilter isProfileTab={selectedTab === "profileRegister"} />
+        <SearchFilter userData={userData?.data} isProfileTab={selectedTab === "profileRegister"} />
         <div className="grid grid-cols-4 gap-5">
           {teamBuildPosts &&
             teamBuildPosts.map((post) => (
@@ -72,7 +77,11 @@ export default function TeamBuilding() {
         </div>
 
         <div className="mt-10">
-          <SpartaPagination dataTotalCount={5} countPerPage={data?.pagination.count} onChangePage={() => {}} />
+          <SpartaPagination
+            dataTotalCount={data?.pagination.count}
+            countPerPage={COUNT_PER_PAGE}
+            onChangePage={onChangePage}
+          />
         </div>
       </div>
     </main>

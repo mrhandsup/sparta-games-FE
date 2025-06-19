@@ -33,25 +33,22 @@ export default function CardList({ post, profileImage, isProfileTab }: Props) {
   return (
     <section
       key={post?.id}
-      className=" relative h-[500px] border-gray-100 border-[0.7px] rounded-lg border-solid cursor-pointer"
+      className=" relative h-[500px] flex flex-col border-gray-100 border-[0.7px] rounded-lg border-solid cursor-pointer"
       onClick={() => {
         isProfileTab
           ? navigate("/community/team-building/profile-detail/1")
           : navigate(`/community/team-building/team-recruit/${post.id}`);
       }}
     >
-      <img src={defaultImage} alt="썸네일" className="h-[55%] object-cover" />
-
-      <div
-        className="absolute top-0 left-0 bg-white rounded-tl-md rounded-br-lg font-DungGeunMo text-black py-1.5 px-4 w-fit font-light
-      border-gray-100 border-b-[0.7px] border-r-[0.95px] border-solid
-      "
-      >
-        {post.status_chip}
+      <div className="h-[55%] relative">
+        <img src={defaultImage} alt="썸네일" className="w-full h-full object-cover" />
+        <div className="absolute top-0 left-0 bg-white rounded-tl-md rounded-br-lg font-DungGeunMo text-black py-1.5 px-4 w-fit font-light border-gray-100 border-b-[0.7px] border-r-[0.95px] border-solid">
+          {post.status_chip}
+        </div>
       </div>
 
-      <div className="px-4 pt-6 h-[45%] bg-gray-800 text-white rounded-b-lg  ">
-        <div className="flex flex-col gap-2">
+      <div className="flex-1 px-4 pt-6 bg-gray-800 text-white flex flex-col justify-between">
+        <div className="flex flex-col gap-2 overflow-hidden flex-1">
           {isProfileTab ? (
             <div className="flex items-center gap-2 font-DungGeunMo text-black">
               <div className="px-2 py-1 rounded-[4px] bg-white">
@@ -59,7 +56,7 @@ export default function CardList({ post, profileImage, isProfileTab }: Props) {
               </div>
             </div>
           ) : (
-            <div className="flex flex-wrap  items-center gap-2 font-DungGeunMo text-black">
+            <div className="flex flex-wrap items-start gap-2 max-h-[64px] font-DungGeunMo text-black">
               {post.want_roles.map((role) => (
                 <div className="px-2 py-1 rounded-[4px] bg-white whitespace-nowrap">
                   <p>{role}</p>
@@ -78,23 +75,22 @@ export default function CardList({ post, profileImage, isProfileTab }: Props) {
           <div className="my-4 text-heading-20 font-bold text-ellipsis overflow-hidden truncate">
             {isProfileTab ? "Unity, Unreal 사용하는 개발자입니다" : post.title}
           </div>
-
-          <div className="flex items-center gap-2">
-            <img
-              className="w-8 h-8 border-2 border-solid border-gray-400 rounded-full"
-              src={
-                profileImage === ""
-                  ? defaultProfile
-                  : import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
-                  ? import.meta.env.VITE_PROXY_HOST.replace(/\/$/, "") + profileImage
-                  : profileImage
-              }
-              alt={`profile-img-${post.id}`}
-            />
-            <p className="font-bold text-white text-lg">{post.author_data.nickname}</p>
-            <span className="text-gray-400 text-xl">|</span>
-            <span className="text-white text-lg">{isProfileTab ? "취준생" : `${post.deadline} 까지`}</span>
-          </div>
+        </div>
+        <div className="flex items-center gap-2 pb-4">
+          <img
+            className="w-8 h-8 border-2 border-solid border-gray-400 rounded-full"
+            src={
+              profileImage === ""
+                ? defaultProfile
+                : import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
+                ? import.meta.env.VITE_PROXY_HOST.replace(/\/$/, "") + profileImage
+                : profileImage
+            }
+            alt={`profile-img-${post.id}`}
+          />
+          <p className="font-bold text-white text-lg truncate max-w-[100px]">{post.author_data.nickname}</p>
+          <span className="text-gray-400 text-xl">|</span>
+          <span className="text-white text-lg ">{isProfileTab ? "취준생" : `${post.deadline} 까지`}</span>
         </div>
       </div>
     </section>

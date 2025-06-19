@@ -10,8 +10,12 @@ import ArrowButton from "../../../assets/common/arrow/triangleArrowBottom.svg";
 import ArrowButtonFill from "../../../assets/common/arrow/triangleArrowBottomActive.svg";
 import FilterReset from "../../../assets/communityImage/Reset.svg";
 import deleteIcon from "../../../assets/common/DeleteIcon.svg";
+import { TUserData } from "../../../types";
+import useModalToggles from "../../../hook/useModalToggles";
+import SpartaReactionModal, { TSpartaReactionModalProps } from "../../../spartaDesignSystem/SpartaReactionModal";
 
 type Props = {
+  userData: TUserData | undefined;
   isProfileTab: boolean;
 };
 type FilterCategory = "position" | "purpose" | "period";
@@ -21,12 +25,34 @@ interface SelectedFilter {
   value: string;
 }
 
-const SearchFilter = ({ isProfileTab }: Props) => {
+const SearchFilter = ({ userData, isProfileTab }: Props) => {
   const [filterCliked, setFilterCliked] = useState("");
   const [isChecked, setIsChecked] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState<SelectedFilter[]>([]);
 
   const navigate = useNavigate();
+
+  const NO_ACTION_MODAL_ID = "noActionModal";
+  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([NO_ACTION_MODAL_ID]);
+
+  const noActionData: { [key: string]: Partial<TSpartaReactionModalProps> } = {
+    uploadWarning: {
+      title: "잠시만요!",
+      content: "팀원 모집 글 등록은 회원만 이용가능합니다.",
+      btn1: {
+        text: "확인했습니다",
+        onClick: () => {
+          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+        },
+      },
+      type: "alert",
+    },
+  };
+
+  // 단순 모달 데이터
+  const [noActionModalData, setNoActionModalData] = useState<Partial<TSpartaReactionModalProps>>(
+    noActionData.gameupload,
+  );
 
   const handleToggle = () => {
     setIsChecked((prev) => !prev);
@@ -211,11 +237,14 @@ const SearchFilter = ({ isProfileTab }: Props) => {
             type="filled"
             size="medium"
             customStyle="w-[200px]"
-            onClick={() =>
-              navigate(
-                `${isProfileTab ? "/community/team-building/profile-create" : "/community/team-building/create"}`,
-              )
-            }
+            onClick={() => {
+              userData
+                ? navigate(
+                    `${isProfileTab ? "/community/team-building/profile-create" : "/community/team-building/create"}`,
+                  )
+                : setNoActionModalData(noActionData.uploadWarning);
+              onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+            }}
           />
         </div>
       </div>
@@ -236,6 +265,27 @@ const SearchFilter = ({ isProfileTab }: Props) => {
           </div>
         ))}
       </div>
+
+      {noActionModalData && (
+        <SpartaReactionModal
+          isOpen={modalToggles[NO_ACTION_MODAL_ID]}
+          onClose={onClickModalToggleHandlers[NO_ACTION_MODAL_ID]}
+          modalId={NO_ACTION_MODAL_ID}
+          title={noActionModalData.title || ""}
+          content={noActionModalData.content || ""}
+          btn1={{
+            text: noActionModalData?.btn1?.text || "",
+            onClick: noActionModalData?.btn1?.onClick || (() => {}),
+          }}
+          btn2={
+            noActionModalData?.btn2 && {
+              text: noActionModalData?.btn2?.text || "",
+              onClick: noActionModalData?.btn2?.onClick || (() => {}),
+            }
+          }
+          type={noActionModalData.type}
+        />
+      )}
     </>
   );
 };
