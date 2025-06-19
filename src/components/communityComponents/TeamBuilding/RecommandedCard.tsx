@@ -1,10 +1,9 @@
-import heroImage from "../../../assets/communityImage/heroImage.png";
 import defaultProfile from "../../../assets/common/defaultProfile.svg";
-import { TTeamBuildRecommenedPostData } from "../../../types";
+import { TTeamBuildRecommenedPostListItem } from "../../../types";
 import { useNavigate } from "react-router-dom";
 
 type Props = {
-  post: TTeamBuildRecommenedPostData;
+  post: TTeamBuildRecommenedPostListItem;
   profileImage: string | undefined;
 };
 export default function RecommandedCard({ post, profileImage }: Props) {

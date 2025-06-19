@@ -7,8 +7,8 @@ import SpartaReactionModal, { TSpartaReactionModalProps } from "../../../../spar
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { TTeamBuildDetailResponse } from "../../../../types";
-import { getTeamBuildDetail, patchTeamBuild } from "../../../../api/teambuilding";
-import { useLocation } from "react-router-dom";
+import { deleteTeamBuild, getTeamBuildDetail, patchTeamBuild } from "../../../../api/teambuilding";
+import { useLocation, useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
 
 export default function TeamRecruitDetail() {
@@ -16,6 +16,7 @@ export default function TeamRecruitDetail() {
   const { post } = location.state || {};
 
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const { data } = useQuery<TTeamBuildDetailResponse>({
     queryKey: ["teamBuildngDetail", post?.id],
@@ -51,6 +52,33 @@ export default function TeamRecruitDetail() {
       }
     },
   });
+
+  const deleteRecruitMutation = useMutation({
+    mutationFn: () => deleteTeamBuild(postDetail?.id),
+    onSuccess: () => {
+      onClickModalToggleHandlers[CONFIRM_MODAL_ID]();
+      setNoActionModalData(noActionData.deleteRecruitSuccess);
+      onClickModalToggleHandlers[SUCCESS_MODAL_ID]();
+    },
+    onError: (error: AxiosError<{ status: string; message?: string }>) => {
+      if (error.response && (error.response.data.status === "fail" || error.response.data.status === "error")) {
+        onClickModalToggleHandlers[CONFIRM_MODAL_ID]();
+        setNoActionModalData({
+          title: "삭제 실패",
+          content: (error.response?.data as { message?: string })?.message,
+          btn1: {
+            text: "확인했습니다.",
+            onClick: () => {
+              onClickModalToggleHandlers[CONFIRM_MODAL_ID]();
+            },
+          },
+          type: "error",
+        });
+        onClickModalToggleHandlers[CONFIRM_MODAL_ID]();
+      }
+    },
+  });
+
   const CLOSE_RECRUIT_MODAL = "closeRecruitModal";
   const CONFIRM_MODAL_ID = "confirmModal";
   const SUCCESS_MODAL_ID = "successModal";
@@ -63,13 +91,13 @@ export default function TeamRecruitDetail() {
   ]);
 
   const noActionData: { [key: string]: Partial<TSpartaReactionModalProps> } = {
-    deleteRecruit: {
+    deleteRecruitSuccess: {
       title: "글 삭제",
       content: "글 삭제가 완료되었습니다.",
       btn1: {
         text: "확인했습니다.",
         onClick: () => {
-          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+          navigate("/community/team-building");
         },
       },
       type: "alert",
@@ -80,14 +108,13 @@ export default function TeamRecruitDetail() {
       btn1: {
         text: "글을 삭제할게요.",
         onClick: () => {
-          // TODO: 글 삭제 api 핸들러 추가
-          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+          deleteRecruitMutation.mutate();
         },
       },
       btn2: {
         text: "생각해볼게요.",
         onClick: () => {
-          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+          onClickModalToggleHandlers[CONFIRM_MODAL_ID]();
         },
       },
       type: "error",
@@ -115,7 +142,7 @@ export default function TeamRecruitDetail() {
       btn1: {
         text: "확인했습니다.",
         onClick: () => {
-          onClickModalToggleHandlers[CONFIRM_MODAL_ID]();
+          onClickModalToggleHandlers[SUCCESS_MODAL_ID]();
         },
       },
     },
@@ -150,12 +177,12 @@ export default function TeamRecruitDetail() {
 
   const onClickDeleteRecruit = () => {
     setNoActionModalData(noActionData.deleteRecruiConfirm);
-    onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+    onClickModalToggleHandlers[CONFIRM_MODAL_ID]();
   };
 
   const onClickDeleteComment = () => {
     setNoActionModalData(noActionData.deleteCommentConfirm);
-    onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+    onClickModalToggleHandlers[CONFIRM_MODAL_ID]();
   };
 
   return (
@@ -200,11 +227,11 @@ export default function TeamRecruitDetail() {
             title={noActionModalData.title || ""}
             content={noActionModalData.content || ""}
             btn1={{
-              text: "확인했습니다",
-              onClick: () => {
-                onClickModalToggleHandlers[SUCCESS_MODAL_ID]();
-              },
+              text: noActionModalData?.btn1?.text || "",
+              onClick: noActionModalData?.btn1?.onClick || (() => {}),
             }}
+            closeOnClickOutside={false}
+            type={noActionModalData.type}
           />
         </>
       )}

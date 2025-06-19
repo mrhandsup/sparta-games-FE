@@ -1,4 +1,3 @@
-import exampleImage from "../../../../assets/category/Survival.png";
 import { TTeamBuildPostDetail } from "../../../../types";
 type Props = {
   postDetail: TTeamBuildPostDetail | undefined;
