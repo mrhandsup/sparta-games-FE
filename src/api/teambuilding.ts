@@ -66,3 +66,18 @@ export const getTeamBuildDetail = async (postId: number) => {
     throw error;
   }
 };
+
+/**
+ * 팀빌딩 모집 마감
+ */
+export const patchTeamBuild = async (postId: number | undefined) => {
+  try {
+    const res = await sparta_games_auth.patch(`/teams/api/teambuild/${postId}/`);
+    return res?.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw error;
+    }
+    throw error;
+  }
+};
