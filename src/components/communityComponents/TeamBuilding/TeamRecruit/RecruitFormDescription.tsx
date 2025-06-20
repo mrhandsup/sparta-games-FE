@@ -9,12 +9,13 @@ import ReactQuill from "react-quill";
 import { Quill } from "react-quill";
 import { ImageActions } from "@xeger/quill-image-actions";
 import { ImageFormats } from "@xeger/quill-image-formats";
+import "react-quill/dist/quill.snow.css";
+import { EDITOR_FORMATS } from "../../../../constant/constant";
+
+import { sparta_games_auth } from "../../../../api/axios";
 
 Quill.register("modules/imageActions", ImageActions);
 Quill.register("modules/imageFormats", ImageFormats);
-
-import "react-quill/dist/quill.snow.css";
-import { EDITOR_FORMATS } from "../../../../constant/constant";
 
 type Props = {
   watch: UseFormWatch<TProjectRecruitForm>;
@@ -33,6 +34,7 @@ export default function RecruitFormDescription({ register, watch, setValue }: Pr
 
   const editorContent = watch("content");
 
+  console.log("작성중인 내용", editorContent);
   const handleEditorChange = (editorState: string) => {
     // react-quill 내용 작성 중, 내용 모두 지울 경우 생기는 <p></br></p> 태그 제거하여 빈 문자열로 설정
     const plainText = editorState.replace(/<(.|\n)*?>/g, "").trim();
@@ -51,12 +53,49 @@ export default function RecruitFormDescription({ register, watch, setValue }: Pr
 
     input.onchange = async () => {
       const file: any = input.files ? input.files[0] : null;
-
       if (!file) return;
 
-      console.log("file", file)!;
-
       /*TODO: 이미지 업로드 API 연동*/
+      try {
+        const ext = file.name.split(".").pop();
+
+        const presignedResponse = await sparta_games_auth.post("/commons/api/presigned-url/upload/", {
+          base_path: "media/images/screenshot/teambuildings",
+          extension: "jpeg",
+        });
+
+        const { upload_url } = presignedResponse.data.data;
+
+        const response = await fetch(upload_url, {
+          method: "PUT",
+          body: file,
+          headers: {
+            "Content-Type": "image/jpeg",
+            // "x-amz-acl": "public-read",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`S3 업로드 실패: ${response.status} ${response.statusText}`);
+        }
+
+        console.log("put 요청 성공!!!", response.url);
+
+        // 2. 업로드된 이미지 URL 에디터에 삽입
+        if (!quillRef.current) return;
+
+        const editor = quillRef.current.getEditor();
+        const range = editor.getSelection() || { index: editor.getLength() };
+
+        editor.insertEmbed(range.index, "image", response.url);
+        editor.setSelection(range.index + 1, 0);
+
+        const updatedContent = editor.root.innerHTML;
+
+        setValue("content", updatedContent, { shouldValidate: true });
+      } catch (error) {
+        console.error("이미지 업로드 실패", error);
+      }
     };
   };
 
