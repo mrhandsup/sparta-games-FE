@@ -11,6 +11,7 @@
   },
   "proxy": "http://127.0.0.1:8000",
   "dependencies": {
+    "@ckeditor/ckeditor5-react": "^9.5.0",
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^6.4.0",
@@ -20,6 +21,7 @@
     "@xeger/quill-image-formats": "^0.7.2",
     "autoprefixer": "^10.4.19",
     "axios": "^1.7.2",
+    "ckeditor5": "^45.2.0",
     "dompurify": "^3.2.3",
     "jszip": "^3.10.1",
     "jwt-decode": "^4.0.0",

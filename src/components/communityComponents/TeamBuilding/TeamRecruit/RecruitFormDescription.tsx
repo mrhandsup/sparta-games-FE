@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef } from "react";
-import { UseFormRegister, UseFormSetValue, UseFormWatch } from "react-hook-form";
+import { FormState, UseFormRegister, UseFormSetValue, UseFormWatch } from "react-hook-form";
 
 import SpartaTextField from "../../../../spartaDesignSystem/SpartaTextField";
 
@@ -9,20 +9,22 @@ import ReactQuill from "react-quill";
 import { Quill } from "react-quill";
 import { ImageActions } from "@xeger/quill-image-actions";
 import { ImageFormats } from "@xeger/quill-image-formats";
+import "react-quill/dist/quill.snow.css";
+import { EDITOR_FORMATS } from "../../../../constant/constant";
+
+import { sparta_games_auth } from "../../../../api/axios";
 
 Quill.register("modules/imageActions", ImageActions);
 Quill.register("modules/imageFormats", ImageFormats);
-
-import "react-quill/dist/quill.snow.css";
-import { EDITOR_FORMATS } from "../../../../constant/constant";
 
 type Props = {
   watch: UseFormWatch<TProjectRecruitForm>;
   setValue: UseFormSetValue<TProjectRecruitForm>;
   register: UseFormRegister<TProjectRecruitForm>;
+  formState: FormState<TProjectRecruitForm>;
 };
 
-export default function RecruitFormDescription({ register, watch, setValue }: Props) {
+export default function RecruitFormDescription({ register, watch, setValue, formState }: Props) {
   const quillRef = useRef<ReactQuill | null>(null);
 
   useEffect(() => {
@@ -33,13 +35,16 @@ export default function RecruitFormDescription({ register, watch, setValue }: Pr
 
   const editorContent = watch("content");
 
+  console.log("작성중인 내용", editorContent);
+
   const handleEditorChange = (editorState: string) => {
     // react-quill 내용 작성 중, 내용 모두 지울 경우 생기는 <p></br></p> 태그 제거하여 빈 문자열로 설정
-    const plainText = editorState.replace(/<(.|\n)*?>/g, "").trim();
-
+    const plainText = editorState
+      .replace(/<p><br><\/p>/g, "")
+      .replace(/<\/?p>/g, "")
+      .trim();
     // 내용이 없을 경우 빈 문자열로 설정해서 isValid가 false가 되도록 함
     const cleanedContent = plainText === "" ? "" : editorState;
-
     setValue("content", cleanedContent, { shouldValidate: true });
   };
 
@@ -51,12 +56,50 @@ export default function RecruitFormDescription({ register, watch, setValue }: Pr
 
     input.onchange = async () => {
       const file: any = input.files ? input.files[0] : null;
-
       if (!file) return;
 
-      console.log("file", file)!;
-
       /*TODO: 이미지 업로드 API 연동*/
+      try {
+        const ext = file.name.split(".").pop();
+
+        const presignedResponse = await sparta_games_auth.post("/commons/api/presigned-url/upload/", {
+          base_path: "media/images/screenshot/teambuildings",
+          extension: "jpeg",
+        });
+
+        console.log("presignedResponse.data.data", presignedResponse.data.data);
+        const { upload_url, url } = presignedResponse.data.data;
+
+        const response = await fetch(upload_url, {
+          method: "PUT",
+          body: file,
+          headers: {
+            "Content-Type": "image/*",
+            // "x-amz-acl": "public-read",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`S3 업로드 실패: ${response.status} ${response.statusText}`);
+        }
+
+        console.log("put 성공!, real_url", url);
+
+        // 2. 업로드된 이미지 URL 에디터에 삽입
+        if (!quillRef.current) return;
+
+        const editor = quillRef.current.getEditor();
+        const range = editor.getSelection() || { index: editor.getLength() };
+
+        editor.insertEmbed(range.index, "image", url);
+        editor.setSelection(range.index + 1, 0);
+
+        const updatedContent = editor.root.innerHTML;
+
+        setValue("content", updatedContent, { shouldValidate: true });
+      } catch (error) {
+        console.error("이미지 업로드 실패", error);
+      }
     };
   };
 
@@ -67,7 +110,7 @@ export default function RecruitFormDescription({ register, watch, setValue }: Pr
       toolbar: {
         container: [
           [{ header: [1, 2, false] }],
-          ["bold", "italic", "underline", "strike", "blockquote"],
+          ["bold", "italic", "underline", "strike"],
           [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }],
           ["image"],
           [{ align: [] }, { color: [] }, { background: [] }],
@@ -82,6 +125,7 @@ export default function RecruitFormDescription({ register, watch, setValue }: Pr
     };
   }, []);
 
+  console.log("formState.errors", formState.errors);
   return (
     <div className="w-full mt-10 mb-6 p-9 bg-gray-800 rounded-xl">
       <p className="font-DungGeunMo text-xl text-primary-400">상세내용 작성</p>
@@ -90,10 +134,20 @@ export default function RecruitFormDescription({ register, watch, setValue }: Pr
         <SpartaTextField
           label="글 제목"
           type="small"
-          register={register("title", { required: "프로젝트 제목을 입력해주세요." })}
+          register={register("title", {
+            required: "프로젝트 제목을 입력해주세요.",
+            maxLength: { value: 100, message: "최대 100자까지 입력할 수 있습니다." },
+          })}
           inputProps={{
             placeholder: "핵심 내용을 간략하게 적어보세요.",
+            maxLength: 100,
           }}
+          subLabel={{
+            default: "",
+            error: formState.errors.title?.message as string,
+            pass: "",
+          }}
+          error={!!formState.errors.title}
         />
       </div>
 

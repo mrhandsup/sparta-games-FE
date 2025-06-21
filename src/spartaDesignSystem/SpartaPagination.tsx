@@ -4,12 +4,12 @@ import { FaArrowRight } from "react-icons/fa";
 import { FaArrowLeft } from "react-icons/fa";
 type Props = {
   dataTotalCount: number | undefined;
-  countPerPage: number;
+  countPerPage: number | undefined;
   onChangePage: (event: React.ChangeEvent<unknown>, page: number) => void;
 };
 
 const SpartaPagination = ({ dataTotalCount, countPerPage, onChangePage }: Props) => {
-  const TOTAL_PAGE = dataTotalCount ? Math.ceil(dataTotalCount / countPerPage) : 1;
+  const TOTAL_PAGE = countPerPage && dataTotalCount ? Math.ceil(dataTotalCount / countPerPage) : 1;
 
   return (
     <div className="flex justify-center">

@@ -10,6 +10,11 @@ import CardList from "../components/communityComponents/TeamBuilding/TeamRecruit
 
 import pixelMeteor from "../assets/homeImage/pixelMeteor.svg";
 import balloon from "../assets/headerImage/balloon.svg";
+import { useQuery } from "@tanstack/react-query";
+import { getTeamBuild } from "../api/teambuilding";
+import { TTeamBuildPostResponse } from "../types";
+import { userStore } from "../share/store/userStore";
+import usePageHandler from "../hook/usePageHandler ";
 
 type TabValue = "teamRecruit" | "profileRegister";
 
@@ -19,8 +24,23 @@ const TAB_LABELS: Record<TabValue, string> = {
 };
 
 export default function TeamBuilding() {
+  const COUNT_PER_PAGE = 12;
+
   const [selectedTab, setSelectedTab] = useState<TabValue>("teamRecruit");
 
+  const { userData } = userStore();
+  const { currentPage, onChangePage } = usePageHandler();
+
+  const { data } = useQuery<TTeamBuildPostResponse>({
+    queryKey: ["teamBuilding", currentPage],
+    queryFn: () => getTeamBuild(userData?.data.user_id, "", "", "", "", currentPage, COUNT_PER_PAGE),
+  });
+
+  const teamBuildPosts = data?.data.team_build_posts;
+  const recommandedPosts = data?.data.recommended_posts;
+  const profileImage = userData?.data.profile_image;
+
+  console.log("recommandedPosts", recommandedPosts);
   return (
     <main>
       <div className="bg-gray-800 w-full">
@@ -35,10 +55,9 @@ export default function TeamBuilding() {
             </div>
           </p>
           <div className="grid grid-cols-2 gap-5">
-            <RecommandedCard />
-            <RecommandedCard />
-            <RecommandedCard />
-            <RecommandedCard />
+            {recommandedPosts?.map((post) => (
+              <RecommandedCard post={post} profileImage={profileImage} />
+            ))}
           </div>
         </div>
         <div className="flex items-center justify-between mx-auto mt-16 max-w-[1440px]">
@@ -49,28 +68,22 @@ export default function TeamBuilding() {
           </div>
         </div>
 
-        <SearchFilter isProfileTab={selectedTab === "profileRegister"} />
+        <SearchFilter userData={userData?.data} isProfileTab={selectedTab === "profileRegister"} />
         <div className="grid grid-cols-4 gap-5">
-          <CardList isProfileTab={selectedTab === "profileRegister"} />
-          <CardList isProfileTab={selectedTab === "profileRegister"} />
-          <CardList isProfileTab={selectedTab === "profileRegister"} />
-          <CardList isProfileTab={selectedTab === "profileRegister"} />
-          <CardList isProfileTab={selectedTab === "profileRegister"} />
-          <CardList isProfileTab={selectedTab === "profileRegister"} />
-          <CardList isProfileTab={selectedTab === "profileRegister"} />
-          <CardList isProfileTab={selectedTab === "profileRegister"} />
-          <CardList isProfileTab={selectedTab === "profileRegister"} />
-          <CardList isProfileTab={selectedTab === "profileRegister"} />
-          <CardList isProfileTab={selectedTab === "profileRegister"} />
-          <CardList isProfileTab={selectedTab === "profileRegister"} />
+          {teamBuildPosts &&
+            teamBuildPosts.map((post) => (
+              <CardList post={post} profileImage={profileImage} isProfileTab={selectedTab === "profileRegister"} />
+            ))}
         </div>
 
         <div className="mt-10">
-          <SpartaPagination dataTotalCount={5} countPerPage={1} onChangePage={() => {}} />
+          <SpartaPagination
+            dataTotalCount={data?.pagination.count}
+            countPerPage={COUNT_PER_PAGE}
+            onChangePage={onChangePage}
+          />
         </div>
       </div>
-      {/* <CommunityList /> */}
-      {/* <CardList /> */}
     </main>
   );
 }

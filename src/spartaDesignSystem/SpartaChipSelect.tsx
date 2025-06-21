@@ -190,12 +190,12 @@ const SpartaChipSelect = ({
               input={<OutlinedInput placeholder="선택해주세요" />}
               renderValue={(selected) => {
                 if (!selected || selected === "") {
-                  return <span style={{ color: "#6B7280" }}>{placeHolderText}</span>;
+                  return <span style={{ color: "#737373" }}>{placeHolderText}</span>;
                 }
                 if (multiple) {
                   const selectedArray = Array.isArray(selected) ? selected : [selected];
                   if (selectedArray.length === 0) {
-                    return <span className="font-DungGeunMo text-gray-200">{placeHolderText}</span>;
+                    return <span className="text-gray-400">{placeHolderText}</span>;
                   }
                   return (
                     <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>

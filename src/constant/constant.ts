@@ -64,46 +64,89 @@ const GAME_CATEGORY: selectConfig[] = [
   },
 ];
 
+// const ROLE_CHOICES: selectConfig[] = [
+//   {
+//     label: "Director",
+//     value: "DIR",
+//   },
+//   {
+//     label: "Project Manager",
+//     value: "PM",
+//   },
+//   {
+//     label: "2D Artist",
+//     value: "A2D",
+//   },
+//   {
+//     label: "3D Artist",
+//     value: "A3D",
+//   },
+//   {
+//     label: "UXUI Designer",
+//     value: "UXUI",
+//   },
+//   {
+//     label: "Client Dev",
+//     value: "CLNT",
+//   },
+//   {
+//     label: "Engine Dev",
+//     value: "ENG",
+//   },
+//   {
+//     label: "Server / Network Dev",
+//     value: "SRVR",
+//   },
+//   {
+//     label: "Sound / Audio",
+//     value: "AUD",
+//   },
+//   {
+//     label: "QA / Test",
+//     value: "QA",
+//   },
+// ];
+
 const ROLE_CHOICES: selectConfig[] = [
   {
     label: "Director",
-    value: "DIR",
+    value: "Director",
   },
   {
     label: "Project Manager",
-    value: "PM",
+    value: "Project Manager",
   },
   {
     label: "2D Artist",
-    value: "A2D",
+    value: "2D Artist",
   },
   {
     label: "3D Artist",
-    value: "A3D",
+    value: "3D Artist",
   },
   {
     label: "UXUI Designer",
-    value: "UXUI",
+    value: "UXUI Designer",
   },
   {
     label: "Client Dev",
-    value: "CLNT",
+    value: "Client Dev",
   },
   {
     label: "Engine Dev",
-    value: "ENG",
+    value: "Engine Dev",
   },
   {
     label: "Server / Network Dev",
-    value: "SRVR",
+    value: "Server / Network Dev",
   },
   {
     label: "Sound / Audio",
-    value: "AUD",
+    value: "Sound / Audio",
   },
   {
     label: "QA / Test",
-    value: "QA",
+    value: "QA / Test",
   },
 ];
 

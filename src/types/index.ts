@@ -2,15 +2,76 @@
 
 import radioGroupsData from "../util/constance/radioGroupsData";
 
+export type TCommonTeamBuildPost = {
+  id: number;
+  title: string;
+  want_roles: string[];
+  purpose: "PORTFOLIO" | "CONTEST" | "STUDY" | "COMMERCIAL";
+  duration: string;
+  deadline: string;
+  thumbnail: string;
+  author_data: {
+    id: number;
+    nickname: string;
+    image: string | null;
+  };
+};
+
+export type TTeamBuildPostResponse = {
+  status: "success" | "fail" | "error";
+  message: string | null;
+  data: {
+    team_build_posts: TTeamBuildPostListItem[];
+    recommended_posts: TTeamBuildRecommenedPostListItem[];
+  };
+  pagination: {
+    count: number;
+    next: string | null;
+    previous: string | null;
+  };
+  error_code: string | null;
+};
+
+export type TTeamBuildPostListItem = TCommonTeamBuildPost & {
+  status_chip: "모집중";
+  is_visible: boolean;
+};
+
+export type TTeamBuildDetailResponse = {
+  status: "success" | "fail" | "error";
+  message: string | null;
+  data: TTeamBuildPostDetail;
+
+  pagination: {
+    count: number;
+    next: string | null;
+    previous: string | null;
+  };
+  error_code: string | null;
+};
+
+export type TTeamBuildPostDetail = TCommonTeamBuildPost & {
+  contact: string;
+  content: string;
+  meeting_type: string;
+  create_dt: string;
+};
+
+export type TTeamBuildRecommenedPostListItem = TTeamBuildPostListItem & {
+  content: string;
+};
+
 export type RadioGroupKey = keyof typeof radioGroupsData;
 export type RadioGroupData = typeof radioGroupsData;
 
 export type TProjectRecruitForm = {
   [K in keyof RadioGroupData]: string;
 } & {
-  date: Date;
+  want_roles: string[];
+  deadline: Date;
   contact: string;
-  image: string | File[];
+  thumbnail: string | File[];
+  thumbnail_basic: "default";
   title: string;
   content: string;
 };
