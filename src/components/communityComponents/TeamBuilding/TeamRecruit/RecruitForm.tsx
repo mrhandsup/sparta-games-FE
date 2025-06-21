@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
 
 export default function RecruitForm() {
+  console.log("main 브랜치를 default 브랜치로 변경함");
   const { register, watch, handleSubmit, control, setValue, formState, trigger } = useForm<TProjectRecruitForm>({
     mode: "onChange",
   });
