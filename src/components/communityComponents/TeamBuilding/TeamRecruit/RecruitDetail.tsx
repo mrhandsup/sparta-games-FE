@@ -11,7 +11,7 @@ import { deleteTeamBuild, getTeamBuildDetail, patchTeamBuild } from "../../../..
 import { useLocation, useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
 
-export default function TeamRecruitDetail() {
+export default function RecruitDetail() {
   const location = useLocation();
   const { post } = location.state || {};
 

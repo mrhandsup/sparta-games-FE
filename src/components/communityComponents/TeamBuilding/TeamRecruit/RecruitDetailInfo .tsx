@@ -1,8 +1,19 @@
+import DOMPurify from "dompurify";
+
 import { TTeamBuildPostDetail } from "../../../../types";
+
 type Props = {
   postDetail: TTeamBuildPostDetail | undefined;
 };
 export default function RecruitDetailInfo({ postDetail }: Props) {
+  const config = {
+    ALLOWED_TAGS: ["h1", "h2", "p", "strong", "span", "em", "u", "ol", "ul", "li", "br", "img", "s"],
+    ALLOWED_ATTR: ["class", "style", "src", "width", "height"],
+  };
+
+  const sanitizedContent = postDetail?.content && DOMPurify.sanitize(postDetail?.content, config);
+
+  console.log(postDetail?.content);
   const purpose =
     postDetail?.purpose === "PORTFOLIO"
       ? "포트폴리오"
@@ -31,7 +42,7 @@ export default function RecruitDetailInfo({ postDetail }: Props) {
   return (
     <div className="mt-10 mb-6 p-9 bg-gray-800 rounded-xl">
       <img
-        className="h-[500px] object-cover rounded-lg"
+        className="w-full h-[500px] object-cover rounded-lg"
         src={
           import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
             ? import.meta.env.VITE_PROXY_HOST.replace(/\/$/, "") + postDetail?.thumbnail
@@ -64,7 +75,12 @@ export default function RecruitDetailInfo({ postDetail }: Props) {
 
           <div className="flex gap-[74px]">
             <p className="text-white text-sm">연락방법</p>
-            <span className="w-[200px] truncate text-white underline">{postDetail?.contact}</span>
+            <a
+              href={postDetail?.contact}
+              className="relative inline-block w-[400px] truncate  text-white underline cursor-default pointer-events-none"
+            >
+              <span className="pointer-events-auto cursor-pointer">{postDetail?.contact}</span>
+            </a>
           </div>
         </div>
 
@@ -89,7 +105,10 @@ export default function RecruitDetailInfo({ postDetail }: Props) {
       <p className="mt-10 font-DungGeunMo text-xl text-primary-400">상세내용</p>
       <hr className="border-t border-gray-400 my-3" />
       {postDetail && (
-        <p className="text-base text-gray-100 leading-5" dangerouslySetInnerHTML={{ __html: postDetail.content }}></p>
+        <p
+          className="ql-editor text-base text-gray-100 leading-5"
+          dangerouslySetInnerHTML={{ __html: sanitizedContent as string }}
+        ></p>
       )}
     </div>
   );

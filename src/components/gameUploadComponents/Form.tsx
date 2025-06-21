@@ -1,23 +1,29 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
+
+import { postGameList, putGameList } from "../../api/game";
+
 import SpartaReactionModal, { TSpartaReactionModalProps } from "../../spartaDesignSystem/SpartaReactionModal";
 import SpartaModal from "../../spartaDesignSystem/SpartaModal";
 import useModalToggles from "../../hook/useModalToggles";
-import { postGameList, putGameList } from "../../api/game";
+
 import { userStore } from "../../share/store/userStore";
-import UploadCheck from "./UploadCheck";
 import changeUrl from "../../util/changeUrl";
 import { checkFileExtension, checkFileSize, checkFileType } from "../../util/fileValidation";
+
 import { TGamePlayData, TGameUploadInput } from "../../types";
-import "react-quill/dist/quill.snow.css";
-import "./Form.css";
-import JSZip from "jszip";
+
+import UploadCheck from "./UploadCheck";
 import GameUploadFields from "./GameUploadFields";
 import GameMediaFields from "./GameMediaFields";
 import GameDescriptionField from "./GameDescriptionField";
 import GameSubmitButton from "./GameSubmitButton";
 import { uploadErrorMessages } from "./uploadErrorMessages";
+
+import JSZip from "jszip";
+
+import "./Form.css";
 
 type Props = {
   note: {

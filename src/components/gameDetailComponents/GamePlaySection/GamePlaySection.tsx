@@ -1,10 +1,13 @@
+import { useEffect, useRef } from "react";
+
 import GamePlay from "./GamePlay";
 import GameMedia from "./GameMedia";
 import GameDescription from "./GameDescription";
 
 import { TGamePlayData } from "../../../types";
-import { useEffect, useRef } from "react";
+
 import { getPlayLog, postPlayLog } from "../../../api/game";
+
 import usePlayTimeStore from "../../../share/store/playTimeStore";
 import { userStore } from "../../../share/store/userStore";
 

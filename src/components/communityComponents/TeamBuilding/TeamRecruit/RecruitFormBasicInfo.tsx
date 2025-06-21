@@ -1,5 +1,13 @@
 import { forwardRef, useState } from "react";
-import { Control, Controller, UseFormRegister, UseFormSetValue, UseFormTrigger, UseFormWatch } from "react-hook-form";
+import {
+  Control,
+  Controller,
+  FormState,
+  UseFormRegister,
+  UseFormSetValue,
+  UseFormTrigger,
+  UseFormWatch,
+} from "react-hook-form";
 
 import SpartaChipSelect from "../../../../spartaDesignSystem/SpartaChipSelect";
 import SpartaTextField from "../../../../spartaDesignSystem/SpartaTextField";
@@ -25,8 +33,9 @@ type Props = {
   setValue: UseFormSetValue<TProjectRecruitForm>;
   register: UseFormRegister<TProjectRecruitForm>;
   trigger: UseFormTrigger<TProjectRecruitForm>;
+  formState: FormState<TProjectRecruitForm>;
 };
-export default function RecruitFormBasicInfo({ control, watch, setValue, register, trigger }: Props) {
+export default function RecruitFormBasicInfo({ control, watch, setValue, register, trigger, formState }: Props) {
   const [selectBasicImage, setSelectBasicImage] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
 
@@ -105,10 +114,22 @@ export default function RecruitFormBasicInfo({ control, watch, setValue, registe
           <SpartaTextField
             label="연락방법"
             type="small"
-            register={register("contact", { required: "연락방법을 입력해주세요." })}
+            register={register("contact", {
+              required: "연락방법을 입력해주세요.",
+              pattern: {
+                value: /^(https?:\/\/)?([\w-])+\.([a-zA-Z]{2,63})([/\w.-]*)*\/?$/,
+                message: "유효한 링크를 입력해주세요.",
+              },
+            })}
             inputProps={{
               placeholder: "디스코드, 카카오톡 등 링크를 입력해주세요.",
             }}
+            subLabel={{
+              default: "",
+              error: formState.errors.contact?.message as string,
+              pass: "",
+            }}
+            error={!!formState.errors.contact}
           />
 
           <SpartaTextField

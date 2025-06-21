@@ -116,8 +116,9 @@ export default function RecruitForm() {
               setValue={setValue}
               register={register}
               trigger={trigger}
+              formState={formState}
             />
-            <RecruitFormDescription register={register} watch={watch} setValue={setValue} />
+            <RecruitFormDescription register={register} watch={watch} setValue={setValue} formState={formState} />
             <SpartaButton
               btnType="button"
               disabled={!formState.isValid}
