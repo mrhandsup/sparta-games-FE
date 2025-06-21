@@ -40,6 +40,7 @@ export default function TeamBuilding() {
   const recommandedPosts = data?.data.recommended_posts;
   const profileImage = userData?.data.profile_image;
 
+  console.log("recommandedPosts", recommandedPosts);
   return (
     <main>
       <div className="bg-gray-800 w-full">

@@ -29,7 +29,13 @@ export default function RecommandedCard({ post, profileImage }: Props) {
 
   return (
     <div
-      onClick={() => navigate(`/community/team-building/team-recruit/${post.id}`)}
+      onClick={() =>
+        navigate(`/community/team-building/team-recruit/${post.id}`, {
+          state: {
+            post,
+          },
+        })
+      }
       className="flex gap-5 p-6 mx-auto w-full border border-solid border-gray-400 rounded-lg cursor-pointer"
     >
       <div className="relative flex-[0.4]">
@@ -42,11 +48,11 @@ export default function RecommandedCard({ post, profileImage }: Props) {
               ? import.meta.env.VITE_PROXY_HOST.replace(/\/$/, "") + post.thumbnail
               : post.thumbnail
           }
-          className=" object-cover rounded-md"
+          className="object-cover rounded-md h-full"
         />
       </div>
       <div className="flex flex-col flex-[0.6] gap-2">
-        <div className="flex  items-center gap-2 font-DungGeunMo">
+        <div className="flex flex-wrap items-center gap-2 font-DungGeunMo">
           {post.want_roles.map((role) => (
             <div className="px-2 py-1 rounded-[4px] bg-white">
               <p>{role}</p>
@@ -63,7 +69,7 @@ export default function RecommandedCard({ post, profileImage }: Props) {
           </div>
         </div>
 
-        <div className="g">
+        <div className="w-full h-[68px] overflow-hidden">
           <p className="mb-2 font-bold text-lg text-white">{post.title}</p>
           <span
             className="line-clamp-2 text-white leading-5 "
