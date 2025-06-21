@@ -2,6 +2,84 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 900;
+  font-display: swap;
+  src: url(../public/font/pretendard/Pretendard-Black.woff2);
+}
+
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 800;
+  font-display: swap;
+  src: url(../public/font/pretendard/Pretendard-ExtraBold.woff2);
+}
+
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 700;
+  font-display: swap;
+  src: url(../public/font/pretendard/Pretendard-Bold.woff2);
+}
+
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 600;
+  font-display: swap;
+  src: url(../public/font/pretendard/Pretendard-SemiBold.woff2);
+}
+
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 500;
+  font-display: swap;
+  src: url(../public/font/pretendard/Pretendard-Medium.woff2);
+}
+
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 400;
+  font-display: swap;
+  src: url(../public/font/pretendard/Pretendard-Regular.woff2);
+}
+
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 300;
+  font-display: swap;
+  src: url(../public/font/pretendard/Pretendard-Light.woff2);
+}
+
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 200;
+  font-display: swap;
+  src: url(../public/font/pretendard/Pretendard-ExtraLight.woff2);
+}
+
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 100;
+  font-display: swap;
+  src: url(../public/font/pretendard/Pretendard-Thin.woff2);
+}
+
+@font-face {
+  font-family: "DungGeunMo";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/DungGeunMo.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+* {
+  -ms-overflow-style: none; /* IE, Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Chrome, Safari, Opera에서 스크롤바 숨기기 */
+*::-webkit-scrollbar {
+  display: none;
+}
 html,
 body,
 div,
@@ -106,6 +184,8 @@ section {
 }
 body {
   line-height: 1;
+  font-family: "Pretendard", sans-serif;
+  box-sizing: border-box;
 }
 ol,
 ul {
@@ -125,4 +205,98 @@ q:after {
 table {
   border-collapse: collapse;
   border-spacing: 0;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px transparent inset;
+  transition: background-color 5000s ease-in-out 0s;
+  -webkit-text-fill-color: white;
+}
+input:hover,
+input:focus {
+  outline: none;
+}
+
+/* 리액트 Quill Style */
+.ql-container {
+  @apply border-gray-100 rounded-md;
+}
+
+.ql-editor strong {
+  @apply font-bold;
+}
+
+.ql-editor em {
+  @apply italic;
+}
+
+.ql-editor s {
+  @apply line-through;
+}
+
+.ql-editor h1 {
+  @apply text-3xl font-bold;
+}
+
+.ql-editor h2 {
+  @apply text-2xl font-semibold;
+}
+
+.ql-editor::before {
+  @apply text-lg font-Pretendard !text-gray-400 !not-italic;
+}
+
+.ql-editor.ql-blank::before {
+  @apply text-gray-100 font-normal;
+}
+
+.ql-editor ol {
+  @apply list-decimal pl-6;
+}
+
+.ql-editor ul {
+  @apply list-disc pl-6;
+}
+
+.ql-editor li {
+  @apply list-disc pl-6;
+}
+
+.ql-editor .ql-align-center {
+  @apply text-center;
+}
+
+.ql-editor .ql-align-right {
+  @apply text-right;
+}
+
+.ql-editor .ql-align-justify {
+  @apply text-justify;
+}
+
+.ql-editor .ql-indent-1 {
+  @apply pl-[54px];
+}
+.ql-editor .ql-indent-2 {
+  @apply pl-[108px];
+}
+.ql-editor .ql-indent-3 {
+  @apply pl-[162px];
+}
+.ql-editor .ql-indent-4 {
+  @apply pl-[216px];
+}
+.ql-editor .ql-indent-5 {
+  @apply pl-[270px];
+}
+.ql-editor .ql-indent-6 {
+  @apply pl-[324px];
+}
+.ql-editor .ql-indent-7 {
+  @apply pl-[378px];
+}
+.ql-editor .ql-indent-8 {
+  @apply pl-[432px];
 }

@@ -1,0 +1,16 @@
+/* 인풋 스타일 */
+.gameUploadSelectCustom .MuiOutlinedInput-notchedOutline {
+  @apply !border-white;
+}
+
+.gameUploadSelectCustom .MuiSelect-select {
+  @apply bg-gray-700;
+}
+
+.gameUploadSelectCustom .items-baseline {
+  @apply block;
+}
+
+.formContent .ql-editor {
+  @apply h-[436px] text-lg;
+}
