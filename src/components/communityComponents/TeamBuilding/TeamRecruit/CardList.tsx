@@ -5,13 +5,12 @@ import { TTeamBuildPostListItem } from "../../../../types";
 
 type Props = {
   post: TTeamBuildPostListItem;
-  profileImage: string | undefined;
   isProfileTab: boolean;
 };
 
-export default function CardList({ post, profileImage, isProfileTab }: Props) {
+export default function CardList({ post, isProfileTab }: Props) {
   const navigate = useNavigate();
-  // console.log("userData", userData);
+
   const purpose =
     post.purpose === "PORTFOLIO"
       ? "🔥 취업용 포트폴리오"
@@ -84,11 +83,11 @@ export default function CardList({ post, profileImage, isProfileTab }: Props) {
           <img
             className="w-8 h-8 border-2 border-solid border-gray-400 rounded-full"
             src={
-              profileImage === ""
+              post.author_data.image === null
                 ? defaultProfile
                 : import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
-                ? import.meta.env.VITE_PROXY_HOST.replace(/\/$/, "") + profileImage
-                : profileImage
+                ? import.meta.env.VITE_PROXY_HOST.replace(/\/$/, "") + post.author_data.image
+                : post.author_data.image
             }
             alt={`profile-img-${post.id}`}
           />

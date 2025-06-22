@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom";
 
 type Props = {
   post: TTeamBuildRecommenedPostListItem;
-  profileImage: string | undefined;
 };
-export default function RecommandedCard({ post, profileImage }: Props) {
+export default function RecommandedCard({ post }: Props) {
+  console.log("post.author_data.image", post.author_data.image);
   const navigate = useNavigate();
 
   const purpose =
@@ -79,11 +79,11 @@ export default function RecommandedCard({ post, profileImage }: Props) {
         <div className="flex items-center gap-2">
           <img
             src={
-              profileImage === ""
+              post.author_data.image === null
                 ? defaultProfile
                 : import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
-                ? import.meta.env.VITE_PROXY_HOST.replace(/\/$/, "") + profileImage
-                : profileImage
+                ? import.meta.env.VITE_PROXY_HOST.replace(/\/$/, "") + post.author_data.image
+                : post.author_data.image
             }
             className="w-8 h-8 border-2 border-solid border-gray-400 rounded-full"
           />

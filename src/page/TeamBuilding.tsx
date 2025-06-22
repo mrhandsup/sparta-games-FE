@@ -38,7 +38,6 @@ export default function TeamBuilding() {
 
   const teamBuildPosts = data?.data.team_build_posts;
   const recommandedPosts = data?.data.recommended_posts;
-  const profileImage = userData?.data.profile_image;
 
   console.log("recommandedPosts", recommandedPosts);
   return (
@@ -56,7 +55,7 @@ export default function TeamBuilding() {
           </p>
           <div className="grid grid-cols-2 gap-5">
             {recommandedPosts?.map((post) => (
-              <RecommandedCard post={post} profileImage={profileImage} />
+              <RecommandedCard post={post} />
             ))}
           </div>
         </div>
@@ -71,9 +70,7 @@ export default function TeamBuilding() {
         <SearchFilter userData={userData?.data} isProfileTab={selectedTab === "profileRegister"} />
         <div className="grid grid-cols-4 gap-5">
           {teamBuildPosts &&
-            teamBuildPosts.map((post) => (
-              <CardList post={post} profileImage={profileImage} isProfileTab={selectedTab === "profileRegister"} />
-            ))}
+            teamBuildPosts.map((post) => <CardList post={post} isProfileTab={selectedTab === "profileRegister"} />)}
         </div>
 
         <div className="mt-10">
