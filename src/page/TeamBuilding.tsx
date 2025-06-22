@@ -39,7 +39,6 @@ export default function TeamBuilding() {
   const teamBuildPosts = data?.data.team_build_posts;
   const recommandedPosts = data?.data.recommended_posts;
 
-  console.log("recommandedPosts", recommandedPosts);
   return (
     <main>
       <div className="bg-gray-800 w-full">

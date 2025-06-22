@@ -2,7 +2,7 @@ import nonCheckBox from "../../src/assets/nonCheckBox.svg";
 import checkBox from "../../src/assets/checkBox.svg";
 
 type Props = {
-  checked: boolean;
+  checked: boolean | undefined;
   onClick: () => void;
 };
 

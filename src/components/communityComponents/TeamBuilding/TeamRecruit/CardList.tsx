@@ -44,7 +44,14 @@ export default function CardList({ post, isProfileTab }: Props) {
       }}
     >
       <div className="h-[55%] relative">
-        <img src={defaultImage} alt="썸네일" className="w-full h-full object-cover" />
+        <img
+          src={
+            import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
+              ? import.meta.env.VITE_PROXY_HOST.replace(/\/$/, "") + (post.thumbnail || "")
+              : post.thumbnail || ""
+          }
+          className="h-full object-cover"
+        />
         <div className="absolute top-0 left-0 bg-white rounded-tl-md rounded-br-lg font-DungGeunMo text-black py-1.5 px-4 w-fit font-light border-gray-100 border-b-[0.7px] border-r-[0.95px] border-solid">
           {post.status_chip}
         </div>

@@ -6,7 +6,6 @@ type Props = {
   post: TTeamBuildRecommenedPostListItem;
 };
 export default function RecommandedCard({ post }: Props) {
-  console.log("post.author_data.image", post.author_data.image);
   const navigate = useNavigate();
 
   const purpose =

@@ -9,30 +9,46 @@ import SpartaButton from "../../../../spartaDesignSystem/SpartaButton";
 import type { TProjectRecruitForm } from "../../../../types";
 
 import recruitImage from "../../../../assets/gameDetail/ReviewEdit.svg";
-import { postTeamBuild } from "../../../../api/teambuilding";
+import { postTeamBuild, putTeamBuild } from "../../../../api/teambuilding";
 import useModalToggles from "../../../../hook/useModalToggles";
 import SpartaReactionModal, { TSpartaReactionModalProps } from "../../../../spartaDesignSystem/SpartaReactionModal";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
 
 export default function RecruitForm() {
-  console.log("main 브랜치를 default 브랜치로 변경함");
   const { register, watch, handleSubmit, control, setValue, formState, trigger } = useForm<TProjectRecruitForm>({
     mode: "onChange",
   });
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const { postDetail, isEditMode } = location.state || {};
+
+  useEffect(() => {
+    if (isEditMode) {
+      setValue("title", postDetail?.title);
+      setValue("purpose", postDetail?.purpose);
+      setValue("duration", postDetail?.duration);
+      setValue("meeting_type", postDetail?.meeting_type);
+      setValue("deadline", postDetail?.deadline);
+      setValue("contact", postDetail?.contact);
+      setValue("content", postDetail?.content);
+      setValue("want_roles", postDetail?.want_roles);
+      setValue("thumbnail", postDetail?.thumbnail);
+    }
+  }, []);
+
   const CONFIRM_MODAL_ID = "confirmModal";
   const SUCCESS_MODAL_ID = "successModal";
   const { modalToggles, onClickModalToggleHandlers } = useModalToggles([CONFIRM_MODAL_ID, SUCCESS_MODAL_ID]);
 
   const noActionData: { [key: string]: Partial<TSpartaReactionModalProps> } = {
     uploadConfirm: {
-      title: "글 등록",
-      content: "작성하신 내용으로 팀원 모집 글을 등록하시겠어요?",
+      title: !isEditMode ? "글 등록" : "글 수정",
+      content: !isEditMode ? "작성하신 내용으로 팀원 모집 글을 등록하시겠어요?" : "이대로 수정하시겠어요?",
       btn1: {
-        text: "네 등록할게요.",
+        text: !isEditMode ? "네 등록할게요." : "네 수정할게요.",
         onClick: () => {},
       },
       btn2: {
@@ -43,8 +59,8 @@ export default function RecruitForm() {
       },
     },
     uploadSuccess: {
-      title: "글 등록 완료",
-      content: "팀원 모집 글이 성공적으로 등록되었습니다.",
+      title: !isEditMode ? "글 등록 완료" : "글 수정 완료",
+      content: !isEditMode ? "팀원 모집 글이 성공적으로 등록되었습니다." : "팀원 모집 글이 성공적으로 수정되었습니다.",
       btn1: {
         text: "확인했습니다",
         onClick: () => {
@@ -80,6 +96,22 @@ export default function RecruitForm() {
     },
   });
 
+  const updateTeamBuildingMutation = useMutation({
+    mutationFn: ({ postId, formData }: { postId: number; formData: FormData }) => putTeamBuild(postId, formData),
+    onSuccess: () => {
+      onClickModalToggleHandlers[CONFIRM_MODAL_ID]();
+      setNoActionModalData(noActionData.uploadSuccess);
+      onClickModalToggleHandlers[SUCCESS_MODAL_ID]();
+    },
+    onError: (error: AxiosError) => {
+      if (error.response && error.response.status === 400) {
+        window.alert(`${(error.response?.data as { message?: string })?.message}`);
+      } else {
+        window.alert("알 수 없는 오류가 발생했습니다. 잠시후에 다시 시도해주세요.");
+      }
+    },
+  });
+
   const onSubmit = async (data: any) => {
     const formData = new FormData();
 
@@ -101,7 +133,11 @@ export default function RecruitForm() {
       formData.append("want_roles", role);
     });
 
-    createTeamBuildingMutation.mutate(formData);
+    if (!isEditMode) {
+      createTeamBuildingMutation.mutate(formData);
+    } else {
+      updateTeamBuildingMutation.mutate({ postId: postDetail.id, formData });
+    }
   };
 
   return (
@@ -116,14 +152,14 @@ export default function RecruitForm() {
               watch={watch}
               setValue={setValue}
               register={register}
-              trigger={trigger}
               formState={formState}
+              thumbnail={postDetail?.thumbnail}
             />
             <RecruitFormDescription register={register} watch={watch} setValue={setValue} formState={formState} />
             <SpartaButton
               btnType="button"
               disabled={!formState.isValid}
-              content="글 등록하기"
+              content={!isEditMode ? "글 등록하기" : "글 수정하기"}
               type="filled"
               onClick={onClickOpenConfirmModal}
             />

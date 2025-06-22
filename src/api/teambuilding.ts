@@ -96,3 +96,20 @@ export const deleteTeamBuild = async (postId: number | undefined) => {
     throw error;
   }
 };
+
+/**
+ * 팀빌딩 모집 수정
+ */
+export const putTeamBuild = async (postId: number | undefined, formData: FormData) => {
+  try {
+    const res = await sparta_games_auth.put(`/teams/api/teambuild/${postId}/`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return res?.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw error;
+    }
+    throw error;
+  }
+};

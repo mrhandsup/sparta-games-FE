@@ -52,7 +52,11 @@ export default function RecruitHeader({
                 size="small"
                 colorType="grey"
                 customStyle="w-full hover:text-alert-default hover:border-alert-default"
-                onClick={() => navigate("/community/team-building/team-recruit/edit/1")}
+                onClick={() =>
+                  navigate(`/community/team-building/team-recruit/edit/${postDetail?.id}`, {
+                    state: { postDetail, isEditMode: true },
+                  })
+                }
               />
               <SpartaButton
                 content="삭제"

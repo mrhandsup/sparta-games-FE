@@ -1,13 +1,5 @@
 import { forwardRef, useState } from "react";
-import {
-  Control,
-  Controller,
-  FormState,
-  UseFormRegister,
-  UseFormSetValue,
-  UseFormTrigger,
-  UseFormWatch,
-} from "react-hook-form";
+import { Control, Controller, FormState, UseFormRegister, UseFormSetValue, UseFormWatch } from "react-hook-form";
 
 import SpartaChipSelect from "../../../../spartaDesignSystem/SpartaChipSelect";
 import SpartaTextField from "../../../../spartaDesignSystem/SpartaTextField";
@@ -32,14 +24,15 @@ type Props = {
   watch: UseFormWatch<TProjectRecruitForm>;
   setValue: UseFormSetValue<TProjectRecruitForm>;
   register: UseFormRegister<TProjectRecruitForm>;
-  trigger: UseFormTrigger<TProjectRecruitForm>;
   formState: FormState<TProjectRecruitForm>;
+  thumbnail: string | undefined;
 };
-export default function RecruitFormBasicInfo({ control, watch, setValue, register, trigger, formState }: Props) {
-  const [selectBasicImage, setSelectBasicImage] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
-
+export default function RecruitFormBasicInfo({ control, watch, setValue, register, formState, thumbnail }: Props) {
   const imageWatch = watch("thumbnail");
+  const isBasicThumbnail = thumbnail?.includes("default");
+
+  const [selectBasicImage, setSelectBasicImage] = useState(isBasicThumbnail);
+  const [isChecked, setIsChecked] = useState(isBasicThumbnail);
 
   const onClickUploadImage = () => {
     document.getElementById("project-image")?.click();
@@ -48,9 +41,15 @@ export default function RecruitFormBasicInfo({ control, watch, setValue, registe
   const onClickSelectBasicImage = () => {
     setIsChecked((prev) => !prev);
     setSelectBasicImage((prev) => !prev);
-    setValue("thumbnail_basic", "default");
-    trigger();
   };
+
+  const thumbnailPlaceHolder = isBasicThumbnail
+    ? "기본 이미지로 업로드 하셨습니다."
+    : thumbnail
+    ? thumbnail.split("/").pop()
+    : typeof watch("thumbnail") !== "string" && imageWatch?.length > 0
+    ? (imageWatch[0] as File).name
+    : "1000px*800px 5mb 이하 사진파일";
 
   const CustomInput = forwardRef<HTMLInputElement, { value?: Date | string | null; onClick?: () => void }>(
     ({ value, onClick }, ref) => (
@@ -136,10 +135,7 @@ export default function RecruitFormBasicInfo({ control, watch, setValue, registe
             label="프로젝트 이미지"
             type="small"
             inputProps={{
-              placeholder:
-                typeof watch("thumbnail") !== "string" && imageWatch?.length > 0
-                  ? (imageWatch[0] as File).name
-                  : "1000px*800px 5mb 이하 사진파일",
+              placeholder: thumbnailPlaceHolder,
               readOnly: true,
             }}
             btnContent={
