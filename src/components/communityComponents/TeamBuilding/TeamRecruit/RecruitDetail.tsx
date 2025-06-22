@@ -10,8 +10,11 @@ import { TTeamBuildDetailResponse } from "../../../../types";
 import { deleteTeamBuild, getTeamBuildDetail, patchTeamBuild } from "../../../../api/teambuilding";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
+import { userStore } from "../../../../share/store/userStore";
 
 export default function RecruitDetail() {
+  const { userData } = userStore();
+
   const location = useLocation();
   const { post } = location.state || {};
 
@@ -189,6 +192,7 @@ export default function RecruitDetail() {
     <>
       <div className="w-[1180px] mx-auto">
         <RecruitHeader
+          userData={userData?.data}
           postDetail={postDetail}
           postStatus={postStatus}
           onClickCloseRecruit={onClickCloseRecruit}

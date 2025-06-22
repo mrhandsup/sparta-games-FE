@@ -4,17 +4,25 @@ import SpartaButton from "../../../../spartaDesignSystem/SpartaButton";
 
 import backIcon from "../../../../assets/common/arrow/triangleArrowLeft.svg";
 import defaultProfile from "../../../../assets/common/defaultProfile.svg";
-import { TTeamBuildPostDetail } from "../../../../types";
+import { TTeamBuildPostDetail, TUserData } from "../../../../types";
 
 type Props = {
+  userData: TUserData | undefined;
   postDetail: TTeamBuildPostDetail | undefined;
   postStatus: "모집중" | "모집마감";
   onClickCloseRecruit: () => void;
   onClickDeleteRecruit: () => void;
 };
-export default function RecruitHeader({ postDetail, postStatus, onClickCloseRecruit, onClickDeleteRecruit }: Props) {
+export default function RecruitHeader({
+  userData,
+  postDetail,
+  postStatus,
+  onClickCloseRecruit,
+  onClickDeleteRecruit,
+}: Props) {
   const navigate = useNavigate();
 
+  const isMyPost = userData?.user_id === postDetail?.author_data.id;
   return (
     <>
       <img onClick={() => window.history.back()} className="my-6 cursor-pointer" src={backIcon} alt="뒤로가기" />
@@ -27,30 +35,34 @@ export default function RecruitHeader({ postDetail, postStatus, onClickCloseRecr
         </div>
 
         <div className="flex gap-3 w-[300px]">
-          <SpartaButton
-            content="마감"
-            size="small"
-            colorType="grey"
-            customStyle={`${
-              postStatus === "모집마감" ? "opacity-0 pointer-events-none" : "block"
-            }  w-full hover:text-alert-default hover:border-alert-default`}
-            onClick={onClickCloseRecruit}
-          />
+          {isMyPost && (
+            <>
+              <SpartaButton
+                content="마감"
+                size="small"
+                colorType="grey"
+                customStyle={`${
+                  postStatus === "모집마감" ? "opacity-0 pointer-events-none" : "block"
+                }  w-full hover:text-alert-default hover:border-alert-default`}
+                onClick={onClickCloseRecruit}
+              />
 
-          <SpartaButton
-            content="수정"
-            size="small"
-            colorType="grey"
-            customStyle="w-full hover:text-alert-default hover:border-alert-default"
-            onClick={() => navigate("/community/team-building/team-recruit/edit/1")}
-          />
-          <SpartaButton
-            content="삭제"
-            size="small"
-            colorType="grey"
-            customStyle="w-full hover:text-error-default hover:border-error-default"
-            onClick={onClickDeleteRecruit}
-          />
+              <SpartaButton
+                content="수정"
+                size="small"
+                colorType="grey"
+                customStyle="w-full hover:text-alert-default hover:border-alert-default"
+                onClick={() => navigate("/community/team-building/team-recruit/edit/1")}
+              />
+              <SpartaButton
+                content="삭제"
+                size="small"
+                colorType="grey"
+                customStyle="w-full hover:text-error-default hover:border-error-default"
+                onClick={onClickDeleteRecruit}
+              />
+            </>
+          )}
         </div>
       </div>
       <div className="flex items-center justify-between gap-2 mt-5">
