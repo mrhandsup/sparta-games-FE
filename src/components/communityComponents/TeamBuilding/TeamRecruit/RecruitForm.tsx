@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 
 import CommunityProjectTitle from "../../../common/CommunityProjectTitle";
@@ -27,17 +27,28 @@ export default function RecruitForm() {
 
   useEffect(() => {
     if (isEditMode) {
-      setValue("title", postDetail?.title);
-      setValue("purpose", postDetail?.purpose);
-      setValue("duration", postDetail?.duration);
-      setValue("meeting_type", postDetail?.meeting_type);
-      setValue("deadline", postDetail?.deadline);
-      setValue("contact", postDetail?.contact);
-      setValue("content", postDetail?.content);
-      setValue("want_roles", postDetail?.want_roles);
-      setValue("thumbnail", postDetail?.thumbnail);
+      setValue("title", postDetail?.title, { shouldValidate: true });
+      setValue("purpose", postDetail?.purpose, { shouldValidate: true });
+      setValue("duration", postDetail?.duration, { shouldValidate: true });
+      setValue("meeting_type", postDetail?.meeting_type, { shouldValidate: true });
+      setValue("deadline", postDetail?.deadline, { shouldValidate: true });
+      setValue("contact", postDetail?.contact, { shouldValidate: true });
+      setValue("content", postDetail?.content, { shouldValidate: true });
+      setValue("want_roles", postDetail?.want_roles, { shouldValidate: true });
+      setValue("thumbnail", postDetail?.thumbnail, { shouldValidate: true });
+
+      trigger();
     }
   }, []);
+
+  const thumbnailWatch = useWatch({
+    control,
+    name: "thumbnail",
+  });
+
+  useEffect(() => {
+    trigger("thumbnail");
+  }, [thumbnailWatch, trigger]);
 
   const CONFIRM_MODAL_ID = "confirmModal";
   const SUCCESS_MODAL_ID = "successModal";
@@ -153,7 +164,8 @@ export default function RecruitForm() {
               setValue={setValue}
               register={register}
               formState={formState}
-              thumbnail={postDetail?.thumbnail}
+              postDetail={postDetail}
+              trigger={trigger}
             />
             <RecruitFormDescription register={register} watch={watch} setValue={setValue} formState={formState} />
             <SpartaButton
