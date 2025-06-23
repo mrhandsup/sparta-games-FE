@@ -9,14 +9,12 @@ import { TTeamBuildPostDetail, TUserData } from "../../../../types";
 type Props = {
   userData: TUserData | undefined;
   postDetail: TTeamBuildPostDetail | undefined;
-  postStatus: "모집중" | "모집마감";
   onClickCloseRecruit: () => void;
   onClickDeleteRecruit: () => void;
 };
-export default function RecruitHeader({
+export default function RecruitDetailHeader({
   userData,
   postDetail,
-  postStatus,
   onClickCloseRecruit,
   onClickDeleteRecruit,
 }: Props) {
@@ -29,7 +27,7 @@ export default function RecruitHeader({
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-4">
           <div className="p-2 rounded-[4px] font-DungGeunMo text-black bg-white">
-            <p className="w-[64px] text-center">{postStatus}</p>
+            <p className="w-[64px] text-center">{postDetail?.status_chip}</p>
           </div>
           <p className="w-[800px] line-clamp-3 font-DungGeunMo text-white text-2xl">{postDetail?.title}</p>
         </div>
@@ -42,7 +40,7 @@ export default function RecruitHeader({
                 size="small"
                 colorType="grey"
                 customStyle={`${
-                  postStatus === "모집마감" ? "opacity-0 pointer-events-none" : "block"
+                  postDetail?.status_chip === "모집마감" ? "opacity-0 pointer-events-none" : "block"
                 }  w-full hover:text-alert-default hover:border-alert-default`}
                 onClick={onClickCloseRecruit}
               />

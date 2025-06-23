@@ -55,6 +55,7 @@ export type TTeamBuildPostDetail = TCommonTeamBuildPost & {
   content: string;
   meeting_type: string;
   create_dt: string;
+  status_chip: "모집중" | "모집마감";
 };
 
 export type TTeamBuildRecommenedPostListItem = TTeamBuildPostListItem & {
