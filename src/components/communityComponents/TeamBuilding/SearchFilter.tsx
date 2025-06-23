@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { SetURLSearchParams, useNavigate } from "react-router-dom";
 
 import SpartaButton from "../../../spartaDesignSystem/SpartaButton";
 import SpartaCheckBox from "../../../spartaDesignSystem/SpartaCheckBox";
@@ -14,21 +14,38 @@ import { TUserData } from "../../../types";
 import useModalToggles from "../../../hook/useModalToggles";
 import SpartaReactionModal, { TSpartaReactionModalProps } from "../../../spartaDesignSystem/SpartaReactionModal";
 
-type Props = {
-  userData: TUserData | undefined;
-  isProfileTab: boolean;
-};
 type FilterCategory = "position" | "purpose" | "period";
 
 interface SelectedFilter {
   category: FilterCategory;
   value: string;
+  label: string;
 }
 
-const SearchFilter = ({ userData, isProfileTab }: Props) => {
+type Props = {
+  userData: TUserData | undefined;
+  isProfileTab: boolean;
+  onClickDisplaySelectedTags: (category: FilterCategory, value: string, label: string) => void;
+  selectedFilters: SelectedFilter[];
+  setSelectedFilters: React.Dispatch<React.SetStateAction<SelectedFilter[]>>;
+  setSearchParams: SetURLSearchParams;
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  updateSearchParams: (filters: SelectedFilter[], isRecruiting: boolean) => void;
+};
+
+const SearchFilter = ({
+  userData,
+  isProfileTab,
+  onClickDisplaySelectedTags,
+  selectedFilters,
+  setSelectedFilters,
+  setSearchParams,
+  isOpen,
+  setIsOpen,
+  updateSearchParams,
+}: Props) => {
   const [filterCliked, setFilterCliked] = useState("");
-  const [isChecked, setIsChecked] = useState(false);
-  const [selectedFilters, setSelectedFilters] = useState<SelectedFilter[]>([]);
 
   const navigate = useNavigate();
 
@@ -55,53 +72,39 @@ const SearchFilter = ({ userData, isProfileTab }: Props) => {
   );
 
   const handleToggle = () => {
-    setIsChecked((prev) => !prev);
+    setIsOpen((prev) => {
+      const newRecruiting = !prev;
+
+      // ✅ 모집중 변경 시 URL 동기화
+      updateSearchParams(selectedFilters, newRecruiting);
+
+      return newRecruiting;
+    });
   };
 
   const onClickNavHandler = (filterName: string) => {
     setFilterCliked((prev) => (prev === filterName ? "" : filterName));
   };
 
-  const onClickDisplaySelectedTags = (category: FilterCategory, value: string) => {
-    setSelectedFilters((prev) => {
-      const exists = prev.some((item) => item.category === category && item.value === value);
-
-      // period는 하나만 선택 가능
-      if (category === "period") {
-        if (exists) {
-          return prev.filter((item) => !(item.category === category && item.value === value));
-        } else {
-          return [...prev.filter((item) => item.category !== category), { category, value }];
-        }
-      }
-
-      if (exists) {
-        return prev.filter((item) => !(item.category === category && item.value === value));
-      } else {
-        return [...prev, { category, value }];
-      }
-    });
-  };
-
   const PROJECT_PURPOSE = [
-    { id: 1, value: "포트폴리오" },
-    { id: 2, value: "공모전" },
-    { id: 3, value: "스터디" },
-    { id: 4, value: "상용화" },
+    { id: 1, label: "포트폴리오", value: "PORTFOLIO" },
+    { id: 2, label: "공모전", value: "CONTEST" },
+    { id: 3, label: "스터디", value: "STUDY" },
+    { id: 4, label: "상용화", value: "COMMERCIAL" },
   ];
 
   const PROJECT_PERIOD = [
-    { id: 1, value: "3개월 이내" },
-    { id: 2, value: "6개월 이내" },
-    { id: 3, value: "1년 이내" },
-    { id: 4, value: "1년 이상" },
+    { id: 1, label: "3개월 이내", value: "3M" },
+    { id: 2, label: "6개월 이내", value: "6M" },
+    { id: 3, label: "1년 이내", value: "1Y" },
+    { id: 4, label: "1년 이상", value: "GT1Y" },
   ];
 
   return (
     <>
       {!isProfileTab ? (
         <div className="flex items-center gap-2 mt-12 mb-4">
-          <SpartaCheckBox checked={isChecked} onClick={handleToggle} />
+          <SpartaCheckBox checked={isOpen} onClick={handleToggle} />
           <p className="font-DungGeunMo text-body-22 text-white">모집중</p>
         </div>
       ) : (
@@ -136,7 +139,7 @@ const SearchFilter = ({ userData, isProfileTab }: Props) => {
               <div className="flex flex-col items-center w-[180px]">
                 {ROLE_CHOICES.map((item, id) => (
                   <p
-                    onClick={() => onClickDisplaySelectedTags("position", item.value as string)}
+                    onClick={() => onClickDisplaySelectedTags("position", item.value as string, item.label)}
                     key={id}
                     className="w-full p-2 font-DungGeunMo hover:bg-gray-800 text-white text-lg text-center"
                   >
@@ -173,11 +176,11 @@ const SearchFilter = ({ userData, isProfileTab }: Props) => {
               <div className="flex flex-col items-center w-[180px]">
                 {PROJECT_PURPOSE.map((item, id) => (
                   <p
-                    onClick={() => onClickDisplaySelectedTags("purpose", item.value)}
+                    onClick={() => onClickDisplaySelectedTags("purpose", item.value, item.label)}
                     key={id}
                     className="w-full p-2 font-DungGeunMo hover:bg-gray-800 text-white text-lg text-center"
                   >
-                    {item.value}
+                    {item.label}
                   </p>
                 ))}
               </div>
@@ -211,11 +214,11 @@ const SearchFilter = ({ userData, isProfileTab }: Props) => {
               <div className="flex flex-col items-center w-[180px]">
                 {PROJECT_PERIOD.map((item, id) => (
                   <p
-                    onClick={() => onClickDisplaySelectedTags("period", item.value)}
+                    onClick={() => onClickDisplaySelectedTags("period", item.value, item.label)}
                     key={id}
                     className="w-full p-2 font-DungGeunMo hover:bg-gray-800 text-white text-lg text-center"
                   >
-                    {item.value}
+                    {item.label}
                   </p>
                 ))}
               </div>
@@ -226,6 +229,7 @@ const SearchFilter = ({ userData, isProfileTab }: Props) => {
           <div
             onClick={() => {
               setSelectedFilters([]);
+              setSearchParams({});
             }}
             className="flex gap-2 cursor-pointer"
           >
@@ -254,11 +258,11 @@ const SearchFilter = ({ userData, isProfileTab }: Props) => {
         {selectedFilters.map((item) => (
           <div className="flex">
             <div key={`${item.category}-${item.value}`} className=" bg-white text-black px-3 py-1 rounded-md">
-              <span className="text-lg font-medium">{item.value}</span>
+              <span className="text-lg font-medium">{item.label}</span>
             </div>
             <button
               className="text-lg text-white"
-              onClick={() => onClickDisplaySelectedTags(item.category, item.value)}
+              onClick={() => onClickDisplaySelectedTags(item.category, item.value, item.label)}
             >
               <img className="w-8" src={deleteIcon} alt="삭제" />
             </button>

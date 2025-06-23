@@ -21,27 +21,11 @@ export const postTeamBuild = async (formData: FormData) => {
 /**
  * 팀빌딩 모집글 목록 조회
  */
-export const getTeamBuild = async (
-  userId?: number,
-  status_chip?: string,
-  roles?: string,
-  purpose?: string,
-  duration?: string,
-  page?: number,
-  limit?: number,
-) => {
+export const getTeamBuild = async (userId?: number, params?: URLSearchParams) => {
   try {
     const client = userId ? sparta_games_auth : sparta_games;
-    const params = new URLSearchParams();
 
-    if (status_chip) params.append("status_chip", status_chip);
-    if (roles) params.append("roles", roles);
-    if (purpose) params.append("purpose", purpose);
-    if (duration) params.append("duration", duration);
-    if (page !== undefined) params.append("page", String(page));
-    if (limit !== undefined) params.append("limit", String(limit));
-
-    const res = await client.get(`/teams/api/teambuild/?${params.toString()}`);
+    const res = await client.get(`/teams/api/teambuild/?${params?.toString()}`);
 
     return res?.data;
   } catch (error) {
