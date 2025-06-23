@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import SearchFilter from "../components/communityComponents/TeamBuilding/SearchFilter";
@@ -36,6 +36,7 @@ export default function TeamBuilding() {
 
   const [selectedTab, setSelectedTab] = useState<TabValue>("teamRecruit");
   const [selectedFilters, setSelectedFilters] = useState<SelectedFilter[]>([]);
+  const [searchKeyword, setSearchKeyword] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [, setSearchParams] = useSearchParams();
 
@@ -108,6 +109,15 @@ export default function TeamBuilding() {
     });
   };
 
+  const handleSearchTeamBuild = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchKeyword(e.currentTarget.value);
+  };
+
+  const filteredPosts =
+    searchKeyword.trim() === ""
+      ? teamBuildPosts || []
+      : (teamBuildPosts || []).filter((post) => post.title.includes(searchKeyword));
+
   return (
     <main>
       <div className="bg-gray-800 w-full">
@@ -127,14 +137,22 @@ export default function TeamBuilding() {
             ))}
           </div>
         </div>
+
+        {/* 팀원모집/ 프로필 선택, 검색 영역 */}
         <div className="flex items-center justify-between mx-auto mt-16 max-w-[1440px]">
           <SpartaTabNav selectedTab={selectedTab} onTabChange={setSelectedTab} tabLabels={TAB_LABELS} />
           <div className="flex gap-4 px-6 py-5 rounded-full bg-gray-800">
             <img src={balloon} alt="검색 아이콘" />
-            <input type="text" placeholder="제목 또는 글 내용 검색하기" className="bg-gray-800 text-2xl text-white" />
+            <input
+              onChange={handleSearchTeamBuild}
+              type="text"
+              placeholder="키워드로 모집글 검색하기"
+              className="bg-gray-800 text-2xl text-white"
+            />
           </div>
         </div>
 
+        {/* 필터링 영역 */}
         <SearchFilter
           userData={userData?.data}
           isProfileTab={selectedTab === "profileRegister"}
@@ -146,9 +164,16 @@ export default function TeamBuilding() {
           setIsOpen={setIsOpen}
           updateSearchParams={updateSearchParams}
         />
+
+        {/* 포스트 리스트 영역 */}
         <div className="grid grid-cols-4 gap-5">
-          {teamBuildPosts &&
-            teamBuildPosts.map((post) => <CardList post={post} isProfileTab={selectedTab === "profileRegister"} />)}
+          {filteredPosts.length > 0 ? (
+            filteredPosts.map((post) => (
+              <CardList key={post.id} post={post} isProfileTab={selectedTab === "profileRegister"} />
+            ))
+          ) : (
+            <div className="col-span-4 font-DungGeunMo text-2xl text-center text-white">검색 결과가 없습니다.</div>
+          )}
         </div>
 
         {teamBuildPosts?.length === 0 && (
