@@ -1,5 +1,5 @@
 import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from "react";
-import { Control, UseFormRegister, UseFormSetValue, UseFormWatch } from "react-hook-form";
+import { Control, FormState, UseFormRegister, UseFormSetValue, UseFormWatch } from "react-hook-form";
 import { FormControl, MenuItem, OutlinedInput, Select, SelectChangeEvent, styled } from "@mui/material";
 
 import SpartaChipSelect from "../../../../spartaDesignSystem/SpartaChipSelect";
@@ -25,6 +25,7 @@ type Props = {
   control: Control<TProfileRegisterForm>;
   watch: UseFormWatch<TProfileRegisterForm>;
   setValue: UseFormSetValue<TProfileRegisterForm>;
+  formState: FormState<TProfileRegisterForm>;
   linkItems: LinkItem[];
   setLinkItems: Dispatch<SetStateAction<LinkItem[]>>;
 };
@@ -34,6 +35,7 @@ export default function PorfileRegisterFormBasic({
   control,
   watch,
   setValue,
+  formState,
   linkItems,
   setLinkItems,
 }: Props) {
@@ -151,10 +153,23 @@ export default function PorfileRegisterFormBasic({
           <SpartaTextField
             label="기술 스택 또는 툴"
             type="small"
-            register={register("tech_stack", { required: "기술 스택 또는 툴을 입력해주세요." })}
+            register={register("tech_stack", {
+              required: "기술 스택 또는 툴을 입력해주세요.",
+              maxLength: {
+                value: 100,
+                message: "최대 100자까지 입력 가능합니다.",
+              },
+            })}
             inputProps={{
               placeholder: "Unity, Unreal, Adobe 등",
+              maxLength: 100,
             }}
+            subLabel={{
+              default: "",
+              error: formState.errors.tech_stack?.message as string,
+              pass: "",
+            }}
+            error={!!formState.errors.tech_stack}
           />
 
           <SpartaChipSelect

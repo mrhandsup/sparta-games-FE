@@ -114,3 +114,19 @@ export const postTeamBuildProfile = async (formData: FormData) => {
     throw error;
   }
 };
+
+/**
+ * 팀빌딩 프로필 전체 목록 조회
+ */
+export const getTeamBuildProfile = async () => {
+  try {
+    const res = await sparta_games.get("/teams/api/teambuild/profile/");
+
+    return res?.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw error;
+    }
+    throw error;
+  }
+};

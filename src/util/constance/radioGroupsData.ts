@@ -29,9 +29,9 @@ const radioGroupsData = {
   career: {
     label: "현재 상태",
     options: [
-      { label: "취준생", value: "jobSeeker" },
-      { label: "대학생", value: "student" },
-      { label: "현직자", value: "employed" },
+      { label: "취준생", value: "취준생" },
+      { label: "대학생", value: "대학생" },
+      { label: "현직자", value: "현직자" },
     ],
   },
 };

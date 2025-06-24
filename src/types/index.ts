@@ -2,6 +2,25 @@
 
 import radioGroupsData from "../util/constance/radioGroupsData";
 
+export type TTeamBuildProfileResponse = {
+  status: "success" | "fail" | "error";
+  message: string | null;
+  data: TTeamBuildProfileListItem[];
+  pagination: {
+    count: number;
+    next: string | null;
+    previous: string | null;
+  };
+  error_code: string | null;
+};
+
+export type TTeamBuildProfileListItem = TCommonTeamBuildPost & {
+  profile_image: File[] | string | null;
+  career: string;
+  my_role: string;
+  tech_stack: string;
+  game_genre: string;
+};
 export type TCommonTeamBuildPost = {
   id: number;
   title: string;

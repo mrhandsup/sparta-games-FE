@@ -10,8 +10,8 @@ import Hero from "../components/communityComponents/TeamBuilding/Hero";
 import RecommandedCard from "../components/communityComponents/TeamBuilding/RecommandedCard";
 import CardList from "../components/communityComponents/TeamBuilding/TeamRecruit/CardList";
 
-import { getTeamBuild } from "../api/teambuilding";
-import { TTeamBuildPostResponse } from "../types";
+import { getTeamBuild, getTeamBuildProfile } from "../api/teambuilding";
+import { TTeamBuildPostResponse, TTeamBuildProfileResponse } from "../types";
 import { userStore } from "../share/store/userStore";
 import usePageHandler from "../hook/usePageHandler ";
 
@@ -62,9 +62,16 @@ export default function TeamBuilding() {
     queryFn: () => getTeamBuild(userData?.data.user_id, params),
   });
 
+  const { data: profileData } = useQuery<TTeamBuildProfileResponse>({
+    queryKey: ["teamBuildingProfile"],
+    queryFn: () => getTeamBuildProfile(),
+  });
+
   const teamBuildPosts = data?.data.team_build_posts;
   const recommandedPosts = data?.data.recommended_posts;
+  const teamBuildProfilePosts = profileData?.data;
 
+  console.log("teamBuildProfilePosts", teamBuildProfilePosts);
   const updateSearchParams = (filters: SelectedFilter[], isOpen: boolean) => {
     const queryParams = new URLSearchParams();
 
@@ -168,18 +175,28 @@ export default function TeamBuilding() {
 
         {/* 포스트 리스트 영역 */}
         <div className="grid grid-cols-4 gap-5">
-          {filteredPosts.length > 0 ? (
-            filteredPosts.map((post) => (
-              <CardList key={post.id} post={post} isProfileTab={selectedTab === "profileRegister"} />
-            ))
-          ) : (
-            <div className="col-span-4 font-DungGeunMo text-2xl text-center text-white">검색 결과가 없습니다.</div>
-          )}
+          {selectedTab === "teamRecruit" ? (
+            filteredPosts.length > 0 ? (
+              filteredPosts.map((post) => <CardList key={post.id} postType="teamBuild" post={post} />)
+            ) : (
+              <div className="col-span-4 font-DungGeunMo text-2xl text-center text-white">검색 결과가 없습니다.</div>
+            )
+          ) : selectedTab === "profileRegister" ? (
+            teamBuildProfilePosts && teamBuildProfilePosts?.length > 0 ? (
+              teamBuildProfilePosts?.map((post) => (
+                <CardList key={post.id} postType="profile" post={post} isProfileTab={true} />
+              ))
+            ) : (
+              <div className="col-span-4 font-DungGeunMo text-2xl text-center text-white">
+                아직 등록된 팀빌딩 프로필이 없습니다.
+              </div>
+            )
+          ) : null}
         </div>
 
         {teamBuildPosts?.length === 0 && (
           <div className="flex justify-center pt-10">
-            <p className="font-DungGeunMo text-2xl text-white">조건에 해당하는 모집글이 없습니다.</p>
+            <p className="font-DungGeunMo text-2xl text-white">아직 등록된 팀빌딩 모집글이 없습니다.</p>
           </div>
         )}
 

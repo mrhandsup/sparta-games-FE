@@ -17,15 +17,7 @@ import SpartaReactionModal, { TSpartaReactionModalProps } from "../../../../spar
 import { useNavigate } from "react-router-dom";
 
 export default function ProfileRegisterForm() {
-  const {
-    register,
-    watch,
-    handleSubmit,
-    control,
-    setValue,
-    formState: { isValid },
-    trigger,
-  } = useForm<TProfileRegisterForm>({
+  const { register, watch, handleSubmit, control, setValue, formState, trigger } = useForm<TProfileRegisterForm>({
     mode: "onChange",
   });
 
@@ -102,11 +94,11 @@ export default function ProfileRegisterForm() {
       links: payload,
     };
 
-    console.log("제출된 데이터:", fullFormData, "data", data.links);
+    console.log("제출된 데이터:", fullFormData, "data.profile_image[0]", data.profile_image[0]);
 
     const formData = new FormData();
 
-    formData.append("profile_image", data.profile_image);
+    formData.append("profile_image", data.profile_image[0]);
     formData.append("career", data.career);
     formData.append("my_role", data.my_role);
     formData.append("tech_stack", data.tech_stack);
@@ -180,6 +172,7 @@ export default function ProfileRegisterForm() {
               control={control}
               watch={watch}
               setValue={setValue}
+              formState={formState}
               linkItems={linkItems}
               setLinkItems={setLinkItems}
             />
@@ -188,7 +181,7 @@ export default function ProfileRegisterForm() {
             <ProfileRegisterFormProject register={register} control={control} watch={watch} setValue={setValue} />
           )}
           <SpartaButton
-            disabled={currentStep === 0 ? !isStepOneValid : !isValid}
+            disabled={currentStep === 0 ? !isStepOneValid : !formState.isValid}
             onClick={currentStep === 0 ? goToNextStep : onClickOpenConfirmModal}
             content={currentStep === 0 ? "다음" : "글 등록하기"}
             type="filled"
