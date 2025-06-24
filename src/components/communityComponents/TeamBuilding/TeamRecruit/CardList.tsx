@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";
-import defaultImage from "../../../../assets/category/Rhythm.png";
-import defaultProfile from "../../../../assets/common/defaultProfile.svg";
+
 import { TTeamBuildPostListItem } from "../../../../types";
+
+import defaultProfile from "../../../../assets/common/defaultProfile.svg";
 
 type Props = {
   post: TTeamBuildPostListItem;

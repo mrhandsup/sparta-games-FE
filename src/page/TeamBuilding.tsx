@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 
 import SearchFilter from "../components/communityComponents/TeamBuilding/SearchFilter";
 import SpartaPagination from "../spartaDesignSystem/SpartaPagination";
@@ -9,13 +10,13 @@ import Hero from "../components/communityComponents/TeamBuilding/Hero";
 import RecommandedCard from "../components/communityComponents/TeamBuilding/RecommandedCard";
 import CardList from "../components/communityComponents/TeamBuilding/TeamRecruit/CardList";
 
-import pixelMeteor from "../assets/homeImage/pixelMeteor.svg";
-import balloon from "../assets/headerImage/balloon.svg";
-import { useQuery } from "@tanstack/react-query";
 import { getTeamBuild } from "../api/teambuilding";
 import { TTeamBuildPostResponse } from "../types";
 import { userStore } from "../share/store/userStore";
 import usePageHandler from "../hook/usePageHandler ";
+
+import pixelMeteor from "../assets/homeImage/pixelMeteor.svg";
+import balloon from "../assets/headerImage/balloon.svg";
 
 type TabValue = "teamRecruit" | "profileRegister";
 
@@ -146,7 +147,7 @@ export default function TeamBuilding() {
             <input
               onChange={handleSearchTeamBuild}
               type="text"
-              placeholder="키워드로 모집글 검색하기"
+              placeholder="제목 또는 글 내용 검색하기"
               className="bg-gray-800 text-2xl text-white"
             />
           </div>
