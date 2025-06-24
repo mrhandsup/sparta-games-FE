@@ -28,7 +28,6 @@ export default function RecruitDetail() {
 
   const postDetail = data?.data;
 
-  console.log("postDetaildata", data);
   const closeRecruitMutation = useMutation({
     mutationFn: () => patchTeamBuild(postDetail?.id),
     onSuccess: () => {

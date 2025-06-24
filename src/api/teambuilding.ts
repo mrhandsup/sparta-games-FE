@@ -97,3 +97,20 @@ export const putTeamBuild = async (postId: number | undefined, formData: FormDat
     throw error;
   }
 };
+
+/**
+ * 팀빌딩 프로필 생성
+ */
+export const postTeamBuildProfile = async (formData: FormData) => {
+  try {
+    const res = await sparta_games_auth.post("/teams/api/teambuild/profile/", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return res?.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw error;
+    }
+    throw error;
+  }
+};

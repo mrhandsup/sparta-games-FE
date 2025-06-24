@@ -153,7 +153,7 @@ export default function TeamBuilding() {
           </div>
         </div>
 
-        {/* 필터링 영역 */}
+        {/* 필터링, 글 등록 영역 */}
         <SearchFilter
           userData={userData?.data}
           isProfileTab={selectedTab === "profileRegister"}

@@ -48,7 +48,7 @@ export default function PorfileRegisterFormBasic({
   };
 
   useEffect(() => {
-    const profileImage = watch("profileImage")?.[0];
+    const profileImage = watch("profile_image")?.[0];
 
     if (profileImage instanceof File) {
       const previewUrl = URL.createObjectURL(profileImage);
@@ -123,8 +123,7 @@ export default function PorfileRegisterFormBasic({
                 id="profile-image"
                 type="file"
                 accept="image/*"
-                {...register("profileImage", {
-                  required: "프로필 이미지 업로드 해주세요.",
+                {...register("profile_image", {
                   onChange: (e) => {
                     handleImageChange(e);
                   },
@@ -134,7 +133,7 @@ export default function PorfileRegisterFormBasic({
             </div>
           </div>
 
-          <SpartaRadioGroup groupsToShow={["jobStatus"]} control={control} watch={watch} setValue={setValue} />
+          <SpartaRadioGroup groupsToShow={["career"]} control={control} watch={watch} setValue={setValue} />
 
           <div className="flex flex-col gap-4 basis-full">
             <SpartaChipSelect
@@ -142,7 +141,7 @@ export default function PorfileRegisterFormBasic({
               options={ROLE_CHOICES}
               control={control}
               rules={{ required: "나의 포지션을 선택해주세요." }}
-              name="position"
+              name="my_role"
               placeHolderText="나의 포지션을 선택해주세요."
             />
           </div>
@@ -152,7 +151,7 @@ export default function PorfileRegisterFormBasic({
           <SpartaTextField
             label="기술 스택 또는 툴"
             type="small"
-            register={register("tech", { required: "기술 스택 또는 툴을 입력해주세요." })}
+            register={register("tech_stack", { required: "기술 스택 또는 툴을 입력해주세요." })}
             inputProps={{
               placeholder: "Unity, Unreal, Adobe 등",
             }}
@@ -163,7 +162,7 @@ export default function PorfileRegisterFormBasic({
             subLabel={{ default: "*선택", error: "", pass: "" }}
             options={GAME_CATEGORY}
             control={control}
-            name="favoriteGenre"
+            name="game_genre"
             placeHolderText="관심 게임개발장르를 선택해주세요."
           />
 

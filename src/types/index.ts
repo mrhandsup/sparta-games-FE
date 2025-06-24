@@ -81,10 +81,11 @@ export type TProjectRecruitForm = {
 export type TProfileRegisterForm = {
   [K in keyof RadioGroupData]: string;
 } & {
-  profileImage: string | File[];
-  position: string;
-  tech: string;
-  favoriteGenre: string;
+  profile_image: string | File[];
+  career: string;
+  my_role: string;
+  tech_stack: string;
+  game_genre: string;
   link: string[];
   contact: string;
   title: string;

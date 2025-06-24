@@ -27,8 +27,10 @@ export default function ProfileRegisterFormProject({ register, control, watch, s
 
   const handleEditorChange = (editorState: string) => {
     // react-quill 내용 작성 중, 내용 모두 지울 경우 생기는 <p></br></p> 태그 제거하여 빈 문자열로 설정
-    const plainText = editorState.replace(/<(.|\n)*?>/g, "").trim();
-
+    const plainText = editorState
+      .replace(/<p><br><\/p>/g, "")
+      .replace(/<\/?p>/g, "")
+      .trim();
     // 내용이 없을 경우 빈 문자열로 설정해서 isValid가 false가 되도록 함
     const cleanedContent = plainText === "" ? "" : editorState;
 
@@ -82,10 +84,11 @@ export default function ProfileRegisterFormProject({ register, control, watch, s
         <div className="flex gap-10">
           <div className="flex flex-col gap-5">
             <SpartaRadioGroup
-              groupsToShow={["purpose", "availablePeriod"]}
+              groupsToShow={["purpose", "duration"]}
               control={control}
               watch={watch}
               setValue={setValue}
+              labelOverrides={{ duration: "참여 가능 기간" }}
             />
           </div>
 

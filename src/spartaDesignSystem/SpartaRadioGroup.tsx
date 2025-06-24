@@ -9,6 +9,7 @@ type SpartaRadioGroupProps<T extends FieldValues> = {
   control: Control<T>;
   watch: UseFormWatch<T>;
   setValue: UseFormSetValue<T>;
+  labelOverrides?: Partial<Record<Path<T>, string>>;
 };
 
 export default function SpartaRadioGroup<T extends FieldValues>({
@@ -16,6 +17,7 @@ export default function SpartaRadioGroup<T extends FieldValues>({
   control,
   watch,
   setValue,
+  labelOverrides = {},
 }: SpartaRadioGroupProps<T>) {
   // 사용자가 아무 선택하지 않더라도 radio 옵션 중 첫 번째 항목을 기본값으로 미리 선택
   useEffect(() => {
@@ -42,7 +44,7 @@ export default function SpartaRadioGroup<T extends FieldValues>({
             control={control}
             render={({ field }) => (
               <SpartaRadioGroupItem
-                label={group.label}
+                label={labelOverrides[groupName] || group.label}
                 name={field.name}
                 options={group.options}
                 value={field.value}

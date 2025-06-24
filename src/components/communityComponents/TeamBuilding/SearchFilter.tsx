@@ -55,7 +55,7 @@ const SearchFilter = ({
   const noActionData: { [key: string]: Partial<TSpartaReactionModalProps> } = {
     uploadWarning: {
       title: "잠시만요!",
-      content: "팀원 모집 글 등록은 회원만 이용가능합니다.",
+      content: isProfileTab ? "프로필 등록은 회원만 이용가능합니다." : "팀원 모집 글 등록은 회원만 이용가능합니다.",
       btn1: {
         text: "확인했습니다",
         onClick: () => {
