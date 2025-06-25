@@ -7,7 +7,6 @@ export default function TeamBuildingProfile() {
   const location = useLocation();
   const { post, userData } = location.state || {};
 
-  console.log("post@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@", post, userData);
   const [navigation, setNavigation] = useState<"log" | "teambuilding" | "develop">("teambuilding");
 
   const navigationButtonConfig = {

@@ -20,7 +20,7 @@ type MyPageProps = {
 };
 
 type TeamBuildingProfileProps = {
-  postId: number;
+  postId?: number;
   user?: never;
   isMyPage?: false;
 };
@@ -36,10 +36,12 @@ export default function ProfileDetail({ user, postId, isMyPage }: Props) {
   const { modalToggles, onClickModalToggleHandlers } = useModalToggles([GAME_DELETE_CHECK_ID]);
 
   const { data } = useQuery({
-    queryKey: ["teambuldprofile", userId],
+    queryKey: ["teamBuildProfile", userId],
     queryFn: () => getTeamBuildProfileByUserId(userId),
+    retry: false,
   });
 
+  console.log("userIdㅌ입:", typeof userId);
   const profileData = data?.data;
 
   const purpose =
@@ -182,7 +184,7 @@ export default function ProfileDetail({ user, postId, isMyPage }: Props) {
                         </div>
                       ))
                     ) : (
-                      <span className="text-gray-400">포트폴리오 및 링크를 입력하지 않았습니다.</span>
+                      <span className="font-DungGeunMo text-gray-400">포트폴리오 및 링크를 입력하지 않았습니다.</span>
                     )}
                   </div>
                 </div>

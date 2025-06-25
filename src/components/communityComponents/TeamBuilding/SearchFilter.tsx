@@ -47,7 +47,6 @@ const SearchFilter = ({
 }: Props) => {
   const [filterCliked, setFilterCliked] = useState("");
 
-  console.log("userData 검색필터", userData);
   const navigate = useNavigate();
 
   const NO_ACTION_MODAL_ID = "noActionModal";
