@@ -179,6 +179,7 @@ export default function PorfileRegisterFormBasic({
             control={control}
             name="game_genre"
             placeHolderText="관심 게임개발장르를 선택해주세요."
+            multiple
           />
 
           <div className="flex flex-col">

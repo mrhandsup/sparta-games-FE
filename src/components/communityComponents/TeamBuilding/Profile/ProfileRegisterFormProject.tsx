@@ -1,4 +1,4 @@
-import { Control, UseFormRegister, UseFormSetValue, UseFormWatch } from "react-hook-form";
+import { Control, FormState, UseFormRegister, UseFormSetValue, UseFormWatch } from "react-hook-form";
 
 import SpartaRadioGroup from "../../../../spartaDesignSystem/SpartaRadioGroup";
 import SpartaTextField from "../../../../spartaDesignSystem/SpartaTextField";
@@ -13,8 +13,9 @@ type Props = {
   control: Control<TProfileRegisterForm>;
   watch: UseFormWatch<TProfileRegisterForm>;
   setValue: UseFormSetValue<TProfileRegisterForm>;
+  formState: FormState<TProfileRegisterForm>;
 };
-export default function ProfileRegisterFormProject({ register, control, watch, setValue }: Props) {
+export default function ProfileRegisterFormProject({ register, control, watch, setValue, formState }: Props) {
   const quillRef = useRef<ReactQuill | null>(null);
 
   useEffect(() => {
@@ -98,10 +99,27 @@ export default function ProfileRegisterFormProject({ register, control, watch, s
             <SpartaTextField
               label="연락방법"
               type="small"
-              register={register("contact", { required: "연락방법을 입력해주세요." })}
+              register={register("contact", {
+                required: "연락방법을 입력해주세요.",
+                pattern: {
+                  value: /^(https?:\/\/)?([\w-])+\.([a-zA-Z]{2,63})([/\w.-]*)*\/?$/,
+                  message: "유효한 링크를 입력해주세요.",
+                },
+                maxLength: {
+                  value: 50,
+                  message: "최대 50자까지 입력 가능합니다.",
+                },
+              })}
               inputProps={{
                 placeholder: "디스코드, 카카오톡 등 링크를 입력해주세요.",
+                maxLength: 50,
               }}
+              subLabel={{
+                default: "",
+                error: formState.errors.contact?.message as string,
+                pass: "",
+              }}
+              error={!!formState.errors.contact}
             />
           </div>
         </div>
@@ -113,10 +131,23 @@ export default function ProfileRegisterFormProject({ register, control, watch, s
           <SpartaTextField
             label="글 제목"
             type="small"
-            register={register("title", { required: "프로젝트 제목을 입력해주세요." })}
+            register={register("title", {
+              required: "프로젝트 제목을 입력해주세요.",
+              maxLength: {
+                value: 100,
+                message: "최대 100자까지 입력 가능합니다.",
+              },
+            })}
             inputProps={{
               placeholder: "나에 대해 간단히 소개해보세요.",
+              maxLength: 100,
             }}
+            subLabel={{
+              default: "",
+              error: formState.errors.title?.message as string,
+              pass: "",
+            }}
+            error={!!formState.errors.title}
           />
         </div>
 

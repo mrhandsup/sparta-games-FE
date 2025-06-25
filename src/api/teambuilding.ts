@@ -130,3 +130,19 @@ export const getTeamBuildProfile = async () => {
     throw error;
   }
 };
+
+/**
+ * 팀빌딩 프로필 상세 조회
+ */
+export const getTeamBuildProfileByUserId = async (userId: number) => {
+  try {
+    const res = await sparta_games.get(`/teams/api/teambuild/profile/${userId}/`);
+
+    return res?.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw error;
+    }
+    throw error;
+  }
+};

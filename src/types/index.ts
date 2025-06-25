@@ -109,6 +109,10 @@ export type TProfileRegisterForm = {
   contact: string;
   title: string;
   content: string;
+  links: {
+    link: string;
+    type: string;
+  }[];
 };
 
 export type TRandGame = {

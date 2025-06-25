@@ -15,11 +15,14 @@ import { AxiosError } from "axios";
 import useModalToggles from "../../../../hook/useModalToggles";
 import SpartaReactionModal, { TSpartaReactionModalProps } from "../../../../spartaDesignSystem/SpartaReactionModal";
 import { useNavigate } from "react-router-dom";
+import { userStore } from "../../../../share/store/userStore";
 
 export default function ProfileRegisterForm() {
   const { register, watch, handleSubmit, control, setValue, formState, trigger } = useForm<TProfileRegisterForm>({
     mode: "onChange",
   });
+
+  const { userData } = userStore();
 
   const navigate = useNavigate();
 
@@ -63,7 +66,6 @@ export default function ProfileRegisterForm() {
         text: "확인했습니다",
         onClick: () => {
           onClickModalToggleHandlers[CONFIRM_MODAL_ID]();
-          navigate("/community/team-building");
         },
       },
     },
@@ -89,23 +91,26 @@ export default function ProfileRegisterForm() {
       .filter(({ link }) => link.trim() !== "") // 빈 값으로 제출할 경우 빈 값 그대로 전송 되는것 방지하고 빈 배열로 전송되도록 함
       .map(({ link, type }) => ({ link, type }));
 
-    const fullFormData = {
+    const linksFormData = {
       ...data,
       links: payload,
     };
 
-    console.log("제출된 데이터:", fullFormData, "data.profile_image[0]", data.profile_image[0]);
-
     const formData = new FormData();
 
-    formData.append("profile_image", data.profile_image[0]);
+    formData.append("image", data.profile_image[0]);
     formData.append("career", data.career);
     formData.append("my_role", data.my_role);
     formData.append("tech_stack", data.tech_stack);
-    formData.append("game_genre", data.game_genre);
-    // portfolio 링크는 추후 백엔드와 협의 후에 수정 예정
-    if (fullFormData.links.length > 0) {
-      formData.append("portfolio", fullFormData.links[0].link);
+
+    data.game_genre.forEach((genre: string) => {
+      formData.append("game_genre", genre);
+    });
+
+    if (linksFormData.links.length > 0) {
+      linksFormData.links.forEach((link: { link: string; type: string }) => {
+        formData.append("links", JSON.stringify(link));
+      });
     }
     formData.append("purpose", data.purpose);
     formData.append("duration", data.duration);
@@ -178,7 +183,13 @@ export default function ProfileRegisterForm() {
             />
           )}
           {currentStep === 1 && (
-            <ProfileRegisterFormProject register={register} control={control} watch={watch} setValue={setValue} />
+            <ProfileRegisterFormProject
+              register={register}
+              control={control}
+              watch={watch}
+              setValue={setValue}
+              formState={formState}
+            />
           )}
           <SpartaButton
             disabled={currentStep === 0 ? !isStepOneValid : !formState.isValid}
@@ -222,7 +233,7 @@ export default function ProfileRegisterForm() {
               text: "확인했습니다",
               onClick: () => {
                 onClickModalToggleHandlers[SUCCESS_MODAL_ID]();
-                navigate("/community/team-building");
+                navigate(`/my-page/${userData?.data.user_id}?tab=teambuilding`);
               },
             }}
           />
