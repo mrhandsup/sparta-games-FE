@@ -134,7 +134,7 @@ export const getTeamBuildProfile = async () => {
 /**
  * 팀빌딩 프로필 상세 조회
  */
-export const getTeamBuildProfileByUserId = async (userId: number) => {
+export const getTeamBuildProfileByUserId = async (userId: number | undefined) => {
   try {
     const res = await sparta_games.get(`/teams/api/teambuild/profile/${userId}/`);
 

@@ -102,8 +102,8 @@ const MyPage = () => {
               <ProfileHeader user={user} isMyPage={isMyPage} setNavigation={setNavigation} />
               {navigation === "log" ? (
                 <Logs user={user} />
-              ) : navigation === "teambuilding" ? (
-                <ProfileDetail user={user} />
+              ) : navigation === "teambuilding" && user ? (
+                <ProfileDetail user={user} isMyPage={isMyPage} />
               ) : navigation === "develop" ? (
                 <MyGame user={user} isMyPage={isMyPage} />
               ) : (

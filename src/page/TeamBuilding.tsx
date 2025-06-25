@@ -71,7 +71,6 @@ export default function TeamBuilding() {
   const recommandedPosts = data?.data.recommended_posts;
   const teamBuildProfilePosts = profileData?.data;
 
-  console.log("teamBuildProfilePosts", teamBuildProfilePosts);
   const updateSearchParams = (filters: SelectedFilter[], isOpen: boolean) => {
     const queryParams = new URLSearchParams();
 
@@ -176,15 +175,21 @@ export default function TeamBuilding() {
         {/* 포스트 리스트 영역 */}
         <div className="grid grid-cols-4 gap-5">
           {selectedTab === "teamRecruit" ? (
-            filteredPosts.length > 0 ? (
-              filteredPosts.map((post) => <CardList key={post.id} postType="teamBuild" post={post} />)
-            ) : (
+            teamBuildPosts?.length === 0 ? (
+              <div className="col-span-4 font-DungGeunMo text-2xl text-center text-white">
+                아직 등록된 팀빌딩 모집글이 없습니다.
+              </div>
+            ) : filteredPosts.length === 0 ? (
               <div className="col-span-4 font-DungGeunMo text-2xl text-center text-white">검색 결과가 없습니다.</div>
+            ) : (
+              filteredPosts.map((post) => (
+                <CardList key={post.id} postType="teamBuild" post={post} userData={userData?.data} />
+              ))
             )
           ) : selectedTab === "profileRegister" ? (
-            teamBuildProfilePosts && teamBuildProfilePosts?.length > 0 ? (
-              teamBuildProfilePosts?.map((post) => (
-                <CardList key={post.id} postType="profile" post={post} isProfileTab={true} />
+            teamBuildProfilePosts && teamBuildProfilePosts.length > 0 ? (
+              teamBuildProfilePosts.map((post) => (
+                <CardList key={post.id} postType="profile" post={post} userData={userData?.data} />
               ))
             ) : (
               <div className="col-span-4 font-DungGeunMo text-2xl text-center text-white">
@@ -193,12 +198,6 @@ export default function TeamBuilding() {
             )
           ) : null}
         </div>
-
-        {teamBuildPosts?.length === 0 && (
-          <div className="flex justify-center pt-10">
-            <p className="font-DungGeunMo text-2xl text-white">아직 등록된 팀빌딩 모집글이 없습니다.</p>
-          </div>
-        )}
 
         <div className="mt-10">
           <SpartaPagination

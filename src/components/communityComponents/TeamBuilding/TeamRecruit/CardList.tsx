@@ -1,24 +1,24 @@
 import { useNavigate } from "react-router-dom";
 
-import { TTeamBuildPostListItem, TTeamBuildProfileListItem } from "../../../../types";
+import { TTeamBuildPostListItem, TTeamBuildProfileListItem, TUserData } from "../../../../types";
 
 import defaultProfile from "../../../../assets/common/defaultProfile.svg";
 
 type TeamBuildCardProps = {
   postType: "teamBuild";
   post: TTeamBuildPostListItem;
+  userData: TUserData | undefined;
 };
 
 type ProfileCardProps = {
   postType: "profile";
   post: TTeamBuildProfileListItem;
+  userData: TUserData | undefined;
 };
 
-type Props = (TeamBuildCardProps | ProfileCardProps) & {
-  isProfileTab?: boolean;
-};
+type Props = TeamBuildCardProps | ProfileCardProps;
 
-export default function CardList({ postType, post }: Props) {
+export default function CardList({ postType, post, userData }: Props) {
   const navigate = useNavigate();
 
   const purpose =
@@ -39,15 +39,18 @@ export default function CardList({ postType, post }: Props) {
       ? "1년 이내"
       : "1년 이상";
 
-  console.log("프로필 데이터", post);
-
   return (
     <section
       key={post?.id}
       className=" relative h-[500px] flex flex-col border-gray-100 border-[0.7px] rounded-lg border-solid cursor-pointer"
       onClick={() => {
         postType === "profile"
-          ? navigate(`/community/team-building/profile-detail/${post.id}`)
+          ? navigate(`/community/team-building/profile-detail/${post.author_data.id}`, {
+              state: {
+                post,
+                userData,
+              },
+            })
           : navigate(`/community/team-building/team-recruit/${post.id}`, {
               state: {
                 post,
