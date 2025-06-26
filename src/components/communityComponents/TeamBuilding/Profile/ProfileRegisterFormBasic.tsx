@@ -7,14 +7,18 @@ import SpartaRadioGroup from "../../../../spartaDesignSystem/SpartaRadioGroup";
 import SpartaTextField from "../../../../spartaDesignSystem/SpartaTextField";
 
 import { GAME_CATEGORY, ROLE_CHOICES } from "../../../../constant/constant";
-import { TProfileRegisterForm } from "../../../../types";
+import { TProfileRegisterForm, TTeamBuildProfileListItem } from "../../../../types";
 
 import profileImageUpload from "../../../../assets/communityImage/profileImageUpload.png";
 import addBtn from "../../../../assets/common/plus_gray.svg";
 import removeBtn from "../../../../assets/common/deleteIcon_trash.png";
-import defaultImage from "../../../../assets/common/defaultProfile.svg";
+import defaultProfile from "../../../../assets/common/defaultProfile.svg";
 
-export default function PorfileRegisterFormBasic() {
+type Props = {
+  profileData: TTeamBuildProfileListItem;
+  isEditMode: boolean;
+};
+export default function PorfileRegisterFormBasic({ profileData, isEditMode }: Props) {
   const { register, control, setValue, watch, formState } = useFormContext<TProfileRegisterForm>();
 
   const { fields, append, remove } = useFieldArray({
@@ -22,7 +26,7 @@ export default function PorfileRegisterFormBasic() {
     name: "portfolio",
   });
 
-  const [profilePreview, setProfilePreview] = useState(defaultImage);
+  const [profilePreview, setProfilePreview] = useState<string | null>(null);
   const [borderActiveStates, setBorderActiveStates] = useState<boolean[]>([]);
 
   useEffect(() => {
@@ -46,6 +50,14 @@ export default function PorfileRegisterFormBasic() {
       setProfilePreview(previewUrl);
 
       return () => URL.revokeObjectURL(previewUrl);
+    } else if (isEditMode && profileData?.profile_image) {
+      const imageUrl =
+        import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
+          ? import.meta.env.VITE_PROXY_HOST.replace(/\/$/, "") + profileData.profile_image
+          : profileData.profile_image;
+      setProfilePreview(imageUrl);
+    } else {
+      setProfilePreview(defaultProfile);
     }
   }, [watch]);
 
@@ -92,6 +104,8 @@ export default function PorfileRegisterFormBasic() {
     },
   });
 
+  console.log("profileData", profileData);
+
   return (
     <div className="w-full mt-10 mb-6 p-9 bg-gray-800 rounded-xl">
       <p className="font-DungGeunMo text-xl text-primary-400 mb-4">기본 프로필 정보 작성</p>
@@ -103,7 +117,18 @@ export default function PorfileRegisterFormBasic() {
 
             <div className="flex items-end gap-2">
               <div className="border border-solid border-gray-400 rounded-sm">
-                <img className=" w-28 h-28 object-cover" src={profilePreview} alt="프로필 이미지" />
+                <img
+                  className=" w-28 h-28 object-cover"
+                  src={
+                    profilePreview ||
+                    (profileData?.profile_image === null
+                      ? defaultProfile
+                      : import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
+                      ? import.meta.env.VITE_PROXY_HOST.replace(/\/$/, "") + profileData?.profile_image
+                      : profileData?.profile_image)
+                  }
+                  alt="프로필 이미지"
+                />
               </div>
               <label htmlFor="profile-image" className="cursor-pointer">
                 <img className="w-7 h-7" src={profileImageUpload} alt="프로필 이미지 업로드" />

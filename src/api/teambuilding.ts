@@ -148,11 +148,28 @@ export const getTeamBuildProfileByUserId = async (userId: number | undefined) =>
 };
 
 /**
- * 팀빌딩 모집 삭제
+ * 팀빌딩 프로필 삭제
  */
 export const deleteTeamBuildProfile = async (userId: number | undefined) => {
   try {
     const res = await sparta_games_auth.delete(`/teams/api/teambuild/profile/${userId}/`);
+    return res?.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw error;
+    }
+    throw error;
+  }
+};
+
+/**
+ * 팀빌딩 프로필 수정
+ */
+export const putTeamBuildProfile = async (userId: number | undefined, formData: FormData) => {
+  try {
+    const res = await sparta_games_auth.put(`/teams/api/teambuild/profile/${userId}/`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
     return res?.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {

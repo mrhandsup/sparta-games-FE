@@ -10,7 +10,7 @@ import { TProfileRegisterForm } from "../../../../types";
 
 import recruitImage from "../../../../assets/gameDetail/ReviewEdit.svg";
 import { useMutation } from "@tanstack/react-query";
-import { postTeamBuildProfile } from "../../../../api/teambuilding";
+import { postTeamBuildProfile, putTeamBuildProfile } from "../../../../api/teambuilding";
 import { AxiosError } from "axios";
 import useModalToggles from "../../../../hook/useModalToggles";
 import SpartaReactionModal, { TSpartaReactionModalProps } from "../../../../spartaDesignSystem/SpartaReactionModal";
@@ -30,21 +30,22 @@ export default function ProfileRegisterForm() {
 
   const navigate = useNavigate();
   const location = useLocation();
-
   const { profileData, isEditMode } = location.state || {};
 
   const [currentStep, setCurrentStep] = useState(0);
-
   const isInitialSet = useRef(false);
 
   useEffect(() => {
     if (isEditMode && profileData && !isInitialSet.current) {
-      methods.reset(profileData); // 폼 전체 초기화 (portfolio 포함)
+      const defaultPortfolio =
+        profileData.portfolio && profileData.portfolio.length > 0
+          ? profileData.portfolio
+          : [{ link: "", type: "portfolio" }];
+
+      methods.reset({ ...profileData, portfolio: defaultPortfolio }); // 폼 전체 초기화
       isInitialSet.current = true;
     }
   }, [isEditMode, profileData, methods]);
-
-  console.log("profileData", profileData);
 
   const goToNextStep = () => {
     setCurrentStep((prev) => prev + 1);
@@ -98,11 +99,11 @@ export default function ProfileRegisterForm() {
   const isStepOneValid = useMemo(() => {
     const myRole = watch("my_role");
     const techStack = watch("tech_stack");
+
     return !!myRole && !!techStack; // 조건에 맞게 true/false 리턴
   }, [watch()]);
 
   const onSubmit = (data: any) => {
-    console.log("제출된 데이터!!!!!", data);
     const formData = new FormData();
 
     formData.append("image", data.profile_image[0]);
@@ -126,17 +127,33 @@ export default function ProfileRegisterForm() {
       });
     }
 
-    // if (!isEditMode) {
-    //   createTeamBuildingMutation.mutate(formData);
-    // } else {
-    //   updateTeamBuildingMutation.mutate({ postId: postDetail.id, formData });
-    // }
-
-    createTeamBuildProfileMutaion.mutate(formData);
+    if (!isEditMode) {
+      createTeamBuildProfileMutation.mutate(formData);
+    } else {
+      updateTeamBuildProfileMutation.mutate({ userId: userData?.data.user_id, formData });
+    }
   };
 
-  const createTeamBuildProfileMutaion = useMutation({
+  const createTeamBuildProfileMutation = useMutation({
     mutationFn: postTeamBuildProfile,
+    onSuccess: () => {
+      onClickModalToggleHandlers[CONFIRM_MODAL_ID]();
+      setNoActionModalData(noActionData.uploadSuccess);
+      onClickModalToggleHandlers[SUCCESS_MODAL_ID]();
+    },
+    onError: (error: AxiosError) => {
+      if (error.response && error.response.status === 400) {
+        window.alert(`${(error.response?.data as { message?: string })?.message}`);
+      } else {
+        window.alert("알 수 없는 오류가 발생했습니다. 잠시후에 다시 시도해주세요.");
+      }
+    },
+  });
+
+  const updateTeamBuildProfileMutation = useMutation({
+    mutationFn: ({ userId, formData }: { userId: number | undefined; formData: FormData }) =>
+      putTeamBuildProfile(userId, formData),
+
     onSuccess: () => {
       onClickModalToggleHandlers[CONFIRM_MODAL_ID]();
       setNoActionModalData(noActionData.uploadSuccess);
@@ -179,12 +196,12 @@ export default function ProfileRegisterForm() {
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSubmit)}>
           <div className="w-[1180px] mx-auto">
-            {currentStep === 0 && <PorfileRegisterFormBasic />}
+            {currentStep === 0 && <PorfileRegisterFormBasic profileData={profileData} isEditMode={isEditMode} />}
             {currentStep === 1 && <ProfileRegisterFormProject profileData={profileData} />}
             <SpartaButton
               disabled={currentStep === 0 ? !isStepOneValid : !formState.isValid}
               onClick={currentStep === 0 ? goToNextStep : onClickOpenConfirmModal}
-              content={currentStep === 0 ? "다음" : "글 등록하기"}
+              content={currentStep === 0 ? "다음" : !isEditMode ? "글 등록하기" : "글 수정하기"}
               type="filled"
               colorType="primary"
               btnType="button"
