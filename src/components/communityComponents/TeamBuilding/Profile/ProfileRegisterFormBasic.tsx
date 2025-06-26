@@ -1,6 +1,6 @@
-import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from "react";
-import { Control, FormState, UseFormRegister, UseFormSetValue, UseFormWatch } from "react-hook-form";
-import { FormControl, MenuItem, OutlinedInput, Select, SelectChangeEvent, styled } from "@mui/material";
+import { ChangeEvent, useEffect, useState } from "react";
+import { Controller, useFieldArray, useFormContext } from "react-hook-form";
+import { FormControl, MenuItem, OutlinedInput, Select, styled } from "@mui/material";
 
 import SpartaChipSelect from "../../../../spartaDesignSystem/SpartaChipSelect";
 import SpartaRadioGroup from "../../../../spartaDesignSystem/SpartaRadioGroup";
@@ -14,40 +14,29 @@ import addBtn from "../../../../assets/common/plus_gray.svg";
 import removeBtn from "../../../../assets/common/deleteIcon_trash.png";
 import defaultImage from "../../../../assets/common/defaultProfile.svg";
 
-type LinkItem = {
-  link: string;
-  type: string;
-  isBorderActive: boolean;
-};
+export default function PorfileRegisterFormBasic() {
+  const { register, control, setValue, watch, formState } = useFormContext<TProfileRegisterForm>();
 
-type Props = {
-  register: UseFormRegister<TProfileRegisterForm>;
-  control: Control<TProfileRegisterForm>;
-  watch: UseFormWatch<TProfileRegisterForm>;
-  setValue: UseFormSetValue<TProfileRegisterForm>;
-  formState: FormState<TProfileRegisterForm>;
-  linkItems: LinkItem[];
-  setLinkItems: Dispatch<SetStateAction<LinkItem[]>>;
-};
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "portfolio",
+  });
 
-export default function PorfileRegisterFormBasic({
-  register,
-  control,
-  watch,
-  setValue,
-  formState,
-  linkItems,
-  setLinkItems,
-}: Props) {
   const [profilePreview, setProfilePreview] = useState(defaultImage);
+  const [borderActiveStates, setBorderActiveStates] = useState<boolean[]>([]);
 
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const previewUrl = URL.createObjectURL(file);
-      setProfilePreview(previewUrl);
-    }
-  };
+  useEffect(() => {
+    setBorderActiveStates((prev) => {
+      const diff = fields.length - prev.length;
+
+      if (diff > 0) {
+        // 새로 추가된 Select 박스의 기본 테두리 색으로 변경하고 기존 Select 박스의 변경된 테두리 색은 유지
+        return [...prev, ...Array(diff).fill(false)];
+      }
+
+      return prev.slice(0, fields.length); // 필드가 삭제된 경우 이전 상태와 길이 맞춤
+    });
+  }, [fields.length]);
 
   useEffect(() => {
     const profileImage = watch("profile_image")?.[0];
@@ -60,29 +49,28 @@ export default function PorfileRegisterFormBasic({
     }
   }, [watch]);
 
-  const onClickAddLink = () => {
-    setLinkItems([...linkItems, { link: "", type: "portfolio", isBorderActive: false }]);
+  const toggleBorderActive = (index: number) => {
+    setBorderActiveStates((prev) => {
+      const newStates = [...prev];
+      newStates[index] = true;
+      return newStates;
+    });
   };
 
-  const onClickRemoveLink = (indexToRemove: number) => {
-    const updatedItems = linkItems.filter((_, i) => i !== indexToRemove);
-    setLinkItems(updatedItems);
-  };
-
-  const onChangeLinkInput = (index: number) => (e: SelectChangeEvent) => {
-    const newLinkItems = [...linkItems];
-    newLinkItems[index].link = e.target.value;
-    setLinkItems(newLinkItems);
-  };
-
-  const onChangeSelectType = (index: number) => (e: SelectChangeEvent) => {
-    const newLinkItems = [...linkItems];
-    if (!newLinkItems[index].isBorderActive) {
-      newLinkItems[index].isBorderActive = true;
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const previewUrl = URL.createObjectURL(file);
+      setProfilePreview(previewUrl);
     }
+  };
 
-    newLinkItems[index].type = e.target.value;
-    setLinkItems(newLinkItems);
+  const onClickAddLink = () => {
+    append({ link: "", type: "portfolio" });
+  };
+
+  const onClickRemoveLink = (index: number) => {
+    remove(index);
   };
 
   const MenuProps = {
@@ -183,66 +171,76 @@ export default function PorfileRegisterFormBasic({
           />
 
           <div className="flex flex-col">
-            {linkItems.map((item, index) => (
-              <div className="flex items-end gap-2">
+            {fields.map((field, index) => (
+              <div key={field.id} className="flex items-end gap-2">
                 <div className="basis-[70%]">
-                  <SpartaTextField
-                    label={index === 0 ? "포트폴리오 및 기타 링크" : ""}
-                    subLabel={{ default: index === 0 ? "*선택" : "", error: "", pass: "" }}
-                    type="small"
-                    inputProps={{
-                      value: item.link,
-                      onChange: onChangeLinkInput(index),
-                      placeholder: "https://",
-                    }}
+                  <Controller
+                    name={`portfolio.${index}.link`}
+                    control={control}
+                    defaultValue={field.link}
+                    render={({ field }) => (
+                      <SpartaTextField
+                        label={index === 0 ? "포트폴리오 및 기타 링크" : ""}
+                        subLabel={{ default: index === 0 ? "*선택" : "", error: "", pass: "" }}
+                        type="small"
+                        inputProps={{
+                          ...field,
+                          placeholder: "https://",
+                        }}
+                      />
+                    )}
                   />
                 </div>
 
                 <div className="basis-[30%]">
                   <div className="flex gap-2">
-                    <FormControl fullWidth>
-                      <Select
-                        value={item.type}
-                        onChange={onChangeSelectType(index)}
-                        onClick={() => {
-                          if (item.type === "portfolio" && !item.isBorderActive) {
-                            const newLinkItems = [...linkItems];
-                            newLinkItems[index].isBorderActive = true;
-                            setLinkItems(newLinkItems);
-                          }
-                        }}
-                        MenuProps={MenuProps}
-                        input={<OutlinedInput />}
-                        displayEmpty
-                        sx={{
-                          backgroundColor: "#1A1A1A",
-                          color: "#FFF",
-                          fontSize: "14px",
-                          padding: "2px",
-                          borderRadius: "6px",
-                          "& .MuiOutlinedInput-notchedOutline": {
-                            borderColor: item.isBorderActive ? "#fff" : "#737373",
-                          },
-                          "&:hover .MuiOutlinedInput-notchedOutline": {
-                            borderColor: item.isBorderActive ? "#fff" : "#737373",
-                          },
-                          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                            borderColor: item.isBorderActive ? "#fff" : "#737373",
-                          },
-                          "& .MuiSelect-icon": {
-                            color: "#E5E5E5",
-                          },
-                          "& .MuiInputBase-input": {
-                            padding: "10px 14px",
-                          },
-                        }}
-                      >
-                        <CustomMenuItem value="portfolio">포트폴리오</CustomMenuItem>
-                        <CustomMenuItem value="link">Link</CustomMenuItem>
-                        <CustomMenuItem value="github">GitHub</CustomMenuItem>
-                        <CustomMenuItem value="notion">Notion</CustomMenuItem>
-                      </Select>
-                    </FormControl>
+                    <Controller
+                      name={`portfolio.${index}.type`}
+                      control={control}
+                      defaultValue={field.type}
+                      render={({ field }) => (
+                        <FormControl fullWidth>
+                          <Select
+                            {...field}
+                            onClick={() => {
+                              if (field.value === "portfolio" && !borderActiveStates[index]) {
+                                toggleBorderActive(index);
+                              }
+                            }}
+                            MenuProps={MenuProps}
+                            input={<OutlinedInput />}
+                            displayEmpty
+                            sx={{
+                              backgroundColor: "#1A1A1A",
+                              color: "#FFF",
+                              fontSize: "14px",
+                              padding: "2px",
+                              borderRadius: "6px",
+                              "& .MuiOutlinedInput-notchedOutline": {
+                                borderColor: borderActiveStates[index] ? "#fff" : "#737373",
+                              },
+                              "&:hover .MuiOutlinedInput-notchedOutline": {
+                                borderColor: borderActiveStates[index] ? "#fff" : "#737373",
+                              },
+                              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                                borderColor: borderActiveStates[index] ? "#fff" : "#737373",
+                              },
+                              "& .MuiSelect-icon": {
+                                color: "#E5E5E5",
+                              },
+                              "& .MuiInputBase-input": {
+                                padding: "10px 14px",
+                              },
+                            }}
+                          >
+                            <CustomMenuItem value="portfolio">포트폴리오</CustomMenuItem>
+                            <CustomMenuItem value="link">Link</CustomMenuItem>
+                            <CustomMenuItem value="github">GitHub</CustomMenuItem>
+                            <CustomMenuItem value="notion">Notion</CustomMenuItem>
+                          </Select>
+                        </FormControl>
+                      )}
+                    />
                     {index !== 0 && (
                       <button type="button" onClick={() => onClickRemoveLink(index)}>
                         <img src={removeBtn} alt="삭제" className="w-9 h-9" />

@@ -1,5 +1,5 @@
-import { useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useForm, FormProvider } from "react-hook-form";
 
 import CommunityProjectTitle from "../../../common/CommunityProjectTitle";
 import ProfileRegisterFormProject from "./ProfileRegisterFormProject";
@@ -14,23 +14,38 @@ import { postTeamBuildProfile } from "../../../../api/teambuilding";
 import { AxiosError } from "axios";
 import useModalToggles from "../../../../hook/useModalToggles";
 import SpartaReactionModal, { TSpartaReactionModalProps } from "../../../../spartaDesignSystem/SpartaReactionModal";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { userStore } from "../../../../share/store/userStore";
 
 export default function ProfileRegisterForm() {
-  const { register, watch, handleSubmit, control, setValue, formState, trigger } = useForm<TProfileRegisterForm>({
+  const methods = useForm<TProfileRegisterForm>({
     mode: "onChange",
+    defaultValues: {
+      portfolio: [{ link: "", type: "portfolio" }],
+    },
   });
+  const { watch, formState, trigger } = methods;
 
   const { userData } = userStore();
 
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const { profileData, isEditMode } = location.state || {};
 
   const [currentStep, setCurrentStep] = useState(0);
-  const [linkItems, setLinkItems] = useState([{ link: "", type: "portfolio", isBorderActive: false }]);
 
-  // TODO: 수정하기 api 연동시 삭제
-  const isEditMode = false;
+  const isInitialSet = useRef(false);
+
+  useEffect(() => {
+    if (isEditMode && profileData && !isInitialSet.current) {
+      methods.reset(profileData); // 폼 전체 초기화 (portfolio 포함)
+      isInitialSet.current = true;
+    }
+  }, [isEditMode, profileData, methods]);
+
+  console.log("profileData", profileData);
+
   const goToNextStep = () => {
     setCurrentStep((prev) => prev + 1);
     trigger();
@@ -87,37 +102,29 @@ export default function ProfileRegisterForm() {
   }, [watch()]);
 
   const onSubmit = (data: any) => {
-    const payload = linkItems
-      .filter(({ link }) => link.trim() !== "") // 빈 값으로 제출할 경우 빈 값 그대로 전송 되는것 방지하고 빈 배열로 전송되도록 함
-      .map(({ link, type }) => ({ link, type }));
-
-    const linksFormData = {
-      ...data,
-      links: payload,
-    };
-
+    console.log("제출된 데이터!!!!!", data);
     const formData = new FormData();
 
     formData.append("image", data.profile_image[0]);
     formData.append("career", data.career);
     formData.append("my_role", data.my_role);
     formData.append("tech_stack", data.tech_stack);
-
-    data.game_genre.forEach((genre: string) => {
-      formData.append("game_genre", genre);
-    });
-
-    if (linksFormData.links.length > 0) {
-      linksFormData.links.forEach((link: { link: string; type: string }) => {
-        formData.append("links", JSON.stringify(link));
-      });
-    }
     formData.append("purpose", data.purpose);
     formData.append("duration", data.duration);
     formData.append("meeting_type", data.meeting_type);
     formData.append("contact", data.contact);
     formData.append("title", data.title);
     formData.append("content", data.content);
+
+    data.game_genre.forEach((genre: string) => {
+      formData.append("game_genre", genre);
+    });
+
+    if (data.portfolio && data.portfolio.length > 0) {
+      data.portfolio.forEach((portfolio: { portfolio: string; type: string }) => {
+        formData.append("portfolio", JSON.stringify(portfolio));
+      });
+    }
 
     // if (!isEditMode) {
     //   createTeamBuildingMutation.mutate(formData);
@@ -169,39 +176,22 @@ export default function ProfileRegisterForm() {
 
       <CommunityProjectTitle img={recruitImage} title={"프로필을 등록하고 프로젝트를 시작해보세요"} />
 
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="w-[1180px] mx-auto">
-          {currentStep === 0 && (
-            <PorfileRegisterFormBasic
-              register={register}
-              control={control}
-              watch={watch}
-              setValue={setValue}
-              formState={formState}
-              linkItems={linkItems}
-              setLinkItems={setLinkItems}
+      <FormProvider {...methods}>
+        <form onSubmit={methods.handleSubmit(onSubmit)}>
+          <div className="w-[1180px] mx-auto">
+            {currentStep === 0 && <PorfileRegisterFormBasic />}
+            {currentStep === 1 && <ProfileRegisterFormProject profileData={profileData} />}
+            <SpartaButton
+              disabled={currentStep === 0 ? !isStepOneValid : !formState.isValid}
+              onClick={currentStep === 0 ? goToNextStep : onClickOpenConfirmModal}
+              content={currentStep === 0 ? "다음" : "글 등록하기"}
+              type="filled"
+              colorType="primary"
+              btnType="button"
             />
-          )}
-          {currentStep === 1 && (
-            <ProfileRegisterFormProject
-              register={register}
-              control={control}
-              watch={watch}
-              setValue={setValue}
-              formState={formState}
-            />
-          )}
-          <SpartaButton
-            disabled={currentStep === 0 ? !isStepOneValid : !formState.isValid}
-            onClick={currentStep === 0 ? goToNextStep : onClickOpenConfirmModal}
-            content={currentStep === 0 ? "다음" : "글 등록하기"}
-            type="filled"
-            colorType="primary"
-            btnType="button"
-          />
-        </div>
-      </form>
-
+          </div>
+        </form>
+      </FormProvider>
       {noActionModalData && (
         <>
           <SpartaReactionModal
@@ -212,7 +202,7 @@ export default function ProfileRegisterForm() {
             content={noActionModalData.content || ""}
             btn1={{
               text: noActionModalData?.btn1?.text || "",
-              onClick: handleSubmit(onSubmit),
+              onClick: methods.handleSubmit(onSubmit),
             }}
             btn2={
               noActionModalData?.btn2 && {

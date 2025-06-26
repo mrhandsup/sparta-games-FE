@@ -244,7 +244,7 @@ const SearchFilter = ({
             onClick={() => {
               userData
                 ? navigate(
-                    `${isProfileTab ? "/community/team-building/profile-create" : "/community/team-building/create"}`,
+                    `${isProfileTab ? "/community/team-building/profile/create" : "/community/team-building/create"}`,
                   )
                 : setNoActionModalData(noActionData.uploadWarning);
               onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();

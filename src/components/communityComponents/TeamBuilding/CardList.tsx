@@ -1,24 +1,22 @@
 import { useNavigate } from "react-router-dom";
 
-import { TTeamBuildPostListItem, TTeamBuildProfileListItem, TUserData } from "../../../../types";
+import { TTeamBuildPostListItem, TTeamBuildProfileListItem } from "../../../types";
 
-import defaultProfile from "../../../../assets/common/defaultProfile.svg";
+import defaultProfile from "../../../assets/common/defaultProfile.svg";
 
 type TeamBuildCardProps = {
   postType: "teamBuild";
   post: TTeamBuildPostListItem;
-  userData: TUserData | undefined;
 };
 
 type ProfileCardProps = {
   postType: "profile";
   post: TTeamBuildProfileListItem;
-  userData: TUserData | undefined;
 };
 
 type Props = TeamBuildCardProps | ProfileCardProps;
 
-export default function CardList({ postType, post, userData }: Props) {
+export default function CardList({ postType, post }: Props) {
   const navigate = useNavigate();
 
   const purpose =
@@ -48,7 +46,6 @@ export default function CardList({ postType, post, userData }: Props) {
           ? navigate(`/community/team-building/profile-detail/${post.author_data.id}`, {
               state: {
                 post,
-                userData,
               },
             })
           : navigate(`/community/team-building/team-recruit/${post.id}`, {

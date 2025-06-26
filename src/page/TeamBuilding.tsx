@@ -7,8 +7,8 @@ import SpartaPagination from "../spartaDesignSystem/SpartaPagination";
 import SpartaTabNav from "../spartaDesignSystem/SpartaTabNav";
 
 import Hero from "../components/communityComponents/TeamBuilding/Hero";
-import RecommandedCard from "../components/communityComponents/TeamBuilding/RecommandedCard";
-import CardList from "../components/communityComponents/TeamBuilding/TeamRecruit/CardList";
+import RecommandCardList from "../components/communityComponents/TeamBuilding/RecommandCardList";
+import CardList from "../components/communityComponents/TeamBuilding/CardList";
 
 import { getTeamBuild, getTeamBuildProfile } from "../api/teambuilding";
 import { TTeamBuildPostResponse, TTeamBuildProfileResponse } from "../types";
@@ -140,7 +140,7 @@ export default function TeamBuilding() {
           </p>
           <div className="grid grid-cols-2 gap-5">
             {recommandedPosts?.map((post) => (
-              <RecommandedCard post={post} />
+              <RecommandCardList post={post} />
             ))}
           </div>
         </div>
@@ -182,15 +182,11 @@ export default function TeamBuilding() {
             ) : filteredPosts.length === 0 ? (
               <div className="col-span-4 font-DungGeunMo text-2xl text-center text-white">검색 결과가 없습니다.</div>
             ) : (
-              filteredPosts.map((post) => (
-                <CardList key={post.id} postType="teamBuild" post={post} userData={userData?.data} />
-              ))
+              filteredPosts.map((post) => <CardList key={post.id} postType="teamBuild" post={post} />)
             )
           ) : selectedTab === "profileRegister" ? (
             teamBuildProfilePosts && teamBuildProfilePosts.length > 0 ? (
-              teamBuildProfilePosts.map((post) => (
-                <CardList key={post.id} postType="profile" post={post} userData={userData?.data} />
-              ))
+              teamBuildProfilePosts.map((post) => <CardList key={post.id} postType="profile" post={post} />)
             ) : (
               <div className="col-span-4 font-DungGeunMo text-2xl text-center text-white">
                 아직 등록된 팀빌딩 프로필이 없습니다.

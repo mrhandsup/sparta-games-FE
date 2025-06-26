@@ -1,11 +1,11 @@
 import { useState } from "react";
-import defaultProfile from "../assets/common/defaultProfile.svg";
-import ProfileDetail from "../components/communityComponents/TeamBuilding/Profile/ProfileDetail";
 import { useLocation } from "react-router-dom";
+
+import ProfileDetail from "../components/communityComponents/TeamBuilding/Profile/ProfileDetail";
 
 export default function TeamBuildingProfile() {
   const location = useLocation();
-  const { post, userData } = location.state || {};
+  const { post } = location.state || {};
 
   const [navigation, setNavigation] = useState<"log" | "teambuilding" | "develop">("teambuilding");
 
@@ -49,40 +49,11 @@ export default function TeamBuildingProfile() {
             {/* <ProfileHeader user={user} isMyPage={isMyPage} setNavigation={setNavigation} /> */}
 
             <div className="max-w-[1440px] mx-auto">
-              <div className="flex items-center pb-7">
-                <img
-                  src={
-                    userData?.profile_image === ""
-                      ? defaultProfile
-                      : import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
-                      ? import.meta.env.VITE_PROXY_HOST.replace(/\/$/, "") + (userData?.profile_image || "")
-                      : userData?.profile_image || ""
-                  }
-                  className="bg-gray-700 w-[80px] h-[80px] rounded-md object-cover"
-                />
-
-                <div className="flex flex-col gap-3 ml-3 w-full">
-                  <div className="flex items-center justify-between w-full">
-                    <div className="flex flex-col gap-2">
-                      <p className="font-DungGeunMo text-heading-40 text-white font-[400]">{userData?.nickname}</p>
-                      <p className="flex items-center gap-2">
-                        <p className="font-DungGeunMo text-alert-hover text-heading-20 font-[400]">추천받을 게임분야</p>
-
-                        {userData?.game_category.map((category: string) => (
-                          <span className="font-DungGeunMo text-body-20 bg-white px-2 py-1  rounded-md w-fit">
-                            {category}
-                          </span>
-                        ))}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
               {navigation === "log" ? (
                 ""
               ) : // <Logs user={user} />
               navigation === "teambuilding" ? (
-                <ProfileDetail postId={post?.author_data.id} />
+                <ProfileDetail profileData={post} />
               ) : (
                 ""
                 // <MyGame user={user} isMyPage={isMyPage} />

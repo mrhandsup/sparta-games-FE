@@ -7,7 +7,7 @@ import MyGame from "../components/mypageComponents/MyGame";
 import { useParams, useSearchParams } from "react-router-dom";
 import { getUserData } from "../api/user";
 import { useQuery } from "@tanstack/react-query";
-import { TUserDataResponse } from "../types";
+import { TTeamBuildProfileUserResponse, TUserDataResponse } from "../types";
 import ProfileDetail from "../components/communityComponents/TeamBuilding/Profile/ProfileDetail";
 import { getTeamBuildProfileByUserId } from "../api/teambuilding";
 
@@ -34,15 +34,15 @@ const MyPage = () => {
     retry: 1,
   });
 
-  const { data: teamBuildProfile } = useQuery({
+  const { data: teamBuildprofileResponse } = useQuery<TTeamBuildProfileUserResponse>({
     queryKey: ["teamBuildProfile", Number(id)],
     queryFn: () => getTeamBuildProfileByUserId(Number(id)),
     retry: false,
   });
 
   const user = isMyPage ? userData?.data : data?.data;
+  const profileData = teamBuildprofileResponse?.data;
 
-  console.log(teamBuildProfile);
   useEffect(() => {
     if (isError) {
       window.alert("존재하지 않는 사용자입니다.");
@@ -111,7 +111,7 @@ const MyPage = () => {
               {navigation === "log" ? (
                 <Logs user={user} />
               ) : navigation === "teambuilding" && user ? (
-                <ProfileDetail user={user} isMyPage={isMyPage} postId={teamBuildProfile?.data.id} />
+                <ProfileDetail user={user} isMyPage={isMyPage} profileData={profileData} />
               ) : navigation === "develop" ? (
                 <MyGame user={user} isMyPage={isMyPage} />
               ) : (

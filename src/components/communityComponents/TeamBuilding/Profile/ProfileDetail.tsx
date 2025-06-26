@@ -1,48 +1,41 @@
 import { useNavigate } from "react-router-dom";
+
 import SpartaButton from "../../../../spartaDesignSystem/SpartaButton";
+import SpartaModal from "../../../../spartaDesignSystem/SpartaModal";
+
+import useModalToggles from "../../../../hook/useModalToggles";
+
+import DeleteCheck from "./DeleteCheck";
+
+import { TTeamBuildProfileListItem, TUserData } from "../../../../types";
 
 import defaultProfile from "../../../../assets/common/defaultProfile.svg";
 import portfolioImage from "../../../../assets/portfolioImage.png";
 import linkImage from "../../../../assets/linkImage.png";
 import githubImage from "../../../../assets/githubImage.png";
 import notionImage from "../../../../assets/notionImage.png";
-import SpartaModal from "../../../../spartaDesignSystem/SpartaModal";
-import DeleteCheck from "./DeleteCheck";
-import useModalToggles from "../../../../hook/useModalToggles";
-import { useQuery } from "@tanstack/react-query";
-import { getTeamBuildProfileByUserId } from "../../../../api/teambuilding";
-import { TUserData } from "../../../../types";
 
 type MyPageProps = {
   user: TUserData;
   isMyPage: boolean;
-  postId?: never;
+  profileData?: TTeamBuildProfileListItem;
 };
 
 type TeamBuildingProfileProps = {
-  postId?: number;
-  user?: never;
+  profileData?: TTeamBuildProfileListItem;
+  user?: TUserData;
   isMyPage?: false;
 };
 
 type Props = MyPageProps | TeamBuildingProfileProps;
 
-export default function ProfileDetail({ user, postId, isMyPage }: Props) {
-  const userId = isMyPage ? user?.user_id : postId;
+export default function ProfileDetail({ user, profileData, isMyPage }: Props) {
+  console.log("profileData", profileData);
 
   const navigate = useNavigate();
 
   const GAME_DELETE_CHECK_ID = "gameDeleteCheckId";
   const { modalToggles, onClickModalToggleHandlers } = useModalToggles([GAME_DELETE_CHECK_ID]);
-
-  const { data } = useQuery({
-    queryKey: ["teamBuildProfile", userId],
-    queryFn: () => getTeamBuildProfileByUserId(userId),
-    retry: false,
-  });
-
-  console.log("userIdㅌ입:", typeof userId);
-  const profileData = data?.data;
 
   const purpose =
     profileData?.purpose === "PORTFOLIO"
@@ -73,7 +66,7 @@ export default function ProfileDetail({ user, postId, isMyPage }: Props) {
     <>
       <div className="bg-gray-800 rounded-xl px-11 py-14 flex flex-col gap-4 w-full">
         {/* 내 팀빌팅 프로필이 없는 경우 */}
-        {!postId && (
+        {!profileData && (
           <>
             <div className="flex items-start">
               <p className="font-DungGeunMo text-heading-32 text-white font-normal">{user?.nickname}의 커리어 프로필</p>
@@ -92,7 +85,7 @@ export default function ProfileDetail({ user, postId, isMyPage }: Props) {
                   content="커리어 프로필 등록하기"
                   type="filled"
                   onClick={() => {
-                    navigate("/community/team-building/profile-create");
+                    navigate("/community/team-building/profile/create");
                   }}
                 />
               </div>
@@ -101,7 +94,7 @@ export default function ProfileDetail({ user, postId, isMyPage }: Props) {
         )}
 
         {/* 내 팀필딩 프로필이 있는 경우 */}
-        {postId && (
+        {profileData && (
           <>
             <div className="flex">
               <div className="flex items-center gap-6 w-[90%]">
@@ -122,7 +115,20 @@ export default function ProfileDetail({ user, postId, isMyPage }: Props) {
               </div>
 
               <div className={`flex justify-end items-center ${isMyPage ? "block" : "hidden"}`}>
-                <SpartaButton content="팀빌딩 프로필 수정" size="small" colorType="grey" customStyle="w-[170px]" />
+                <SpartaButton
+                  content="팀빌딩 프로필 수정"
+                  size="small"
+                  colorType="grey"
+                  customStyle="w-[170px]"
+                  onClick={() => {
+                    navigate(`/community/team-building/profile/edit/${user?.user_id}`, {
+                      state: {
+                        profileData,
+                        isEditMode: true,
+                      },
+                    });
+                  }}
+                />
               </div>
             </div>
 
@@ -141,7 +147,7 @@ export default function ProfileDetail({ user, postId, isMyPage }: Props) {
                   <span className="w-44 font-bold">관심 게임개발장르</span>
                   <div className="flex gap-2 font-DungGeunMo">
                     {profileData?.game_genre.length > 0 ? (
-                      profileData?.game_genre.map((genre: string) => (
+                      profileData?.game_genre.map((genre) => (
                         <span className="bg-white px-2 py-1 rounded text-sm text-gray-700">{genre}</span>
                       ))
                     ) : (
@@ -174,13 +180,15 @@ export default function ProfileDetail({ user, postId, isMyPage }: Props) {
                             }
                             alt={`${type} 링크`}
                           />
-                          <a
-                            href={link.startsWith("http") ? link : `https://${link}`}
-                            className="text-white underline w-[650px] whitespace-nowrap text-ellipsis overflow-hidden"
-                            target="_blank"
-                          >
-                            {link}
-                          </a>
+                          <div className=" w-[650px] whitespace-nowrap text-ellipsis overflow-hidden">
+                            <a
+                              href={link.startsWith("http") ? link : `https://${link}`}
+                              className="text-white underline "
+                              target="_blank"
+                            >
+                              {link}
+                            </a>
+                          </div>
                         </div>
                       ))
                     ) : (
@@ -238,7 +246,7 @@ export default function ProfileDetail({ user, postId, isMyPage }: Props) {
       <p
         onClick={() => onClickModalToggleHandlers[GAME_DELETE_CHECK_ID]()}
         className={`mt-5 text-right text-error-default underline cursor-pointer ${
-          isMyPage && postId ? "block" : "hidden"
+          isMyPage && profileData ? "block" : "hidden"
         }`}
       >
         팀빌딩 프로필 삭제하기

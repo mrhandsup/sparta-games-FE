@@ -2,25 +2,9 @@
 
 import radioGroupsData from "../util/constance/radioGroupsData";
 
-export type TTeamBuildProfileResponse = {
-  status: "success" | "fail" | "error";
-  message: string | null;
-  data: TTeamBuildProfileListItem[];
-  pagination: {
-    count: number;
-    next: string | null;
-    previous: string | null;
-  };
-  error_code: string | null;
-};
+export type RadioGroupKey = keyof typeof radioGroupsData;
+export type RadioGroupData = typeof radioGroupsData;
 
-export type TTeamBuildProfileListItem = TCommonTeamBuildPost & {
-  profile_image: File[] | string | null;
-  career: string;
-  my_role: string;
-  tech_stack: string;
-  game_genre: string;
-};
 export type TCommonTeamBuildPost = {
   id: number;
   title: string;
@@ -34,6 +18,46 @@ export type TCommonTeamBuildPost = {
     nickname: string;
     image: string | null;
   };
+};
+
+export type TTeamBuildProfileResponse = {
+  status: "success" | "fail" | "error";
+  message: string | null;
+  data: TTeamBuildProfileListItem[];
+  pagination: {
+    count: number;
+    next: string | null;
+    previous: string | null;
+  };
+  error_code: string | null;
+};
+
+export type TTeamBuildProfileUserResponse = {
+  status: "success" | "fail" | "error";
+  message: string | null;
+  data: TTeamBuildProfileListItem;
+  pagination: {
+    count: number;
+    next: string | null;
+    previous: string | null;
+  };
+  error_code: string | null;
+};
+
+export type TTeamBuildProfileListItem = TCommonTeamBuildPost & {
+  [K in keyof RadioGroupData]: string;
+} & {
+  profile_image: File[] | string | null;
+  career: string;
+  my_role: string;
+  tech_stack: string;
+  game_genre: string[];
+  portfolio: {
+    link: string;
+    type: string;
+  }[];
+  contact: string;
+  content: string;
 };
 
 export type TTeamBuildPostResponse = {
@@ -82,9 +106,6 @@ export type TTeamBuildRecommenedPostListItem = TTeamBuildPostListItem & {
   content: string;
 };
 
-export type RadioGroupKey = keyof typeof radioGroupsData;
-export type RadioGroupData = typeof radioGroupsData;
-
 export type TProjectRecruitForm = {
   [K in keyof RadioGroupData]: string;
 } & {
@@ -109,7 +130,7 @@ export type TProfileRegisterForm = {
   contact: string;
   title: string;
   content: string;
-  links: {
+  portfolio: {
     link: string;
     type: string;
   }[];

@@ -1,21 +1,19 @@
-import { Control, FormState, UseFormRegister, UseFormSetValue, UseFormWatch } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 
 import SpartaRadioGroup from "../../../../spartaDesignSystem/SpartaRadioGroup";
 import SpartaTextField from "../../../../spartaDesignSystem/SpartaTextField";
 
-import { TProfileRegisterForm } from "../../../../types";
+import { TProfileRegisterForm, TTeamBuildProfileListItem } from "../../../../types";
 import { EDITOR_FORMATS } from "../../../../constant/constant";
 import { useEffect, useMemo, useRef } from "react";
 import ReactQuill from "react-quill";
 
 type Props = {
-  register: UseFormRegister<TProfileRegisterForm>;
-  control: Control<TProfileRegisterForm>;
-  watch: UseFormWatch<TProfileRegisterForm>;
-  setValue: UseFormSetValue<TProfileRegisterForm>;
-  formState: FormState<TProfileRegisterForm>;
+  profileData: TTeamBuildProfileListItem;
 };
-export default function ProfileRegisterFormProject({ register, control, watch, setValue, formState }: Props) {
+export default function ProfileRegisterFormProject({ profileData }: Props) {
+  const { register, control, setValue, watch, formState } = useFormContext<TProfileRegisterForm>();
+
   const quillRef = useRef<ReactQuill | null>(null);
 
   useEffect(() => {
