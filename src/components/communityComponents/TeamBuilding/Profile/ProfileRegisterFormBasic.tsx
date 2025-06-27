@@ -104,8 +104,6 @@ export default function PorfileRegisterFormBasic({ profileData, isEditMode }: Pr
     },
   });
 
-  console.log("profileData", profileData);
-
   return (
     <div className="w-full mt-10 mb-6 p-9 bg-gray-800 rounded-xl">
       <p className="font-DungGeunMo text-xl text-primary-400 mb-4">기본 프로필 정보 작성</p>

@@ -123,6 +123,8 @@ export default function RecruitForm() {
     },
   });
 
+  const isPending = isEditMode ? updateTeamBuildingMutation.isPending : createTeamBuildingMutation.isPending;
+
   const onSubmit = async (data: any) => {
     const formData = new FormData();
 
@@ -188,7 +190,9 @@ export default function RecruitForm() {
             content={noActionModalData.content || ""}
             btn1={{
               text: noActionModalData?.btn1?.text || "",
-              onClick: handleSubmit(onSubmit),
+              onClick: () => {
+                if (!isPending) handleSubmit(onSubmit)();
+              },
             }}
             btn2={
               noActionModalData?.btn2 && {

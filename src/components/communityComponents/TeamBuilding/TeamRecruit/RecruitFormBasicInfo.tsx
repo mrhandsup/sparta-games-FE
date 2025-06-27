@@ -133,7 +133,7 @@ export default function RecruitFormBasicInfo({
               required: "연락방법을 입력해주세요.",
               pattern: {
                 value: /^(https?:\/\/)?([\w-])+\.([a-zA-Z]{2,63})([/\w.-]*)*\/?$/,
-                message: "유효한 링크를 입력해주세요.",
+                message: "올바른 링크를 입력해주세요.",
               },
             })}
             inputProps={{

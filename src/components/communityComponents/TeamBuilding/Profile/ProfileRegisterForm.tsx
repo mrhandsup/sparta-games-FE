@@ -167,6 +167,9 @@ export default function ProfileRegisterForm() {
       }
     },
   });
+
+  const isPending = isEditMode ? updateTeamBuildProfileMutation.isPending : createTeamBuildProfileMutation.isPending;
+
   return (
     <div className="mx-auto mt-16">
       <div className="flex justify-center items-center mb-10">
@@ -219,7 +222,9 @@ export default function ProfileRegisterForm() {
             content={noActionModalData.content || ""}
             btn1={{
               text: noActionModalData?.btn1?.text || "",
-              onClick: methods.handleSubmit(onSubmit),
+              onClick: () => {
+                if (!isPending) methods.handleSubmit(onSubmit)();
+              },
             }}
             btn2={
               noActionModalData?.btn2 && {
