@@ -172,7 +172,6 @@ export default function ProfileRegisterForm() {
 
   const isPending = isEditMode ? updateTeamBuildProfileMutation.isPending : createTeamBuildProfileMutation.isPending;
 
-  console.log("currentStep", currentStep);
   return (
     <div className="mx-auto mt-16">
       <div className="flex justify-center items-center mb-10">
