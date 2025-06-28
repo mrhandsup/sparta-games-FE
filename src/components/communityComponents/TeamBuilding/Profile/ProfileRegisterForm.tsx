@@ -1,5 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 
 import CommunityProjectTitle from "../../../common/CommunityProjectTitle";
 import ProfileRegisterFormProject from "./ProfileRegisterFormProject";
@@ -8,14 +11,13 @@ import SpartaButton from "../../../../spartaDesignSystem/SpartaButton";
 
 import { TProfileRegisterForm } from "../../../../types";
 
-import recruitImage from "../../../../assets/gameDetail/ReviewEdit.svg";
-import { useMutation } from "@tanstack/react-query";
 import { postTeamBuildProfile, putTeamBuildProfile } from "../../../../api/teambuilding";
-import { AxiosError } from "axios";
 import useModalToggles from "../../../../hook/useModalToggles";
 import SpartaReactionModal, { TSpartaReactionModalProps } from "../../../../spartaDesignSystem/SpartaReactionModal";
-import { useLocation, useNavigate } from "react-router-dom";
 import { userStore } from "../../../../share/store/userStore";
+
+import recruitImage from "../../../../assets/gameDetail/ReviewEdit.svg";
+import arrowBack from "../../../../assets/common/arrow/triangleArrowLeft.svg";
 
 export default function ProfileRegisterForm() {
   const methods = useForm<TProfileRegisterForm>({
@@ -170,6 +172,7 @@ export default function ProfileRegisterForm() {
 
   const isPending = isEditMode ? updateTeamBuildProfileMutation.isPending : createTeamBuildProfileMutation.isPending;
 
+  console.log("currentStep", currentStep);
   return (
     <div className="mx-auto mt-16">
       <div className="flex justify-center items-center mb-10">
@@ -194,13 +197,23 @@ export default function ProfileRegisterForm() {
         </div>
       </div>
 
-      <CommunityProjectTitle img={recruitImage} title={"프로필을 등록하고 프로젝트를 시작해보세요"} />
+      <div className="relative flex items-center w-full">
+        <img
+          className={`${currentStep === 0 ? "hidden" : "block"} absolute left-0 cursor-pointer`}
+          onClick={goToPrevStep}
+          src={arrowBack}
+          alt="1페이지 폼으로 돌아가기"
+        />
+        <div className="flex-1 text-center">
+          <CommunityProjectTitle img={recruitImage} title={"프로필을 등록하고 프로젝트를 시작해보세요"} />
+        </div>
+      </div>
 
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSubmit)}>
           <div className="w-[1180px] mx-auto">
             {currentStep === 0 && <PorfileRegisterFormBasic profileData={profileData} isEditMode={isEditMode} />}
-            {currentStep === 1 && <ProfileRegisterFormProject profileData={profileData} />}
+            {currentStep === 1 && <ProfileRegisterFormProject />}
             <SpartaButton
               disabled={currentStep === 0 ? !isStepOneValid : !formState.isValid}
               onClick={currentStep === 0 ? goToNextStep : onClickOpenConfirmModal}

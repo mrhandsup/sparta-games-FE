@@ -64,49 +64,6 @@ const GAME_CATEGORY: selectConfig[] = [
   },
 ];
 
-// const ROLE_CHOICES: selectConfig[] = [
-//   {
-//     label: "Director",
-//     value: "DIR",
-//   },
-//   {
-//     label: "Project Manager",
-//     value: "PM",
-//   },
-//   {
-//     label: "2D Artist",
-//     value: "A2D",
-//   },
-//   {
-//     label: "3D Artist",
-//     value: "A3D",
-//   },
-//   {
-//     label: "UXUI Designer",
-//     value: "UXUI",
-//   },
-//   {
-//     label: "Client Dev",
-//     value: "CLNT",
-//   },
-//   {
-//     label: "Engine Dev",
-//     value: "ENG",
-//   },
-//   {
-//     label: "Server / Network Dev",
-//     value: "SRVR",
-//   },
-//   {
-//     label: "Sound / Audio",
-//     value: "AUD",
-//   },
-//   {
-//     label: "QA / Test",
-//     value: "QA",
-//   },
-// ];
-
 const ROLE_CHOICES: selectConfig[] = [
   {
     label: "Director",

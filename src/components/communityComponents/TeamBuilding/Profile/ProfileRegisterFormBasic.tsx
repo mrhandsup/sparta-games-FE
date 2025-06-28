@@ -156,11 +156,17 @@ export default function PorfileRegisterFormBasic({ profileData, isEditMode }: Pr
               rules={{ required: "나의 포지션을 선택해주세요." }}
               name="my_role"
               placeHolderText="나의 포지션을 선택해주세요."
+              subLabel={{
+                default: "",
+                error: formState.errors.my_role?.message as string,
+                pass: "",
+              }}
+              error={!!formState.errors.my_role}
             />
           </div>
         </div>
 
-        <div className="flex flex-col gap-5 basis-1/2">
+        <div className="flex flex-col gap-5 basis-1/">
           <SpartaTextField
             label="기술 스택 또는 툴"
             type="small"

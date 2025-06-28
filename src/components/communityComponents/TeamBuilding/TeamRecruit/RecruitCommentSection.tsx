@@ -38,7 +38,7 @@ export default function RecruitCommentSection({ onClickDeleteComment }: Props) {
 
       <div className="flex items-center gap-3 mt-10 mb-4 font-DungGeunMo text-white">
         <p className="text-3xl">댓글</p>
-        <span className="text-3xl">8</span>
+        <span className="text-3xl">{watch("content")?.length}</span>
         {watch("content")?.length > 1000 ? (
           <p className=" text-error-default text-lg">*1000자 이내로 작성해주세요.</p>
         ) : (
