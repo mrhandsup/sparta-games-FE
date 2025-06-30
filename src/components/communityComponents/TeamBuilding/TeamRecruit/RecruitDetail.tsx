@@ -197,7 +197,7 @@ export default function RecruitDetail() {
           onClickDeleteRecruit={onClickDeleteRecruit}
         />
         <RecruitDetailInfo postDetail={postDetail} />
-        <RecruitCommentSection onClickDeleteComment={onClickDeleteComment} />
+        <RecruitCommentSection postDetail={postDetail} onClickDeleteComment={onClickDeleteComment} />
         <SpartaPagination dataTotalCount={5} countPerPage={1} onChangePage={() => {}} />
       </div>
 

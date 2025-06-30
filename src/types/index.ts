@@ -5,6 +5,18 @@ import radioGroupsData from "../util/constance/radioGroupsData";
 export type RadioGroupKey = keyof typeof radioGroupsData;
 export type RadioGroupData = typeof radioGroupsData;
 
+export type TApiResponse<TData> = {
+  status: "success" | "fail" | "error";
+  message: string | null;
+  data: TData;
+  pagination: {
+    count: number;
+    next: string | null;
+    previous: string | null;
+  };
+  error_code: string | null;
+};
+
 export type TCommonTeamBuildPost = {
   id: number;
   title: string;
@@ -20,6 +32,19 @@ export type TCommonTeamBuildPost = {
   };
 };
 
+export type TTeamBuildCommentData = {
+  id: number;
+  content: string;
+  create_dt: Date;
+  update_dt: Date;
+  is_visible: boolean;
+  post_id: number;
+  author_data: {
+    id: number;
+    nickname: string;
+    image: string | null;
+  };
+};
 export type TTeamBuildProfileResponse = {
   status: "success" | "fail" | "error";
   message: string | null;

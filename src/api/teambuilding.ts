@@ -178,3 +178,38 @@ export const putTeamBuildProfile = async (userId: number | undefined, formData: 
     throw error;
   }
 };
+
+/**
+ * 팀빌딩 댓글 생성
+ */
+export const postTeamBuildComments = async (postId: number | undefined, { content }: { content: string }) => {
+  console.log("content", content);
+  try {
+    const res = await sparta_games_auth.post(`/teams/api/teambuild/${postId}/comments/`, {
+      content,
+    });
+
+    return res?.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw error;
+    }
+    throw error;
+  }
+};
+
+/**
+ * 팀빌딩 댓글 조회
+ */
+export const getTeamBuildComments = async (postId: number | undefined) => {
+  try {
+    const res = await sparta_games.get(`/teams/api/teambuild/${postId}/comments/`);
+
+    return res?.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw error;
+    }
+    throw error;
+  }
+};
