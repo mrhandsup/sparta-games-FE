@@ -182,7 +182,7 @@ export const putTeamBuildProfile = async (userId: number | undefined, formData: 
 /**
  * 팀빌딩 댓글 생성
  */
-export const postTeamBuildComments = async (postId: number | undefined, { content }: { content: string }) => {
+export const postTeamBuildComments = async (postId: number | undefined, content: string) => {
   console.log("content", content);
   try {
     const res = await sparta_games_auth.post(`/teams/api/teambuild/${postId}/comments/`, {
