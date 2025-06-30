@@ -201,9 +201,9 @@ export const postTeamBuildComments = async (postId: number | undefined, content:
 /**
  * 팀빌딩 댓글 조회
  */
-export const getTeamBuildComments = async (postId: number | undefined) => {
+export const getTeamBuildComments = async (postId: number | undefined, page: number, sortTab: "new" | "old") => {
   try {
-    const res = await sparta_games.get(`/teams/api/teambuild/${postId}/comments/`);
+    const res = await sparta_games.get(`/teams/api/teambuild/${postId}/comments/?page=${page}&order=${sortTab}`);
 
     return res?.data;
   } catch (error) {
