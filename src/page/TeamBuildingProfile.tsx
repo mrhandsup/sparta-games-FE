@@ -2,10 +2,13 @@ import { useState } from "react";
 import { useLocation } from "react-router-dom";
 
 import ProfileDetail from "../components/communityComponents/TeamBuilding/Profile/ProfileDetail";
+import ProfileUserGame from "../components/communityComponents/TeamBuilding/Profile/ProfileUserGame";
+import { TTeamBuildProfileListItem } from "../types";
 
 export default function TeamBuildingProfile() {
   const location = useLocation();
-  const { post } = location.state || {};
+
+  const { post } = (location.state as { post: TTeamBuildProfileListItem }) || {};
 
   const [navigation, setNavigation] = useState<"log" | "teambuilding" | "develop">("teambuilding");
 
@@ -19,15 +22,6 @@ export default function TeamBuildingProfile() {
       <div className="relative flex flex-col mx-auto max-w-[1440px] min-w-[1440px]">
         <div className="flex gap-9 py-11 w-[83%] mx-auto">
           <div className="bg-gray-800 w-[13%] p-2 rounded-xl h-fit">
-            <button
-              className={`w-full h-12 rounded-xl text-heading-20 
-            ${navigation === "log" ? navigationButtonConfig.clicked : navigationButtonConfig.unClicked}
-              `}
-              onClick={() => setNavigation("log")}
-            >
-              활동목록
-            </button>
-
             <button
               className={`w-full h-12 rounded-xl text-heading-20  ${
                 navigation === "teambuilding" ? navigationButtonConfig.clicked : navigationButtonConfig.unClicked
@@ -49,14 +43,10 @@ export default function TeamBuildingProfile() {
             {/* <ProfileHeader user={user} isMyPage={isMyPage} setNavigation={setNavigation} /> */}
 
             <div className="max-w-[1440px] mx-auto">
-              {navigation === "log" ? (
-                ""
-              ) : // <Logs user={user} />
-              navigation === "teambuilding" ? (
+              {navigation === "teambuilding" ? (
                 <ProfileDetail profileData={post} />
               ) : (
-                ""
-                // <MyGame user={user} isMyPage={isMyPage} />
+                <ProfileUserGame postDetail={post} />
               )}
             </div>
           </div>

@@ -13,6 +13,7 @@ type TLogsProps = {
 };
 
 const Logs = (props: TLogsProps) => {
+  console.log("props.user", props.user);
   const { modalToggles, onClickModalToggleHandlers } = useModalToggles(["gameLogModal"]);
 
   //* Hooks

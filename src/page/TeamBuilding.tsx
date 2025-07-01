@@ -148,8 +148,6 @@ export default function TeamBuilding() {
     setSearchKeywordProfile(e.currentTarget.value);
   };
 
-  console.log("searchKeywordProfile", searchKeywordProfile === "");
-
   useEffect(() => {
     if (selectedTab === "profileRegister" || selectedTab === "teamRecruit") {
       setSelectedFilters([]);
