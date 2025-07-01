@@ -17,6 +17,14 @@ export type TApiResponse<TData> = {
   error_code: string | null;
 };
 
+export type TTeamBuildSearchedPosts = {
+  search_teambuild_posts: TTeamBuildPostListItem[];
+};
+
+export type TTeamBuildProfileSearchedPosts = {
+  search_teambuild_profiles: TTeamBuildProfileListItem[];
+};
+
 export type TCommonTeamBuildPost = {
   id: number;
   title: string;

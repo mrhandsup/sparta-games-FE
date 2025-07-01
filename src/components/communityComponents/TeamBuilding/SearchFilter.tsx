@@ -24,7 +24,7 @@ interface SelectedFilter {
 
 type Props = {
   userData: TUserData | undefined;
-  isProfileTab: boolean;
+  selectedTab: "teamRecruit" | "profileRegister";
   onClickDisplaySelectedTags: (category: FilterCategory, value: string, label: string) => void;
   selectedFilters: SelectedFilter[];
   setSelectedFilters: React.Dispatch<React.SetStateAction<SelectedFilter[]>>;
@@ -36,7 +36,7 @@ type Props = {
 
 const SearchFilter = ({
   userData,
-  isProfileTab,
+  selectedTab,
   onClickDisplaySelectedTags,
   selectedFilters,
   setSelectedFilters,
@@ -55,7 +55,10 @@ const SearchFilter = ({
   const noActionData: { [key: string]: Partial<TSpartaReactionModalProps> } = {
     uploadWarning: {
       title: "잠시만요!",
-      content: isProfileTab ? "프로필 등록은 회원만 이용가능합니다." : "팀원 모집 글 등록은 회원만 이용가능합니다.",
+      content:
+        selectedTab === "profileRegister"
+          ? "프로필 등록은 회원만 이용가능합니다."
+          : "팀원 모집 글 등록은 회원만 이용가능합니다.",
       btn1: {
         text: "확인했습니다",
         onClick: () => {
@@ -102,7 +105,7 @@ const SearchFilter = ({
 
   return (
     <>
-      {!isProfileTab ? (
+      {selectedTab === "teamRecruit" ? (
         <div className="flex items-center gap-2 mt-12 mb-4">
           <SpartaCheckBox checked={isOpen} onClick={handleToggle} />
           <p className="font-DungGeunMo text-body-22 text-white">모집중</p>
@@ -195,7 +198,7 @@ const SearchFilter = ({
                   : "text-white"
               }`}
             >
-              {isProfileTab ? "참여 가능 기간" : "프로젝트 기간"}
+              {selectedTab === "teamRecruit" ? "참여 가능 기간" : "프로젝트 기간"}
             </p>
             <img
               src={
@@ -244,7 +247,11 @@ const SearchFilter = ({
             onClick={() => {
               userData
                 ? navigate(
-                    `${isProfileTab ? "/community/team-building/profile/create" : "/community/team-building/create"}`,
+                    `${
+                      selectedTab === "teamRecruit"
+                        ? "/community/team-building/create"
+                        : "/community/team-building/profile/create"
+                    }`,
                   )
                 : setNoActionModalData(noActionData.uploadWarning);
               onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();

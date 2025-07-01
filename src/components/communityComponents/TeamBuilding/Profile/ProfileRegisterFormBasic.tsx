@@ -166,7 +166,7 @@ export default function PorfileRegisterFormBasic({ profileData, isEditMode }: Pr
           </div>
         </div>
 
-        <div className="flex flex-col gap-5 basis-1/">
+        <div className="flex flex-col gap-5 basis-1/2">
           <SpartaTextField
             label="기술 스택 또는 툴"
             type="small"
@@ -280,9 +280,11 @@ export default function PorfileRegisterFormBasic({ profileData, isEditMode }: Pr
               </div>
             ))}
           </div>
-          <div onClick={onClickAddLink} className="inline-flex items-center gap-1 text-white cursor-pointer">
-            <img className="w-6 h-6" src={addBtn} alt="링크 추가하기" />
-            <span>추가하기</span>
+          <div onClick={onClickAddLink} className="w-fit cursor-pointer">
+            <div className="inline-flex items-center gap-1">
+              <img className="w-6 h-6" src={addBtn} alt="링크 추가하기" />
+              <span className="text-white ">추가하기</span>
+            </div>
           </div>
         </div>
       </div>

@@ -118,9 +118,10 @@ export const postTeamBuildProfile = async (formData: FormData) => {
 /**
  * 팀빌딩 프로필 전체 목록 조회
  */
-export const getTeamBuildProfile = async () => {
+export const getTeamBuildProfile = async (params?: URLSearchParams) => {
+  console.log("params@@@@@@@@@@@@@@@@@@@@@@@@@@@@", params);
   try {
-    const res = await sparta_games.get("/teams/api/teambuild/profile/");
+    const res = await sparta_games.get(`/teams/api/teambuild/profile/?${params?.toString()}`);
 
     return res?.data;
   } catch (error) {
@@ -237,6 +238,38 @@ export const putTeamBuildComments = async (commentId: number | null | undefined,
 export const deleteTeamBuildComments = async (comment_id: number | undefined) => {
   try {
     const res = await sparta_games_auth.delete(`/teams/api/teambuild/comments/${comment_id}/`);
+    return res?.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw error;
+    }
+    throw error;
+  }
+};
+
+/**
+ * 팀빌딩 모집글 검색
+ */
+export const getTeamBuildSearch = async (keyword: string) => {
+  try {
+    const res = await sparta_games.get(`/teams/api/teambuild/search?keyword=${keyword}`);
+
+    return res?.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw error;
+    }
+    throw error;
+  }
+};
+
+/**
+ * 팀빌딩 프로필 검색
+ */
+export const getTeamBuildProfileSearch = async (keyword: string) => {
+  try {
+    const res = await sparta_games.get(`/teams/api/teambuild/profile/search?keyword=${keyword}`);
+
     return res?.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
