@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { AxiosError } from "axios";
-import { getTeamBuildComments, postTeamBuildComments } from "../../../../api/teambuilding";
+import { getTeamBuildComments, postTeamBuildComments, putTeamBuildComments } from "../../../../api/teambuilding";
 
 import SpartaButton from "../../../../spartaDesignSystem/SpartaButton";
 import SpartaTabNav from "../../../../spartaDesignSystem/SpartaTabNav";
@@ -15,7 +15,7 @@ import SpartaPagination from "../../../../spartaDesignSystem/SpartaPagination";
 
 type Props = {
   postDetail: TTeamBuildPostDetail | undefined;
-  onClickDeleteComment: () => void;
+  onClickDeleteComment: (id: number) => void;
 };
 type SortTab = "new" | "old";
 
@@ -50,12 +50,29 @@ export default function RecruitCommentSection({ postDetail, onClickDeleteComment
     },
   });
 
+  const putTeamBuildCommentsMutation = useMutation({
+    mutationFn: ({ commentId, content }: { commentId?: number | null | undefined; content: string }) =>
+      putTeamBuildComments(commentId, content),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["teamBuildComments"] });
+      setEditingCommentId(null);
+    },
+    onError: (error: AxiosError) => {
+      if (error.response && error.response.status === 400) {
+        window.alert(`${(error.response?.data as { message?: string })?.message}`);
+      } else {
+        window.alert("알 수 없는 오류가 발생했습니다. 잠시후에 다시 시도해주세요.");
+      }
+    },
+  });
+
   const { data } = useQuery<TApiResponse<TTeamBuildCommentData[]>>({
     queryKey: ["teamBuildComments", postDetail?.id, page, sortTab],
     queryFn: () => getTeamBuildComments(postDetail?.id, page, sortTab),
   });
 
   const commentData = data?.data;
+
   const onClickCommentEdit = (commentId: number) => {
     setEditingCommentId(commentId);
   };
@@ -74,10 +91,10 @@ export default function RecruitCommentSection({ postDetail, onClickDeleteComment
     e.preventDefault();
     if (editingContent.length > 1000) return;
 
-    // 수정 로직
-    // updateComment(editingCommentId, editingContent);
-    // setEditingCommentId(null);
-    // setEditingContent("");
+    putTeamBuildCommentsMutation.mutate({
+      commentId: editingCommentId,
+      content: editingContent,
+    });
   };
   const editTextareaRef = useRef<HTMLTextAreaElement | null>(null);
 
@@ -235,7 +252,7 @@ export default function RecruitCommentSection({ postDetail, onClickDeleteComment
                           customStyle="w-[100px] hover:text-alert-default hover:border-alert-default"
                         />
                         <SpartaButton
-                          onClick={onClickDeleteComment}
+                          onClick={() => onClickDeleteComment(comment.id)}
                           content="삭제"
                           size="small"
                           colorType="grey"

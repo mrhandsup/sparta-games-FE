@@ -183,7 +183,6 @@ export const putTeamBuildProfile = async (userId: number | undefined, formData: 
  * 팀빌딩 댓글 생성
  */
 export const postTeamBuildComments = async (postId: number | undefined, content: string) => {
-  console.log("content", content);
   try {
     const res = await sparta_games_auth.post(`/teams/api/teambuild/${postId}/comments/`, {
       content,
@@ -205,6 +204,39 @@ export const getTeamBuildComments = async (postId: number | undefined, page: num
   try {
     const res = await sparta_games.get(`/teams/api/teambuild/${postId}/comments/?page=${page}&order=${sortTab}`);
 
+    return res?.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw error;
+    }
+    throw error;
+  }
+};
+
+/**
+ * 팀빌딩 댓글 수정
+ */
+
+export const putTeamBuildComments = async (commentId: number | null | undefined, content: string) => {
+  try {
+    const res = await sparta_games_auth.put(`/teams/api/teambuild/comments/${commentId}/`, {
+      content,
+    });
+    return res?.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw error;
+    }
+    throw error;
+  }
+};
+
+/**
+ * 팀빌딩 댓글 삭제
+ */
+export const deleteTeamBuildComments = async (comment_id: number | undefined) => {
+  try {
+    const res = await sparta_games_auth.delete(`/teams/api/teambuild/comments/${comment_id}/`);
     return res?.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
