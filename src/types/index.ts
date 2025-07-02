@@ -322,7 +322,10 @@ export type TReviewResponse = {
 
 export type TReviewData = {
   id: number;
-  author_name: string;
+  author_data: {
+    id: number;
+    nickname: string;
+  };
   src: null;
   like_count: number;
   dislike_count: number;
