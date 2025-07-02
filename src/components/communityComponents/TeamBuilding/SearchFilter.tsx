@@ -4,15 +4,17 @@ import { SetURLSearchParams, useNavigate } from "react-router-dom";
 import SpartaButton from "../../../spartaDesignSystem/SpartaButton";
 import SpartaCheckBox from "../../../spartaDesignSystem/SpartaCheckBox";
 
-import { ROLE_CHOICES } from "../../../constant/constant";
+import { TUserData } from "../../../types";
+
+import { useRoleOptions } from "../../../hook/useRoleOptions";
+import useModalToggles from "../../../hook/useModalToggles";
+
+import SpartaReactionModal, { TSpartaReactionModalProps } from "../../../spartaDesignSystem/SpartaReactionModal";
 
 import ArrowButton from "../../../assets/common/arrow/triangleArrowBottom.svg";
 import ArrowButtonFill from "../../../assets/common/arrow/triangleArrowBottomActive.svg";
 import FilterReset from "../../../assets/communityImage/Reset.svg";
 import deleteIcon from "../../../assets/common/DeleteIcon.svg";
-import { TUserData } from "../../../types";
-import useModalToggles from "../../../hook/useModalToggles";
-import SpartaReactionModal, { TSpartaReactionModalProps } from "../../../spartaDesignSystem/SpartaReactionModal";
 
 type FilterCategory = "position" | "purpose" | "period";
 
@@ -48,6 +50,8 @@ const SearchFilter = ({
   const [filterCliked, setFilterCliked] = useState("");
 
   const navigate = useNavigate();
+
+  const { roleOptions } = useRoleOptions();
 
   const NO_ACTION_MODAL_ID = "noActionModal";
   const { modalToggles, onClickModalToggleHandlers } = useModalToggles([NO_ACTION_MODAL_ID]);
@@ -140,7 +144,7 @@ const SearchFilter = ({
               } absolute top-10  flex gap-5 p-4 bg-gray-700 rounded-md z-10`}
             >
               <div className="flex flex-col items-center w-[180px]">
-                {ROLE_CHOICES.map((item, id) => (
+                {roleOptions.map((item, id) => (
                   <p
                     onClick={() => onClickDisplaySelectedTags("position", item.value as string, item.label)}
                     key={id}

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef } from "react";
-import { FormState, UseFormRegister, UseFormSetValue, UseFormWatch } from "react-hook-form";
+import { FormState, useFormContext, UseFormRegister, UseFormSetValue, UseFormWatch } from "react-hook-form";
 
 import SpartaTextField from "../../../../spartaDesignSystem/SpartaTextField";
 
@@ -21,14 +21,8 @@ Quill.register("modules/imageDrop", ImageDrop);
 Quill.register("modules/imageActions", ImageActions);
 Quill.register("modules/imageFormats", ImageFormats);
 
-type Props = {
-  watch: UseFormWatch<TProjectRecruitForm>;
-  setValue: UseFormSetValue<TProjectRecruitForm>;
-  register: UseFormRegister<TProjectRecruitForm>;
-  formState: FormState<TProjectRecruitForm>;
-};
-
-export default function RecruitFormDescription({ register, watch, setValue, formState }: Props) {
+export default function RecruitFormDescription() {
+  const { register, watch, setValue, formState } = useFormContext<TProjectRecruitForm>();
   const quillRef = useRef<ReactQuill | null>(null);
   const editorContent = watch("content");
 

@@ -6,13 +6,15 @@ import SpartaChipSelect from "../../../../spartaDesignSystem/SpartaChipSelect";
 import SpartaRadioGroup from "../../../../spartaDesignSystem/SpartaRadioGroup";
 import SpartaTextField from "../../../../spartaDesignSystem/SpartaTextField";
 
-import { GAME_CATEGORY, ROLE_CHOICES } from "../../../../constant/constant";
+import { GAME_CATEGORY } from "../../../../constant/constant";
 import { TProfileRegisterForm, TTeamBuildProfileListItem } from "../../../../types";
 
 import profileImageUpload from "../../../../assets/communityImage/profileImageUpload.png";
 import addBtn from "../../../../assets/common/plus_gray.svg";
 import removeBtn from "../../../../assets/common/deleteIcon_trash.png";
 import defaultProfile from "../../../../assets/common/defaultProfile.svg";
+import { useTeamBuildRadioOptions } from "../../../../hook/useTeamBuildRadioOptions ";
+import { useRoleOptions } from "../../../../hook/useRoleOptions";
 
 type Props = {
   profileData: TTeamBuildProfileListItem;
@@ -28,6 +30,9 @@ export default function PorfileRegisterFormBasic({ profileData, isEditMode }: Pr
 
   const [profilePreview, setProfilePreview] = useState<string | null>(null);
   const [borderActiveStates, setBorderActiveStates] = useState<boolean[]>([]);
+
+  const { radioGroupsData } = useTeamBuildRadioOptions();
+  const { roleOptions } = useRoleOptions();
 
   useEffect(() => {
     setBorderActiveStates((prev) => {
@@ -146,12 +151,18 @@ export default function PorfileRegisterFormBasic({ profileData, isEditMode }: Pr
             </div>
           </div>
 
-          <SpartaRadioGroup groupsToShow={["career"]} control={control} watch={watch} setValue={setValue} />
+          <SpartaRadioGroup
+            groupsToShow={["career"]}
+            control={control}
+            watch={watch}
+            setValue={setValue}
+            radioGroupsData={radioGroupsData}
+          />
 
           <div className="flex flex-col gap-4 basis-full">
             <SpartaChipSelect
               label="나의 포지션"
-              options={ROLE_CHOICES}
+              options={roleOptions}
               control={control}
               rules={{ required: "나의 포지션을 선택해주세요." }}
               name="my_role"

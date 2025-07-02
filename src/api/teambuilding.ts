@@ -278,3 +278,61 @@ export const getTeamBuildProfileSearch = async (keyword: string) => {
     throw error;
   }
 };
+
+/**
+ * 팀빌딩 프로젝트 목적 목록 불러오기
+ */
+export const getTeamBuildPurposeList = async () => {
+  try {
+    const res = await sparta_games.get("/teams/api/purpose-list/");
+    return res?.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw error;
+    }
+    throw error;
+  }
+};
+/**
+ * 팀빌딩 프로젝트 기간 목록 불러오기
+ */
+export const getTeamBuildDurationList = async () => {
+  try {
+    const res = await sparta_games.get("/teams/api/duration-list/");
+    return res?.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw error;
+    }
+    throw error;
+  }
+};
+/**
+ * 팀빌딩 프로젝트 진행 방식 목록 불러오기
+ */
+export const getTeamBuildMeetingTypeList = async () => {
+  try {
+    const res = await sparta_games.get("/teams/api/meeting-type-list/");
+    return res?.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw error;
+    }
+    throw error;
+  }
+};
+
+/**
+ * 팀빌딩 포지션 목록 불러오기
+ */
+export const getTeamBuildRoleList = async () => {
+  try {
+    const res = await sparta_games.get("/teams/api/role-list/");
+    return res?.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw error;
+    }
+    throw error;
+  }
+};

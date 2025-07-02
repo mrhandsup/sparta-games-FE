@@ -17,6 +17,7 @@ import "quill-image-uploader/dist/quill.imageUploader.min.css";
 import uploadImageFileToS3 from "../../../../util/uploadImageToS3";
 import base64ToFile from "../../../../util/base64ToFile";
 import { EDITOR_FORMATS } from "../../../../constant/constant";
+import { useTeamBuildRadioOptions } from "../../../../hook/useTeamBuildRadioOptions ";
 
 Quill.register("modules/imageDrop", ImageDrop);
 Quill.register("modules/imageActions", ImageActions);
@@ -154,6 +155,8 @@ export default function ProfileRegisterFormProject() {
     };
   }, []);
 
+  const { radioGroupsData } = useTeamBuildRadioOptions();
+
   return (
     <>
       <div className="w-full mt-10 mb-6 p-9 bg-gray-800 rounded-xl">
@@ -167,11 +170,18 @@ export default function ProfileRegisterFormProject() {
               watch={watch}
               setValue={setValue}
               labelOverrides={{ duration: "참여 가능 기간" }}
+              radioGroupsData={radioGroupsData}
             />
           </div>
 
           <div className="flex flex-col gap-5 basis-1/2">
-            <SpartaRadioGroup groupsToShow={["meeting_type"]} control={control} watch={watch} setValue={setValue} />
+            <SpartaRadioGroup
+              groupsToShow={["meeting_type"]}
+              control={control}
+              watch={watch}
+              setValue={setValue}
+              radioGroupsData={radioGroupsData}
+            />
 
             <SpartaTextField
               label="연락방법"
