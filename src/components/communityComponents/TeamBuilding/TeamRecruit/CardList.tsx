@@ -1,17 +1,17 @@
 import { useNavigate } from "react-router-dom";
-import defaultImage from "../../../../assets/category/Rhythm.png";
-import defaultProfile from "../../../../assets/common/defaultProfile.svg";
+
 import { TTeamBuildPostListItem } from "../../../../types";
+
+import defaultProfile from "../../../../assets/common/defaultProfile.svg";
 
 type Props = {
   post: TTeamBuildPostListItem;
-  profileImage: string | undefined;
   isProfileTab: boolean;
 };
 
-export default function CardList({ post, profileImage, isProfileTab }: Props) {
+export default function CardList({ post, isProfileTab }: Props) {
   const navigate = useNavigate();
-  // console.log("userData", userData);
+
   const purpose =
     post.purpose === "PORTFOLIO"
       ? "🔥 취업용 포트폴리오"
@@ -45,7 +45,14 @@ export default function CardList({ post, profileImage, isProfileTab }: Props) {
       }}
     >
       <div className="h-[55%] relative">
-        <img src={defaultImage} alt="썸네일" className="w-full h-full object-cover" />
+        <img
+          src={
+            import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
+              ? import.meta.env.VITE_PROXY_HOST.replace(/\/$/, "") + (post.thumbnail || "")
+              : post.thumbnail || ""
+          }
+          className="h-full object-cover"
+        />
         <div className="absolute top-0 left-0 bg-white rounded-tl-md rounded-br-lg font-DungGeunMo text-black py-1.5 px-4 w-fit font-light border-gray-100 border-b-[0.7px] border-r-[0.95px] border-solid">
           {post.status_chip}
         </div>
@@ -84,11 +91,11 @@ export default function CardList({ post, profileImage, isProfileTab }: Props) {
           <img
             className="w-8 h-8 border-2 border-solid border-gray-400 rounded-full"
             src={
-              profileImage === ""
+              post.author_data.image === null
                 ? defaultProfile
                 : import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
-                ? import.meta.env.VITE_PROXY_HOST.replace(/\/$/, "") + profileImage
-                : profileImage
+                ? import.meta.env.VITE_PROXY_HOST.replace(/\/$/, "") + post.author_data.image
+                : post.author_data.image
             }
             alt={`profile-img-${post.id}`}
           />

@@ -55,6 +55,8 @@ export type TTeamBuildPostDetail = TCommonTeamBuildPost & {
   content: string;
   meeting_type: string;
   create_dt: string;
+  status_chip: "모집중" | "모집마감";
+  thumbnail_basic: boolean;
 };
 
 export type TTeamBuildRecommenedPostListItem = TTeamBuildPostListItem & {
@@ -242,7 +244,10 @@ export type TReviewResponse = {
 
 export type TReviewData = {
   id: number;
-  author_name: string;
+  author_data: {
+    id: number;
+    nickname: string;
+  };
   src: null;
   like_count: number;
   dislike_count: number;

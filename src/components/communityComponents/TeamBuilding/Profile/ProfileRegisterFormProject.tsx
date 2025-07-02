@@ -82,7 +82,7 @@ export default function ProfileRegisterFormProject({ register, control, watch, s
         <div className="flex gap-10">
           <div className="flex flex-col gap-5">
             <SpartaRadioGroup
-              groupsToShow={["projectPurpose", "availablePeriod"]}
+              groupsToShow={["purpose", "availablePeriod"]}
               control={control}
               watch={watch}
               setValue={setValue}
@@ -90,7 +90,7 @@ export default function ProfileRegisterFormProject({ register, control, watch, s
           </div>
 
           <div className="flex flex-col gap-5 basis-1/2">
-            <SpartaRadioGroup groupsToShow={["projectMethod"]} control={control} watch={watch} setValue={setValue} />
+            <SpartaRadioGroup groupsToShow={["meeting_type"]} control={control} watch={watch} setValue={setValue} />
 
             <SpartaTextField
               label="연락방법"

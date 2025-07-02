@@ -1,6 +1,5 @@
 import RecruitDetailInfo from "./RecruitDetailInfo ";
 import RecruitCommentSection from "./RecruitCommentSection";
-import RecruitHeader from "./RecruitHeader";
 import SpartaPagination from "../../../../spartaDesignSystem/SpartaPagination";
 import useModalToggles from "../../../../hook/useModalToggles";
 import SpartaReactionModal, { TSpartaReactionModalProps } from "../../../../spartaDesignSystem/SpartaReactionModal";
@@ -10,8 +9,12 @@ import { TTeamBuildDetailResponse } from "../../../../types";
 import { deleteTeamBuild, getTeamBuildDetail, patchTeamBuild } from "../../../../api/teambuilding";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
+import { userStore } from "../../../../share/store/userStore";
+import RecruitDetailHeader from "./RecruitDetailHeader";
 
 export default function RecruitDetail() {
+  const { userData } = userStore();
+
   const location = useLocation();
   const { post } = location.state || {};
 
@@ -24,15 +27,15 @@ export default function RecruitDetail() {
   });
 
   const postDetail = data?.data;
-  const postStatus = post?.status_chip;
 
+  console.log("postDetaildata", data);
   const closeRecruitMutation = useMutation({
     mutationFn: () => patchTeamBuild(postDetail?.id),
     onSuccess: () => {
       onClickModalToggleHandlers[CONFIRM_MODAL_ID]();
       setNoActionModalData(noActionData.closeRecruitSuccess);
       onClickModalToggleHandlers[SUCCESS_MODAL_ID]();
-      // queryClient.invalidateQueries({ queryKey: ["teamBuildngDetail", post?.id] });
+      queryClient.invalidateQueries({ queryKey: ["teamBuildngDetail", post?.id] });
     },
     onError: (error: AxiosError<{ status: string; message?: string }>) => {
       if (error.response && error.response.data.status === "fail") {
@@ -188,9 +191,9 @@ export default function RecruitDetail() {
   return (
     <>
       <div className="w-[1180px] mx-auto">
-        <RecruitHeader
+        <RecruitDetailHeader
+          userData={userData?.data}
           postDetail={postDetail}
-          postStatus={postStatus}
           onClickCloseRecruit={onClickCloseRecruit}
           onClickDeleteRecruit={onClickDeleteRecruit}
         />

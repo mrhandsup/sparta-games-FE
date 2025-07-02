@@ -1,13 +1,5 @@
 import { forwardRef, useState } from "react";
-import {
-  Control,
-  Controller,
-  FormState,
-  UseFormRegister,
-  UseFormSetValue,
-  UseFormTrigger,
-  UseFormWatch,
-} from "react-hook-form";
+import { Control, Controller, FormState, UseFormRegister, UseFormSetValue, UseFormWatch } from "react-hook-form";
 
 import SpartaChipSelect from "../../../../spartaDesignSystem/SpartaChipSelect";
 import SpartaTextField from "../../../../spartaDesignSystem/SpartaTextField";
@@ -17,7 +9,7 @@ import SpartaRadioGroup from "../../../../spartaDesignSystem/SpartaRadioGroup";
 
 import { getFormattedDate } from "../../../../util/getFormattedDate";
 import { ROLE_CHOICES } from "../../../../constant/constant";
-import { TProjectRecruitForm } from "../../../../types";
+import { TProjectRecruitForm, TTeamBuildPostDetail } from "../../../../types";
 
 import DatePicker from "react-datepicker";
 import { ko } from "date-fns/locale";
@@ -32,14 +24,23 @@ type Props = {
   watch: UseFormWatch<TProjectRecruitForm>;
   setValue: UseFormSetValue<TProjectRecruitForm>;
   register: UseFormRegister<TProjectRecruitForm>;
-  trigger: UseFormTrigger<TProjectRecruitForm>;
   formState: FormState<TProjectRecruitForm>;
+  postDetail: TTeamBuildPostDetail;
+  trigger: any;
 };
-export default function RecruitFormBasicInfo({ control, watch, setValue, register, trigger, formState }: Props) {
-  const [selectBasicImage, setSelectBasicImage] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
-
+export default function RecruitFormBasicInfo({
+  control,
+  watch,
+  setValue,
+  register,
+  formState,
+  postDetail,
+  trigger,
+}: Props) {
   const imageWatch = watch("thumbnail");
+
+  const [selectBasicImage, setSelectBasicImage] = useState(postDetail?.thumbnail_basic);
+  const [isChecked, setIsChecked] = useState(postDetail?.thumbnail_basic);
 
   const onClickUploadImage = () => {
     document.getElementById("project-image")?.click();
@@ -48,9 +49,22 @@ export default function RecruitFormBasicInfo({ control, watch, setValue, registe
   const onClickSelectBasicImage = () => {
     setIsChecked((prev) => !prev);
     setSelectBasicImage((prev) => !prev);
+
     setValue("thumbnail_basic", "default");
-    trigger();
+    setValue("thumbnail", "");
+    trigger("thumbnail"); // 필수!
   };
+
+  const thumbnailWatch = watch("thumbnail");
+  const thumbnailPlaceHolder = selectBasicImage // 기본 이미지 체크 시
+    ? "기본 이미지 업로드를 선택하셨습니다."
+    : thumbnailWatch && typeof thumbnailWatch !== "string" && thumbnailWatch.length > 0 // 새로 업로드한 파일 있을 경우
+    ? (thumbnailWatch[0] as File).name
+    : postDetail?.thumbnail_basic // 기존 기본 이미지 사용
+    ? "기본 이미지 업로드를 선택하셨습니다."
+    : postDetail?.thumbnail // 기존 일반 이미지 사용
+    ? postDetail.thumbnail.split("/").pop()
+    : "1000px*800px 5mb 이하 사진파일";
 
   const CustomInput = forwardRef<HTMLInputElement, { value?: Date | string | null; onClick?: () => void }>(
     ({ value, onClick }, ref) => (
@@ -67,6 +81,7 @@ export default function RecruitFormBasicInfo({ control, watch, setValue, registe
       />
     ),
   );
+
   return (
     <div className="w-full mt-10 mb-6 p-9 bg-gray-800 rounded-xl">
       <p className="font-DungGeunMo text-xl text-primary-400">프로젝트 정보 작성</p>
@@ -136,10 +151,7 @@ export default function RecruitFormBasicInfo({ control, watch, setValue, registe
             label="프로젝트 이미지"
             type="small"
             inputProps={{
-              placeholder:
-                typeof watch("thumbnail") !== "string" && imageWatch?.length > 0
-                  ? (imageWatch[0] as File).name
-                  : "1000px*800px 5mb 이하 사진파일",
+              placeholder: thumbnailPlaceHolder,
               readOnly: true,
             }}
             btnContent={
@@ -147,7 +159,12 @@ export default function RecruitFormBasicInfo({ control, watch, setValue, registe
                 content="업로드"
                 disabled={selectBasicImage}
                 type="filled"
-                colorType={typeof watch("thumbnail") !== "string" && imageWatch?.length > 0 ? "primary" : "grey"}
+                colorType={
+                  (typeof imageWatch === "string" && imageWatch.trim().length > 0) ||
+                  (imageWatch && typeof imageWatch !== "string" && imageWatch.length > 0)
+                    ? "primary"
+                    : "grey"
+                }
                 size="medium"
                 btnType="button"
                 onClick={onClickUploadImage}
@@ -159,7 +176,15 @@ export default function RecruitFormBasicInfo({ control, watch, setValue, registe
             id="project-image"
             type="file"
             accept="image/*"
-            {...register("thumbnail", { required: !selectBasicImage ? "프로젝트 이미지를 업로드해주세요." : false })}
+            {...register("thumbnail", {
+              validate: (value) => {
+                if (selectBasicImage) return true;
+
+                if (value && value.length > 0) return true;
+
+                return "프로젝트 이미지를 업로드해주세요.";
+              },
+            })}
             className="hidden"
           />
 

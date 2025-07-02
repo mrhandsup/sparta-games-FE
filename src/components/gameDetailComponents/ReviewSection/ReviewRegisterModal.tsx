@@ -191,6 +191,7 @@ const ReviewRegisterModal = ({ gamePk, modalToggle, onClickModalToggleHandler, m
               colorType={
                 !form.formState.isValid || ratingValue === null || selectedDifficulty === "" ? "grey" : "primary"
               }
+              disabled={editorContent?.length > 300}
             />
           </div>
         </Box>

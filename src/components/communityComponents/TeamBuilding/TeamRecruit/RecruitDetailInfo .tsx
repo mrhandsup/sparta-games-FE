@@ -13,7 +13,6 @@ export default function RecruitDetailInfo({ postDetail }: Props) {
 
   const sanitizedContent = postDetail?.content && DOMPurify.sanitize(postDetail?.content, config);
 
-  console.log(postDetail?.content);
   const purpose =
     postDetail?.purpose === "PORTFOLIO"
       ? "포트폴리오"

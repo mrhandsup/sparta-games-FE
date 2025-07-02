@@ -35,8 +35,6 @@ export default function RecruitFormDescription({ register, watch, setValue, form
 
   const editorContent = watch("content");
 
-  console.log("작성중인 내용", editorContent);
-
   const handleEditorChange = (editorState: string) => {
     // react-quill 내용 작성 중, 내용 모두 지울 경우 생기는 <p></br></p> 태그 제거하여 빈 문자열로 설정
     const plainText = editorState
@@ -67,7 +65,6 @@ export default function RecruitFormDescription({ register, watch, setValue, form
           extension: "jpeg",
         });
 
-        console.log("presignedResponse.data.data", presignedResponse.data.data);
         const { upload_url, url } = presignedResponse.data.data;
 
         const response = await fetch(upload_url, {
@@ -82,8 +79,6 @@ export default function RecruitFormDescription({ register, watch, setValue, form
         if (!response.ok) {
           throw new Error(`S3 업로드 실패: ${response.status} ${response.statusText}`);
         }
-
-        console.log("put 성공!, real_url", url);
 
         // 2. 업로드된 이미지 URL 에디터에 삽입
         if (!quillRef.current) return;
@@ -125,7 +120,6 @@ export default function RecruitFormDescription({ register, watch, setValue, form
     };
   }, []);
 
-  console.log("formState.errors", formState.errors);
   return (
     <div className="w-full mt-10 mb-6 p-9 bg-gray-800 rounded-xl">
       <p className="font-DungGeunMo text-xl text-primary-400">상세내용 작성</p>
