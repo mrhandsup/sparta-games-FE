@@ -7,15 +7,17 @@ import { getTeamBuildComments, postTeamBuildComments, putTeamBuildComments } fro
 import SpartaButton from "../../../../spartaDesignSystem/SpartaButton";
 import SpartaTabNav from "../../../../spartaDesignSystem/SpartaTabNav";
 
-import { TApiResponse, TTeamBuildCommentData, TTeamBuildPostDetail } from "../../../../types";
+import { TApiResponse, TTeamBuildCommentData, TTeamBuildPostDetail, TUserData } from "../../../../types";
 import { getTimeAgoInHours } from "../../../../util/getTimeAgoInHours";
 
 import defaultProfile from "../../../../assets/common/defaultProfile.svg";
 import SpartaPagination from "../../../../spartaDesignSystem/SpartaPagination";
 
 type Props = {
+  userId: number | undefined;
   postDetail: TTeamBuildPostDetail | undefined;
   onClickDeleteComment: (id: number) => void;
+  openErrorModal: () => void;
 };
 type SortTab = "new" | "old";
 
@@ -24,7 +26,7 @@ const SORT_LABELS: Record<SortTab, string> = {
   old: "오래된 순",
 };
 
-export default function RecruitCommentSection({ postDetail, onClickDeleteComment }: Props) {
+export default function RecruitCommentSection({ userId, postDetail, onClickDeleteComment, openErrorModal }: Props) {
   const COUNT_PER_PAGE = 7;
 
   const [page, setPage] = useState<number>(1);
@@ -44,6 +46,8 @@ export default function RecruitCommentSection({ postDetail, onClickDeleteComment
     onError: (error: AxiosError) => {
       if (error.response && error.response.status === 400) {
         window.alert(`${(error.response?.data as { message?: string })?.message}`);
+      } else if (error.response && error.response.status === 401) {
+        openErrorModal();
       } else {
         window.alert("알 수 없는 오류가 발생했습니다. 잠시후에 다시 시도해주세요.");
       }
@@ -147,7 +151,9 @@ export default function RecruitCommentSection({ postDetail, onClickDeleteComment
               type="filled"
               size="small"
               customStyle="w-[180px]"
-              disabled={newComment.length > 1000 || newComment.trim().length === 0}
+              disabled={
+                newComment.length > 1000 || newComment.trim().length === 0 || putTeamBuildCommentsMutation.isPending
+              }
             />
           </div>
         </form>
@@ -159,6 +165,7 @@ export default function RecruitCommentSection({ postDetail, onClickDeleteComment
               <hr className="w-full border-t border-gray-300" />
               <div className="flex flex-col gap-4 p-4" key={comment.id}>
                 {editingCommentId === comment.id ? (
+                  // 댓글 수정
                   <form onSubmit={handleEditSubmit} className="w-full mt-10">
                     <div
                       className={`border border-solid ${
@@ -168,15 +175,19 @@ export default function RecruitCommentSection({ postDetail, onClickDeleteComment
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           <img
-                            src={defaultProfile}
+                            src={
+                              comment?.author_data.image === ""
+                                ? defaultProfile
+                                : import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
+                                ? import.meta.env.VITE_PROXY_HOST.replace(/\/$/, "") + comment?.author_data.image
+                                : comment?.author_data.image
+                            }
                             className="w-8 h-8 border-2 border-solid border-gray-400 rounded-full"
                           />
-                          <p className="font-bold text-white text-lg">작성자</p>
+                          <p className="font-bold text-white text-lg">{comment.author_data.nickname}</p>
                           {editingContent.length > 1000 && (
                             <p className=" text-error-default text-sm">*1000자 이내로 작성해주세요.</p>
                           )}
-                          <span className="hidden  text-gray-400 text-xl">|</span>
-                          <span className="hidden text-white text-lg">1시간 전</span>
                         </div>
                         <div className="flex gap-2">
                           <SpartaButton
@@ -185,7 +196,11 @@ export default function RecruitCommentSection({ postDetail, onClickDeleteComment
                             size="small"
                             colorType="primary"
                             customStyle="w-[100px]"
-                            disabled={editingContent.length > 1000 || editingContent.trim().length === 0}
+                            disabled={
+                              editingContent.length > 1000 ||
+                              editingContent.trim().length === 0 ||
+                              putTeamBuildCommentsMutation.isPending
+                            }
                           />
                           <SpartaButton
                             onClick={() => {
@@ -223,16 +238,28 @@ export default function RecruitCommentSection({ postDetail, onClickDeleteComment
                     </p>
                   </form>
                 ) : (
+                  // 댓글 정보 보여지는 부분
                   <>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <img
-                          src={defaultProfile}
+                          src={
+                            comment?.author_data.image === ""
+                              ? defaultProfile
+                              : import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
+                              ? import.meta.env.VITE_PROXY_HOST.replace(/\/$/, "") + comment?.author_data.image
+                              : comment?.author_data.image
+                          }
                           className="w-8 h-8 border-2 border-solid border-gray-400 rounded-full"
                         />
                         <p className="font-bold text-white text-lg">{comment?.author_data.nickname}</p>
                         <span className="text-gray-400 text-xl">|</span>
-                        <span className=" text-white text-lg">{getTimeAgoInHours(comment?.create_dt)}</span>
+                        <span className=" text-white text-lg">
+                          {comment?.create_dt === comment?.update_dt
+                            ? getTimeAgoInHours(comment?.create_dt)
+                            : getTimeAgoInHours(comment?.update_dt)}
+                        </span>
+                        {comment?.create_dt !== comment?.update_dt && <span className="text-gray-200">(수정됨)</span>}
                       </div>
                       <div className="flex gap-2">
                         <SpartaButton
@@ -249,14 +276,18 @@ export default function RecruitCommentSection({ postDetail, onClickDeleteComment
                           content="수정"
                           size="small"
                           colorType="grey"
-                          customStyle="w-[100px] hover:text-alert-default hover:border-alert-default"
+                          customStyle={`${
+                            userId !== comment.author_data.id ? "hidden" : "block"
+                          } w-[100px] hover:text-alert-default hover:border-alert-default`}
                         />
                         <SpartaButton
                           onClick={() => onClickDeleteComment(comment.id)}
                           content="삭제"
                           size="small"
                           colorType="grey"
-                          customStyle="w-[100px] hover:text-error-default hover:border-error-default"
+                          customStyle={`${
+                            userId !== comment.author_data.id ? "hidden" : "block"
+                          } w-[100px] hover:text-error-default hover:border-error-default`}
                         />
                       </div>
                     </div>

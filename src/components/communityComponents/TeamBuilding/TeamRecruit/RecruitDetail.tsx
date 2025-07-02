@@ -168,7 +168,17 @@ export default function RecruitDetail() {
         },
       },
     },
-
+    commentsFail: {
+      title: "오류",
+      content: "댓글 등록은 로그인 후 이용가능합니다.",
+      btn1: {
+        text: "확인했습니다.",
+        onClick: () => {
+          onClickModalToggleHandlers[CONFIRM_MODAL_ID]();
+        },
+      },
+      type: "error",
+    },
     deleteCommentsSuccess: {
       title: "댓글 삭제",
       content: "댓글 삭제가 완료되었습니다.",
@@ -196,6 +206,11 @@ export default function RecruitDetail() {
 
   const onClickDeleteComment = (commentId: number) => {
     setNoActionModalData(getDeleteConfirmData(commentId));
+    onClickModalToggleHandlers[CONFIRM_MODAL_ID]();
+  };
+
+  const openErrorModal = () => {
+    setNoActionModalData(noActionData.commentsFail);
     onClickModalToggleHandlers[CONFIRM_MODAL_ID]();
   };
 
@@ -227,7 +242,12 @@ export default function RecruitDetail() {
           onClickDeleteRecruit={onClickDeleteRecruit}
         />
         <RecruitDetailInfo postDetail={postDetail} />
-        <RecruitCommentSection postDetail={postDetail} onClickDeleteComment={onClickDeleteComment} />
+        <RecruitCommentSection
+          userId={userData?.data.user_id}
+          postDetail={postDetail}
+          onClickDeleteComment={onClickDeleteComment}
+          openErrorModal={openErrorModal}
+        />
       </div>
 
       {noActionModalData && (
