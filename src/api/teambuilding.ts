@@ -119,7 +119,6 @@ export const postTeamBuildProfile = async (formData: FormData) => {
  * 팀빌딩 프로필 전체 목록 조회
  */
 export const getTeamBuildProfile = async (params?: URLSearchParams) => {
-  console.log("params@@@@@@@@@@@@@@@@@@@@@@@@@@@@", params);
   try {
     const res = await sparta_games.get(`/teams/api/teambuild/profile/?${params?.toString()}`);
 
@@ -313,6 +312,21 @@ export const getTeamBuildDurationList = async () => {
 export const getTeamBuildMeetingTypeList = async () => {
   try {
     const res = await sparta_games.get("/teams/api/meeting-type-list/");
+    return res?.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw error;
+    }
+    throw error;
+  }
+};
+
+/**
+ * 팀빌딩 현재 상태 목록 불러오기
+ */
+export const getTeamBuildCareerList = async () => {
+  try {
+    const res = await sparta_games.get("/teams/api/career-list/");
     return res?.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {

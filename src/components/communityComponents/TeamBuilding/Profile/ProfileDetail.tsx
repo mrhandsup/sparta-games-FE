@@ -30,8 +30,6 @@ type TeamBuildingProfileProps = {
 type Props = MyPageProps | TeamBuildingProfileProps;
 
 export default function ProfileDetail({ user, profileData, isMyPage }: Props) {
-  console.log("profileData", profileData);
-
   const navigate = useNavigate();
 
   const GAME_DELETE_CHECK_ID = "gameDeleteCheckId";
@@ -62,6 +60,7 @@ export default function ProfileDetail({ user, profileData, isMyPage }: Props) {
       ? "온라인"
       : "온라인/ 오프라인 둘 다 가능";
 
+  console.log(profileData?.portfolio);
   return (
     <>
       <div className="bg-gray-800 rounded-xl px-11 py-14 flex flex-col gap-4 w-full">
@@ -162,7 +161,7 @@ export default function ProfileDetail({ user, profileData, isMyPage }: Props) {
                 <div className="flex  items-start">
                   <span className="w-44 font-bold">포트폴리오 및 링크</span>
                   <div className="flex flex-col gap-1">
-                    {profileData?.portfolio.length > 0 ? (
+                    {profileData?.portfolio[0].link !== "" ? (
                       profileData?.portfolio.map(({ link, type }: { link: string; type: string }, index: number) => (
                         <div key={index} className="flex items-center gap-1">
                           <img
