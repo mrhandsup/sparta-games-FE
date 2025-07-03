@@ -4,15 +4,17 @@ import { SetURLSearchParams, useNavigate } from "react-router-dom";
 import SpartaButton from "../../../spartaDesignSystem/SpartaButton";
 import SpartaCheckBox from "../../../spartaDesignSystem/SpartaCheckBox";
 
-import { ROLE_CHOICES } from "../../../constant/constant";
+import { TUserData } from "../../../types";
+
+import { useRoleOptions } from "../../../hook/useRoleOptions";
+import useModalToggles from "../../../hook/useModalToggles";
+
+import SpartaReactionModal, { TSpartaReactionModalProps } from "../../../spartaDesignSystem/SpartaReactionModal";
 
 import ArrowButton from "../../../assets/common/arrow/triangleArrowBottom.svg";
 import ArrowButtonFill from "../../../assets/common/arrow/triangleArrowBottomActive.svg";
 import FilterReset from "../../../assets/communityImage/Reset.svg";
 import deleteIcon from "../../../assets/common/DeleteIcon.svg";
-import { TUserData } from "../../../types";
-import useModalToggles from "../../../hook/useModalToggles";
-import SpartaReactionModal, { TSpartaReactionModalProps } from "../../../spartaDesignSystem/SpartaReactionModal";
 
 type FilterCategory = "position" | "purpose" | "period";
 
@@ -24,7 +26,7 @@ interface SelectedFilter {
 
 type Props = {
   userData: TUserData | undefined;
-  isProfileTab: boolean;
+  selectedTab: "teamRecruit" | "profileRegister";
   onClickDisplaySelectedTags: (category: FilterCategory, value: string, label: string) => void;
   selectedFilters: SelectedFilter[];
   setSelectedFilters: React.Dispatch<React.SetStateAction<SelectedFilter[]>>;
@@ -36,7 +38,7 @@ type Props = {
 
 const SearchFilter = ({
   userData,
-  isProfileTab,
+  selectedTab,
   onClickDisplaySelectedTags,
   selectedFilters,
   setSelectedFilters,
@@ -49,13 +51,18 @@ const SearchFilter = ({
 
   const navigate = useNavigate();
 
+  const { roleOptions } = useRoleOptions();
+
   const NO_ACTION_MODAL_ID = "noActionModal";
   const { modalToggles, onClickModalToggleHandlers } = useModalToggles([NO_ACTION_MODAL_ID]);
 
   const noActionData: { [key: string]: Partial<TSpartaReactionModalProps> } = {
     uploadWarning: {
       title: "잠시만요!",
-      content: "팀원 모집 글 등록은 회원만 이용가능합니다.",
+      content:
+        selectedTab === "profileRegister"
+          ? "프로필 등록은 회원만 이용가능합니다."
+          : "팀원 모집 글 등록은 회원만 이용가능합니다.",
       btn1: {
         text: "확인했습니다",
         onClick: () => {
@@ -102,7 +109,7 @@ const SearchFilter = ({
 
   return (
     <>
-      {!isProfileTab ? (
+      {selectedTab === "teamRecruit" ? (
         <div className="flex items-center gap-2 mt-12 mb-4">
           <SpartaCheckBox checked={isOpen} onClick={handleToggle} />
           <p className="font-DungGeunMo text-body-22 text-white">모집중</p>
@@ -137,7 +144,7 @@ const SearchFilter = ({
               } absolute top-10  flex gap-5 p-4 bg-gray-700 rounded-md z-10`}
             >
               <div className="flex flex-col items-center w-[180px]">
-                {ROLE_CHOICES.map((item, id) => (
+                {roleOptions.map((item, id) => (
                   <p
                     onClick={() => onClickDisplaySelectedTags("position", item.value as string, item.label)}
                     key={id}
@@ -195,7 +202,7 @@ const SearchFilter = ({
                   : "text-white"
               }`}
             >
-              {isProfileTab ? "참여 가능 기간" : "프로젝트 기간"}
+              {selectedTab === "teamRecruit" ? "참여 가능 기간" : "프로젝트 기간"}
             </p>
             <img
               src={
@@ -244,7 +251,11 @@ const SearchFilter = ({
             onClick={() => {
               userData
                 ? navigate(
-                    `${isProfileTab ? "/community/team-building/profile-create" : "/community/team-building/create"}`,
+                    `${
+                      selectedTab === "teamRecruit"
+                        ? "/community/team-building/create"
+                        : "/community/team-building/profile/create"
+                    }`,
                   )
                 : setNoActionModalData(noActionData.uploadWarning);
               onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();

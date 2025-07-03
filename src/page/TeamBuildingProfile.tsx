@@ -1,11 +1,16 @@
 import { useState } from "react";
-import ProfileHeader from "../../../mypageComponents/ProfileHeader";
-import defaultProfile from "../assets/common/defaultProfile.svg";
+import { useLocation } from "react-router-dom";
+
 import ProfileDetail from "../components/communityComponents/TeamBuilding/Profile/ProfileDetail";
+import ProfileUserGame from "../components/communityComponents/TeamBuilding/Profile/ProfileUserGame";
+import { TTeamBuildProfileListItem } from "../types";
 
 export default function TeamBuildingProfile() {
+  const location = useLocation();
+
+  const { post } = (location.state as { post: TTeamBuildProfileListItem }) || {};
+
   const [navigation, setNavigation] = useState<"log" | "teambuilding" | "develop">("teambuilding");
-  const [user, setUser] = useState(false);
 
   const navigationButtonConfig = {
     clicked: "bg-gray-700 text-primary-500",
@@ -17,15 +22,6 @@ export default function TeamBuildingProfile() {
       <div className="relative flex flex-col mx-auto max-w-[1440px] min-w-[1440px]">
         <div className="flex gap-9 py-11 w-[83%] mx-auto">
           <div className="bg-gray-800 w-[13%] p-2 rounded-xl h-fit">
-            <button
-              className={`w-full h-12 rounded-xl text-heading-20 
-            ${navigation === "log" ? navigationButtonConfig.clicked : navigationButtonConfig.unClicked}
-              `}
-              onClick={() => setNavigation("log")}
-            >
-              활동목록
-            </button>
-
             <button
               className={`w-full h-12 rounded-xl text-heading-20  ${
                 navigation === "teambuilding" ? navigationButtonConfig.clicked : navigationButtonConfig.unClicked
@@ -47,32 +43,10 @@ export default function TeamBuildingProfile() {
             {/* <ProfileHeader user={user} isMyPage={isMyPage} setNavigation={setNavigation} /> */}
 
             <div className="max-w-[1440px] mx-auto">
-              <div className="flex items-center pb-7">
-                <img src={defaultProfile} className="bg-gray-700 w-[80px] h-[80px] rounded-md p-3" />
-
-                <div className="flex flex-col gap-3 ml-3 w-full">
-                  <div className="flex items-center justify-between w-full">
-                    <div className="flex flex-col gap-2">
-                      <p className="font-DungGeunMo text-heading-40 text-white font-[400]">봉천동불주먹</p>
-                      <p className="flex items-center gap-2">
-                        <p className="font-DungGeunMo text-alert-hover text-heading-20 font-[400]">추천받을 게임분야</p>
-
-                        <span className="font-DungGeunMo text-body-20 bg-white px-2 py-1  rounded-md w-fit">
-                          Action
-                        </span>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              {navigation === "log" ? (
-                ""
-              ) : // <Logs user={user} />
-              navigation === "teambuilding" ? (
-                <ProfileDetail user={user} />
+              {navigation === "teambuilding" ? (
+                <ProfileDetail profileData={post} />
               ) : (
-                ""
-                // <MyGame user={user} isMyPage={isMyPage} />
+                <ProfileUserGame postDetail={post} />
               )}
             </div>
           </div>

@@ -28,7 +28,7 @@ const GameMediaFields = ({ watch, register, formState, onChangeFileHandler, prev
               if (!value) return true;
 
               if (!/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/.test(value)) {
-                return "유효한 유튜브 링크를 입력해 주세요";
+                return "올바른 유튜브 링크를 입력해 주세요";
               }
             },
           })}

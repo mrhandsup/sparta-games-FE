@@ -78,13 +78,13 @@ const SpartaChipSelect = ({
   };
   const selectStyles = {
     "& .MuiOutlinedInput-notchedOutline": {
-      borderColor: pass ? "#2DFF29" : error ? "#FF5C5C" : "#737373", // primary-500 또는 gray-400
+      borderColor: pass ? "#2DFF29" : error ? "#FF8F8F" : "#737373", // primary-500 또는 gray-400
     },
     "&:hover .MuiOutlinedInput-notchedOutline": {
-      borderColor: pass ? "#2DFF29" : error ? "#FF5C5C" : "#737373",
+      borderColor: pass ? "#2DFF29" : error ? "#FF8F8F" : "#737373",
     },
     "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-      borderColor: error ? "#FF5C5C" : "#2DFF29", // primary-500
+      borderColor: error ? "#FF8F8F" : "#2DFF29", // primary-500
     },
     "& .MuiSelect-icon": {
       color: "#E5E5E5", // gray-200
@@ -132,7 +132,7 @@ const SpartaChipSelect = ({
     if (pass) {
       return "text-primary-500";
     } else if (error) {
-      return "text-error-default";
+      return "text-error-hover";
     } else {
       return "text-gray-100";
     }

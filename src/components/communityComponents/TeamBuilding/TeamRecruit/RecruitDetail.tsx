@@ -1,16 +1,25 @@
+import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import { AxiosError } from "axios";
+import {
+  deleteTeamBuild,
+  deleteTeamBuildComments,
+  getTeamBuildDetail,
+  patchTeamBuild,
+} from "../../../../api/teambuilding";
+
+import RecruitDetailHeader from "./RecruitDetailHeader";
 import RecruitDetailInfo from "./RecruitDetailInfo ";
 import RecruitCommentSection from "./RecruitCommentSection";
-import SpartaPagination from "../../../../spartaDesignSystem/SpartaPagination";
+
+import { userStore } from "../../../../share/store/userStore";
+
+import { TTeamBuildDetailResponse } from "../../../../types";
+
 import useModalToggles from "../../../../hook/useModalToggles";
 import SpartaReactionModal, { TSpartaReactionModalProps } from "../../../../spartaDesignSystem/SpartaReactionModal";
-import { useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { TTeamBuildDetailResponse } from "../../../../types";
-import { deleteTeamBuild, getTeamBuildDetail, patchTeamBuild } from "../../../../api/teambuilding";
-import { useLocation, useNavigate } from "react-router-dom";
-import { AxiosError } from "axios";
-import { userStore } from "../../../../share/store/userStore";
-import RecruitDetailHeader from "./RecruitDetailHeader";
 
 export default function RecruitDetail() {
   const { userData } = userStore();
@@ -28,7 +37,6 @@ export default function RecruitDetail() {
 
   const postDetail = data?.data;
 
-  console.log("postDetaildata", data);
   const closeRecruitMutation = useMutation({
     mutationFn: () => patchTeamBuild(postDetail?.id),
     onSuccess: () => {
@@ -82,16 +90,27 @@ export default function RecruitDetail() {
     },
   });
 
-  const CLOSE_RECRUIT_MODAL = "closeRecruitModal";
+  const deleteCommentsMutation = useMutation({
+    mutationFn: ({ commentId }: { commentId?: number | undefined }) => deleteTeamBuildComments(commentId),
+    onSuccess: () => {
+      setNoActionModalData(noActionData.deleteCommentsSuccess);
+      onClickModalToggleHandlers[CONFIRM_MODAL_ID]();
+      queryClient.invalidateQueries({ queryKey: ["teamBuildComments"] });
+      onClickModalToggleHandlers[SUCCESS_MODAL_ID]();
+    },
+    onError: (error: AxiosError) => {
+      if (error.response && error.response.status === 400) {
+        window.alert(`${(error.response?.data as { message?: string })?.message}`);
+      } else {
+        window.alert("알 수 없는 오류가 발생했습니다. 잠시후에 다시 시도해주세요.");
+      }
+    },
+  });
+
   const CONFIRM_MODAL_ID = "confirmModal";
   const SUCCESS_MODAL_ID = "successModal";
-  const NO_ACTION_MODAL_ID = "noActionModal";
-  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([
-    CONFIRM_MODAL_ID,
-    SUCCESS_MODAL_ID,
-    CLOSE_RECRUIT_MODAL,
-    NO_ACTION_MODAL_ID,
-  ]);
+
+  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([CONFIRM_MODAL_ID, SUCCESS_MODAL_ID]);
 
   const noActionData: { [key: string]: Partial<TSpartaReactionModalProps> } = {
     deleteRecruitSuccess: {
@@ -149,24 +168,26 @@ export default function RecruitDetail() {
         },
       },
     },
-
-    deleteCommentConfirm: {
-      title: "리뷰 삭제",
-      content: "등록한 리뷰 정말 삭제하시겠습니까?",
+    commentsFail: {
+      title: "오류",
+      content: "댓글 등록은 로그인 후 이용가능합니다.",
       btn1: {
-        text: "리뷰를 삭제할게요.",
+        text: "확인했습니다.",
         onClick: () => {
-          // TODO: 리뷰 삭제 api 핸들러 추가
-          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-        },
-      },
-      btn2: {
-        text: "생각해볼게요.",
-        onClick: () => {
-          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+          onClickModalToggleHandlers[CONFIRM_MODAL_ID]();
         },
       },
       type: "error",
+    },
+    deleteCommentsSuccess: {
+      title: "댓글 삭제",
+      content: "댓글 삭제가 완료되었습니다.",
+      btn1: {
+        text: "확인했습니다.",
+        onClick: () => {
+          onClickModalToggleHandlers[SUCCESS_MODAL_ID]();
+        },
+      },
     },
   };
   const [noActionModalData, setNoActionModalData] = useState<Partial<TSpartaReactionModalProps>>(
@@ -183,10 +204,33 @@ export default function RecruitDetail() {
     onClickModalToggleHandlers[CONFIRM_MODAL_ID]();
   };
 
-  const onClickDeleteComment = () => {
-    setNoActionModalData(noActionData.deleteCommentConfirm);
+  const onClickDeleteComment = (commentId: number) => {
+    setNoActionModalData(getDeleteConfirmData(commentId));
     onClickModalToggleHandlers[CONFIRM_MODAL_ID]();
   };
+
+  const openErrorModal = () => {
+    setNoActionModalData(noActionData.commentsFail);
+    onClickModalToggleHandlers[CONFIRM_MODAL_ID]();
+  };
+
+  const getDeleteConfirmData = (commentId: number): Partial<TSpartaReactionModalProps> => ({
+    title: "댓글 삭제",
+    content: "등록한 댓글을 정말 삭제하시겠습니까?",
+    btn1: {
+      text: "댓글을 삭제할게요.",
+      onClick: () => {
+        deleteCommentsMutation.mutate({ commentId });
+      },
+    },
+    btn2: {
+      text: "생각해볼게요.",
+      onClick: () => {
+        onClickModalToggleHandlers[CONFIRM_MODAL_ID]();
+      },
+    },
+    type: "error",
+  });
 
   return (
     <>
@@ -198,8 +242,12 @@ export default function RecruitDetail() {
           onClickDeleteRecruit={onClickDeleteRecruit}
         />
         <RecruitDetailInfo postDetail={postDetail} />
-        <RecruitCommentSection onClickDeleteComment={onClickDeleteComment} />
-        <SpartaPagination dataTotalCount={5} countPerPage={1} onChangePage={() => {}} />
+        <RecruitCommentSection
+          userId={userData?.data.user_id}
+          postDetail={postDetail}
+          onClickDeleteComment={onClickDeleteComment}
+          openErrorModal={openErrorModal}
+        />
       </div>
 
       {noActionModalData && (

@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 type Props = {
   post: TTeamBuildRecommenedPostListItem;
 };
-export default function RecommandedCard({ post }: Props) {
+export default function RecommandCardList({ post }: Props) {
   const navigate = useNavigate();
 
   const purpose =

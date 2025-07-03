@@ -1,19 +1,41 @@
 import { useState } from "react";
 import closeBtn from "../../../../assets/common/closeBtnError.svg";
 import useModalToggles from "../../../../hook/useModalToggles";
+import SpartaReactionModal from "../../../../spartaDesignSystem/SpartaReactionModal";
+import { deleteTeamBuildProfile } from "../../../../api/teambuilding";
+import { useQueryClient } from "@tanstack/react-query";
+import { userStore } from "../../../../share/store/userStore";
 
-export default function DeleteCheck({ onClose }) {
+type Props = {
+  onClose: () => void;
+};
+
+export default function DeleteCheck({ onClose }: Props) {
+  const PROFILE_DELETE_SUCCESS_ID = "profileDelteSuccessModal";
   const NO_ACTION_MODAL_ID = "noActionModal";
 
   const [inputValue, setInputValue] = useState("");
 
+  const { userData } = userStore();
+
+  const queryClient = useQueryClient();
+
   const requiredPhrase = "프로필을 삭제하겠습니다";
   const isPhraseCorrect = inputValue === requiredPhrase;
 
-  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([NO_ACTION_MODAL_ID]);
+  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([PROFILE_DELETE_SUCCESS_ID, NO_ACTION_MODAL_ID]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
+  };
+
+  const onClickProfileDelete = async () => {
+    const res = await deleteTeamBuildProfile(userData?.data.user_id);
+
+    if (res?.status === "success") {
+      onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+      queryClient.removeQueries({ queryKey: ["teamBuildProfile", userData?.data.user_id] });
+    }
   };
 
   return (
@@ -51,7 +73,7 @@ export default function DeleteCheck({ onClose }) {
         className={`flex h-12 rounded-md ${isPhraseCorrect ? "bg-error-default" : "bg-gray-400"} text-center font-bold`}
       >
         {isPhraseCorrect ? (
-          <button onClick={() => {}} className="w-full">
+          <button onClick={onClickProfileDelete} className="w-full">
             문구가 확인되었습니다. 프로필 삭제를 진행합니다.
           </button>
         ) : (
@@ -61,21 +83,21 @@ export default function DeleteCheck({ onClose }) {
         )}
       </div>
 
-      {/* <SpartaReactionModal
-        isOpen={useModalToggles[NO_ACTION_MODAL_ID]}
-        onClose={onClickModalToggleHandler[NO_ACTION_MODAL_ID]}
+      <SpartaReactionModal
+        isOpen={modalToggles[NO_ACTION_MODAL_ID]}
+        onClose={onClickModalToggleHandlers[NO_ACTION_MODAL_ID]}
         modalId={NO_ACTION_MODAL_ID}
-        title="게임삭제 완료"
-        content="게임을 성공적으로 삭제했습니다."
+        title="팀빌딩 프로필 삭제 완료"
+        content="팀빌딩 프로필을 성공적으로 삭제했습니다."
         btn1={{
           text: "확인했습니다.",
           onClick: () => {
             onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-            navigate(`/my-page/${userData?.data.user_id}`);
+            window.location.reload();
           },
         }}
         type={"error"}
-      /> */}
+      />
     </div>
   );
 }
