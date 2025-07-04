@@ -184,6 +184,7 @@ export default function ProfileDetail({ user, profileData, isMyPage }: Props) {
                               href={link.startsWith("http") ? link : `https://${link}`}
                               className="text-white underline "
                               target="_blank"
+                              rel="noopener noreferrer"
                             >
                               {link}
                             </a>
@@ -219,7 +220,13 @@ export default function ProfileDetail({ user, profileData, isMyPage }: Props) {
                   <div className="flex items-center">
                     <span className="w-44 font-bold">연락방법</span>
                     <a
-                      href="#"
+                      href={
+                        profileData?.contact.startsWith("http")
+                          ? profileData?.contact
+                          : `https://${profileData?.contact}`
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="w-[270px] whitespace-nowrap text-ellipsis overflow-hidden text-white underline"
                     >
                       {profileData?.contact}

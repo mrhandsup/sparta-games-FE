@@ -41,7 +41,7 @@ export default function RecruitDetailInfo({ postDetail }: Props) {
   return (
     <div className="mt-10 mb-6 p-9 bg-gray-800 rounded-xl">
       <img
-        className="w-full h-[500px] object-cover rounded-lg"
+        className="w-full h-[500px] object-contain rounded-lg"
         src={
           import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
             ? import.meta.env.VITE_PROXY_HOST.replace(/\/$/, "") + postDetail?.thumbnail
