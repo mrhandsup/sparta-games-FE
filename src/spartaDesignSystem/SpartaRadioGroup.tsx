@@ -25,14 +25,13 @@ export default function SpartaRadioGroup<T extends FieldValues>({
   labelOverrides = {},
   radioGroupsData,
 }: SpartaRadioGroupProps<T>) {
-  console.log("radioGroupsData", radioGroupsData);
   // 사용자가 아무 선택하지 않더라도 radio 옵션 중 첫 번째 항목을 기본값으로 미리 선택
   useEffect(() => {
     groupsToShow.forEach((name) => {
       const key = name as Path<T>;
       const currentValue = watch(key);
       const groupData = radioGroupsData[key];
-      console.log(key, currentValue, groupData);
+
       if (currentValue === undefined && groupData?.options && groupData.options.length > 0) {
         setValue(key, groupData.options[0].value as PathValue<T, typeof key>);
       }

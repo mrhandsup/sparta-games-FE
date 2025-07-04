@@ -75,10 +75,12 @@ export default function RecruitDetailInfo({ postDetail }: Props) {
           <div className="flex gap-[74px]">
             <p className="text-white">연락방법</p>
             <a
-              href={postDetail?.contact}
-              className="relative inline-block w-[400px] truncate text-white underline cursor-default pointer-events-none"
+              href={postDetail?.contact?.startsWith("http") ? postDetail.contact : `https://${postDetail?.contact}`}
+              className="relative inline-block w-[400px] truncate text-white underline"
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              <span className="pointer-events-auto cursor-pointer">{postDetail?.contact}</span>
+              {postDetail?.contact}
             </a>
           </div>
         </div>

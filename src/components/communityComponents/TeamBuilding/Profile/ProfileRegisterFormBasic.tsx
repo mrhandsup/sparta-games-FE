@@ -9,12 +9,13 @@ import SpartaTextField from "../../../../spartaDesignSystem/SpartaTextField";
 import { GAME_CATEGORY } from "../../../../constant/constant";
 import { TProfileRegisterForm, TTeamBuildProfileListItem } from "../../../../types";
 
+import { useTeamBuildRadioOptions } from "../../../../hook/useTeamBuildRadioOptions ";
+import { useRoleOptions } from "../../../../hook/useRoleOptions";
+
 import profileImageUpload from "../../../../assets/communityImage/profileImageUpload.png";
 import addBtn from "../../../../assets/common/plus_gray.svg";
 import removeBtn from "../../../../assets/common/deleteIcon_trash.png";
 import defaultProfile from "../../../../assets/common/defaultProfile.svg";
-import { useTeamBuildRadioOptions } from "../../../../hook/useTeamBuildRadioOptions ";
-import { useRoleOptions } from "../../../../hook/useRoleOptions";
 
 type Props = {
   profileData: TTeamBuildProfileListItem;
