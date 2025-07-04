@@ -134,6 +134,7 @@ const ReviewCard = ({ review, onClickModalToggleHandler, isMyReview = false, set
     }
   };
 
+  console.log("review", review);
   return (
     <>
       <div
@@ -147,7 +148,7 @@ const ReviewCard = ({ review, onClickModalToggleHandler, isMyReview = false, set
             <div className="flex items-center justify-between">
               {isMyReview ? (
                 <>
-                  <p className="font-DungGeunMo text-lg text-primary-500">{review?.author_name}</p>
+                  <p className="font-DungGeunMo text-lg text-primary-500">{review?.author_data?.nickname}</p>
                   <img
                     onClick={onClickReviewEditHandler}
                     className="absolute top-6 right-12 cursor-pointer"
@@ -163,7 +164,7 @@ const ReviewCard = ({ review, onClickModalToggleHandler, isMyReview = false, set
                 </>
               ) : (
                 <>
-                  <p className="font-DungGeunMo text-lg">{review?.author_name}</p>
+                  <p className="font-DungGeunMo text-lg">{review?.author_data?.nickname}</p>
                   <img
                     onClick={onClickModalToggleHandlers[REVIEW_DETAIL_MODAL_ID]}
                     className="absolute top-4 right-4 cursor-pointer"
@@ -179,7 +180,9 @@ const ReviewCard = ({ review, onClickModalToggleHandler, isMyReview = false, set
             </div>
           </div>
         </div>
-        <div className="w-full h-28 text-body-14 line-clamp-4 text-ellipsis whitespace-pre">{review?.content}</div>
+        <div className="w-full h-28">
+          <p className="h-24 line-clamp-4 break-words text-base">{review?.content}</p>
+        </div>
         <div className="flex justify-between items-end">
           <p className="text-[12px] leading-4 text-gray-300">{formatDate(review?.created_at)}</p>
           <div className="flex items-center gap-1 text-[11px] font-bold">

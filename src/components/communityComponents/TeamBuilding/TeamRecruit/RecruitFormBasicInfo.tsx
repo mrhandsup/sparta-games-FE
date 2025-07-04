@@ -1,5 +1,5 @@
 import { forwardRef, useState } from "react";
-import { Control, Controller, FormState, UseFormRegister, UseFormSetValue, UseFormWatch } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 
 import SpartaChipSelect from "../../../../spartaDesignSystem/SpartaChipSelect";
 import SpartaTextField from "../../../../spartaDesignSystem/SpartaTextField";
@@ -8,7 +8,7 @@ import SpartaCheckBox from "../../../../spartaDesignSystem/SpartaCheckBox";
 import SpartaRadioGroup from "../../../../spartaDesignSystem/SpartaRadioGroup";
 
 import { getFormattedDate } from "../../../../util/getFormattedDate";
-import { ROLE_CHOICES } from "../../../../constant/constant";
+
 import { TProjectRecruitForm, TTeamBuildPostDetail } from "../../../../types";
 
 import DatePicker from "react-datepicker";
@@ -17,30 +17,24 @@ import { format, startOfDay, isBefore } from "date-fns";
 import "react-datepicker/dist/react-datepicker.css";
 import "./reactDatePickerCustomStyle.css";
 
+import { useTeamBuildRadioOptions } from "../../../../hook/useTeamBuildRadioOptions ";
+import { useRoleOptions } from "../../../../hook/useRoleOptions";
+
 import calendar from "../../../../assets/common/calender.svg";
 
 type Props = {
-  control: Control<TProjectRecruitForm>;
-  watch: UseFormWatch<TProjectRecruitForm>;
-  setValue: UseFormSetValue<TProjectRecruitForm>;
-  register: UseFormRegister<TProjectRecruitForm>;
-  formState: FormState<TProjectRecruitForm>;
   postDetail: TTeamBuildPostDetail;
-  trigger: any;
 };
-export default function RecruitFormBasicInfo({
-  control,
-  watch,
-  setValue,
-  register,
-  formState,
-  postDetail,
-  trigger,
-}: Props) {
+export default function RecruitFormBasicInfo({ postDetail }: Props) {
+  const { control, watch, setValue, register, formState, trigger } = useFormContext<TProjectRecruitForm>();
+
   const imageWatch = watch("thumbnail");
 
   const [selectBasicImage, setSelectBasicImage] = useState(postDetail?.thumbnail_basic);
   const [isChecked, setIsChecked] = useState(postDetail?.thumbnail_basic);
+
+  const { radioGroupsData } = useTeamBuildRadioOptions();
+  const { roleOptions } = useRoleOptions();
 
   const onClickUploadImage = () => {
     document.getElementById("project-image")?.click();
@@ -90,7 +84,7 @@ export default function RecruitFormBasicInfo({
         <div className="flex flex-col gap-4 basis-1/2">
           <SpartaChipSelect
             label="구하는 포지션"
-            options={ROLE_CHOICES}
+            options={roleOptions}
             control={control}
             rules={{ required: "포지션을 선택해주세요" }}
             name="want_roles"
@@ -133,7 +127,7 @@ export default function RecruitFormBasicInfo({
               required: "연락방법을 입력해주세요.",
               pattern: {
                 value: /^(https?:\/\/)?([\w-])+\.([a-zA-Z]{2,63})([/\w.-]*)*\/?$/,
-                message: "유효한 링크를 입력해주세요.",
+                message: "올바른 링크를 입력해주세요.",
               },
             })}
             inputProps={{
@@ -200,6 +194,7 @@ export default function RecruitFormBasicInfo({
             control={control}
             watch={watch}
             setValue={setValue}
+            radioGroupsData={radioGroupsData}
           />
         </div>
       </div>

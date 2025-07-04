@@ -32,7 +32,8 @@ const Router = () => {
           <Route path="/" element={<Home />} />
           <Route path="/community/team-building" element={<TeamBuilding />} />
           <Route path="/community/team-building/create" element={<ProjectRecruitForm />} />
-          <Route path="/community/team-building/profile-create" element={<ProfileRegisterForm />} />
+          <Route path="/community/team-building/profile/create" element={<ProfileRegisterForm />} />
+          <Route path="/community/team-building/profile/edit/:id" element={<ProfileRegisterForm />} />
           <Route path="/community/team-building/profile-detail/:id" element={<TeamBuildingProfile />} />
         </Route>
         <Route element={<Layout />}>

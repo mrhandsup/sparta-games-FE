@@ -15,7 +15,10 @@ export default async function uploadImageFileToS3(file: File): Promise<string> {
     body: file,
     headers: {
       "Content-Type": "image/*",
+<<<<<<< HEAD
       "x-amz-tagging": "is_used=false",
+=======
+>>>>>>> 8ca98e77dc5bfde853324455b171db8d8c198089
     },
   });
 
