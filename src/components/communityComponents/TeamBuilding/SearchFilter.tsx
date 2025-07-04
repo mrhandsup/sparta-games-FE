@@ -264,7 +264,7 @@ const SearchFilter = ({
               className="text-lg text-white"
               onClick={() => onClickDisplaySelectedTags(item.category, item.value, item.label)}
             >
-              <img className="w-8" src={deleteIcon} alt="삭제" />
+              <img className="w-8" src={deleteIcon} alt="태그 제거" />
             </button>
           </div>
         ))}
