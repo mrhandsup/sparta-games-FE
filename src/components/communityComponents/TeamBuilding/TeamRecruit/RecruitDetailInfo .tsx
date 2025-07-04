@@ -55,8 +55,8 @@ export default function RecruitDetailInfo({ postDetail }: Props) {
 
       <div className="flex gap-5 mt-5">
         <div className="flex flex-col gap-4  flex-1">
-          <div className="flex gap-12">
-            <p className="text-white text-sm">구하는 포지션</p>
+          <div className="flex gap-10">
+            <p className="text-white">구하는 포지션</p>
 
             <div className="flex flex-wrap gap-2 max-w-[400px]">
               {postDetail?.want_roles.map((role) => (
@@ -68,15 +68,15 @@ export default function RecruitDetailInfo({ postDetail }: Props) {
           </div>
 
           <div className="flex gap-[74px]">
-            <p className="text-white text-sm">마감기한</p>
+            <p className="text-white">마감기한</p>
             <span className="text-white">{postDetail?.deadline}</span>
           </div>
 
           <div className="flex gap-[74px]">
-            <p className="text-white text-sm">연락방법</p>
+            <p className="text-white">연락방법</p>
             <a
               href={postDetail?.contact}
-              className="relative inline-block w-[400px] truncate  text-white underline cursor-default pointer-events-none"
+              className="relative inline-block w-[400px] truncate text-white underline cursor-default pointer-events-none"
             >
               <span className="pointer-events-auto cursor-pointer">{postDetail?.contact}</span>
             </a>
@@ -85,18 +85,18 @@ export default function RecruitDetailInfo({ postDetail }: Props) {
 
         <div className="flex flex-col gap-4 flex-1">
           <div className="flex gap-12">
-            <p className="text-white text-sm">프로젝트 목적</p>
-            <span className="text-white font-bold text-sm">{purpose}</span>
+            <p className="text-white">프로젝트 목적</p>
+            <span className="text-white font-bold">{purpose}</span>
           </div>
 
           <div className="flex gap-12">
-            <p className="text-white text-sm">프로젝트 기간</p>
-            <span className="text-white font-bold text-sm">{duration}</span>
+            <p className="text-white">프로젝트 기간</p>
+            <span className="text-white font-bold">{duration}</span>
           </div>
 
-          <div className="flex gap-[76px]">
-            <p className="text-white text-sm">진행방식</p>
-            <span className="text-white font-bold text-sm">{meeting_type}</span>
+          <div className="flex gap-[80px]">
+            <p className="text-white">진행방식</p>
+            <span className="text-white font-bold">{meeting_type}</span>
           </div>
         </div>
       </div>
@@ -105,7 +105,7 @@ export default function RecruitDetailInfo({ postDetail }: Props) {
       <hr className="border-t border-gray-400 my-3" />
       {postDetail && (
         <p
-          className="ql-editor text-base text-gray-100 leading-5"
+          className="ql-editor text-white leading-5"
           dangerouslySetInnerHTML={{ __html: sanitizedContent as string }}
         ></p>
       )}

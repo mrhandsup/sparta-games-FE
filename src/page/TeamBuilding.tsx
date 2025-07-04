@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
@@ -7,16 +7,23 @@ import SpartaPagination from "../spartaDesignSystem/SpartaPagination";
 import SpartaTabNav from "../spartaDesignSystem/SpartaTabNav";
 
 import Hero from "../components/communityComponents/TeamBuilding/Hero";
-import RecommandedCard from "../components/communityComponents/TeamBuilding/RecommandedCard";
-import CardList from "../components/communityComponents/TeamBuilding/TeamRecruit/CardList";
+import RecommandCardList from "../components/communityComponents/TeamBuilding/RecommandCardList";
+import CardList from "../components/communityComponents/TeamBuilding/CardList";
 
-import { getTeamBuild } from "../api/teambuilding";
-import { TTeamBuildPostResponse } from "../types";
+import { getTeamBuild, getTeamBuildProfile, getTeamBuildProfileSearch, getTeamBuildSearch } from "../api/teambuilding";
+import {
+  TApiResponse,
+  TTeamBuildPostResponse,
+  TTeamBuildProfileResponse,
+  TTeamBuildProfileSearchedPosts,
+  TTeamBuildSearchedPosts,
+} from "../types";
 import { userStore } from "../share/store/userStore";
 import usePageHandler from "../hook/usePageHandler ";
 
 import pixelMeteor from "../assets/homeImage/pixelMeteor.svg";
 import balloon from "../assets/headerImage/balloon.svg";
+import RenderPosts from "../components/communityComponents/TeamBuilding/RenderPosts";
 
 type TabValue = "teamRecruit" | "profileRegister";
 
@@ -38,7 +45,9 @@ export default function TeamBuilding() {
   const [selectedTab, setSelectedTab] = useState<TabValue>("teamRecruit");
   const [selectedFilters, setSelectedFilters] = useState<SelectedFilter[]>([]);
   const [searchKeyword, setSearchKeyword] = useState("");
+  const [searchKeywordProfile, setSearchKeywordProfile] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+
   const [, setSearchParams] = useSearchParams();
 
   const { userData } = userStore();
@@ -62,8 +71,29 @@ export default function TeamBuilding() {
     queryFn: () => getTeamBuild(userData?.data.user_id, params),
   });
 
+  const { data: profileData } = useQuery<TTeamBuildProfileResponse>({
+    queryKey: ["teamBuildingProfile", currentPage, params.toString()],
+    queryFn: () => getTeamBuildProfile(params),
+  });
+
+  const { data: searchTeambuildData } = useQuery<TApiResponse<TTeamBuildSearchedPosts>>({
+    queryKey: ["searchTeambuildPosts", searchKeyword],
+    queryFn: () => getTeamBuildSearch(searchKeyword),
+    enabled: selectedTab === "teamRecruit",
+  });
+
+  const { data: searchTeambuildProfileData } = useQuery<TApiResponse<TTeamBuildProfileSearchedPosts>>({
+    queryKey: ["searchTeambuildProfilePosts", searchKeywordProfile],
+    queryFn: () => getTeamBuildProfileSearch(searchKeywordProfile),
+    enabled: selectedTab === "profileRegister",
+  });
+
   const teamBuildPosts = data?.data.team_build_posts;
   const recommandedPosts = data?.data.recommended_posts;
+  const teamBuildProfilePosts = profileData?.data;
+
+  const searchTeambuildPosts = searchTeambuildData?.data.search_teambuild_posts;
+  const searchTeambuildProfilePosts = searchTeambuildProfileData?.data.search_teambuild_profiles;
 
   const updateSearchParams = (filters: SelectedFilter[], isOpen: boolean) => {
     const queryParams = new URLSearchParams();
@@ -114,10 +144,17 @@ export default function TeamBuilding() {
     setSearchKeyword(e.currentTarget.value);
   };
 
-  const filteredPosts =
-    searchKeyword.trim() === ""
-      ? teamBuildPosts || []
-      : (teamBuildPosts || []).filter((post) => post.title.includes(searchKeyword));
+  const handleSearchTeamBuildProfile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchKeywordProfile(e.currentTarget.value);
+  };
+
+  useEffect(() => {
+    if (selectedTab === "profileRegister" || selectedTab === "teamRecruit") {
+      setSelectedFilters([]);
+      setSearchKeyword("");
+      setSearchParams("");
+    }
+  }, [selectedTab]);
 
   return (
     <main>
@@ -134,7 +171,7 @@ export default function TeamBuilding() {
           </p>
           <div className="grid grid-cols-2 gap-5">
             {recommandedPosts?.map((post) => (
-              <RecommandedCard post={post} />
+              <RecommandCardList post={post} />
             ))}
           </div>
         </div>
@@ -145,7 +182,7 @@ export default function TeamBuilding() {
           <div className="flex gap-4 px-6 py-5 rounded-full bg-gray-800">
             <img src={balloon} alt="검색 아이콘" />
             <input
-              onChange={handleSearchTeamBuild}
+              onChange={selectedTab === "teamRecruit" ? handleSearchTeamBuild : handleSearchTeamBuildProfile}
               type="text"
               placeholder="제목 또는 글 내용 검색하기"
               className="bg-gray-800 text-2xl text-white"
@@ -153,10 +190,10 @@ export default function TeamBuilding() {
           </div>
         </div>
 
-        {/* 필터링 영역 */}
+        {/* 필터링, 글 등록 영역 */}
         <SearchFilter
           userData={userData?.data}
-          isProfileTab={selectedTab === "profileRegister"}
+          selectedTab={selectedTab}
           onClickDisplaySelectedTags={onClickDisplaySelectedTags}
           selectedFilters={selectedFilters}
           setSelectedFilters={setSelectedFilters}
@@ -168,20 +205,28 @@ export default function TeamBuilding() {
 
         {/* 포스트 리스트 영역 */}
         <div className="grid grid-cols-4 gap-5">
-          {filteredPosts.length > 0 ? (
-            filteredPosts.map((post) => (
-              <CardList key={post.id} post={post} isProfileTab={selectedTab === "profileRegister"} />
-            ))
-          ) : (
-            <div className="col-span-4 font-DungGeunMo text-2xl text-center text-white">검색 결과가 없습니다.</div>
+          {selectedTab === "teamRecruit" && (
+            <RenderPosts
+              posts={teamBuildPosts}
+              searchPosts={searchTeambuildPosts}
+              searchKeyword={searchKeyword}
+              noPostsMessage="아직 등록된 팀빌딩 모집글이 없습니다."
+              noSearchResultsMessage="검색 결과가 없습니다."
+              cardType="teamBuild"
+            />
+          )}
+
+          {selectedTab === "profileRegister" && (
+            <RenderPosts
+              posts={teamBuildProfilePosts}
+              searchPosts={searchTeambuildProfilePosts}
+              searchKeyword={searchKeywordProfile}
+              noPostsMessage="아직 등록된 팀빌딩 프로필이 없습니다."
+              noSearchResultsMessage="검색 결과가 없습니다."
+              cardType="profile"
+            />
           )}
         </div>
-
-        {teamBuildPosts?.length === 0 && (
-          <div className="flex justify-center pt-10">
-            <p className="font-DungGeunMo text-2xl text-white">조건에 해당하는 모집글이 없습니다.</p>
-          </div>
-        )}
 
         <div className="mt-10">
           <SpartaPagination

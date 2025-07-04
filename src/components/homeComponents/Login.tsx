@@ -10,7 +10,7 @@ import { login } from "../../api/login";
 import { userStore } from "../../share/store/userStore";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import SpartaReactionModal, { TSpartaReactionModalProps } from "../../spartaDesignSystem/SpartaReactionModal";
 import useModalToggles from "../../hook/useModalToggles";
 import closeBtn from "../../../src/assets/common/closeBtn.svg";
@@ -37,6 +37,9 @@ function Login({ onClose }: Props) {
   const { setUser } = userStore();
 
   const navigate = useNavigate();
+
+  const location = useLocation();
+  const isTeambuilding = location.pathname.includes("team-building");
 
   const { modalToggles, onClickModalToggleHandlers } = useModalToggles([NO_ACTION_MODAL_ID]);
 
@@ -70,7 +73,7 @@ function Login({ onClose }: Props) {
         window.location.href = "/admin/dashboard";
       } else {
         onClose();
-        window.location.href = "/";
+        window.location.href = isTeambuilding ? "/community/team-building" : "/";
       }
     },
     onError: () => {

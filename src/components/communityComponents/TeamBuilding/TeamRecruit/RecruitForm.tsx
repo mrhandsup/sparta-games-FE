@@ -1,4 +1,4 @@
-import { useForm, useWatch } from "react-hook-form";
+import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 
 import CommunityProjectTitle from "../../../common/CommunityProjectTitle";
@@ -17,9 +17,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
 
 export default function RecruitForm() {
-  const { register, watch, handleSubmit, control, setValue, formState, trigger } = useForm<TProjectRecruitForm>({
+  const methods = useForm<TProjectRecruitForm>({
     mode: "onChange",
   });
+
+  const { formState, trigger, control, handleSubmit } = methods;
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -27,17 +29,7 @@ export default function RecruitForm() {
 
   useEffect(() => {
     if (isEditMode) {
-      setValue("title", postDetail?.title, { shouldValidate: true });
-      setValue("purpose", postDetail?.purpose, { shouldValidate: true });
-      setValue("duration", postDetail?.duration, { shouldValidate: true });
-      setValue("meeting_type", postDetail?.meeting_type, { shouldValidate: true });
-      setValue("deadline", postDetail?.deadline, { shouldValidate: true });
-      setValue("contact", postDetail?.contact, { shouldValidate: true });
-      setValue("content", postDetail?.content, { shouldValidate: true });
-      setValue("want_roles", postDetail?.want_roles, { shouldValidate: true });
-      setValue("thumbnail", postDetail?.thumbnail, { shouldValidate: true });
-
-      trigger();
+      methods.reset({ ...postDetail });
     }
   }, []);
 
@@ -123,6 +115,8 @@ export default function RecruitForm() {
     },
   });
 
+  const isPending = isEditMode ? updateTeamBuildingMutation.isPending : createTeamBuildingMutation.isPending;
+
   const onSubmit = async (data: any) => {
     const formData = new FormData();
 
@@ -156,27 +150,21 @@ export default function RecruitForm() {
       <div className="mx-auto mt-16">
         <CommunityProjectTitle img={recruitImage} title={"프로젝트를 같이 만들 팀원을 구해요"} />
 
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="w-[1180px] mx-auto">
-            <RecruitFormBasicInfo
-              control={control}
-              watch={watch}
-              setValue={setValue}
-              register={register}
-              formState={formState}
-              postDetail={postDetail}
-              trigger={trigger}
-            />
-            <RecruitFormDescription register={register} watch={watch} setValue={setValue} formState={formState} />
-            <SpartaButton
-              btnType="button"
-              disabled={!formState.isValid}
-              content={!isEditMode ? "글 등록하기" : "글 수정하기"}
-              type="filled"
-              onClick={onClickOpenConfirmModal}
-            />
-          </div>
-        </form>
+        <FormProvider {...methods}>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="w-[1180px] mx-auto">
+              <RecruitFormBasicInfo postDetail={postDetail} />
+              <RecruitFormDescription />
+              <SpartaButton
+                btnType="button"
+                disabled={!formState.isValid}
+                content={!isEditMode ? "글 등록하기" : "글 수정하기"}
+                type="filled"
+                onClick={onClickOpenConfirmModal}
+              />
+            </div>
+          </form>
+        </FormProvider>
       </div>
       {noActionModalData && (
         <>
@@ -188,7 +176,9 @@ export default function RecruitForm() {
             content={noActionModalData.content || ""}
             btn1={{
               text: noActionModalData?.btn1?.text || "",
-              onClick: handleSubmit(onSubmit),
+              onClick: () => {
+                if (!isPending) handleSubmit(onSubmit)();
+              },
             }}
             btn2={
               noActionModalData?.btn2 && {

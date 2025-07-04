@@ -1,15 +1,22 @@
 import { useNavigate } from "react-router-dom";
 
-import { TTeamBuildPostListItem } from "../../../../types";
+import { TTeamBuildPostListItem, TTeamBuildProfileListItem } from "../../../types";
 
-import defaultProfile from "../../../../assets/common/defaultProfile.svg";
+import defaultProfile from "../../../assets/common/defaultProfile.svg";
 
-type Props = {
+type TeamBuildCardProps = {
+  postType: "teamBuild";
   post: TTeamBuildPostListItem;
-  isProfileTab: boolean;
 };
 
-export default function CardList({ post, isProfileTab }: Props) {
+type ProfileCardProps = {
+  postType: "profile";
+  post: TTeamBuildProfileListItem;
+};
+
+type Props = TeamBuildCardProps | ProfileCardProps;
+
+export default function CardList({ postType, post }: Props) {
   const navigate = useNavigate();
 
   const purpose =
@@ -35,8 +42,12 @@ export default function CardList({ post, isProfileTab }: Props) {
       key={post?.id}
       className=" relative h-[500px] flex flex-col border-gray-100 border-[0.7px] rounded-lg border-solid cursor-pointer"
       onClick={() => {
-        isProfileTab
-          ? navigate("/community/team-building/profile-detail/1")
+        postType === "profile"
+          ? navigate(`/community/team-building/profile-detail/${post.author_data.id}`, {
+              state: {
+                post,
+              },
+            })
           : navigate(`/community/team-building/team-recruit/${post.id}`, {
               state: {
                 post,
@@ -45,25 +56,41 @@ export default function CardList({ post, isProfileTab }: Props) {
       }}
     >
       <div className="h-[55%] relative">
-        <img
-          src={
-            import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
-              ? import.meta.env.VITE_PROXY_HOST.replace(/\/$/, "") + (post.thumbnail || "")
-              : post.thumbnail || ""
-          }
-          className="h-full object-cover"
-        />
-        <div className="absolute top-0 left-0 bg-white rounded-tl-md rounded-br-lg font-DungGeunMo text-black py-1.5 px-4 w-fit font-light border-gray-100 border-b-[0.7px] border-r-[0.95px] border-solid">
-          {post.status_chip}
-        </div>
+        {postType === "teamBuild" ? (
+          <img
+            src={
+              import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
+                ? import.meta.env.VITE_PROXY_HOST.replace(/\/$/, "") + (post.thumbnail || "")
+                : post.thumbnail || ""
+            }
+            className="h-full object-cover"
+          />
+        ) : (
+          <img
+            src={
+              post.profile_image === null
+                ? defaultProfile
+                : import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
+                ? import.meta.env.VITE_PROXY_HOST.replace(/\/$/, "") + (post.profile_image || "")
+                : post.profile_image || ""
+            }
+            className="w-full h-full object-cover"
+          />
+        )}
+
+        {postType === "teamBuild" && (
+          <div className="absolute top-0 left-0 bg-white rounded-tl-md rounded-br-lg font-DungGeunMo text-black py-1.5 px-4 w-fit font-light border-gray-100 border-b-[0.7px] border-r-[0.95px] border-solid">
+            {post.status_chip}
+          </div>
+        )}
       </div>
 
       <div className="flex-1 px-4 pt-6 bg-gray-800 text-white flex flex-col justify-between">
         <div className="flex flex-col gap-2 overflow-hidden flex-1">
-          {isProfileTab ? (
+          {postType === "profile" ? (
             <div className="flex items-center gap-2 font-DungGeunMo text-black">
               <div className="px-2 py-1 rounded-[4px] bg-white">
-                <p>Client</p>
+                <p>{post.my_role}</p>
               </div>
             </div>
           ) : (
@@ -83,9 +110,7 @@ export default function CardList({ post, isProfileTab }: Props) {
               {duration}
             </div>
           </div>
-          <div className="my-4 text-heading-20 font-bold text-ellipsis overflow-hidden truncate">
-            {isProfileTab ? "Unity, Unreal 사용하는 개발자입니다" : post.title}
-          </div>
+          <div className="my-4 text-heading-20 font-bold text-ellipsis overflow-hidden truncate">{post.title}</div>
         </div>
         <div className="flex items-center gap-2 pb-4">
           <img
@@ -101,7 +126,7 @@ export default function CardList({ post, isProfileTab }: Props) {
           />
           <p className="font-bold text-white text-lg truncate max-w-[100px]">{post.author_data.nickname}</p>
           <span className="text-gray-400 text-xl">|</span>
-          <span className="text-white text-lg ">{isProfileTab ? "취준생" : `${post.deadline} 까지`}</span>
+          <span className="text-white text-lg ">{postType === "profile" ? post.career : `${post.deadline} 까지`}</span>
         </div>
       </div>
     </section>
