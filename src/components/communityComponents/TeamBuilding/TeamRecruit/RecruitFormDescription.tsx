@@ -87,6 +87,7 @@ export default function RecruitFormDescription() {
       try {
         const url = await uploadImageFileToS3(file);
 
+        console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@2", url);
         // 업로드된 이미지 URL 에디터에 삽입
         if (!quillRef.current) return;
 
