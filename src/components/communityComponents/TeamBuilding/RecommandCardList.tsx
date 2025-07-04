@@ -38,7 +38,7 @@ export default function RecommandCardList({ post }: Props) {
       className="flex gap-5 p-6 mx-auto w-full border border-solid border-gray-400 rounded-lg cursor-pointer"
     >
       <div className="relative flex-[0.4] h-[180px]">
-        <div className="absolute flex items-center justify-center w-16 h-5 rounded-tl-md rounded-br-md bg-white border border-solidborder-gray-400">
+        <div className="absolute flex items-center justify-center w-16 h-5 rounded-tl-md rounded-br-md bg-white border border-solid border-gray-400">
           <p className="font-DungGeunMo text-xs">{post.status_chip}</p>
         </div>
         <img
@@ -47,7 +47,7 @@ export default function RecommandCardList({ post }: Props) {
               ? import.meta.env.VITE_PROXY_HOST.replace(/\/$/, "") + post.thumbnail
               : post.thumbnail
           }
-          className="object-cover w-full h-[180px] rounded-md"
+          className="object-cover w-full h-[180px] rounded-md border border-solid border-gray-400"
         />
       </div>
       <div className="flex flex-col flex-[0.6] gap-2">
@@ -75,7 +75,7 @@ export default function RecommandCardList({ post }: Props) {
             dangerouslySetInnerHTML={{ __html: post.content }}
           ></span>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 mt-auto">
           <img
             src={
               post.author_data.image === null
