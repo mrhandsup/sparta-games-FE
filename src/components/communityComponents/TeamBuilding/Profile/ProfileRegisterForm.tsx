@@ -18,6 +18,7 @@ import { userStore } from "../../../../share/store/userStore";
 
 import recruitImage from "../../../../assets/gameDetail/ReviewEdit.svg";
 import arrowBack from "../../../../assets/common/arrow/triangleArrowLeft.svg";
+import defaultProfile from "../../../../assets/common/defaultProfile.svg";
 
 export default function ProfileRegisterForm() {
   const methods = useForm<TProfileRegisterForm>({
@@ -108,7 +109,11 @@ export default function ProfileRegisterForm() {
   const onSubmit = (data: any) => {
     const formData = new FormData();
 
-    formData.append("image", data.profile_image[0]);
+    if (data.profile_image === null) {
+      formData.append("image", defaultProfile);
+    } else {
+      formData.append("image", data.profile_image[0]);
+    }
     formData.append("career", data.career);
     formData.append("my_role", data.my_role);
     formData.append("tech_stack", data.tech_stack);

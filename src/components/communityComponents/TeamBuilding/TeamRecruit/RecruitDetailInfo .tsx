@@ -41,7 +41,7 @@ export default function RecruitDetailInfo({ postDetail }: Props) {
   return (
     <div className="mt-10 mb-6 p-9 bg-gray-800 rounded-xl">
       <img
-        className="w-full h-[500px] object-cover rounded-lg"
+        className="w-full h-[500px] object-contain rounded-lg"
         src={
           import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
             ? import.meta.env.VITE_PROXY_HOST.replace(/\/$/, "") + postDetail?.thumbnail
@@ -75,10 +75,12 @@ export default function RecruitDetailInfo({ postDetail }: Props) {
           <div className="flex gap-[74px]">
             <p className="text-white">연락방법</p>
             <a
-              href={postDetail?.contact}
-              className="relative inline-block w-[400px] truncate text-white underline cursor-default pointer-events-none"
+              href={postDetail?.contact?.startsWith("http") ? postDetail.contact : `https://${postDetail?.contact}`}
+              className="relative inline-block w-[400px] truncate text-white underline"
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              <span className="pointer-events-auto cursor-pointer">{postDetail?.contact}</span>
+              {postDetail?.contact}
             </a>
           </div>
         </div>

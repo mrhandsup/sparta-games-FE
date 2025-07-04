@@ -63,7 +63,7 @@ export default function CardList({ postType, post }: Props) {
                 ? import.meta.env.VITE_PROXY_HOST.replace(/\/$/, "") + (post.thumbnail || "")
                 : post.thumbnail || ""
             }
-            className="h-full object-cover"
+            className="w-full h-full object-cover"
           />
         ) : (
           <img
