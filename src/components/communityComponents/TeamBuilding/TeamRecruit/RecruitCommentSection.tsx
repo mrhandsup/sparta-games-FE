@@ -7,11 +7,12 @@ import { getTeamBuildComments, postTeamBuildComments, putTeamBuildComments } fro
 import SpartaButton from "../../../../spartaDesignSystem/SpartaButton";
 import SpartaTabNav from "../../../../spartaDesignSystem/SpartaTabNav";
 
-import { TApiResponse, TTeamBuildCommentData, TTeamBuildPostDetail, TUserData } from "../../../../types";
+import { TApiResponse, TTeamBuildCommentData, TTeamBuildPostDetail } from "../../../../types";
 import { getTimeAgoInHours } from "../../../../util/getTimeAgoInHours";
 
 import defaultProfile from "../../../../assets/common/defaultProfile.svg";
 import SpartaPagination from "../../../../spartaDesignSystem/SpartaPagination";
+import loading from "../../../../assets/common/loading.gif";
 
 type Props = {
   userId: number | undefined;
@@ -102,8 +103,19 @@ export default function RecruitCommentSection({ userId, postDetail, onClickDelet
   };
   const editTextareaRef = useRef<HTMLTextAreaElement | null>(null);
 
+  const isActuallyEdited = (create_dt: string, update_dt: string) => {
+    const created = new Date(create_dt).getTime();
+    const updated = new Date(update_dt).getTime();
+    return updated - created > 1000; // 1초 이상 차이나면 수정된 것으로 간주
+  };
+
   return (
     <>
+      {postTeamBuildCommentsMutation.isPending && (
+        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+          <img src={loading} className="w-24 h-24" alt="로딩 중" />
+        </div>
+      )}
       <div className="gap-3 mb-10 p-9 bg-gray-800 rounded-xl">
         <SpartaTabNav selectedTab={sortTab} onTabChange={setSortTab} tabLabels={SORT_LABELS} />
 
@@ -259,7 +271,9 @@ export default function RecruitCommentSection({ userId, postDetail, onClickDelet
                             ? getTimeAgoInHours(comment?.create_dt)
                             : getTimeAgoInHours(comment?.update_dt)}
                         </span>
-                        {comment?.create_dt !== comment?.update_dt && <span className="text-gray-200">(수정됨)</span>}
+                        {isActuallyEdited(comment?.create_dt, comment?.update_dt) && (
+                          <span className="text-gray-200">(수정됨)</span>
+                        )}
                       </div>
                       <div className="flex gap-2">
                         <SpartaButton

@@ -43,8 +43,8 @@ export type TCommonTeamBuildPost = {
 export type TTeamBuildCommentData = {
   id: number;
   content: string;
-  create_dt: Date;
-  update_dt: Date;
+  create_dt: string;
+  update_dt: string;
   is_visible: boolean;
   post_id: number;
   author_data: {

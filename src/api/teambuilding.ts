@@ -25,7 +25,6 @@ export const getTeamBuild = async (userId?: number, params?: URLSearchParams) =>
   try {
     const client = userId ? sparta_games_auth : sparta_games;
 
-    console.log("cliet", client);
     const res = await client.get(`/teams/api/teambuild/?${params?.toString()}`);
 
     return res?.data;
