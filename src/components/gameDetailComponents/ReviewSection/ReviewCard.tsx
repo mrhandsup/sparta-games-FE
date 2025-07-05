@@ -134,7 +134,6 @@ const ReviewCard = ({ review, onClickModalToggleHandler, isMyReview = false, set
     }
   };
 
-  console.log("review", review);
   return (
     <>
       <div

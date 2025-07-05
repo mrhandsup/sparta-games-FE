@@ -60,7 +60,6 @@ export default function ProfileDetail({ user, profileData, isMyPage }: Props) {
       ? "온라인"
       : "온라인/ 오프라인 둘 다 가능";
 
-  console.log(profileData?.portfolio);
   return (
     <>
       <div className="bg-gray-800 rounded-xl px-11 py-14 flex flex-col gap-4 w-full">
