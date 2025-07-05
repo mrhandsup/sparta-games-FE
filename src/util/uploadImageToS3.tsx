@@ -17,6 +17,7 @@ export default async function uploadImageFileToS3(file: File): Promise<string> {
   console.log(import.meta.env.VITE_DEPLOYMENT_MODE);
 
   if (import.meta.env.VITE_DEPLOYMENT_MODE === "prod") {
+    console.log("Asdasd");
     headers["x-amz-tagging"] = "is_used=false";
   }
 
