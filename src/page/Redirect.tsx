@@ -102,6 +102,9 @@ const Redirect = () => {
     }
 
     if (!data) return;
+
+    const redirectPath = sessionStorage.getItem("redirectPath") || "/";
+
     if (data?.data?.message?.includes("회원가입")) {
       //회원가입 페이지로 이동
       navigate(`/signup?email=${email}&login_type=${logint_tpye}`);
@@ -110,7 +113,8 @@ const Redirect = () => {
       sessionStorage.setItem("refreshToken", data?.data.data.refresh);
       //메인 페이지로 이동
       setUser(data.data?.data.access);
-      navigate("/");
+      navigate(redirectPath);
+      sessionStorage.removeItem("redirectPath");
     }
   }, [data, isError]);
 

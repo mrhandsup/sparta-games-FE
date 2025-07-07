@@ -91,6 +91,8 @@ function Login({ onClose }: Props) {
 
   const [isLocalLogin, setIsLocalLogin] = useState(false);
 
+  const redirectPath = window.location.pathname;
+
   return (
     <>
       <div className="w-[350px]">
@@ -118,6 +120,7 @@ function Login({ onClose }: Props) {
                 icon={googleIcon}
                 altText="구글 간편로그인"
                 bgColor="bg-white"
+                redirectPath={redirectPath}
               />
               <SocialLoginBtn
                 loginUrl={`https://discord.com/api/oauth2/authorize?client_id=${
@@ -127,6 +130,7 @@ function Login({ onClose }: Props) {
                 altText="디스코드 간편로그인"
                 bgColor="bg-[#5662F6]"
                 textColor="text-white"
+                redirectPath={redirectPath}
               />
               {/* <SocialLoginBtn
                 loginUrl={`https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${
@@ -146,6 +150,7 @@ function Login({ onClose }: Props) {
                 icon={kakaoIcon}
                 altText="카카오 간편로그인"
                 bgColor="bg-[#FEE500]"
+                redirectPath={redirectPath}
               />
               <div
                 onClick={() => setIsLocalLogin(!isLocalLogin)}
