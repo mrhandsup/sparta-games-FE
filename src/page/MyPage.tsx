@@ -28,6 +28,7 @@ const MyPage = () => {
   const { userData } = userStore();
 
   const isMyPage = id === userData?.data.user_id.toString();
+
   useEffect(() => {
     if (!isMyPage) {
       window.alert("잘못된 접근입니다.");
