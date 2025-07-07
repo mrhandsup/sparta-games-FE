@@ -13,7 +13,6 @@ import AdminDashBoard from "../page/admin/AdminDashBoard";
 import AdminGameLog from "../page/admin/AdminGameLog";
 import AdminLayout from "../components/layout/AdminLayout";
 import ResetPassword from "../page/ResetPassword";
-import FullWidthLayout from "../components/layout/FullWidthLayout";
 import PrivacyPolicy from "../components/PrivacyPolicy";
 import TermsOfService from "../components/TermsOfService";
 import Footer from "../components/Footer";
@@ -22,6 +21,7 @@ import ProfileRegisterForm from "../components/communityComponents/TeamBuilding/
 import TeamBuilding from "../page/TeamBuilding";
 import RecruitDetail from "../components/communityComponents/TeamBuilding/TeamRecruit/RecruitDetail";
 import TeamBuildingProfile from "../page/TeamBuildingProfile";
+import NotFound from "../page/NotFound";
 
 const Router = () => {
   return (
@@ -39,6 +39,7 @@ const Router = () => {
           <Route path="/community/team-building" element={<TeamBuilding />} />
           <Route path="/community/team-building/team-recruit/:id" element={<RecruitDetail />} />
           <Route path="/community/team-building/profile-detail/:id" element={<TeamBuildingProfile />} />
+          <Route path="*" element={<NotFound />} />
 
           <Route element={<AuthLayout />}>
             <Route path="my-page/:id" element={<MyPage />} />
