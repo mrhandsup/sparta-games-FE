@@ -64,7 +64,7 @@ export default function ProfileDetail({ user, profileData, isMyPage }: Props) {
     <>
       <div className="bg-gray-800 rounded-xl px-11 py-14 flex flex-col gap-4 w-full">
         {/* 내 팀빌팅 프로필이 없는 경우 */}
-        {!profileData && (
+        {!profileData && isMyPage && (
           <>
             <div className="flex items-start">
               <p className="font-DungGeunMo text-heading-32 text-white font-normal">{user?.nickname}의 커리어 프로필</p>
@@ -248,6 +248,7 @@ export default function ProfileDetail({ user, profileData, isMyPage }: Props) {
           </>
         )}
       </div>
+
       <p
         onClick={() => onClickModalToggleHandlers[GAME_DELETE_CHECK_ID]()}
         className={`mt-5 text-right text-error-default underline cursor-pointer ${

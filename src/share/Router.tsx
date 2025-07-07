@@ -22,6 +22,7 @@ import TeamBuilding from "../page/TeamBuilding";
 import RecruitDetail from "../components/communityComponents/TeamBuilding/TeamRecruit/RecruitDetail";
 import TeamBuildingProfile from "../page/TeamBuildingProfile";
 import NotFound from "../page/NotFound";
+import UserProfile from "../page/UserProfile";
 
 const Router = () => {
   return (
@@ -39,6 +40,7 @@ const Router = () => {
           <Route path="/community/team-building" element={<TeamBuilding />} />
           <Route path="/community/team-building/team-recruit/:id" element={<RecruitDetail />} />
           <Route path="/community/team-building/profile-detail/:id" element={<TeamBuildingProfile />} />
+          <Route path="user-profile/:id" element={<UserProfile />} />
           <Route path="*" element={<NotFound />} />
 
           <Route element={<AuthLayout />}>
