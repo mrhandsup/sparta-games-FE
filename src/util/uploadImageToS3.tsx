@@ -10,18 +10,13 @@ export default async function uploadImageFileToS3(file: File): Promise<string> {
 
   const { upload_url, url } = presignedResponse.data.data;
 
-  const headers: Record<string, string> = {
-    "Content-Type": "image/*",
-  };
-
-  if (import.meta.env.VITE_DEPLOYMENT_MODE !== "dev") {
-    headers["x-amz-tagging"] = "is_used=false";
-  }
-
   const response = await fetch(upload_url, {
     method: "PUT",
     body: file,
-    headers,
+    headers: {
+      "Content-Type": "image/*",
+      "x-amz-tagging": "is_used=false",
+    },
   });
 
   if (!response.ok) {

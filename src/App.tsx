@@ -14,6 +14,21 @@ const queryClient = new QueryClient();
 function App() {
   const { userData, setUser } = userStore();
 
+  useEffect(() => {
+    const accessToken = sessionStorage.getItem("accessToken");
+    if (accessToken) {
+      userStore.getState().setUser(accessToken);
+    }
+  }, []);
+
+  // 로그인 정보가 없을 때, sessionStorage에 저장된 accessToken을 이용하여 로그인 처리
+  useEffect(() => {
+    if (userData) return;
+    const accessToken = sessionStorage.getItem("accessToken");
+    if (!accessToken) return;
+    setUser(accessToken);
+  }, [userData]);
+
   function isMobileWeb() {
     const toMatch = [/Android/i, /webOS/i, /iPhone/i, /iPod/i, /BlackBerry/i, /Windows Phone/i];
 
@@ -37,14 +52,6 @@ function App() {
       </div>
     );
   }
-
-  // 로그인 정보가 없을 때, sessionStorage에 저장된 accessToken을 이용하여 로그인 처리
-  useEffect(() => {
-    if (userData) return;
-    const accessToken = sessionStorage.getItem("accessToken");
-    if (!accessToken) return;
-    setUser(accessToken);
-  }, [userData]);
 
   return (
     <div className="relative min-w-fit min-h-full bg-gray-700">

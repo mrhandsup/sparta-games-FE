@@ -43,16 +43,8 @@ export default function CardList({ postType, post }: Props) {
       className=" relative h-[500px] flex flex-col border-gray-100 border-[0.7px] rounded-lg border-solid cursor-pointer"
       onClick={() => {
         postType === "profile"
-          ? navigate(`/community/team-building/profile-detail/${post.author_data.id}`, {
-              state: {
-                post,
-              },
-            })
-          : navigate(`/community/team-building/team-recruit/${post.id}`, {
-              state: {
-                post,
-              },
-            });
+          ? navigate(`/community/team-building/profile-detail/${post.author_data.id}`)
+          : navigate(`/community/team-building/team-recruit/${post.id}`);
       }}
     >
       <div className="h-[55%] relative">
