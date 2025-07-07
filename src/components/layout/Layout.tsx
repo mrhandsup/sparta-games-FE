@@ -6,7 +6,6 @@ import { useEffect } from "react";
 const Layout = () => {
   const { pathname } = useLocation();
 
-  console.log("pathname", pathname, pathname === "/");
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
@@ -18,7 +17,7 @@ const Layout = () => {
       </div>
       <div
         className={`${
-          pathname === "/" ? "min-w-[1440px]" : "max-w-[1440px]"
+          pathname === "/" || pathname === "/community/team-building" ? "min-w-[1440px]" : "max-w-[1440px]"
         } relative flex flex-col mx-auto  h-full font-Pretendard`}
       >
         <Outlet />
