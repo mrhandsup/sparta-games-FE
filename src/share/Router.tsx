@@ -2,7 +2,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import Layout from "../components/layout/Layout";
 import AuthLayout from "../components/layout/AuthLayout";
-import NonAuthLayout from "../components/layout/NonAuthLayout";
 import Home from "../page/Home";
 import Category from "../page/Category";
 import GameDetail from "../page/GameDetail";
@@ -28,15 +27,8 @@ const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<FullWidthLayout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/community/team-building" element={<TeamBuilding />} />
-          <Route path="/community/team-building/create" element={<ProjectRecruitForm />} />
-          <Route path="/community/team-building/profile/create" element={<ProfileRegisterForm />} />
-          <Route path="/community/team-building/profile/edit/:id" element={<ProfileRegisterForm />} />
-          <Route path="/community/team-building/profile-detail/:id" element={<TeamBuildingProfile />} />
-        </Route>
         <Route element={<Layout />}>
+          <Route path="/" element={<Home />} />
           <Route path="/game-detail" element={<GameDetail />} />
           <Route path="/category" element={<Category />} />
           <Route path="/redirect/:service" element={<Redirect />} />
@@ -44,23 +36,24 @@ const Router = () => {
           <Route path="/reset" element={<ResetPassword />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/termsofservice" element={<TermsOfService />} />
+          <Route path="/community/team-building" element={<TeamBuilding />} />
           <Route path="/community/team-building/team-recruit/:id" element={<RecruitDetail />} />
-          <Route path="/community/team-building/team-recruit/edit/:id" element={<ProjectRecruitForm />} />
-          <Route element={<NonAuthLayout />}></Route>
+          <Route path="/community/team-building/profile-detail/:id" element={<TeamBuildingProfile />} />
 
           <Route element={<AuthLayout />}>
+            <Route path="my-page/:id" element={<MyPage />} />
             <Route path="game-upload" element={<GameUpload />} />
             <Route path="game-edit/:gameId" element={<GameUpload />} />
+            <Route path="/community/team-building/create" element={<ProjectRecruitForm />} />
+            <Route path="/community/team-building/team-recruit/edit/:id" element={<ProjectRecruitForm />} />
+            <Route path="/community/team-building/profile/create" element={<ProfileRegisterForm />} />
+            <Route path="/community/team-building/profile/edit/:id" element={<ProfileRegisterForm />} />
           </Route>
 
           <Route element={<AdminLayout />}>
             <Route path="/admin/dashboard" element={<AdminDashBoard />} />
             <Route path="/admin/game-log" element={<AdminGameLog />} />
           </Route>
-        </Route>
-
-        <Route element={<FullWidthLayout />}>
-          <Route path="my-page/:id" element={<MyPage />} />
         </Route>
       </Routes>
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { AxiosError } from "axios";
@@ -23,27 +23,26 @@ import SpartaReactionModal, { TSpartaReactionModalProps } from "../../../../spar
 
 export default function RecruitDetail() {
   const { userData } = userStore();
-
-  const location = useLocation();
-  const { post } = location.state || {};
-
-  const queryClient = useQueryClient();
+  const { id } = useParams();
   const navigate = useNavigate();
 
+  const queryClient = useQueryClient();
+
   const { data } = useQuery<TTeamBuildDetailResponse>({
-    queryKey: ["teamBuildngDetail", post?.id],
-    queryFn: () => getTeamBuildDetail(post?.id),
+    queryKey: ["teamBuildngDetail", id],
+    queryFn: () => getTeamBuildDetail(Number(id)),
+    enabled: !!id,
   });
 
   const postDetail = data?.data;
-
+  console.log("id", id);
   const closeRecruitMutation = useMutation({
     mutationFn: () => patchTeamBuild(postDetail?.id),
     onSuccess: () => {
       onClickModalToggleHandlers[CONFIRM_MODAL_ID]();
       setNoActionModalData(noActionData.closeRecruitSuccess);
       onClickModalToggleHandlers[SUCCESS_MODAL_ID]();
-      queryClient.invalidateQueries({ queryKey: ["teamBuildngDetail", post?.id] });
+      queryClient.invalidateQueries({ queryKey: ["teamBuildngDetail", id] });
     },
     onError: (error: AxiosError<{ status: string; message?: string }>) => {
       if (error.response && error.response.data.status === "fail") {

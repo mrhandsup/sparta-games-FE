@@ -1,16 +1,22 @@
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import ProfileDetail from "../components/communityComponents/TeamBuilding/Profile/ProfileDetail";
 import ProfileUserGame from "../components/communityComponents/TeamBuilding/Profile/ProfileUserGame";
-import { TTeamBuildProfileListItem } from "../types";
+import { TTeamBuildProfileUserResponse } from "../types";
+import { useQuery } from "@tanstack/react-query";
+import { getTeamBuildProfileByUserId } from "../api/teambuilding";
 
 export default function TeamBuildingProfile() {
-  const location = useLocation();
-
-  const { post } = (location.state as { post: TTeamBuildProfileListItem }) || {};
-
   const [navigation, setNavigation] = useState<"log" | "teambuilding" | "develop">("teambuilding");
+
+  const { id } = useParams();
+
+  const { data: profileData } = useQuery<TTeamBuildProfileUserResponse>({
+    queryKey: ["teamBuildProfile", Number(id)],
+    queryFn: () => getTeamBuildProfileByUserId(Number(id)),
+    retry: false,
+  });
 
   const navigationButtonConfig = {
     clicked: "bg-gray-700 text-primary-500",
@@ -44,9 +50,9 @@ export default function TeamBuildingProfile() {
 
             <div className="max-w-[1440px] mx-auto">
               {navigation === "teambuilding" ? (
-                <ProfileDetail profileData={post} />
+                <ProfileDetail profileData={profileData?.data} />
               ) : (
-                <ProfileUserGame postDetail={post} />
+                <ProfileUserGame postDetail={profileData?.data} />
               )}
             </div>
           </div>
