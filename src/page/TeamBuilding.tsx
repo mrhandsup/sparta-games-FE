@@ -68,7 +68,6 @@ export default function TeamBuilding() {
   const { data } = useQuery<TTeamBuildPostResponse>({
     queryKey: ["teamBuilding", currentPage, params.toString()],
     queryFn: () => getTeamBuild(userData?.data.user_id, params),
-    enabled: !!userData?.data.user_id,
   });
 
   const { data: profileData } = useQuery<TTeamBuildProfileResponse>({
