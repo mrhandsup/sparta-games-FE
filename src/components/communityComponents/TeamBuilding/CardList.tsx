@@ -118,7 +118,13 @@ export default function CardList({ postType, post }: Props) {
             }
             alt={`profile-img-${post.id}`}
           />
-          <p className="font-bold text-white text-lg truncate max-w-[140px]">{post.author_data.nickname}</p>
+          <p
+            className={`font-bold text-white text-lg truncate ${
+              postType === "profile" ? "max-w-[140px]" : "max-w-[110px]"
+            }`}
+          >
+            {post.author_data.nickname}
+          </p>
           <span className="text-gray-400 text-xl">|</span>
           <span className="text-white text-lg tracking-wide">
             {postType === "profile" ? career : `${post.deadline.split("-").join(".")} 까지`}

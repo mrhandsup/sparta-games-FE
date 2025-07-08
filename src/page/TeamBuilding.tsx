@@ -88,9 +88,7 @@ export default function TeamBuilding() {
   });
 
   const teamBuildPosts = data?.data.team_build_posts;
-  const recommendedPosts = data?.data.recommended_posts.filter(
-    (post) => post.status_chip && post.status_chip !== "모집마감",
-  );
+  const recommendedPosts = data?.data.recommended_posts;
   const teamBuildProfilePosts = profileData?.data;
 
   const searchTeambuildPosts = searchTeambuildData?.data.search_teambuild_posts;
