@@ -74,6 +74,7 @@ export default function RecruitCommentSection({ userId, postDetail, onClickDelet
   const { data } = useQuery<TApiResponse<TTeamBuildCommentData[]>>({
     queryKey: ["teamBuildComments", postDetail?.id, page, sortTab],
     queryFn: () => getTeamBuildComments(postDetail?.id, page, sortTab),
+    enabled: !!postDetail?.id,
   });
 
   const commentData = data?.data;

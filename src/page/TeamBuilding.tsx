@@ -8,7 +8,6 @@ import SpartaTabNav from "../spartaDesignSystem/SpartaTabNav";
 
 import Hero from "../components/communityComponents/TeamBuilding/Hero";
 import RecommandCardList from "../components/communityComponents/TeamBuilding/RecommandCardList";
-import CardList from "../components/communityComponents/TeamBuilding/CardList";
 
 import { getTeamBuild, getTeamBuildProfile, getTeamBuildProfileSearch, getTeamBuildSearch } from "../api/teambuilding";
 import {
