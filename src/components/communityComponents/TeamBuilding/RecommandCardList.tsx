@@ -70,7 +70,7 @@ export default function RecommandCardList({ post }: Props) {
           </div>
         </div>
 
-        <div className="flex flex-col justify-center h-full">
+        <div className="flex flex-col justify-center gap-[5px] h-full">
           <p className="w-[390px] truncate font-bold text-lg text-white text-center">{post.title}</p>
           <p
             className="h= line-clamp-2 text-white leading-5"
