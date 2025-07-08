@@ -46,7 +46,7 @@ const Hero = () => {
         <section className="flex items-center gap-[60px] w-full h-[475px] bg-gray-800 max-w-[1440px] mx-auto">
           <img src={heroImage} />
           <div className="flex flex-col justify-center gap-4 items-center w-[50%] ps-12">
-            <h2 className="font-DungGeunMo text-heading-32 text-primary-500 font-normal">구상중</h2>
+            <h2 className="font-DungGeunMo text-heading-32 text-primary-500 font-normal">★ 팀 빌딩 커뮤니티 ★</h2>
 
             <div className="flex flex-col items-center text-body-18 text-center my-5 text-white">
               <p>

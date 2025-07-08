@@ -74,6 +74,7 @@ export default function RecruitCommentSection({ userId, postDetail, onClickDelet
   const { data } = useQuery<TApiResponse<TTeamBuildCommentData[]>>({
     queryKey: ["teamBuildComments", postDetail?.id, page, sortTab],
     queryFn: () => getTeamBuildComments(postDetail?.id, page, sortTab),
+    enabled: !!postDetail?.id,
   });
 
   const commentData = data?.data;
@@ -121,7 +122,7 @@ export default function RecruitCommentSection({ userId, postDetail, onClickDelet
 
         <div className="flex items-center gap-3 mt-10 mb-4 font-DungGeunMo text-white">
           <p className="text-3xl">댓글</p>
-          <span className="text-3xl">{newComment.length}</span>
+          <span className="text-3xl">{commentData?.length}</span>
           {newComment.length > 1000 ? <p className=" text-error-default text-lg">*1000자 이내로 작성해주세요.</p> : ""}
         </div>
 
