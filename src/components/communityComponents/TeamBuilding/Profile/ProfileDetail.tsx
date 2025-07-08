@@ -60,6 +60,9 @@ export default function ProfileDetail({ user, profileData, isMyPage }: Props) {
       ? "온라인"
       : "온라인/ 오프라인 둘 다 가능";
 
+  const carrer =
+    profileData?.career === "STUDENT" ? "대학생" : profileData?.career === "JOBSEEKER" ? "취준생" : "현직자";
+
   return (
     <>
       <div className="bg-gray-800 rounded-xl px-11 py-14 flex flex-col gap-4 w-full">
@@ -135,7 +138,7 @@ export default function ProfileDetail({ user, profileData, isMyPage }: Props) {
               <div className="flex flex-col gap-3">
                 <div className="flex items-center">
                   <span className="w-44 font-bold">현재 구직상태</span>
-                  <span>{profileData?.career}</span>
+                  <span>{carrer}</span>
                 </div>
                 <div className="flex items-center">
                   <span className="w-44 font-bold">구인 포지션</span>

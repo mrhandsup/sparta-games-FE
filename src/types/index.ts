@@ -32,6 +32,7 @@ export type TCommonTeamBuildPost = {
   purpose: "PORTFOLIO" | "CONTEST" | "STUDY" | "COMMERCIAL";
   duration: string;
   deadline: string;
+  career: string;
   thumbnail: string;
   author_data: {
     id: number;
@@ -109,7 +110,7 @@ export type TTeamBuildPostResponse = {
 };
 
 export type TTeamBuildPostListItem = TCommonTeamBuildPost & {
-  status_chip: "모집중";
+  status_chip: "모집중" | "모집마감";
   is_visible: boolean;
 };
 
@@ -136,7 +137,7 @@ export type TTeamBuildPostDetail = TCommonTeamBuildPost & {
 };
 
 export type TTeamBuildRecommenedPostListItem = TTeamBuildPostListItem & {
-  content: string;
+  content_text: string;
 };
 
 export type TProjectRecruitForm = {

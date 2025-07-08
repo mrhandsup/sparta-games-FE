@@ -68,6 +68,7 @@ export default function TeamBuilding() {
   const { data } = useQuery<TTeamBuildPostResponse>({
     queryKey: ["teamBuilding", currentPage, params.toString()],
     queryFn: () => getTeamBuild(userData?.data.user_id, params),
+    enabled: !!userData?.data.user_id,
   });
 
   const { data: profileData } = useQuery<TTeamBuildProfileResponse>({
@@ -88,7 +89,9 @@ export default function TeamBuilding() {
   });
 
   const teamBuildPosts = data?.data.team_build_posts;
-  const recommandedPosts = data?.data.recommended_posts;
+  const recommendedPosts = data?.data.recommended_posts.filter(
+    (post) => post.status_chip && post.status_chip !== "모집마감",
+  );
   const teamBuildProfilePosts = profileData?.data;
 
   const searchTeambuildPosts = searchTeambuildData?.data.search_teambuild_posts;
@@ -162,17 +165,23 @@ export default function TeamBuilding() {
       </div>
       <div className="mx-auto mt-16 max-w-[1440px]">
         <div className="flex flex-col gap-8">
-          <p className="flex justify-between items-center text-5xl font-bold">
+          <div className="flex justify-between items-center text-5xl font-bold">
             <div className="flex items-center gap-3">
               <img src={pixelMeteor} />
               <p className="font-DungGeunMo text-[32px] font-[400] text-white">추천 게시글</p>
             </div>
-          </p>
-          <div className="grid grid-cols-2 gap-5">
-            {recommandedPosts?.map((post) => (
-              <RecommandCardList post={post} />
-            ))}
           </div>
+          {recommendedPosts?.length === 0 ? (
+            <div className="py-10 font-DungGeunMo text-[40px] text-center text-white">
+              아직 등록된 게시글이 없습니다!
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 gap-5">
+              {recommendedPosts?.map((post) => (
+                <RecommandCardList key={post.id} post={post} />
+              ))}
+            </div>
+          )}
         </div>
 
         {/* 팀원모집/ 프로필 선택, 검색 영역 */}
