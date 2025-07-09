@@ -61,7 +61,12 @@ export default function ProfileRegisterForm() {
 
   const CONFIRM_MODAL_ID = "confirmModal";
   const SUCCESS_MODAL_ID = "successModal";
-  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([CONFIRM_MODAL_ID, SUCCESS_MODAL_ID]);
+  const FAIL_MODAL_ID = "failModal";
+  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([
+    CONFIRM_MODAL_ID,
+    SUCCESS_MODAL_ID,
+    FAIL_MODAL_ID,
+  ]);
 
   const noActionData: { [key: string]: Partial<TSpartaReactionModalProps> } = {
     uploadConfirm: {
@@ -150,7 +155,18 @@ export default function ProfileRegisterForm() {
     },
     onError: (error: AxiosError) => {
       if (error.response && error.response.status === 400) {
-        window.alert(`${(error.response?.data as { message?: string })?.message}`);
+        setNoActionModalData({
+          title: "프로필 등록 실패",
+          content: (error.response?.data as { message?: string })?.message,
+          btn1: {
+            text: "확인했습니다.",
+            onClick: () => {
+              onClickModalToggleHandlers[CONFIRM_MODAL_ID]();
+            },
+          },
+          type: "error",
+        });
+        onClickModalToggleHandlers[FAIL_MODAL_ID]();
       } else {
         window.alert("알 수 없는 오류가 발생했습니다. 잠시후에 다시 시도해주세요.");
       }

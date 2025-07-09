@@ -218,6 +218,7 @@ export default function TeamBuilding() {
           isOpen={isOpen}
           setIsOpen={setIsOpen}
           updateSearchParams={updateSearchParams}
+          teamBuildProfilePosts={teamBuildProfilePosts}
         />
         {/* 포스트 리스트 영역 */}
         <div className="grid grid-cols-4 gap-5">
