@@ -26,10 +26,12 @@ const MyPage = () => {
   };
 
   const { userData } = userStore();
-
-  const isMyPage = id === userData?.data.user_id.toString();
+  const isUserDataLoaded = !!userData?.data?.user_id;
+  const isMyPage = isUserDataLoaded ? id === userData.data.user_id.toString() : null;
 
   useEffect(() => {
+    if (!isUserDataLoaded) return;
+
     if (!isMyPage) {
       window.alert("잘못된 접근입니다.");
       navigate("/", { replace: true });

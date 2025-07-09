@@ -1,22 +1,24 @@
 import { useNavigate } from "react-router-dom";
 
-import { TTeamBuildPostListItem, TTeamBuildProfileListItem } from "../../../types";
+import { TTeamBuildPostListItem, TTeamBuildProfileListItem, TUserData } from "../../../types";
 
 import defaultProfile from "../../../assets/common/defaultProfile.svg";
 
 type TeamBuildCardProps = {
   postType: "teamBuild";
   post: TTeamBuildPostListItem;
+  userData?: TUserData;
 };
 
 type ProfileCardProps = {
   postType: "profile";
   post: TTeamBuildProfileListItem;
+  userData: TUserData | undefined;
 };
 
 type Props = TeamBuildCardProps | ProfileCardProps;
 
-export default function CardList({ postType, post }: Props) {
+export default function CardList({ postType, post, userData }: Props) {
   const navigate = useNavigate();
 
   const purpose =
@@ -39,14 +41,20 @@ export default function CardList({ postType, post }: Props) {
 
   const career = post?.career === "STUDENT" ? "대학생" : post?.career === "JOBSEEKER" ? "취준생" : "현직자";
 
+  const isMyProfile = post?.author_data.id === userData?.user_id;
+  const handleProfileNavigate = () => {
+    if (isMyProfile) {
+      navigate(`/my-page/${userData?.user_id}?tab=teambuilding`);
+    } else {
+      navigate(`/community/team-building/profile-detail/${post.author_data.id}`);
+    }
+  };
   return (
     <section
       key={post?.id}
       className=" relative h-[500px] flex flex-col border-gray-100 border-[0.7px] rounded-lg border-solid cursor-pointer"
       onClick={() => {
-        postType === "profile"
-          ? navigate(`/community/team-building/profile-detail/${post.author_data.id}`)
-          : navigate(`/community/team-building/team-recruit/${post.id}`);
+        postType === "profile" ? handleProfileNavigate() : navigate(`/community/team-building/team-recruit/${post.id}`);
       }}
     >
       <div className="h-[55%] relative">

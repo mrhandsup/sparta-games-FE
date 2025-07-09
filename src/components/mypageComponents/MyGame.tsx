@@ -9,7 +9,7 @@ import { useParams } from "react-router-dom";
 
 type TMyGameProps = {
   user: TUserData;
-  isMyPage: boolean;
+  isMyPage: boolean | null;
 };
 
 const MyGame = (props: TMyGameProps) => {

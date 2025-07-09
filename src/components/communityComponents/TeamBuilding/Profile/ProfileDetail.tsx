@@ -24,7 +24,7 @@ type MyPageProps = {
 type TeamBuildingProfileProps = {
   profileData?: TTeamBuildProfileListItem;
   user?: TUserData;
-  isMyPage?: false;
+  isMyPage?: boolean | null;
 };
 
 type Props = MyPageProps | TeamBuildingProfileProps;
