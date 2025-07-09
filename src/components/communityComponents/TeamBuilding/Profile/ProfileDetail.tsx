@@ -63,6 +63,7 @@ export default function ProfileDetail({ user, profileData, isMyPage }: Props) {
   const carrer =
     profileData?.career === "STUDENT" ? "대학생" : profileData?.career === "JOBSEEKER" ? "취준생" : "현직자";
 
+  console.log("asdasdsadsad", profileData);
   return (
     <>
       <div className="bg-gray-800 rounded-xl px-11 py-14 flex flex-col gap-4 w-full">
@@ -165,7 +166,7 @@ export default function ProfileDetail({ user, profileData, isMyPage }: Props) {
                   <div className="flex flex-col gap-1">
                     {profileData?.portfolio[0].link !== "" ? (
                       profileData?.portfolio.map(({ link, type }: { link: string; type: string }, index: number) => (
-                        <div key={index} className="flex items-center gap-1">
+                        <div key={index} className={`${link === "" ? "hidden" : "block"} flex items-center gap-1`}>
                           <img
                             className="w-5 h-5"
                             src={
