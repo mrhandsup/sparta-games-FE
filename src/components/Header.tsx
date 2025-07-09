@@ -49,7 +49,7 @@ const Header = () => {
     },
     community: {
       title: "개발예정 기능",
-      content: "커뮤니티 기능은 개발 예정입니다.",
+      content: "팀 빌딩 기능은 개발 예정입니다.",
       btn1: {
         text: "확인했습니다",
         onClick: () => {
@@ -98,7 +98,7 @@ const Header = () => {
       },
     },
     {
-      text: "커뮤니티",
+      text: "팀 빌딩",
       onClick: () => {
         // navigate("/community/team-building");
         setNoActionModalData(noActionData.community);

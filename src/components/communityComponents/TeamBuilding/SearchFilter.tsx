@@ -4,7 +4,7 @@ import { SetURLSearchParams, useNavigate } from "react-router-dom";
 import SpartaButton from "../../../spartaDesignSystem/SpartaButton";
 import SpartaCheckBox from "../../../spartaDesignSystem/SpartaCheckBox";
 
-import { TUserData } from "../../../types";
+import { TTeamBuildProfileListItem, TUserData } from "../../../types";
 
 import { useRoleOptions } from "../../../hook/useRoleOptions";
 import useModalToggles from "../../../hook/useModalToggles";
@@ -34,6 +34,7 @@ type Props = {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   updateSearchParams: (filters: SelectedFilter[], isRecruiting: boolean) => void;
+  teamBuildProfilePosts: TTeamBuildProfileListItem[] | undefined;
 };
 
 const SearchFilter = ({
@@ -46,6 +47,7 @@ const SearchFilter = ({
   isOpen,
   setIsOpen,
   updateSearchParams,
+  teamBuildProfilePosts,
 }: Props) => {
   const [filterCliked, setFilterCliked] = useState("");
 
@@ -64,6 +66,25 @@ const SearchFilter = ({
           ? "프로필 등록은 회원만 이용가능합니다."
           : "팀원 모집 글 등록은 회원만 이용가능합니다.",
       btn1: {
+        text: "확인했습니다",
+        onClick: () => {
+          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+        },
+      },
+      type: "alert",
+    },
+
+    hasProfileWarning: {
+      title: "잠시만요!",
+      content: "이미 팀빌딩 프로필이 존재합니다.",
+      btn1: {
+        text: "내 팀빌딩 프로필로 이동하기",
+        onClick: () => {
+          navigate(`/my-page/${userData?.user_id}?tab=teambuilding`);
+          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+        },
+      },
+      btn2: {
         text: "확인했습니다",
         onClick: () => {
           onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
@@ -91,6 +112,32 @@ const SearchFilter = ({
 
   const onClickNavHandler = (filterName: string) => {
     setFilterCliked((prev) => (prev === filterName ? "" : filterName));
+  };
+
+  const hasProfile = teamBuildProfilePosts?.some((post) => {
+    return post.author_data.id === userData?.user_id;
+  });
+
+  const onClickCreateButton = () => {
+    if (!userData) {
+      setNoActionModalData(noActionData.uploadWarning);
+      onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+      return;
+    }
+
+    if (selectedTab === "teamRecruit") {
+      navigate("/community/team-building/create");
+      return;
+    }
+
+    if (selectedTab === "profileRegister") {
+      if (hasProfile) {
+        setNoActionModalData(noActionData.hasProfileWarning);
+        onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+      } else {
+        navigate("/community/team-building/profile/create");
+      }
+    }
   };
 
   const PROJECT_PURPOSE = [
@@ -248,18 +295,7 @@ const SearchFilter = ({
             type="filled"
             size="medium"
             customStyle="w-[200px]"
-            onClick={() => {
-              userData
-                ? navigate(
-                    `${
-                      selectedTab === "teamRecruit"
-                        ? "/community/team-building/create"
-                        : "/community/team-building/profile/create"
-                    }`,
-                  )
-                : setNoActionModalData(noActionData.uploadWarning);
-              onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-            }}
+            onClick={onClickCreateButton}
           />
         </div>
       </div>
