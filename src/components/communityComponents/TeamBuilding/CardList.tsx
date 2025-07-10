@@ -77,7 +77,7 @@ export default function CardList({ postType, post, userData }: Props) {
                 ? import.meta.env.VITE_PROXY_HOST.replace(/\/$/, "") + (post.profile_image || "")
                 : post.profile_image || ""
             }
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover rounded-t-lg"
           />
         )}
 

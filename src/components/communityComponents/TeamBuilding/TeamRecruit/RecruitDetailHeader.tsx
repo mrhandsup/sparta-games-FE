@@ -68,7 +68,7 @@ export default function RecruitDetailHeader({
         </div>
       </div>
       <div className="flex items-center justify-between gap-2 mt-5">
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-2">
           <img
             src={
               postDetail?.author_data.image === null
@@ -79,7 +79,7 @@ export default function RecruitDetailHeader({
             }
             className="w-8 h-8 border-2 border-solid border-gray-400 rounded-full"
           />
-          <p className="font-DungGeunMo text-gray-100 text-xl">[{postDetail?.author_data.nickname}]</p>
+          <p className="font-DungGeunMo text-gray-100 text-xl">{postDetail?.author_data.nickname}</p>
         </div>
         <span className="text-white text-xl">{postDetail?.create_dt.split("T")[0]}</span>
       </div>

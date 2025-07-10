@@ -99,9 +99,8 @@ export default function ProfileRegisterForm() {
     noActionData.uploadSuccess,
   );
 
-  const onClickOpenConfirmModal = () => {
-    setNoActionModalData(noActionData.uploadConfirm);
-    onClickModalToggleHandlers[CONFIRM_MODAL_ID]();
+  const onSubmitProfileRegister = () => {
+    if (!isPending) methods.handleSubmit(onSubmit)();
   };
 
   const isStepOneValid = useMemo(() => {
@@ -149,8 +148,18 @@ export default function ProfileRegisterForm() {
   const createTeamBuildProfileMutation = useMutation({
     mutationFn: postTeamBuildProfile,
     onSuccess: () => {
-      onClickModalToggleHandlers[CONFIRM_MODAL_ID]();
-      setNoActionModalData(noActionData.uploadSuccess);
+      setNoActionModalData({
+        title: "글 등록 완료",
+        content: "글 등록이 완료됐습니다!",
+        btn1: {
+          text: "확인했습니다.",
+          onClick: () => {
+            onClickModalToggleHandlers[SUCCESS_MODAL_ID]();
+            navigate(`/my-page/${userData?.data.user_id}?tab=teambuilding`, { replace: true });
+          },
+        },
+        type: "primary",
+      });
       onClickModalToggleHandlers[SUCCESS_MODAL_ID]();
     },
     onError: (error: AxiosError) => {
@@ -178,8 +187,18 @@ export default function ProfileRegisterForm() {
       putTeamBuildProfile(userId, formData),
 
     onSuccess: () => {
-      onClickModalToggleHandlers[CONFIRM_MODAL_ID]();
-      setNoActionModalData(noActionData.uploadSuccess);
+      setNoActionModalData({
+        title: "글 수정 완료",
+        content: "글 수정이 완료됐습니다!",
+        btn1: {
+          text: "확인했습니다.",
+          onClick: () => {
+            onClickModalToggleHandlers[SUCCESS_MODAL_ID]();
+            navigate(`/my-page/${userData?.data.user_id}?tab=teambuilding`, { replace: true });
+          },
+        },
+        type: "primary",
+      });
       onClickModalToggleHandlers[SUCCESS_MODAL_ID]();
     },
     onError: (error: AxiosError) => {
@@ -236,7 +255,7 @@ export default function ProfileRegisterForm() {
             {currentStep === 1 && <ProfileRegisterFormProject />}
             <SpartaButton
               disabled={currentStep === 0 ? !isStepOneValid : !formState.isValid}
-              onClick={currentStep === 0 ? goToNextStep : onClickOpenConfirmModal}
+              onClick={currentStep === 0 ? goToNextStep : onSubmitProfileRegister}
               content={currentStep === 0 ? "다음" : !isEditMode ? "글 등록하기" : "글 수정하기"}
               type="filled"
               colorType="primary"
@@ -275,11 +294,8 @@ export default function ProfileRegisterForm() {
             title={noActionModalData.title || ""}
             content={noActionModalData.content || ""}
             btn1={{
-              text: "확인했습니다",
-              onClick: () => {
-                onClickModalToggleHandlers[SUCCESS_MODAL_ID]();
-                navigate(`/my-page/${userData?.data.user_id}?tab=teambuilding`);
-              },
+              text: noActionModalData?.btn1?.text || "확인",
+              onClick: noActionModalData?.btn1?.onClick || (() => onClickModalToggleHandlers[SUCCESS_MODAL_ID]()),
             }}
           />
         </>
