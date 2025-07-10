@@ -50,7 +50,6 @@ export default function CardList({ postType, post, userData }: Props) {
     }
   };
 
-  console.log("post.want_roles", post.want_roles);
   return (
     <section
       key={post?.id}
@@ -113,7 +112,7 @@ export default function CardList({ postType, post, userData }: Props) {
             </div>
           )}
           <div className="flex gap-1">
-            <div className="flex items-center p-1 bg-gray-100 text-black font-bold text-[12px] rounded-[4px]">
+            <div className="flex items-center p-1 bg-gray-100 text-black font-bold text-[12px] tracking-[-0.5px] rounded-[4px]">
               {purpose}
             </div>
             <div className="flex items-center p-1 bg-gray-600 text-white rounded-[4px] text-[11px] tracking-[-0.5px]">
