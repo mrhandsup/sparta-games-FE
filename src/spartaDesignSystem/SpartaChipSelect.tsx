@@ -27,6 +27,7 @@ type Props = {
    * 패스 상태
    */
   pass?: boolean;
+  warning?: boolean;
   /**
    * 서브라벨
    */
@@ -34,6 +35,7 @@ type Props = {
     default: string;
     error: string;
     pass: string;
+    warning?: string;
   };
   /**
    * 다중 선택 가능 여부
@@ -65,6 +67,7 @@ const SpartaChipSelect = ({
   maxCount,
   error,
   placeHolderText,
+  warning,
 }: Props) => {
   const ITEM_HEIGHT = 40;
 
@@ -134,6 +137,8 @@ const SpartaChipSelect = ({
       return "text-primary-500";
     } else if (error) {
       return "text-error-hover";
+    } else if (warning) {
+      return "text-alert-default";
     } else {
       return "text-gray-100";
     }
@@ -144,6 +149,8 @@ const SpartaChipSelect = ({
       return subLabel?.pass;
     } else if (error) {
       return subLabel?.error;
+    } else if (warning) {
+      return subLabel?.warning;
     } else {
       return subLabel?.default;
     }

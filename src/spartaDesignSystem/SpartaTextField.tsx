@@ -27,6 +27,7 @@ type Props = {
     default: string;
     error: string;
     pass: string;
+    warning?: string;
   };
   /**
    * 에러 상태
@@ -36,6 +37,7 @@ type Props = {
    * 패스 상태
    */
   pass?: boolean;
+  warning?: boolean;
   /**
    * 클리어 버튼 클릭 시
    */
@@ -66,6 +68,7 @@ const SpartaTextField = ({
   subLabel,
   error,
   pass,
+  warning,
   onClear,
   passwordType,
   btnContent,
@@ -77,6 +80,8 @@ const SpartaTextField = ({
       return subLabel?.error;
     } else if (!error && pass) {
       return subLabel?.pass;
+    } else if (warning) {
+      return subLabel?.warning;
     } else {
       return subLabel?.default;
     }
@@ -87,6 +92,8 @@ const SpartaTextField = ({
       return "text-error-hover";
     } else if (!error && pass) {
       return "text-primary-500";
+    } else if (warning) {
+      return "text-alert-default";
     } else {
       return "text-gray-100";
     }

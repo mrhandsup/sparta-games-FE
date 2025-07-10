@@ -61,7 +61,7 @@ export default function RecruitDetailHeader({
                 content="삭제"
                 size="small"
                 colorType="grey"
-                customStyle="px-6 !rounded-sm  !h-8 hover:text-error-default hover:border-error-default whitespace-nowrap"
+                customStyle="px-6 !rounded-sm !h-8 hover:text-error-default hover:border-error-default whitespace-nowrap"
                 onClick={onClickDeleteRecruit}
               />
             </>

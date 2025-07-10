@@ -214,21 +214,21 @@ export default function ProfileRegisterForm() {
 
   return (
     <div className="mx-auto mt-16">
-      <div className="flex justify-center items-center mb-10">
+      <div className="flex justify-center items-center mb-6">
         <div
           onClick={currentStep === 0 ? undefined : goToPrevStep}
-          className={`flex items-center justify-center w-8 h-8 border border-solid ${
+          className={`flex items-center justify-center w-6 h-6 border border-solid ${
             currentStep === 0 ? "border-green-500 text-green-500" : "border-gray-400 text-gray-400"
           } rounded-full cursor-pointer`}
         >
           <span className="font-DungGeunMo text-xl">1</span>
         </div>
 
-        <div className="h-0.5 w-6 bg-gray-500"></div>
+        <div className="h-0.5 w-5 bg-gray-500"></div>
 
         <div
           onClick={currentStep === 1 ? undefined : goToNextStep}
-          className={`flex items-center justify-center w-8 h-8 border border-solid ${
+          className={`flex items-center justify-center w-6 h-6 border border-solid ${
             currentStep === 1 ? "border-green-500 text-green-500" : "border-gray-400 text-gray-400"
           } rounded-full cursor-pointer`}
         >
@@ -250,7 +250,7 @@ export default function ProfileRegisterForm() {
 
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSubmit)}>
-          <div className="w-[1180px] mx-auto">
+          <div className="w-[1000px] mx-auto">
             {currentStep === 0 && <PorfileRegisterFormBasic profileData={profileData} isEditMode={isEditMode} />}
             {currentStep === 1 && <ProfileRegisterFormProject />}
             <SpartaButton
