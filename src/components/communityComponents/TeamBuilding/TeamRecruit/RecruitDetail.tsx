@@ -92,10 +92,8 @@ export default function RecruitDetail() {
   const deleteCommentsMutation = useMutation({
     mutationFn: ({ commentId }: { commentId?: number | undefined }) => deleteTeamBuildComments(commentId),
     onSuccess: () => {
-      setNoActionModalData(noActionData.deleteCommentsSuccess);
       onClickModalToggleHandlers[CONFIRM_MODAL_ID]();
       queryClient.invalidateQueries({ queryKey: ["teamBuildComments"] });
-      onClickModalToggleHandlers[SUCCESS_MODAL_ID]();
     },
     onError: (error: AxiosError) => {
       if (error.response && error.response.status === 400) {
@@ -178,16 +176,6 @@ export default function RecruitDetail() {
       },
       type: "error",
     },
-    deleteCommentsSuccess: {
-      title: "댓글 삭제",
-      content: "댓글 삭제가 완료되었습니다.",
-      btn1: {
-        text: "확인했습니다.",
-        onClick: () => {
-          onClickModalToggleHandlers[SUCCESS_MODAL_ID]();
-        },
-      },
-    },
   };
   const [noActionModalData, setNoActionModalData] = useState<Partial<TSpartaReactionModalProps>>(
     noActionData.reviewDelete,
@@ -233,7 +221,7 @@ export default function RecruitDetail() {
 
   return (
     <>
-      <div className="w-[1180px] mx-auto">
+      <div className="w-[988px] mx-auto">
         <RecruitDetailHeader
           userData={userData?.data}
           postDetail={postDetail}

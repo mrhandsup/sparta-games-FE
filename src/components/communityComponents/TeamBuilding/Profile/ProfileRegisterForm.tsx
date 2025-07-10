@@ -45,7 +45,7 @@ export default function ProfileRegisterForm() {
           ? profileData.portfolio
           : [{ link: "", type: "portfolio" }];
 
-      methods.reset({ ...profileData, portfolio: defaultPortfolio }); // 폼 전체 초기화
+      methods.reset({ ...profileData, portfolio: defaultPortfolio });
       isInitialSet.current = true;
     }
   }, [isEditMode, profileData, methods]);

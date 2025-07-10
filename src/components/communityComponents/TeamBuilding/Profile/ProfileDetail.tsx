@@ -144,26 +144,23 @@ export default function ProfileDetail({ user, profileData, isMyPage }: Props) {
                   <span className="w-44 font-bold">구인 포지션</span>
                   <span>{profileData?.my_role}</span>
                 </div>
-                <div className="flex items-center">
+                <div className={`${profileData?.game_genre.length === 0 ? "hidden" : "flex"} items-center`}>
                   <span className="w-44 font-bold">관심 게임개발장르</span>
                   <div className="flex gap-2 font-DungGeunMo">
-                    {profileData?.game_genre.length > 0 ? (
+                    {profileData?.game_genre.length > 0 &&
                       profileData?.game_genre.map((genre) => (
                         <span className="bg-white px-2 py-1 rounded text-sm text-gray-700">{genre}</span>
-                      ))
-                    ) : (
-                      <span className="text-gray-400">관심 게임개발장르를 선택하지 않았습니다.</span>
-                    )}
+                      ))}
                   </div>
                 </div>
                 <div className="grid grid-cols-[176px_1fr]">
                   <span className="font-bold">보유 기술스택</span>
                   <span className="w-full line-clamp-2">{profileData?.tech_stack}</span>
                 </div>
-                <div className="flex  items-start">
+                <div className={`${profileData?.portfolio[0].link === "" ? "hidden" : "flex"} items-start`}>
                   <span className="w-44 font-bold">포트폴리오 및 링크</span>
                   <div className="flex flex-col gap-1">
-                    {profileData?.portfolio[0].link !== "" ? (
+                    {profileData?.portfolio[0].link !== "" &&
                       profileData?.portfolio.map(({ link, type }: { link: string; type: string }, index: number) => (
                         <div key={index} className={`${link === "" ? "hidden" : "block"} flex items-center gap-1`}>
                           <img
@@ -192,10 +189,7 @@ export default function ProfileDetail({ user, profileData, isMyPage }: Props) {
                             </a>
                           </div>
                         </div>
-                      ))
-                    ) : (
-                      <span className="font-DungGeunMo text-gray-400">포트폴리오 및 링크를 입력하지 않았습니다.</span>
-                    )}
+                      ))}
                   </div>
                 </div>
               </div>
