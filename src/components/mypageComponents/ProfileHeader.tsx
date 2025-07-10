@@ -13,7 +13,7 @@ type NavigationType = "log" | "teambuilding" | "develop" | "setting";
 
 type TProfileProps = {
   user: TUserData;
-  isMyPage: boolean;
+  isMyPage: boolean | null;
   setNavigation: React.Dispatch<React.SetStateAction<NavigationType>>;
 };
 

@@ -9,7 +9,7 @@ import log from "../../../../assets/Log.svg";
 import { TTeamBuildProfileListItem } from "../../../../types";
 
 type Props = {
-  postDetail: TTeamBuildProfileListItem;
+  postDetail: TTeamBuildProfileListItem | undefined;
 };
 export default function ProfileUserGame({ postDetail }: Props) {
   const [page, setPage] = useState<number>(1);

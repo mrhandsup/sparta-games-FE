@@ -264,8 +264,15 @@ input:focus {
   @apply list-disc pl-6;
 }
 
+.ql-editor img {
+  @apply max-w-[850px] !important;
+}
 .ql-editor .ql-align-center {
   @apply text-center;
+}
+
+.ql-editor .ql-align-center img {
+  @apply mx-auto block;
 }
 
 .ql-editor .ql-align-right {
@@ -299,4 +306,8 @@ input:focus {
 }
 .ql-editor .ql-indent-8 {
   @apply pl-[432px];
+}
+
+.image-actions__overlay .image-actions__toolbar {
+  @apply hidden;
 }

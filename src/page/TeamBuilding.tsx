@@ -8,7 +8,6 @@ import SpartaTabNav from "../spartaDesignSystem/SpartaTabNav";
 
 import Hero from "../components/communityComponents/TeamBuilding/Hero";
 import RecommandCardList from "../components/communityComponents/TeamBuilding/RecommandCardList";
-import CardList from "../components/communityComponents/TeamBuilding/CardList";
 
 import { getTeamBuild, getTeamBuildProfile, getTeamBuildProfileSearch, getTeamBuildSearch } from "../api/teambuilding";
 import {
@@ -25,8 +24,6 @@ import pixelMeteor from "../assets/homeImage/pixelMeteor.svg";
 import balloon from "../assets/headerImage/balloon.svg";
 import RenderPosts from "../components/communityComponents/TeamBuilding/RenderPosts";
 
-type TabValue = "teamRecruit" | "profileRegister";
-
 type FilterCategory = "position" | "purpose" | "period";
 
 interface SelectedFilter {
@@ -34,27 +31,51 @@ interface SelectedFilter {
   value: string;
   label: string;
 }
-const TAB_LABELS: Record<TabValue, string> = {
+const TAB_LABELS = {
   teamRecruit: "팀원 모집",
   profileRegister: "프로필 등록",
 };
 
+type TabValue = keyof typeof TAB_LABELS; // 'teamRecruit' | 'profileRegister'
+
 export default function TeamBuilding() {
   const COUNT_PER_PAGE = 12;
 
-  const [selectedTab, setSelectedTab] = useState<TabValue>("teamRecruit");
   const [selectedFilters, setSelectedFilters] = useState<SelectedFilter[]>([]);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [searchKeywordProfile, setSearchKeywordProfile] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
-  const [, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const params = new URLSearchParams();
 
   const { userData } = userStore();
   const { currentPage, onChangePage } = usePageHandler();
 
   const openParam = isOpen ? "open" : "";
-  const params = new URLSearchParams();
+
+  const queryTab = searchParams.get("tab") as TabValue | null;
+  const DEFAULT_TAB: TabValue = "teamRecruit";
+
+  const [selectedTab, setSelectedTab] = useState<TabValue>(queryTab ?? DEFAULT_TAB);
+
+  useEffect(() => {
+    if (selectedTab === "profileRegister" || selectedTab === "teamRecruit") {
+      setSelectedFilters([]);
+      setSearchKeyword("");
+    }
+  }, [selectedTab]);
+
+  useEffect(() => {
+    if (queryTab && queryTab in TAB_LABELS) {
+      setSelectedTab(queryTab);
+    }
+  }, [queryTab]);
+
+  const handleTabChange = (tab: TabValue) => {
+    setSelectedTab(tab);
+    setSearchParams({ tab });
+  };
 
   selectedFilters.forEach((filter) => {
     if (filter.category === "position") params.append("roles", filter.value);
@@ -89,7 +110,7 @@ export default function TeamBuilding() {
   });
 
   const teamBuildPosts = data?.data.team_build_posts;
-  const recommandedPosts = data?.data.recommended_posts;
+  const recommendedPosts = data?.data.recommended_posts;
   const teamBuildProfilePosts = profileData?.data;
 
   const searchTeambuildPosts = searchTeambuildData?.data.search_teambuild_posts;
@@ -148,14 +169,6 @@ export default function TeamBuilding() {
     setSearchKeywordProfile(e.currentTarget.value);
   };
 
-  useEffect(() => {
-    if (selectedTab === "profileRegister" || selectedTab === "teamRecruit") {
-      setSelectedFilters([]);
-      setSearchKeyword("");
-      setSearchParams("");
-    }
-  }, [selectedTab]);
-
   return (
     <main>
       <div className="bg-gray-800 w-full">
@@ -163,22 +176,27 @@ export default function TeamBuilding() {
       </div>
       <div className="mx-auto mt-16 max-w-[1440px]">
         <div className="flex flex-col gap-8">
-          <p className="flex justify-between items-center text-5xl font-bold">
+          <div className="flex justify-between items-center text-5xl font-bold">
             <div className="flex items-center gap-3">
               <img src={pixelMeteor} />
               <p className="font-DungGeunMo text-[32px] font-[400] text-white">추천 게시글</p>
             </div>
-          </p>
-          <div className="grid grid-cols-2 gap-5">
-            {recommandedPosts?.map((post) => (
-              <RecommandCardList post={post} />
-            ))}
           </div>
+          {recommendedPosts?.length === 0 ? (
+            <div className="py-10 font-DungGeunMo text-[40px] text-center text-white">
+              아직 등록된 게시글이 없습니다!
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 gap-5">
+              {recommendedPosts?.map((post) => (
+                <RecommandCardList key={post.id} post={post} />
+              ))}
+            </div>
+          )}
         </div>
-
         {/* 팀원모집/ 프로필 선택, 검색 영역 */}
         <div className="flex items-center justify-between mx-auto mt-16 max-w-[1440px]">
-          <SpartaTabNav selectedTab={selectedTab} onTabChange={setSelectedTab} tabLabels={TAB_LABELS} />
+          <SpartaTabNav selectedTab={selectedTab} onTabChange={handleTabChange} tabLabels={TAB_LABELS} />
           <div className="flex gap-4 px-6 py-5 rounded-full bg-gray-800">
             <img src={balloon} alt="검색 아이콘" />
             <input
@@ -189,7 +207,6 @@ export default function TeamBuilding() {
             />
           </div>
         </div>
-
         {/* 필터링, 글 등록 영역 */}
         <SearchFilter
           userData={userData?.data}
@@ -201,8 +218,8 @@ export default function TeamBuilding() {
           isOpen={isOpen}
           setIsOpen={setIsOpen}
           updateSearchParams={updateSearchParams}
+          teamBuildProfilePosts={teamBuildProfilePosts}
         />
-
         {/* 포스트 리스트 영역 */}
         <div className="grid grid-cols-4 gap-5">
           {selectedTab === "teamRecruit" && (
@@ -210,6 +227,7 @@ export default function TeamBuilding() {
               posts={teamBuildPosts}
               searchPosts={searchTeambuildPosts}
               searchKeyword={searchKeyword}
+              userData={userData?.data}
               noPostsMessage="아직 등록된 팀빌딩 모집글이 없습니다."
               noSearchResultsMessage="검색 결과가 없습니다."
               cardType="teamBuild"
@@ -221,13 +239,13 @@ export default function TeamBuilding() {
               posts={teamBuildProfilePosts}
               searchPosts={searchTeambuildProfilePosts}
               searchKeyword={searchKeywordProfile}
+              userData={userData?.data}
               noPostsMessage="아직 등록된 팀빌딩 프로필이 없습니다."
               noSearchResultsMessage="검색 결과가 없습니다."
               cardType="profile"
             />
           )}
         </div>
-
         <div className="mt-10">
           <SpartaPagination
             dataTotalCount={data?.pagination.count}

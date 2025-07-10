@@ -4,7 +4,7 @@ import Setting from "../components/mypageComponents/Settting";
 import { userStore } from "../share/store/userStore";
 import ProfileHeader from "../components/mypageComponents/ProfileHeader";
 import MyGame from "../components/mypageComponents/MyGame";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { getUserData } from "../api/user";
 import { useQuery } from "@tanstack/react-query";
 import { TTeamBuildProfileUserResponse, TUserDataResponse } from "../types";
@@ -13,9 +13,11 @@ import { getTeamBuildProfileByUserId } from "../api/teambuilding";
 
 const MyPage = () => {
   const [navigation, setNavigation] = useState<"log" | "teambuilding" | "develop" | "setting">("log");
-  const { id } = useParams();
 
+  const { id } = useParams();
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+
   const tabParam = searchParams.get("tab");
 
   const navigationButtonConfig = {
@@ -24,8 +26,17 @@ const MyPage = () => {
   };
 
   const { userData } = userStore();
+  const isUserDataLoaded = !!userData?.data?.user_id;
+  const isMyPage = isUserDataLoaded ? id === userData.data.user_id.toString() : null;
 
-  const isMyPage = id === userData?.data.user_id.toString();
+  useEffect(() => {
+    if (!isUserDataLoaded) return;
+
+    if (!isMyPage) {
+      window.alert("잘못된 접근입니다.");
+      navigate("/", { replace: true });
+    }
+  }, [id, userData, navigate]);
 
   const { data, isError } = useQuery<TUserDataResponse>({
     queryKey: ["userProfile", id],

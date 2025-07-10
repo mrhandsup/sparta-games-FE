@@ -13,7 +13,6 @@ type Props = {
 const ReviewDetail = ({ review, convertDifficulty, onClose }: Props) => {
   const gameDifficulty: ("EASY" | "NORMAL" | "HARD")[] = ["EASY", "NORMAL", "HARD"];
 
-  console.log("review", review);
   return (
     <div className="fixed left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 border border-solid border-primary-500 rounded-xl bg-gray-800 outline-none">
       <div className="flex flex-col gap-4 p-6 w-[900px]">

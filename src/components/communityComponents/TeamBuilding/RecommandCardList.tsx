@@ -35,20 +35,22 @@ export default function RecommandCardList({ post }: Props) {
           },
         })
       }
-      className="flex gap-5 p-6 mx-auto w-full border border-solid border-gray-400 rounded-lg cursor-pointer"
+      className="flex gap-5 p-4 mx-auto w-full border border-solid border-gray-400 rounded-lg cursor-pointer"
     >
       <div className="relative flex-[0.4]">
-        <div className="absolute flex items-center justify-center w-16 h-5 rounded-tl-md rounded-br-md bg-white border border-solidborder-gray-400">
+        <div className="absolute flex items-center justify-center w-16 h-5 rounded-tl-md rounded-br-md bg-white border border-solid border-gray-400">
           <p className="font-DungGeunMo text-xs">{post.status_chip}</p>
         </div>
-        <img
-          src={
-            import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
-              ? import.meta.env.VITE_PROXY_HOST.replace(/\/$/, "") + post.thumbnail
-              : post.thumbnail
-          }
-          className="object-cover rounded-md h-full"
-        />
+        <div className="aspect-[1/0.8]">
+          <img
+            src={
+              import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
+                ? import.meta.env.VITE_PROXY_HOST.replace(/\/$/, "") + post.thumbnail
+                : post.thumbnail
+            }
+            className="w-full h-full object-cover rounded-md border border-solid border-gray-400"
+          />
+        </div>
       </div>
       <div className="flex flex-col flex-[0.6] gap-2">
         <div className="flex flex-wrap items-center gap-2 font-DungGeunMo">
@@ -68,14 +70,14 @@ export default function RecommandCardList({ post }: Props) {
           </div>
         </div>
 
-        <div className="w-full h-[68px] overflow-hidden">
-          <p className="mb-2 font-bold text-lg text-white">{post.title}</p>
-          <span
-            className="line-clamp-2 text-white leading-5 "
-            dangerouslySetInnerHTML={{ __html: post.content }}
-          ></span>
+        <div className="flex flex-col justify-center gap-[5px] h-full">
+          <p className="w-[390px] truncate font-bold text-lg text-white text-center">{post.title}</p>
+          <p
+            className="h= line-clamp-2 text-white leading-5"
+            dangerouslySetInnerHTML={{ __html: post.content_text }}
+          ></p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 mt-auto">
           <img
             src={
               post.author_data.image === null
@@ -88,7 +90,7 @@ export default function RecommandCardList({ post }: Props) {
           />
           <p className="font-bold text-white text-lg">{post.author_data.nickname}</p>
           <span className="text-gray-400 text-xl">|</span>
-          <span className="text-white text-lg">{post.deadline} 까지</span>
+          <span className="text-white text-lg tracking-wide">{post.deadline.split("-").join(".")} 까지</span>
         </div>
       </div>
     </div>

@@ -24,7 +24,7 @@ type MyPageProps = {
 type TeamBuildingProfileProps = {
   profileData?: TTeamBuildProfileListItem;
   user?: TUserData;
-  isMyPage?: false;
+  isMyPage?: boolean | null;
 };
 
 type Props = MyPageProps | TeamBuildingProfileProps;
@@ -60,12 +60,15 @@ export default function ProfileDetail({ user, profileData, isMyPage }: Props) {
       ? "온라인"
       : "온라인/ 오프라인 둘 다 가능";
 
-  console.log(profileData?.portfolio);
+  const carrer =
+    profileData?.career === "STUDENT" ? "대학생" : profileData?.career === "JOBSEEKER" ? "취준생" : "현직자";
+
+  console.log("asdasdsadsad", profileData);
   return (
     <>
       <div className="bg-gray-800 rounded-xl px-11 py-14 flex flex-col gap-4 w-full">
         {/* 내 팀빌팅 프로필이 없는 경우 */}
-        {!profileData && (
+        {!profileData && isMyPage && (
           <>
             <div className="flex items-start">
               <p className="font-DungGeunMo text-heading-32 text-white font-normal">{user?.nickname}의 커리어 프로필</p>
@@ -136,7 +139,7 @@ export default function ProfileDetail({ user, profileData, isMyPage }: Props) {
               <div className="flex flex-col gap-3">
                 <div className="flex items-center">
                   <span className="w-44 font-bold">현재 구직상태</span>
-                  <span>{profileData?.career}</span>
+                  <span>{carrer}</span>
                 </div>
                 <div className="flex items-center">
                   <span className="w-44 font-bold">구인 포지션</span>
@@ -163,7 +166,7 @@ export default function ProfileDetail({ user, profileData, isMyPage }: Props) {
                   <div className="flex flex-col gap-1">
                     {profileData?.portfolio[0].link !== "" ? (
                       profileData?.portfolio.map(({ link, type }: { link: string; type: string }, index: number) => (
-                        <div key={index} className="flex items-center gap-1">
+                        <div key={index} className={`${link === "" ? "hidden" : "block"} flex items-center gap-1`}>
                           <img
                             className="w-5 h-5"
                             src={
@@ -184,6 +187,7 @@ export default function ProfileDetail({ user, profileData, isMyPage }: Props) {
                               href={link.startsWith("http") ? link : `https://${link}`}
                               className="text-white underline "
                               target="_blank"
+                              rel="noopener noreferrer"
                             >
                               {link}
                             </a>
@@ -219,7 +223,13 @@ export default function ProfileDetail({ user, profileData, isMyPage }: Props) {
                   <div className="flex items-center">
                     <span className="w-44 font-bold">연락방법</span>
                     <a
-                      href="#"
+                      href={
+                        profileData?.contact.startsWith("http")
+                          ? profileData?.contact
+                          : `https://${profileData?.contact}`
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="w-[270px] whitespace-nowrap text-ellipsis overflow-hidden text-white underline"
                     >
                       {profileData?.contact}
@@ -242,6 +252,7 @@ export default function ProfileDetail({ user, profileData, isMyPage }: Props) {
           </>
         )}
       </div>
+
       <p
         onClick={() => onClickModalToggleHandlers[GAME_DELETE_CHECK_ID]()}
         className={`mt-5 text-right text-error-default underline cursor-pointer ${

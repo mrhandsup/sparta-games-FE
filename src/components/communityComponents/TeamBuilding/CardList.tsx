@@ -1,22 +1,24 @@
 import { useNavigate } from "react-router-dom";
 
-import { TTeamBuildPostListItem, TTeamBuildProfileListItem } from "../../../types";
+import { TTeamBuildPostListItem, TTeamBuildProfileListItem, TUserData } from "../../../types";
 
 import defaultProfile from "../../../assets/common/defaultProfile.svg";
 
 type TeamBuildCardProps = {
   postType: "teamBuild";
   post: TTeamBuildPostListItem;
+  userData?: TUserData;
 };
 
 type ProfileCardProps = {
   postType: "profile";
   post: TTeamBuildProfileListItem;
+  userData: TUserData | undefined;
 };
 
 type Props = TeamBuildCardProps | ProfileCardProps;
 
-export default function CardList({ postType, post }: Props) {
+export default function CardList({ postType, post, userData }: Props) {
   const navigate = useNavigate();
 
   const purpose =
@@ -37,22 +39,22 @@ export default function CardList({ postType, post }: Props) {
       ? "1년 이내"
       : "1년 이상";
 
+  const career = post?.career === "STUDENT" ? "대학생" : post?.career === "JOBSEEKER" ? "취준생" : "현직자";
+
+  const isMyProfile = post?.author_data.id === userData?.user_id;
+  const handleProfileNavigate = () => {
+    if (isMyProfile) {
+      navigate(`/my-page/${userData?.user_id}?tab=teambuilding`);
+    } else {
+      navigate(`/community/team-building/profile-detail/${post.author_data.id}`);
+    }
+  };
   return (
     <section
       key={post?.id}
       className=" relative h-[500px] flex flex-col border-gray-100 border-[0.7px] rounded-lg border-solid cursor-pointer"
       onClick={() => {
-        postType === "profile"
-          ? navigate(`/community/team-building/profile-detail/${post.author_data.id}`, {
-              state: {
-                post,
-              },
-            })
-          : navigate(`/community/team-building/team-recruit/${post.id}`, {
-              state: {
-                post,
-              },
-            });
+        postType === "profile" ? handleProfileNavigate() : navigate(`/community/team-building/team-recruit/${post.id}`);
       }}
     >
       <div className="h-[55%] relative">
@@ -63,7 +65,7 @@ export default function CardList({ postType, post }: Props) {
                 ? import.meta.env.VITE_PROXY_HOST.replace(/\/$/, "") + (post.thumbnail || "")
                 : post.thumbnail || ""
             }
-            className="h-full object-cover"
+            className="w-full h-full object-cover rounded-t-lg"
           />
         ) : (
           <img
@@ -85,7 +87,7 @@ export default function CardList({ postType, post }: Props) {
         )}
       </div>
 
-      <div className="flex-1 px-4 pt-6 bg-gray-800 text-white flex flex-col justify-between">
+      <div className="flex-1 px-4 pt-6 bg-gray-800 text-white flex flex-col justify-between rounded-b-lg">
         <div className="flex flex-col gap-2 overflow-hidden flex-1">
           {postType === "profile" ? (
             <div className="flex items-center gap-2 font-DungGeunMo text-black">
@@ -110,7 +112,7 @@ export default function CardList({ postType, post }: Props) {
               {duration}
             </div>
           </div>
-          <div className="my-4 text-heading-20 font-bold text-ellipsis overflow-hidden truncate">{post.title}</div>
+          <div className="mt-auto mb-auto text-heading-20 truncate text-center">{post.title}</div>
         </div>
         <div className="flex items-center gap-2 pb-4">
           <img
@@ -124,9 +126,17 @@ export default function CardList({ postType, post }: Props) {
             }
             alt={`profile-img-${post.id}`}
           />
-          <p className="font-bold text-white text-lg truncate max-w-[100px]">{post.author_data.nickname}</p>
+          <p
+            className={`font-bold text-white text-lg truncate ${
+              postType === "profile" ? "max-w-[140px]" : "max-w-[110px]"
+            }`}
+          >
+            {post.author_data.nickname}
+          </p>
           <span className="text-gray-400 text-xl">|</span>
-          <span className="text-white text-lg ">{postType === "profile" ? post.career : `${post.deadline} 까지`}</span>
+          <span className="text-white text-lg tracking-wide">
+            {postType === "profile" ? career : `${post.deadline.split("-").join(".")} 까지`}
+          </span>
         </div>
       </div>
     </section>
