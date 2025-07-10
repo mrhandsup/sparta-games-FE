@@ -90,10 +90,10 @@ const SpartaSelectableGroup = (props: TSpartaSelectableGroupProps) => {
         roundedClass = "rounded-bl-md";
     }
 
-    return `py-4 transition-colors border-2 flex justify-center ${roundedClass} ${
+    return `py-4 transition-colors border-[1px] flex justify-center ${roundedClass} ${
       isSelected
         ? "bg-gray-800 text-primary-500 border-primary-500"
-        : "bg-gray-800 text-gray-300 hover:bg-gray-700 border-gray-100 border-2"
+        : "bg-gray-800 text-gray-300 hover:bg-gray-700 border-gray-100 border-[1px]"
     }`;
   };
 

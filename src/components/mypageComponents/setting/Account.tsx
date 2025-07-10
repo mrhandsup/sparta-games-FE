@@ -108,7 +108,7 @@ const Account = () => {
           {userData?.data.login_type == "DEFAULT" && (
             <button
               disabled={userData?.data.login_type !== "DEFAULT"}
-              className={`border-gray-300 border-2 w-[20%] h-10 rounded-md text-gray-300 font-bold hover:bg-gray-700 transition-colors `}
+              className={`border-gray-300 border-[1px] w-[20%] h-10 rounded-md text-gray-300 font-bold hover:bg-gray-700 transition-colors `}
               onClick={() => onClickModalToggleHandlers[CHANGE_PASSWORD_MODAL_ID]()}
             >
               수정하기
