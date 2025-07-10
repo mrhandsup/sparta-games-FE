@@ -140,7 +140,7 @@ const Header = () => {
   return (
     <header className="max-w-[1440px] flex justify-between items-center py-5 w-full h-20">
       {/* 제목 */}
-      <section className="flex items-center gap-4">
+      <section className="flex items-center gap-2">
         <img src={logo} alt="스파르타 게임 아이콘" className="w-12 h-12 rounded-full" />
         <Link to={userData && userData.data.is_staff ? "/admin/dashboard" : "/"}>
           <h1>
@@ -149,7 +149,7 @@ const Header = () => {
         </Link>
       </section>
       {/* 메뉴 */}
-      <section className="flex items-center gap-10 text-heading-24 font-normal font-DungGeunMo text-white">
+      <section className="flex items-center gap-6 text-heading-24 font-normal font-DungGeunMo text-white">
         {/* 검색 */}
         {!userData?.data.is_staff && (
           <img
@@ -195,7 +195,7 @@ const Header = () => {
               </p>
             ) : (
               <p onClick={onClickModalToggleHandlers[LOGIN_MODAL_ID]} className="hover:text-primary-500">
-                로그인/회원가입
+                로그인
               </p>
             )}
             {/* 유저액션 팝오버 */}

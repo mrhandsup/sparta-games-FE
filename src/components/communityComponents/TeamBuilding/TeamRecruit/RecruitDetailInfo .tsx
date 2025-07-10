@@ -50,33 +50,35 @@ export default function RecruitDetailInfo({ postDetail }: Props) {
         alt="프로젝트 이미지"
       />
 
-      <p className="mt-10 font-DungGeunMo text-xl text-primary-400">프로젝트 정보</p>
+      <p className="mt-10 font-DungGeunMo text-[22px] text-primary-400">프로젝트 정보</p>
       <hr className="border-t border-gray-400 my-3" />
 
-      <div className="flex gap-5 mt-5">
-        <div className="flex flex-col gap-4  flex-1">
-          <div className="flex gap-10">
-            <p className="text-white">구하는 포지션</p>
-
+      <div className="flex gap-20 mt-5">
+        <div className="flex flex-col gap-5 flex-1">
+          {/* Row 1 */}
+          <div className="flex gap-8 items-start">
+            <p className="text-white w-[100px]">구하는 포지션</p>
             <div className="flex flex-wrap gap-2 max-w-[400px]">
               {postDetail?.want_roles.map((role) => (
-                <div className="px-2 py-1 rounded-[4px] bg-white ">
+                <div key={role} className="p-0.5 rounded-[4px] bg-white tracking-[-1px] font-DungGeunMo text-[18px]">
                   <p>{role}</p>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="flex gap-[74px]">
-            <p className="text-white">마감기한</p>
+          {/* Row 2 */}
+          <div className="flex gap-8 items-start">
+            <p className="text-white w-[100px]">마감기한</p>
             <span className="text-white">{postDetail?.deadline}</span>
           </div>
 
-          <div className="flex gap-[74px]">
-            <p className="text-white">연락방법</p>
+          {/* Row 3 */}
+          <div className="flex gap-8 items-start">
+            <p className="text-white w-[100px] whitespace-nowrap">연락방법</p>
             <a
               href={postDetail?.contact?.startsWith("http") ? postDetail.contact : `https://${postDetail?.contact}`}
-              className="relative inline-block w-[400px] truncate text-white underline"
+              className="relative inline-block w-[300px] truncate text-white underline"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -85,29 +87,32 @@ export default function RecruitDetailInfo({ postDetail }: Props) {
           </div>
         </div>
 
-        <div className="flex flex-col gap-4 flex-1">
-          <div className="flex gap-12">
-            <p className="text-white">프로젝트 목적</p>
+        <div className="flex flex-col justify-between gap-5 flex-1">
+          {/* Row 1 */}
+          <div className="flex gap-8 items-start">
+            <p className="text-white w-[100px]">프로젝트 목적</p>
             <span className="text-white font-bold">{purpose}</span>
           </div>
 
-          <div className="flex gap-12">
-            <p className="text-white">프로젝트 기간</p>
+          {/* Row 2 */}
+          <div className="flex gap-8 items-start">
+            <p className="text-white w-[100px]">프로젝트 기간</p>
             <span className="text-white font-bold">{duration}</span>
           </div>
 
-          <div className="flex gap-[80px]">
-            <p className="text-white">진행방식</p>
+          {/* Row 3 */}
+          <div className="flex gap-8 items-start">
+            <p className="text-white w-[100px]">진행방식</p>
             <span className="text-white font-bold">{meeting_type}</span>
           </div>
         </div>
       </div>
 
-      <p className="mt-10 font-DungGeunMo text-xl text-primary-400">상세내용</p>
+      <p className="mt-20 font-DungGeunMo text-[22px] text-primary-400">상세내용</p>
       <hr className="border-t border-gray-400 my-3" />
       {postDetail && (
         <p
-          className="ql-editor text-white leading-5"
+          className="ql-editor !ps-0 text-gray-100 leading-5"
           dangerouslySetInnerHTML={{ __html: sanitizedContent as string }}
         ></p>
       )}

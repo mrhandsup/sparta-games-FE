@@ -78,11 +78,6 @@ export default function RecruitForm() {
     noActionData.uploadSuccess,
   );
 
-  const onClickOpenConfirmModal = () => {
-    setNoActionModalData(noActionData.uploadSuccess);
-    onClickModalToggleHandlers[CONFIRM_MODAL_ID]();
-  };
-
   const createTeamBuildingMutation = useMutation({
     mutationFn: postTeamBuild,
     onSuccess: (data) => {
@@ -174,7 +169,7 @@ export default function RecruitForm() {
 
         <FormProvider {...methods}>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="w-[1180px] mx-auto">
+            <div className="w-[997px] mx-auto">
               <RecruitFormBasicInfo postDetail={postDetail} />
               <RecruitFormDescription />
               <SpartaButton

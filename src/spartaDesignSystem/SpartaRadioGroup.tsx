@@ -58,7 +58,7 @@ export default function SpartaRadioGroup<T extends FieldValues>({
                 onChange={field.onChange}
                 size="small"
                 colorType="grey"
-                width="w-[120px] h-[50px]"
+                width="w-[110px] h-[47px] border-[1px]"
               />
             )}
           />

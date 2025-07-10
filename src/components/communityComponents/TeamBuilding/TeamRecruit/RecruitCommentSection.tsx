@@ -24,7 +24,7 @@ type SortTab = "new" | "old";
 
 const SORT_LABELS: Record<SortTab, string> = {
   new: "최신순",
-  old: "오래된 순",
+  old: "오래된순",
 };
 
 export default function RecruitCommentSection({ userId, postDetail, onClickDeleteComment, openErrorModal }: Props) {
@@ -120,9 +120,9 @@ export default function RecruitCommentSection({ userId, postDetail, onClickDelet
       <div className="gap-3 mb-10 p-9 bg-gray-800 rounded-xl">
         <SpartaTabNav selectedTab={sortTab} onTabChange={setSortTab} tabLabels={SORT_LABELS} />
 
-        <div className="flex items-center gap-3 mt-10 mb-4 font-DungGeunMo text-white">
-          <p className="text-3xl">댓글</p>
-          <span className="text-3xl">{commentData?.length}</span>
+        <div className="flex items-center gap-2 mt-9 mb-4 font-DungGeunMo text-white">
+          <p className="text-2xl">댓글</p>
+          <span className="text-2xl">{commentData?.length}</span>
           {newComment.length > 1000 ? <p className=" text-error-default text-lg">*1000자 이내로 작성해주세요.</p> : ""}
         </div>
 
@@ -140,9 +140,9 @@ export default function RecruitCommentSection({ userId, postDetail, onClickDelet
               maxLength={1000}
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
-              placeholder="댓글을 입력해주세요"
-              className="p-2 w-full h-32 text-lg leading-tight text-white bg-transparent outline-none resize-none placeholder-gray-100"
-              style={{ minHeight: "8rem", overflowY: "hidden" }}
+              placeholder="댓글을 작성해주세요."
+              className="p-2 w-full text-lg leading-tight text-white bg-transparent outline-none resize-none placeholder-gray-100 placeholder:text-base"
+              style={{ minHeight: "6rem", overflowY: "hidden" }}
               onInput={(e) => {
                 const target = e.currentTarget;
                 target.style.height = "auto";
@@ -151,9 +151,9 @@ export default function RecruitCommentSection({ userId, postDetail, onClickDelet
             />
           </div>
           <p
-            className={`w-full mt-3 mb-4 ${
+            className={`w-full mt-2 mb-4 text-sm text-right ${
               newComment.length > 1000 ? "text-error-default" : "text-gray-100"
-            }  text-right`}
+            }`}
           >
             {newComment.length}/1000
           </p>
@@ -163,7 +163,7 @@ export default function RecruitCommentSection({ userId, postDetail, onClickDelet
               content="댓글 등록하기"
               type="filled"
               size="small"
-              customStyle="w-[180px]"
+              customStyle="w-[170px] !rounded-sm font-bold"
               disabled={
                 newComment.length > 1000 || newComment.trim().length === 0 || putTeamBuildCommentsMutation.isPending
               }

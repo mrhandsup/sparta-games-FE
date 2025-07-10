@@ -122,7 +122,7 @@ export default function PorfileRegisterFormBasic({ profileData, isEditMode }: Pr
             <div className="flex items-end gap-2">
               <div className="border border-solid border-gray-400 rounded-sm">
                 <img
-                  className=" w-28 h-28 object-cover"
+                  className=" w-28 h-28 object-cotain rounded-sm"
                   src={
                     profilePreview ||
                     (profileData?.profile_image === null
@@ -135,7 +135,7 @@ export default function PorfileRegisterFormBasic({ profileData, isEditMode }: Pr
                 />
               </div>
               <label htmlFor="profile-image" className="cursor-pointer">
-                <img className="w-7 h-7" src={profileImageUpload} alt="프로필 이미지 업로드" />
+                <img className="w-8 h-8" src={profileImageUpload} alt="프로필 이미지 업로드" />
               </label>
 
               <input
@@ -203,7 +203,8 @@ export default function PorfileRegisterFormBasic({ profileData, isEditMode }: Pr
 
           <SpartaChipSelect
             label="관심 게임개발장르"
-            subLabel={{ default: "*선택", error: "", pass: "" }}
+            warning={true}
+            subLabel={{ warning: "*선택", error: "", pass: "", default: "" }}
             options={GAME_CATEGORY}
             control={control}
             name="game_genre"
@@ -222,7 +223,8 @@ export default function PorfileRegisterFormBasic({ profileData, isEditMode }: Pr
                     render={({ field }) => (
                       <SpartaTextField
                         label={index === 0 ? "포트폴리오 및 기타 링크" : ""}
-                        subLabel={{ default: index === 0 ? "*선택" : "", error: "", pass: "" }}
+                        warning={true}
+                        subLabel={{ warning: index === 0 ? "*선택" : "", error: "", pass: "", default: "" }}
                         type="small"
                         inputProps={{
                           ...field,
