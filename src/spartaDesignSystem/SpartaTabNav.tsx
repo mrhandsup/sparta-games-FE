@@ -9,7 +9,7 @@ const SpartaTabNav = <T extends string>({ selectedTab, onTabChange, tabLabels }:
     <div className="flex gap-5 ">
       {(Object.keys(tabLabels) as T[]).map((tab) => (
         <div key={tab} onClick={() => onTabChange(tab)} className="text-xl cursor-pointer">
-          <p className={`${selectedTab === tab ? "text-primary-400" : "text-gray-100"} font-DungGeunMo`}>
+          <p className={`${selectedTab === tab ? "text-primary-400" : "text-gray-100"} font-DungGeunMo text-2xl`}>
             {tabLabels[tab]}
           </p>
         </div>

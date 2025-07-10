@@ -157,18 +157,18 @@ const SearchFilter = ({
   return (
     <>
       {selectedTab === "teamRecruit" ? (
-        <div className="flex items-center gap-2 mt-12 mb-4">
+        <div className="flex items-center gap-2 mt-10 mb-2">
           <SpartaCheckBox checked={isOpen} onClick={handleToggle} />
-          <p className="font-DungGeunMo text-body-22 text-white">모집중</p>
+          <p className="font-DungGeunMo text-lg text-white">모집중</p>
         </div>
       ) : (
-        <div className="mt-12 "></div>
+        <div className="mt-10 "></div>
       )}
       <div className="flex justify-between">
-        <div className="flex items-center gap-8 cursor-pointer">
+        <div className="flex items-center gap-7 cursor-pointer">
           <div onClick={() => onClickNavHandler("position")} className="flex gap-3 relative">
             <p
-              className={`font-DungGeunMo text-body-22 ${
+              className={`font-DungGeunMo text-lg ${
                 filterCliked === "position" || selectedFilters.some((item) => item.category === "position")
                   ? "text-primary-400"
                   : "text-white"
@@ -205,7 +205,7 @@ const SearchFilter = ({
           </div>
           <div onClick={() => onClickNavHandler("purpose")} className="flex gap-3 relative">
             <p
-              className={`font-DungGeunMo text-body-22 ${
+              className={`font-DungGeunMo text-lg ${
                 filterCliked === "purpose" || selectedFilters.some((item) => item.category === "purpose")
                   ? "text-primary-400"
                   : "text-white"
@@ -243,13 +243,13 @@ const SearchFilter = ({
 
           <div onClick={() => onClickNavHandler("period")} className="flex gap-3 relative">
             <p
-              className={`font-DungGeunMo text-body-22 ${
+              className={`font-DungGeunMo text-lg ${
                 filterCliked === "period" || selectedFilters.some((item) => item.category === "period")
                   ? "text-primary-400"
                   : "text-white"
               }`}
             >
-              {selectedTab === "teamRecruit" ? "참여 가능 기간" : "프로젝트 기간"}
+              {selectedTab === "teamRecruit" ? "프로젝트 기간" : "참여 가능 기간"}
             </p>
             <img
               src={
@@ -288,35 +288,36 @@ const SearchFilter = ({
             className="flex gap-2 cursor-pointer"
           >
             <img src={FilterReset} alt="필터 초기화" />
-            <p className="font-DungGeunMo text-body-22 text-white">초기화</p>
+            <p className="font-DungGeunMo text-[18px] text-white">초기화</p>
           </div>
           <SpartaButton
             content="글 등록하기"
             type="filled"
-            size="medium"
-            customStyle="w-[200px]"
+            size="small"
+            customStyle="w-[160px] rounded-sm font-bold"
             onClick={onClickCreateButton}
           />
         </div>
       </div>
 
       {/* 필터링 태그 UI */}
-      <div className="flex gap-3 mt-4 my-7">
+      <div className="flex gap-3 my-4">
         {selectedFilters.map((item) => (
-          <div className="flex">
-            <div key={`${item.category}-${item.value}`} className=" bg-white text-black px-3 py-1 rounded-md">
-              <span className="text-lg font-medium">{item.label}</span>
+          <div className="mb-2">
+            <div className="flex items-center gap-1">
+              <div key={`${item.category}-${item.value}`} className=" bg-white text-black px-1.5 rounded-[4px]">
+                <span className="text-base font-medium">{item.label}</span>
+              </div>
+              <button
+                className="text-lg text-white"
+                onClick={() => onClickDisplaySelectedTags(item.category, item.value, item.label)}
+              >
+                <img className="w-6 h-6" src={deleteIcon} alt="태그 제거" />
+              </button>
             </div>
-            <button
-              className="text-lg text-white"
-              onClick={() => onClickDisplaySelectedTags(item.category, item.value, item.label)}
-            >
-              <img className="w-8" src={deleteIcon} alt="태그 제거" />
-            </button>
           </div>
         ))}
       </div>
-
       {noActionModalData && (
         <SpartaReactionModal
           isOpen={modalToggles[NO_ACTION_MODAL_ID]}

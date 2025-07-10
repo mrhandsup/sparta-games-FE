@@ -174,12 +174,12 @@ export default function TeamBuilding() {
       <div className="bg-gray-800 w-full">
         <Hero />
       </div>
-      <div className="mx-auto mt-16 max-w-[1440px]">
+      <div className="mx-auto mt-16 max-w-[1180px]">
         <div className="flex flex-col gap-8">
-          <div className="flex justify-between items-center text-5xl font-bold">
-            <div className="flex items-center gap-3">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-4">
               <img src={pixelMeteor} />
-              <p className="font-DungGeunMo text-[32px] font-[400] text-white">추천 게시글</p>
+              <p className="font-DungGeunMo text-2xl font-[400] text-white">추천 게시글</p>
             </div>
           </div>
           {recommendedPosts?.length === 0 ? (
@@ -187,7 +187,7 @@ export default function TeamBuilding() {
               아직 등록된 게시글이 없습니다!
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-5">
+            <div className="grid grid-cols-2 gap-4 max-w-full overflow-hidden">
               {recommendedPosts?.map((post) => (
                 <RecommandCardList key={post.id} post={post} />
               ))}
@@ -197,13 +197,13 @@ export default function TeamBuilding() {
         {/* 팀원모집/ 프로필 선택, 검색 영역 */}
         <div className="flex items-center justify-between mx-auto mt-16 max-w-[1440px]">
           <SpartaTabNav selectedTab={selectedTab} onTabChange={handleTabChange} tabLabels={TAB_LABELS} />
-          <div className="flex gap-4 px-6 py-5 rounded-full bg-gray-800">
-            <img src={balloon} alt="검색 아이콘" />
+          <div className="flex items-center gap-3 w-[380px] px-4 py-3 rounded-full bg-gray-800">
+            <img src={balloon} alt="검색 아이콘" className="w-6 h-6" />
             <input
               onChange={selectedTab === "teamRecruit" ? handleSearchTeamBuild : handleSearchTeamBuildProfile}
               type="text"
               placeholder="제목 또는 글 내용 검색하기"
-              className="bg-gray-800 text-2xl text-white"
+              className="bg-gray-800 text-lg text-gray-100 placeholder-gray-100 font-DungGeunMo tracking-[-0.5px]"
             />
           </div>
         </div>

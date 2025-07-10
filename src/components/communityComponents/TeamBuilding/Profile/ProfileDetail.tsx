@@ -63,7 +63,6 @@ export default function ProfileDetail({ user, profileData, isMyPage }: Props) {
   const carrer =
     profileData?.career === "STUDENT" ? "대학생" : profileData?.career === "JOBSEEKER" ? "취준생" : "현직자";
 
-  console.log("asdasdsadsad", profileData);
   return (
     <>
       <div className="bg-gray-800 rounded-xl px-11 py-14 flex flex-col gap-4 w-full">
@@ -112,7 +111,7 @@ export default function ProfileDetail({ user, profileData, isMyPage }: Props) {
                   alt="프로필 이미지"
                 />
                 <p className="font-DungGeunMo text-heading-24 text-white font-normal">
-                  [{profileData?.author_data.nickname}]님의 팀빌딩 프로필
+                  {profileData?.author_data.nickname}님의 팀빌딩 프로필
                 </p>
               </div>
 

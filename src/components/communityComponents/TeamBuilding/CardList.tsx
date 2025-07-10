@@ -49,15 +49,16 @@ export default function CardList({ postType, post, userData }: Props) {
       navigate(`/community/team-building/profile-detail/${post.author_data.id}`);
     }
   };
+
   return (
     <section
       key={post?.id}
-      className=" relative h-[500px] flex flex-col border-gray-100 border-[0.7px] rounded-lg border-solid cursor-pointer"
+      className="relative flex flex-col h-[400px] border-gray-100 border-[0.7px] rounded-lg border-solid cursor-pointer"
       onClick={() => {
         postType === "profile" ? handleProfileNavigate() : navigate(`/community/team-building/team-recruit/${post.id}`);
       }}
     >
-      <div className="h-[55%] relative">
+      <div className="h-[60%] relative">
         {postType === "teamBuild" ? (
           <img
             src={
@@ -76,47 +77,53 @@ export default function CardList({ postType, post, userData }: Props) {
                 ? import.meta.env.VITE_PROXY_HOST.replace(/\/$/, "") + (post.profile_image || "")
                 : post.profile_image || ""
             }
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover rounded-t-lg"
           />
         )}
 
         {postType === "teamBuild" && (
-          <div className="absolute top-0 left-0 bg-white rounded-tl-md rounded-br-lg font-DungGeunMo text-black py-1.5 px-4 w-fit font-light border-gray-100 border-b-[0.7px] border-r-[0.95px] border-solid">
-            {post.status_chip}
+          <div className=" absolute top-0 left-0 w-[70px] py-0.5 rounded-tl-md rounded-br-lg bg-white text-black font-DungGeunMo text-center border-gray-100 border-b-[0.7px] border-r-[0.95px] border-solid">
+            <span className="text-[13px]">{post.status_chip}</span>
           </div>
         )}
       </div>
 
-      <div className="flex-1 px-4 pt-6 bg-gray-800 text-white flex flex-col justify-between rounded-b-lg">
+      <div className="flex-1 px-4 pt-4 bg-gray-800 text-white flex flex-col justify-between rounded-b-lg">
         <div className="flex flex-col gap-2 overflow-hidden flex-1">
           {postType === "profile" ? (
-            <div className="flex items-center gap-2 font-DungGeunMo text-black">
+            <div className="flex items-center gap-1 font-DungGeunMo text-black">
               <div className="px-2 py-1 rounded-[4px] bg-white">
-                <p>{post.my_role}</p>
+                <p className="tracking-tight">{post.my_role}</p>
               </div>
             </div>
           ) : (
-            <div className="flex flex-wrap items-start gap-2 max-h-[64px] font-DungGeunMo text-black">
-              {post.want_roles.map((role) => (
-                <div className="px-2 py-1 rounded-[4px] bg-white whitespace-nowrap">
-                  <p>{role}</p>
-                </div>
-              ))}
+            <div className="flex flex-wrap items-center gap-1 font-DungGeunMo">
+              {post.want_roles.map((role, idx) =>
+                idx < 3 ? (
+                  <div key={idx} className="px-[6px] rounded-[4px] bg-white whitespace-nowrap">
+                    <span className="text-[16px] leading-6 tracking-[-1.4px] text-gray-700">{role}</span>
+                  </div>
+                ) : idx === 3 && role.startsWith("+") ? (
+                  <span key={idx} className="text-[18px] text-white tracking-tight ">
+                    {role}
+                  </span>
+                ) : null,
+              )}
             </div>
           )}
-          <div className="flex gap-2">
-            <div className="flex items-center px-1.5 py-1.5 bg-gray-100 text-black font-bold rounded-md text-[13px]">
+          <div className="flex gap-1">
+            <div className="flex items-center p-1 bg-gray-100 text-black font-bold text-[12px] tracking-[-0.5px] rounded-[4px]">
               {purpose}
             </div>
-            <div className="flex items-center px-1.5 py-1.5 bg-gray-600 text-white font-bold rounded-md text-[13px]">
+            <div className="flex items-center p-1 bg-gray-600 text-white rounded-[4px] text-[11px] tracking-[-0.5px]">
               {duration}
             </div>
           </div>
-          <div className="mt-auto mb-auto text-heading-20 truncate text-center">{post.title}</div>
+          <div className="mt-auto mb-auto truncate text-[16px] font-semibold">{post.title}</div>
         </div>
-        <div className="flex items-center gap-2 pb-4">
+        <div className="flex items-center gap-2 pb-3">
           <img
-            className="w-8 h-8 border-2 border-solid border-gray-400 rounded-full"
+            className="w-6 h-6 border-2 border-solid border-gray-400 rounded-full"
             src={
               post.author_data.image === null
                 ? defaultProfile
@@ -126,17 +133,19 @@ export default function CardList({ postType, post, userData }: Props) {
             }
             alt={`profile-img-${post.id}`}
           />
-          <p
-            className={`font-bold text-white text-lg truncate ${
-              postType === "profile" ? "max-w-[140px]" : "max-w-[110px]"
-            }`}
-          >
-            {post.author_data.nickname}
-          </p>
-          <span className="text-gray-400 text-xl">|</span>
-          <span className="text-white text-lg tracking-wide">
-            {postType === "profile" ? career : `${post.deadline.split("-").join(".")} 까지`}
-          </span>
+          <div className="flex gap-1 items-center">
+            <p
+              className={`font-bold text-white text-[16px] truncate ${
+                postType === "profile" ? "max-w-[140px]" : "max-w-[80px]"
+              }`}
+            >
+              {post.author_data.nickname}
+            </p>
+            <span className="text-gray-400 text-xl">|</span>
+            <span className="text-white text-[15px] font-light tracking-wide">
+              {postType === "profile" ? career : `${post.deadline.split("-").join(".")} 까지`}
+            </span>
+          </div>
         </div>
       </div>
     </section>

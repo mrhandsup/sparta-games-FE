@@ -79,15 +79,26 @@ export default function RecruitForm() {
   );
 
   const onClickOpenConfirmModal = () => {
-    setNoActionModalData(noActionData.uploadConfirm);
+    setNoActionModalData(noActionData.uploadSuccess);
     onClickModalToggleHandlers[CONFIRM_MODAL_ID]();
   };
 
   const createTeamBuildingMutation = useMutation({
     mutationFn: postTeamBuild,
-    onSuccess: () => {
-      onClickModalToggleHandlers[CONFIRM_MODAL_ID]();
-      setNoActionModalData(noActionData.uploadSuccess);
+    onSuccess: (data) => {
+      setNoActionModalData({
+        title: "글 등록 완료",
+        content: "글 등록이 완료됐습니다!",
+        btn1: {
+          text: "확인했습니다.",
+          onClick: () => {
+            onClickModalToggleHandlers[SUCCESS_MODAL_ID]();
+            navigate(`/community/team-building/team-recruit/${data.data.post_id}`, { replace: true });
+          },
+        },
+        type: "primary",
+      });
+
       onClickModalToggleHandlers[SUCCESS_MODAL_ID]();
     },
     onError: (error: AxiosError) => {
@@ -101,9 +112,20 @@ export default function RecruitForm() {
 
   const updateTeamBuildingMutation = useMutation({
     mutationFn: ({ postId, formData }: { postId: number; formData: FormData }) => putTeamBuild(postId, formData),
-    onSuccess: () => {
-      onClickModalToggleHandlers[CONFIRM_MODAL_ID]();
-      setNoActionModalData(noActionData.uploadSuccess);
+    onSuccess: (data) => {
+      setNoActionModalData({
+        title: "글 수정 완료",
+        content: "글 수정이 완료됐습니다!",
+        btn1: {
+          text: "확인했습니다.",
+          onClick: () => {
+            onClickModalToggleHandlers[SUCCESS_MODAL_ID]();
+            navigate(`/community/team-building/team-recruit/${data.data.post_id}`, { replace: true });
+          },
+        },
+        type: "primary",
+      });
+
       onClickModalToggleHandlers[SUCCESS_MODAL_ID]();
     },
     onError: (error: AxiosError) => {
@@ -160,7 +182,9 @@ export default function RecruitForm() {
                 disabled={!formState.isValid}
                 content={!isEditMode ? "글 등록하기" : "글 수정하기"}
                 type="filled"
-                onClick={onClickOpenConfirmModal}
+                onClick={() => {
+                  if (!isPending) handleSubmit(onSubmit)();
+                }}
               />
             </div>
           </form>
@@ -196,11 +220,8 @@ export default function RecruitForm() {
             title={noActionModalData.title || ""}
             content={noActionModalData.content || ""}
             btn1={{
-              text: "확인했습니다",
-              onClick: () => {
-                onClickModalToggleHandlers[SUCCESS_MODAL_ID]();
-                navigate("/community/team-building");
-              },
+              text: noActionModalData?.btn1?.text || "확인",
+              onClick: noActionModalData?.btn1?.onClick || (() => onClickModalToggleHandlers[SUCCESS_MODAL_ID]()),
             }}
           />
         </>
