@@ -57,7 +57,7 @@ const Profile = () => {
           <p className="font-DungGeunMo text-heading-32 text-white font-[400]">프로필 수정</p>
         </div>
         <button
-          className={`border-gray-300 border-2 w-[20%] h-10 rounded-md text-gray-300 font-bold hover:bg-gray-700 transition-colors`}
+          className={`border-gray-300 border-[1px] w-[20%] h-10 rounded-md text-gray-300 font-bold hover:bg-gray-700 transition-colors`}
           onClick={() => onClickModalToggleHandlers[CHANGE_PROFILE_MODAL_ID]()}
         >
           수정하기
@@ -75,7 +75,7 @@ const Profile = () => {
         <div className="flex justify-between items-center">
           <label className="text-gray-100">추천받을 게임분야</label>
           <div className="w-[50%]">
-            <div className="flex gap-2 items-center p-2 border-gray-200 border-2 rounded-md border-solid bg-gray-700">
+            <div className="flex gap-2 items-center p-2 border-gray-200 border-[1px] rounded-md border-solid bg-gray-700">
               {userData?.data.game_category.map((category, idx) => (
                 <span key={idx} className="font-DungGeunMo text-body-20 bg-white px-2 py-1  rounded-md w-fit">
                   {category}

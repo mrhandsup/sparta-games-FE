@@ -64,19 +64,21 @@ export function SpartaRadioGroupItem({
     const colorDict = {
       primary: {
         filled: "bg-primary-500 hover:bg-primary-300",
-        standard: "border-2 border-primary-500 text-primary-500 hover:text-primary-300 hover:border-primary-300",
+        standard: "border-[1px] border-primary-500 text-primary-500 hover:text-primary-300 hover:border-primary-300",
       },
       alert: {
         filled: "bg-alert-default hover:bg-alert-hover",
-        standard: "border-2 border-alert-default text-alert-default hover:text-alert-hover hover:border-alert-hover",
+        standard:
+          "border-[1px] border-alert-default text-alert-default hover:text-alert-hover hover:border-alert-hover",
       },
       error: {
         filled: "bg-error-default hover:bg-error-hover",
-        standard: "border-2 border-error-default text-error-default hover:text-error-hover hover:border-error-hover",
+        standard:
+          "border-[1px] border-error-default text-error-default hover:text-error-hover hover:border-error-hover",
       },
       grey: {
         filled: "bg-gray-300 ",
-        standard: "border-2 border-gray-300 text-gray-300",
+        standard: "border-[1px] border-gray-300 text-gray-300",
       },
     };
 

@@ -123,7 +123,7 @@ export default function CardList({ postType, post, userData }: Props) {
         </div>
         <div className="flex items-center gap-2 pb-3">
           <img
-            className="w-6 h-6 border-2 border-solid border-gray-400 rounded-full"
+            className="w-6 h-6 border-[1px] border-solid border-gray-400 rounded-full"
             src={
               post.author_data.image === null
                 ? defaultProfile

@@ -195,7 +195,7 @@ export default function RecruitCommentSection({ userId, postDetail, onClickDelet
                                 ? import.meta.env.VITE_PROXY_HOST.replace(/\/$/, "") + comment?.author_data.image
                                 : comment?.author_data.image
                             }
-                            className="w-8 h-8 border-2 border-solid border-gray-400 rounded-full"
+                            className="w-8 h-8 border-[1px] border-solid border-gray-400 rounded-full"
                           />
                           <p className="font-bold text-white text-lg">{comment.author_data.nickname}</p>
                           {editingContent.length > 1000 && (
@@ -263,7 +263,7 @@ export default function RecruitCommentSection({ userId, postDetail, onClickDelet
                               ? import.meta.env.VITE_PROXY_HOST.replace(/\/$/, "") + comment?.author_data.image
                               : comment?.author_data.image
                           }
-                          className="w-8 h-8 border-2 border-solid border-gray-400 rounded-full"
+                          className="w-8 h-8 border-[1px] border-solid border-gray-400 rounded-full"
                         />
                         <p className="font-bold text-white text-lg">{comment?.author_data.nickname}</p>
                         <span className="text-gray-400 text-xl">|</span>
