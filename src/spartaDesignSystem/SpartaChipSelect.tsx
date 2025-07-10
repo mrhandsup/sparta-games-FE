@@ -92,14 +92,15 @@ const SpartaChipSelect = ({
     "& .MuiOutlinedInput-input": {
       padding: "12px 14px",
     },
-    backgroundColor: "#1A1A1A",
+    backgroundColor: "#171717",
   };
 
   const menuItemStyles = {
     "&.MuiMenuItem-root": {
       fontFamily: "DungGeunMo",
       color: "#E5E5E5",
-      backgroundColor: "#1A1A1A",
+      // backgroundColor: "#1A1A1A",
+      backgroundColor: "#171717",
       "&:hover": {
         backgroundColor: "#333333",
       },
@@ -190,7 +191,7 @@ const SpartaChipSelect = ({
               input={<OutlinedInput placeholder="선택해주세요" />}
               renderValue={(selected) => {
                 if (!selected || selected === "") {
-                  return <span style={{ color: "#737373" }}>{placeHolderText}</span>;
+                  return <span style={{ color: "#BFBFBF" }}>{placeHolderText}</span>;
                 }
                 if (multiple) {
                   const selectedArray = Array.isArray(selected) ? selected : [selected];

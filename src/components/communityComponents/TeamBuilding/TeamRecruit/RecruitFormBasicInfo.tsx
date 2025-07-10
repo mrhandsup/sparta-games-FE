@@ -81,7 +81,7 @@ export default function RecruitFormBasicInfo({ postDetail }: Props) {
       <p className="font-DungGeunMo text-xl text-primary-400">프로젝트 정보 작성</p>
 
       <div className="flex gap-10 mt-5">
-        <div className="flex flex-col gap-4 basis-1/2">
+        <div className="flex flex-col gap-5 basis-1/2">
           <SpartaChipSelect
             label="구하는 포지션"
             options={roleOptions}
@@ -141,54 +141,57 @@ export default function RecruitFormBasicInfo({ postDetail }: Props) {
             error={!!formState.errors.contact}
           />
 
-          <SpartaTextField
-            label="프로젝트 이미지"
-            type="small"
-            inputProps={{
-              placeholder: thumbnailPlaceHolder,
-              readOnly: true,
-            }}
-            btnContent={
-              <SpartaButton
-                content="업로드"
-                disabled={selectBasicImage}
-                type="filled"
-                colorType={
-                  (typeof imageWatch === "string" && imageWatch.trim().length > 0) ||
-                  (imageWatch && typeof imageWatch !== "string" && imageWatch.length > 0)
-                    ? "primary"
-                    : "grey"
-                }
-                size="medium"
-                btnType="button"
-                onClick={onClickUploadImage}
-              />
-            }
-          />
+          <div className="flex flex-col gap-2">
+            <SpartaTextField
+              label="프로젝트 이미지"
+              type="small"
+              inputProps={{
+                placeholder: thumbnailPlaceHolder,
+                readOnly: true,
+              }}
+              btnContent={
+                <SpartaButton
+                  content="업로드"
+                  disabled={selectBasicImage}
+                  type="filled"
+                  colorType={
+                    (typeof imageWatch === "string" && imageWatch.trim().length > 0) ||
+                    (imageWatch && typeof imageWatch !== "string" && imageWatch.length > 0)
+                      ? "primary"
+                      : "grey"
+                  }
+                  size="small"
+                  btnType="button"
+                  onClick={onClickUploadImage}
+                  customStyle="w-full rounded-sm"
+                />
+              }
+            />
 
-          <input
-            id="project-image"
-            type="file"
-            accept="image/*"
-            {...register("thumbnail", {
-              validate: (value) => {
-                if (selectBasicImage) return true;
+            <input
+              id="project-image"
+              type="file"
+              accept="image/*"
+              {...register("thumbnail", {
+                validate: (value) => {
+                  if (selectBasicImage) return true;
 
-                if (value && value.length > 0) return true;
+                  if (value && value.length > 0) return true;
 
-                return "프로젝트 이미지를 업로드해주세요.";
-              },
-            })}
-            className="hidden"
-          />
+                  return "프로젝트 이미지를 업로드해주세요.";
+                },
+              })}
+              className="hidden"
+            />
 
-          <div className="flex items-center gap-2 mt-3">
-            <SpartaCheckBox checked={isChecked} onClick={onClickSelectBasicImage} />
-            <p className=" text-md text-gray-50">스파르타 기본 이미지 사용</p>
+            <div className="flex items-center gap-2">
+              <SpartaCheckBox checked={isChecked} onClick={onClickSelectBasicImage} customStyle={"w-4 h-4"} />
+              <p className=" text-sm text-gray-50">스파르타 기본 이미지 사용</p>
+            </div>
           </div>
         </div>
 
-        <div className="flex flex-col gap-4 basis-1/2">
+        <div className="flex flex-col gap-5 basis-1/2">
           <SpartaRadioGroup
             groupsToShow={["purpose", "duration", "meeting_type"]}
             control={control}

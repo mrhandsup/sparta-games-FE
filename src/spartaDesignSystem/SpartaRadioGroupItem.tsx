@@ -88,7 +88,7 @@ export function SpartaRadioGroupItem({
         <label className="text-gray-50 text-title-16">{label}</label>
       </div>
 
-      <div className="flex gap-3">
+      <div className="flex gap-1.5">
         {options.map((option) => {
           const isSelected = value === option.value;
 
