@@ -174,7 +174,7 @@ export default function TeamBuilding() {
       <div className="bg-gray-800 w-full">
         <Hero />
       </div>
-      <div className="mx-auto mt-16 max-w-[1440px]">
+      <div className="mx-auto mt-16 max-w-[1180px]">
         <div className="flex flex-col gap-8">
           <div className="flex justify-between items-center text-5xl font-bold">
             <div className="flex items-center gap-3">
