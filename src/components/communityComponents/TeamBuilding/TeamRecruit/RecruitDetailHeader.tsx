@@ -42,7 +42,7 @@ export default function RecruitDetailHeader({
                 colorType="grey"
                 customStyle={`${
                   postDetail?.status_chip === "모집마감" ? "hidden" : "block"
-                }  px-6 !rounded-sm !border-[1px] !h-8 hover:text-alert-default hover:border-alert-default whitespace-nowrap`}
+                }  px-6 !rounded-sm !h-8 hover:text-alert-default hover:border-alert-default whitespace-nowrap`}
                 onClick={onClickCloseRecruit}
               />
 
@@ -50,7 +50,7 @@ export default function RecruitDetailHeader({
                 content="수정"
                 size="small"
                 colorType="grey"
-                customStyle="px-6 !rounded-sm !border-[1px] !h-8 hover:text-alert-default hover:border-alert-default whitespace-nowrap"
+                customStyle="px-6 !rounded-sm !h-8 hover:text-alert-default hover:border-alert-default whitespace-nowrap"
                 onClick={() =>
                   navigate(`/community/team-building/team-recruit/edit/${postDetail?.id}`, {
                     state: { postDetail, isEditMode: true },
@@ -61,7 +61,7 @@ export default function RecruitDetailHeader({
                 content="삭제"
                 size="small"
                 colorType="grey"
-                customStyle="px-6 !rounded-sm !border-[1px] !h-8 hover:text-error-default hover:border-error-default whitespace-nowrap"
+                customStyle="px-6 !rounded-sm  !h-8 hover:text-error-default hover:border-error-default whitespace-nowrap"
                 onClick={onClickDeleteRecruit}
               />
             </>

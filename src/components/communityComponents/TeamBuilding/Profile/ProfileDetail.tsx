@@ -65,7 +65,7 @@ export default function ProfileDetail({ user, profileData, isMyPage }: Props) {
 
   return (
     <>
-      <div className="bg-gray-800 rounded-xl px-11 py-14 flex flex-col gap-4 w-full">
+      <div className="bg-gray-800 rounded-xl px-11 py-14 flex flex-col gap-6 w-full">
         {/* 내 팀빌팅 프로필이 없는 경우 */}
         {!profileData && isMyPage && (
           <>
@@ -100,7 +100,7 @@ export default function ProfileDetail({ user, profileData, isMyPage }: Props) {
             <div className="flex">
               <div className="flex items-center gap-6 w-[90%]">
                 <img
-                  className="w-20 h-20 object-cover border border-solid border-gray-400 rounded-sm"
+                  className="w-20 h-20 object-cotain border border-solid border-gray-400 rounded-sm"
                   src={
                     profileData?.profile_image === null
                       ? defaultProfile
@@ -120,7 +120,7 @@ export default function ProfileDetail({ user, profileData, isMyPage }: Props) {
                   content="팀빌딩 프로필 수정"
                   size="small"
                   colorType="grey"
-                  customStyle="w-[170px]"
+                  customStyle="w-[170px] rounded-sm"
                   onClick={() => {
                     navigate(`/community/team-building/profile/edit/${user?.user_id}`, {
                       state: {
@@ -149,7 +149,7 @@ export default function ProfileDetail({ user, profileData, isMyPage }: Props) {
                   <div className="flex gap-2 font-DungGeunMo">
                     {profileData?.game_genre.length > 0 &&
                       profileData?.game_genre.map((genre) => (
-                        <span className="bg-white px-2 py-1 rounded text-sm text-gray-700">{genre}</span>
+                        <span className="bg-white px-2 rounded text-sm text-gray-700 font-semibold">{genre}</span>
                       ))}
                   </div>
                 </div>
@@ -233,11 +233,10 @@ export default function ProfileDetail({ user, profileData, isMyPage }: Props) {
 
               <hr className="border-t border-gray-700 my-3" />
 
-              {/* 가이드 문구 */}
               <div className="flex flex-col gap-4">
-                <h2 className="font-semibold text-lg">{profileData?.title}</h2>
+                <h2 className="font-semibold text-2xl">{profileData?.title}</h2>
                 <div
-                  className="text-sm flex flex-col gap-1"
+                  className="text-base flex flex-col gap-1"
                   dangerouslySetInnerHTML={{ __html: profileData?.content }}
                 ></div>
               </div>
@@ -248,11 +247,11 @@ export default function ProfileDetail({ user, profileData, isMyPage }: Props) {
 
       <p
         onClick={() => onClickModalToggleHandlers[GAME_DELETE_CHECK_ID]()}
-        className={`mt-5 text-right text-error-default underline cursor-pointer ${
+        className={`mt-4 text-right text-error-default underline cursor-pointer text-lg ${
           isMyPage && profileData ? "block" : "hidden"
         }`}
       >
-        팀빌딩 프로필 삭제하기
+        커리어 프로필 삭제하기
       </p>
 
       <SpartaModal

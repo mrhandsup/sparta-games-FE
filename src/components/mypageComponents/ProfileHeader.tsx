@@ -116,7 +116,7 @@ const ProfileHeader = (props: TProfileProps) => {
       <div className="flex items-center">
         {props.user.profile_image && props.user.profile_image !== "이미지 없음" ? (
           <img
-            className="bg-gray-700 w-[80px] h-[80px] rounded-md object-cover"
+            className="bg-gray-800 w-[80px] h-[80px] rounded-xl object-cover"
             src={
               import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
                 ? import.meta.env.VITE_PROXY_HOST + props.user.profile_image
@@ -124,16 +124,16 @@ const ProfileHeader = (props: TProfileProps) => {
             }
           />
         ) : (
-          <img src={defaultProfile} className="bg-gray-700 w-[80px] h-[80px] rounded-md p-3" />
+          <img src={defaultProfile} className="bg-gray-800 w-[75px] h-[80px] rounded-xl p-3" />
         )}
         <div className="flex flex-col gap-3 ml-3 w-full">
           <div className="flex items-center justify-between w-full">
             <div className="flex flex-col gap-2">
-              <p className="font-DungGeunMo text-heading-40 text-white font-[400]">{props.user.nickname}</p>
+              <p className="font-DungGeunMo text-[30px] text-white font-[400]">{props.user.nickname}</p>
               <p className="flex items-center gap-2">
-                <p className="font-DungGeunMo text-alert-hover text-heading-20 font-[400]">추천받을 게임분야</p>
+                <p className="font-DungGeunMo text-alert-hover text-[18px] font-[400]">추천받을 게임분야</p>
                 {props.user.game_category.map((category, index) => (
-                  <span key={index} className="font-DungGeunMo text-body-20 bg-white px-2 py-1  rounded-md w-fit">
+                  <span key={index} className="font-DungGeunMo text-body-20 bg-white px-2 py-1 rounded-md w-fit">
                     {category}
                   </span>
                 ))}

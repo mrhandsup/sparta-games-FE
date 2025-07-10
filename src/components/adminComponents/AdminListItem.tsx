@@ -55,7 +55,7 @@ const AdminListItem = ({ idx, item, onClickShowMore, isDetail }: Props) => {
   };
 
   return (
-    <div className="flex flex-col  border-gray-300 border-solid rounded-lg p-4 border-[1px]">
+    <div className="flex flex-col border-gray-300 border-solid rounded-lg p-4 border-[1px]">
       <div className="flex items-center justify-between w-full">
         <div className="text-white flex gap-3 items-center">
           <div className="flex items-center gap-3 flex-col">
