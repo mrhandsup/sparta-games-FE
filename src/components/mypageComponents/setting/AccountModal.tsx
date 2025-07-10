@@ -22,7 +22,7 @@ const AccountModal = ({ onSuccess }: Props) => {
   const signupForm = useForm<Partial<TUserInformationInputForm>>({
     mode: "onChange",
     defaultValues: {
-      email: userData?.email,
+      email: userData?.data.email,
       password: "",
       new_password: "",
       new_password_check: "",
@@ -53,8 +53,8 @@ const AccountModal = ({ onSuccess }: Props) => {
       message: "비밀번호는 최대 32자까지 가능합니다",
     },
     pattern: {
-      value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,32}$/,
-      message: "8~32자의 영문 대소문자, 숫자를 포함해야 합니다",
+      value: /^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=[\]{};':"\\|,.<>/?]).{8,32}$/,
+      message: "8~32자의 영문 소문자, 숫자, 특수문자를 포함해야 합니다",
     },
   };
 
@@ -90,10 +90,10 @@ const AccountModal = ({ onSuccess }: Props) => {
   });
 
   const onSubmit = async (data: Partial<TUserInformationInputForm>) => {
-    if (!userData?.user_pk) return;
+    if (!userData?.data.user_id) return;
 
     passwordMutation.mutate({
-      userId: userData.user_pk,
+      userId: userData.data.user_id,
       password: data.password!,
       new_password: data.new_password!,
       new_password_check: data.new_password_check!,
@@ -115,6 +115,7 @@ const AccountModal = ({ onSuccess }: Props) => {
         inputProps={{
           placeholder: "spartagames@sparta.com",
           disabled: true,
+          className: "!text-gray-400 ",
         }}
       />
       <SpartaTextField
@@ -124,14 +125,7 @@ const AccountModal = ({ onSuccess }: Props) => {
         inputProps={{
           placeholder: "*****",
         }}
-        subLabel={{
-          default: "비밀번호를 입력해주세요",
-          error: errors.password?.message as string,
-          pass: password && !errors.password ? "사용 가능한 비밀번호입니다" : "",
-        }}
         passwordType
-        error={!!errors.password}
-        pass={(password && !errors.password) as boolean}
       />
       <SpartaTextField
         label="새 비밀번호"

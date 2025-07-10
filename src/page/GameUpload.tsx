@@ -8,6 +8,8 @@ import { useState } from "react";
 
 const GameUpload = () => {
   const location = useLocation();
+
+  // EditCheck 컴포넌트에서 받은 state 값
   const previousGameData = (location.state as { gameData?: TGamePlayData })?.gameData;
   const isEditMode = location.state?.isEditMode;
 
@@ -37,7 +39,7 @@ const GameUpload = () => {
         <p>스파르타 게임즈에 게임을 등록합니다</p>
       </div>
       {isEditMode ? (
-        <div className="w-[1180px] mx-auto px-9 py-5 rounded-3xl bg-gray-800">
+        <div className="w-full px-9 py-5 rounded-3xl bg-gray-800">
           <span className="text-xl font-bold text-alert-default">
             현재 수정중입니다. 게임파일이 변경될 경우 자동으로 재검수 요청에 들어갑니다.
           </span>

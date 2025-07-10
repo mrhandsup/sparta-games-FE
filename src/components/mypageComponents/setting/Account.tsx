@@ -1,16 +1,21 @@
-import React, { useState } from "react";
-import log from "../../../assets/Log.svg";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useMutation } from "@tanstack/react-query";
+
+import { leaveUser } from "../../../api/user";
+
 import { userStore } from "../../../share/store/userStore";
+
 import useModalToggles from "../../../hook/useModalToggles";
 import SpartaModal from "../../../spartaDesignSystem/SpartaModal";
 import AccountModal from "./AccountModal";
 import SpartaReactionModal, { TSpartaReactionModalProps } from "../../../spartaDesignSystem/SpartaReactionModal";
-import { useForm } from "react-hook-form";
+
 import SpartaButton from "../../../spartaDesignSystem/SpartaButton";
 
-type TAccountProps = {};
+import log from "../../../assets/highlightIcon.svg";
 
-const Account = (props: TAccountProps) => {
+const Account = () => {
   //* Hooks
   const { userData, logout } = userStore();
 
@@ -23,6 +28,16 @@ const Account = (props: TAccountProps) => {
     NO_ACTION_MODAL_ID,
     WITHDRAWAL_MODAL_ID,
   ]);
+
+  const withDrawalMutation = useMutation({
+    mutationFn: async (user_id: number) => {
+      if (!userData?.data.user_id) throw new Error("사용자 ID가 없습니다.");
+      return leaveUser(user_id);
+    },
+    onSuccess: () => {
+      logout();
+    },
+  });
 
   // 단순 모달 데이터 config
   const noActionData: { [key: string]: Partial<TSpartaReactionModalProps> } = {
@@ -39,12 +54,13 @@ const Account = (props: TAccountProps) => {
     },
     successWithdrawal: {
       title: "회원 탈퇴 완료",
-      content: "회원 탈퇴가 완료되었습니다.",
+      content:
+        "회원 탈퇴를 성공적으로 완료하였습니다.<br/>그동안 많은 게임에 관심을 가져주시고, 의견을 남겨주셔서 정말 감사했습니다!</br> 언젠가 또 생각나시면 재미있는 게임을 즐기러 와주세요!",
       btn1: {
         text: "확인했습니다",
         onClick: () => {
           onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-          logout();
+          userData && withDrawalMutation.mutate(userData?.data.user_id);
         },
       },
       type: "alert",
@@ -79,7 +95,7 @@ const Account = (props: TAccountProps) => {
     DISCORD: "디스코드",
   };
 
-  const socialName = socialLoginConfig[userData?.login_type as keyof typeof socialLoginConfig];
+  const socialName = socialLoginConfig[userData?.data.login_type as keyof typeof socialLoginConfig];
 
   return (
     <div className="bg-gray-800 rounded-xl px-7 py-5 flex flex-col gap-4 justify-start items-start">
@@ -87,11 +103,11 @@ const Account = (props: TAccountProps) => {
         <div className="flex justify-between w-full">
           <div className="flex items-center gap-4 h-12">
             <img src={log} alt="로고" />
-            <p className="font-DungGeunMo text-heading-32 text-white font-[400]">계정정보 수정</p>
+            <p className="font-DungGeunMo text-heading-32 text-white font-[400]">계정정보 </p>
           </div>
-          {userData?.login_type == "DEFAULT" && (
+          {userData?.data.login_type == "DEFAULT" && (
             <button
-              disabled={userData?.login_type !== "DEFAULT"}
+              disabled={userData?.data.login_type !== "DEFAULT"}
               className={`border-gray-300 border-2 w-[20%] h-10 rounded-md text-gray-300 font-bold hover:bg-gray-700 transition-colors `}
               onClick={() => onClickModalToggleHandlers[CHANGE_PASSWORD_MODAL_ID]()}
             >
@@ -103,7 +119,7 @@ const Account = (props: TAccountProps) => {
           <div className="flex justify-between items-center">
             <label className="text-gray-100">아이디</label>
             <input
-              value={userData?.email}
+              value={userData?.data.email}
               disabled
               placeholder="spartagames@sparta.com"
               className={`py-3 px-4 bg-gray-700 border border-solid rounded-md w-[50%] text-gray-200`}
@@ -118,7 +134,7 @@ const Account = (props: TAccountProps) => {
               disabled
               type="password"
               placeholder={
-                userData?.login_type !== "DEFAULT" ? `${socialName} 간편로그인으로 이용하고 계십니다.` : "*****"
+                userData?.data.login_type !== "DEFAULT" ? `${socialName} 간편로그인으로 이용하고 계십니다.` : "*****"
               }
               className={`py-3 px-4 bg-gray-700 border border-solid rounded-md w-[50%] text-white border-gray-200`}
             />
@@ -136,7 +152,7 @@ const Account = (props: TAccountProps) => {
         isOpen={modalToggles[CHANGE_PASSWORD_MODAL_ID]}
         onClose={onClickModalToggleHandlers[CHANGE_PASSWORD_MODAL_ID]}
         closeOnClickOutside={false}
-        title="비밀번호 변경"
+        title="비밀번호 수정"
         type="primary"
       >
         <AccountModal onSuccess={onSuccessChangePassword} />
@@ -146,22 +162,26 @@ const Account = (props: TAccountProps) => {
         isOpen={modalToggles[WITHDRAWAL_MODAL_ID]}
         onClose={onClickModalToggleHandlers[WITHDRAWAL_MODAL_ID]}
         closeOnClickOutside={false}
-        title="정말 회원을 탈퇴하시겠습니까?"
+        title="회원탈퇴 진행 시 꼭 확인해주세요!"
         type="error"
       >
         <>
           <div className="text-white flex flex-col gap-2">
-            <li>회원탈퇴 시 연동되어있던 정보는 전부 삭제됩니다.</li>
-            <li>다만 만들었던 게임은 본 서비스에서 계속해서 사용될 수 있어요</li>
-            <li>원하지 않을 경우, 게임 삭제를 먼저 진행해주신 후 회원탈퇴를 진행해주시기 바랍니다. </li>
             <li>
-              탈퇴를 희망하신다면, <span className="text-error-default">‘안녕 스파르타게임즈!</span>’ 라고 입력해주시기
-              바랍니다.
+              회원탈퇴 시, 2일이 지난 후 회원정보가 삭제되며, 기간이 지나기 전까지의 업로드 게임 및 댓글은
+              정상노출됩니다.
+            </li>
+            <li>이후 삭제되지 않은 댓글 및 등록된 게임이 있는 경우 관리자 계정으로 데이터가 이관되어 관리됩니다.</li>
+            <li>미리 지우고 싶은 댓글 및 게임이 있다면 탈퇴 전 삭제해주시기 바랍니다!</li>
+            <li>2일이 지나기 전 계정복구를 원하신다면 관리자에게 문의해주세요!</li>
+            <li>
+              탈퇴를 희망하신다면 <span className="text-error-default">'스파르타 게임즈 회원탈퇴'</span>’ 문구를
+              입력해주세요.
             </li>
           </div>
           <input
             className="w-full h-10 rounded-md border border-solid bg-transparent border-gray-200 p-3 mt-[20px] mb-3 text-gray-200"
-            placeholder="안녕 스파르타게임즈!"
+            placeholder="스파르타 게임즈 회원탈퇴"
             {...register("withdrawal")}
           />
           <SpartaButton
@@ -170,7 +190,7 @@ const Account = (props: TAccountProps) => {
             colorType="error"
             content="회원탈퇴"
             onClick={handleDeleteClick}
-            disabled={withdrawal !== "안녕 스파르타게임즈!"}
+            disabled={withdrawal !== "스파르타 게임즈 회원탈퇴"}
           />
         </>
       </SpartaModal>

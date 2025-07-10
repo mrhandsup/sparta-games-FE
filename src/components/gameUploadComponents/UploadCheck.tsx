@@ -90,11 +90,14 @@ const UploadCheck = ({ gameUploadResponse, handleSubmit, onSubmitHandler, onClos
           value={inputValue}
           onChange={handleInputChange}
           placeholder="즐거운 게임세상 스파르타게임즈!"
+          disabled={isLoading}
         />
       </div>
 
       <div
-        className={`flex h-12 rounded-md ${isPhraseCorrect ? "bg-primary-500" : "bg-gray-400"} text-center font-bold`}
+        className={`flex h-12 rounded-md ${
+          isPhraseCorrect && !isLoading ? "bg-primary-500" : "bg-gray-400"
+        } text-center font-bold`}
       >
         {isPhraseCorrect && !isEditMode ? (
           <button
@@ -122,10 +125,12 @@ const UploadCheck = ({ gameUploadResponse, handleSubmit, onSubmitHandler, onClos
             <span className="text-white text-base text-center">
               검수 진행결과는 마이페이지 - 개발목록에서 확인 가능합니다.
               <br />
-              스파르타 게임즈를 이용해주셔서 감사합니다 :)
+              검수 승인이 완료되는 즉시 유저들에게 게임이 공개되며, 2일 이내로 소요될 예정입니다.
+              <br />
+              잠시만 기다려주세요🙂
             </span>
             <button
-              onClick={() => navigate(`/my-page/${userData?.user_pk}`)}
+              onClick={() => navigate(`/my-page/${userData?.data.user_id}`)}
               className="w-full py-3 bg-primary-500 font-extrabold"
             >
               확인

@@ -1,20 +1,22 @@
 type Props = {
   content: string;
-  width?: string;
+  customStyle?: string;
   disabled?: boolean;
   type?: "standard" | "filled";
   size?: "small" | "medium" | "large";
   colorType?: "primary" | "alert" | "error" | "grey";
+  btnType?: "submit" | "reset" | "button" | undefined;
   onClick?: () => void;
 };
 
 const SpartaButton = ({
   disabled = false,
-  width = "w-full",
+  customStyle = "w-full",
   content,
   type = "standard",
   size = "large",
   colorType = "primary",
+  btnType = "submit",
   onClick,
 }: Props) => {
   const getButtonStyles = (): string => {
@@ -32,7 +34,7 @@ const SpartaButton = ({
     };
 
     if (disabled) {
-      return `${baseStyles} ${disabledStyles[type]} ${sizeStyles[size]} ${width}`;
+      return `${baseStyles} ${disabledStyles[type]} ${sizeStyles[size]} ${customStyle}`;
     }
 
     const colorDict = {
@@ -54,11 +56,11 @@ const SpartaButton = ({
       },
     };
 
-    return `${baseStyles} ${colorDict[colorType][type]} ${sizeStyles[size]} ${width} hover:shadow-md`;
+    return `${baseStyles} ${colorDict[colorType][type]} ${sizeStyles[size]} ${customStyle} hover:shadow-md`;
   };
 
   return (
-    <button type="submit" disabled={disabled} onClick={onClick} className={getButtonStyles()}>
+    <button type={btnType} disabled={disabled} onClick={onClick} className={getButtonStyles()}>
       <span>{content}</span>
     </button>
   );

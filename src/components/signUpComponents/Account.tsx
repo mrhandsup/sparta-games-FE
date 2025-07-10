@@ -7,9 +7,9 @@ import { useFormContext } from "react-hook-form";
 import { postEmailVerify, postSendEmailCode } from "../../api/login";
 import { convertToMMSS } from "../../util/convertToMMSS";
 
-type Props = {};
+type Props = { isEmailVerifySuccess: boolean; setIsEmailVerifySuccess: React.Dispatch<React.SetStateAction<boolean>> };
 
-const Account = (props: Props) => {
+const Account = ({ isEmailVerifySuccess, setIsEmailVerifySuccess }: Props) => {
   const {
     register,
     watch,
@@ -18,7 +18,6 @@ const Account = (props: Props) => {
   } = useFormContext();
 
   const [isEmailVerifying, setIsEmailVerifying] = useState(false);
-  const [isVerifySuccess, setIsVerifySuccess] = useState(false);
   const [count, setCount] = useState(0);
 
   const email = watch("email");
@@ -39,30 +38,6 @@ const Account = (props: Props) => {
       title: "인증번호 전송 완료",
       content:
         "플레이어님을 환영합니다 :)</br>작성해주신 이메일로 인증번호가 전송되었습니다.</br>스팸메일함로 전송되는 경우도 있으니 꼭 메일함을 확인해주시고</br>올바른 인증번호를 입력해주세요. ",
-      btn1: {
-        text: "확인했습니다",
-        onClick: () => {
-          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-        },
-      },
-      type: "primary",
-    },
-
-    duplicateEmail: {
-      title: "인증번호 전송 실패",
-      content: "이미 가입한 이메일입니다.",
-      btn1: {
-        text: "확인했습니다",
-        onClick: () => {
-          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-        },
-      },
-      type: "error",
-    },
-
-    successVerify: {
-      title: "이메일 인증 완료",
-      content: "이메일 인증이 완료되었습니다.",
       btn1: {
         text: "확인했습니다",
         onClick: () => {
@@ -99,8 +74,8 @@ const Account = (props: Props) => {
       message: "비밀번호는 최대 32자까지 가능합니다",
     },
     pattern: {
-      value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,32}$/,
-      message: "8~32자의 영문 대소문자, 숫자를 포함해야 합니다",
+      value: /^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=[\]{};':"\\|,.<>/?]).{8,32}$/,
+      message: "8~32자의 영문 소문자, 숫자, 특수문자를 포함해야 합니다",
     },
   };
 
@@ -129,7 +104,17 @@ const Account = (props: Props) => {
       onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
     } else if (res?.status === 400) {
       setIsEmailVerifying(false);
-      setNoActionModalData(noActionData.duplicateEmail);
+      setNoActionModalData({
+        title: "인증번호 전송 실패",
+        content: res?.data.message,
+        btn1: {
+          text: "확인했습니다",
+          onClick: () => {
+            onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+          },
+        },
+        type: "error",
+      });
       onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
     }
   };
@@ -138,14 +123,24 @@ const Account = (props: Props) => {
     const res = await postEmailVerify(email, emailCode);
 
     if (res?.status === 200) {
-      setIsVerifySuccess(true);
+      setIsEmailVerifySuccess(true);
 
-      setNoActionModalData(noActionData.successVerify);
+      setNoActionModalData({
+        title: "이메일 인증 완료",
+        content: res.data.message,
+        btn1: {
+          text: "확인했습니다",
+          onClick: () => {
+            onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+          },
+        },
+        type: "primary",
+      });
       onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
     } else if (res?.status === 400) {
       setNoActionModalData({
         title: "이메일 인증 실패",
-        content: res.data.error,
+        content: res.data.message,
         btn1: {
           text: "확인했습니다",
           onClick: () => {
@@ -189,19 +184,19 @@ const Account = (props: Props) => {
           disabled: isEmailVerifying ? true : false,
         }}
         subLabel={{
-          default: isVerifySuccess ? "" : "이메일을 입력해주세요",
+          default: isEmailVerifySuccess ? "" : "이메일을 입력해주세요",
           error: errors.email?.message as string,
           pass: email && !errors.email ? "사용 가능한 이메일입니다" : "",
         }}
-        error={isVerifySuccess ? false : !!errors.email}
-        pass={isVerifySuccess ? false : email && !errors.email}
+        error={isEmailVerifySuccess ? false : !!errors.email}
+        pass={isEmailVerifySuccess ? false : email && !errors.email}
         btnContent={
           <SpartaButton
-            content={`${isVerifySuccess ? "확인완료" : isEmailVerifying ? "재전송" : "인증하기"}`}
-            type={isVerifySuccess ? "filled" : "standard"}
+            content={`${isEmailVerifySuccess ? "확인완료" : isEmailVerifying ? "재전송" : "인증하기"}`}
+            type={isEmailVerifySuccess ? "filled" : "standard"}
             size="medium"
             colorType="primary"
-            disabled={!email || !!errors.email || isVerifySuccess}
+            disabled={!email || !!errors.email || isEmailVerifySuccess}
             onClick={onClickSendEmailCode}
           />
         }
@@ -214,21 +209,21 @@ const Account = (props: Props) => {
           register={register("code", emailCodeValidation)}
           inputProps={{
             placeholder: convertToMMSS(count),
-            disabled: isVerifySuccess ? true : false,
+            disabled: isEmailVerifySuccess ? true : false,
           }}
           subLabel={{
-            default: isVerifySuccess ? "" : "이메일로 전송된 인증번호를 입력하세요",
+            default: isEmailVerifySuccess ? "" : "이메일로 전송된 인증번호를 입력하세요",
             error: errors.code?.message as string,
             pass: "",
           }}
           error={!!errors.code}
           btnContent={
             <SpartaButton
-              content={`${isVerifySuccess ? "확인완료" : "확인"}`}
+              content={`${isEmailVerifySuccess ? "확인완료" : "확인"}`}
               type="filled"
               size="medium"
               colorType="primary"
-              disabled={!!errors.code || isVerifySuccess || emailCode === ""}
+              disabled={!!errors.code || isEmailVerifySuccess || emailCode === ""}
               onClick={onClickEmailValidation}
             />
           }

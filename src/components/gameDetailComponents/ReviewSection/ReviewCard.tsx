@@ -1,24 +1,19 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-
 import DifficultyChip from "../../common/chipComponents/DifficultyChip";
 import StarRating from "../../common/StarRating";
-
 import SpartaReactionModal, { TSpartaReactionModalProps } from "../../../spartaDesignSystem/SpartaReactionModal";
 import useModalToggles from "../../../hook/useModalToggles";
-
 import { deleteGameReview, postReviewLike } from "../../../api/review";
-
 import { TReviewData } from "../../../types";
-
 import { formatDate } from "../../../util/validation";
-
-import reviewDetailImage from "../../../assets/gameDetail/ReviewDetail.svg";
+import reviewDetailImage from "../../../assets/common/arrow/triangleArrowRight.svg";
 import reviewEditImage from "../../../assets/gameDetail/ReviewEdit.svg";
 import reviewDeleteImage from "../../../assets/gameDetail/ReviewDelete.svg";
-import exampleProfile from "../../../assets/gameDetail/example_profile.png";
+import defaultProfile from "../../../assets/gameDetail/example_profile.png";
 import SpartaModal from "../../../spartaDesignSystem/SpartaModal";
 import ReviewDetail from "./ReviewDetail";
+import { userStore } from "../../../share/store/userStore";
 
 type reviewDataProps = {
   review: TReviewData | undefined;
@@ -31,6 +26,17 @@ const ReviewCard = ({ review, onClickModalToggleHandler, isMyReview = false, set
   const REVIEW_DETAIL_MODAL_ID = "reviewDetailModal";
   const NO_ACTION_MODAL_ID = "noActionModal";
   const { modalToggles, onClickModalToggleHandlers } = useModalToggles([REVIEW_DETAIL_MODAL_ID, NO_ACTION_MODAL_ID]);
+
+  const { userData } = userStore();
+
+  const profileImage =
+    userData?.data.user_id === review?.author_id &&
+    userData?.data.profile_image &&
+    userData.data.profile_image !== "이미지 없음"
+      ? import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
+        ? import.meta.env.VITE_PROXY_HOST + userData.data.profile_image
+        : userData.data.profile_image
+      : defaultProfile;
 
   const queryClient = useQueryClient();
 
@@ -128,39 +134,40 @@ const ReviewCard = ({ review, onClickModalToggleHandler, isMyReview = false, set
     }
   };
 
+  console.log("review", review);
   return (
     <>
       <div
-        className={`relative flex flex-col gap-2 p-4 bg-gray-800 text-white rounded-xl ${
+        className={`relative flex flex-col gap-2 p-6 bg-gray-800 text-white rounded-xl ${
           isMyReview ? "border border-solid border-primary-500" : ""
         }`}
       >
         <div className="flex gap-2">
-          <img src={exampleProfile} />
+          <img className="w-12 h-12 rounded-md object-cover" src={profileImage} />
           <div className="flex flex-col gap-[2px]">
             <div className="flex items-center justify-between">
               {isMyReview ? (
                 <>
-                  <p className="font-DungGeunMo text-lg text-primary-500">{review?.author_name}</p>
+                  <p className="font-DungGeunMo text-lg text-primary-500">{review?.author_data?.nickname}</p>
                   <img
                     onClick={onClickReviewEditHandler}
-                    className="absolute right-12 cursor-pointer"
+                    className="absolute top-6 right-12 cursor-pointer"
                     src={reviewEditImage}
                     alt="리뷰 수정"
                   />
                   <img
                     onClick={onClickReviewDeleteHandler}
-                    className="absolute right-4 cursor-pointer"
+                    className="absolute top-6 right-4 cursor-pointer"
                     src={reviewDeleteImage}
                     alt="리뷰 삭제"
                   />
                 </>
               ) : (
                 <>
-                  <p className="font-DungGeunMo text-lg">{review?.author_name}</p>
+                  <p className="font-DungGeunMo text-lg">{review?.author_data?.nickname}</p>
                   <img
                     onClick={onClickModalToggleHandlers[REVIEW_DETAIL_MODAL_ID]}
-                    className="absolute right-4 cursor-pointer"
+                    className="absolute top-4 right-4 cursor-pointer"
                     src={reviewDetailImage}
                     alt="리뷰 상세 보기"
                   />
@@ -173,7 +180,9 @@ const ReviewCard = ({ review, onClickModalToggleHandler, isMyReview = false, set
             </div>
           </div>
         </div>
-        <div className="w-full h-[72px] text-body-14 line-clamp-4 text-ellipsis">{review?.content}</div>
+        <div className="w-full h-28">
+          <p className="h-24 line-clamp-4 break-words text-base">{review?.content}</p>
+        </div>
         <div className="flex justify-between items-end">
           <p className="text-[12px] leading-4 text-gray-300">{formatDate(review?.created_at)}</p>
           <div className="flex items-center gap-1 text-[11px] font-bold">

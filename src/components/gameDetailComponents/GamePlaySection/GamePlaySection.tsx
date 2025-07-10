@@ -1,10 +1,13 @@
+import { useEffect, useRef } from "react";
+
 import GamePlay from "./GamePlay";
 import GameMedia from "./GameMedia";
 import GameDescription from "./GameDescription";
 
 import { TGamePlayData } from "../../../types";
-import { useEffect, useRef } from "react";
+
 import { getPlayLog, postPlayLog } from "../../../api/game";
+
 import usePlayTimeStore from "../../../share/store/playTimeStore";
 import { userStore } from "../../../share/store/userStore";
 
@@ -13,7 +16,7 @@ type Props = {
 };
 
 const GamePlaySection = ({ gamePlayData }: Props) => {
-  const { id, title, maker_name, gamepath, youtube_url, screenshot, content, maker } = gamePlayData || {};
+  const { id, title, gamepath, youtube_url, screenshot, content, maker_data } = gamePlayData || {};
 
   const { userData } = userStore();
   const { playTimePk, setPlayTimePk } = usePlayTimeStore();
@@ -46,7 +49,13 @@ const GamePlaySection = ({ gamePlayData }: Props) => {
   return (
     <section className="mt-6">
       <div className="flex gap-5">
-        <GamePlay gamePk={id} title={title} makerName={maker_name} gamePath={gamepath} makerPk={maker} />
+        <GamePlay
+          gameId={id}
+          title={title}
+          makerName={maker_data?.nickname}
+          gamePath={gamepath}
+          makerId={maker_data?.id}
+        />
         <GameMedia youtubeUrl={youtube_url} screenShot={screenshot} />
       </div>
       <GameDescription title={title} content={content} screenshot={screenshot} />

@@ -10,12 +10,36 @@ import SpartaButton from "../spartaDesignSystem/SpartaButton";
 import { useMutation } from "@tanstack/react-query";
 import { signUp } from "../api/login";
 import { userStore } from "../share/store/userStore";
+import useModalToggles from "../hook/useModalToggles";
+import SpartaReactionModal, { TSpartaReactionModalProps } from "../spartaDesignSystem/SpartaReactionModal";
+import { useState } from "react";
+import { AxiosError } from "axios";
 
 const SignUp = () => {
+  const [isEmailVerifySuccess, setIsEmailVerifySuccess] = useState(false);
+
   const [searchParams] = useSearchParams();
   const email = searchParams.get("email");
   const login_type = searchParams.get("login_type");
 
+  const NO_ACTION_MODAL_ID = "noActionModal";
+  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([NO_ACTION_MODAL_ID]);
+  const [noActionModalData, setNoActionModalData] = useState<Partial<TSpartaReactionModalProps>>({});
+
+  const noActionData: { [key: string]: Partial<TSpartaReactionModalProps> } = {
+    completeSignUp: {
+      title: "회원가입을 환영합니다!",
+      content:
+        "다양한 개발자들의 게임을 즐길 수 있는<br/> 스파르타 게임즈에 오신것을 환영합니다!<br/> 댓글쓰기 및 게임업로드 기능이 활성화 되었습니다. <br/>다양한 게임을 즐겨보세요!",
+      btn1: {
+        text: "확인했습니다",
+        onClick: () => {
+          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+          navigate("/");
+        },
+      },
+    },
+  };
   const signupForm = useForm<Partial<TUserInformationInputForm>>({
     mode: "onChange",
     defaultValues: {
@@ -24,12 +48,13 @@ const SignUp = () => {
       password: "",
       password_check: "",
       nickname: "",
-      user_tech: "",
       game_category: "",
       code: "",
       is_maker: false,
     },
   });
+
+  const game_category = signupForm.watch("game_category");
 
   const navigate = useNavigate();
   const { setUser } = userStore();
@@ -37,13 +62,30 @@ const SignUp = () => {
   const signUpMutation = useMutation({
     mutationFn: (data: Partial<TUserInformationInputForm>) => signUp(data),
     onSuccess: async (data) => {
-      sessionStorage.setItem("accessToken", data?.data.access);
-      sessionStorage.setItem("refreshToken", data?.data.refresh);
-      setUser(data?.data.access);
-      navigate("/");
+      sessionStorage.setItem("accessToken", data?.data.data.access);
+      sessionStorage.setItem("refreshToken", data?.data.data.refresh);
+      setUser(data?.data.data.access);
+
+      setNoActionModalData(noActionData.completeSignUp);
+      onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
     },
-    onError: () => {
-      console.log("회원가입 실패");
+    onError: (error: AxiosError) => {
+      if (error.response && error.response?.status === 400) {
+        setNoActionModalData({
+          title: "로그인 실패",
+          content: (error.response?.data as { message?: string })?.message,
+          btn1: {
+            text: "확인했습니다.",
+            onClick: () => {
+              onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+            },
+          },
+          type: "error",
+        });
+        onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+
+        return;
+      }
     },
   });
 
@@ -79,7 +121,7 @@ const SignUp = () => {
                 </p>
               </>
             ) : (
-              <Account />
+              <Account isEmailVerifySuccess={isEmailVerifySuccess} setIsEmailVerifySuccess={setIsEmailVerifySuccess} />
             )}
             <Profile />
             <SpartaButton
@@ -87,12 +129,32 @@ const SignUp = () => {
               size="medium"
               colorType="primary"
               onClick={signupForm.handleSubmit(onSubmit)}
-              disabled={!signupForm.formState.isValid}
+              disabled={
+                !signupForm.formState.isValid ||
+                (!email && !isEmailVerifySuccess) ||
+                !game_category ||
+                game_category.length === 0
+              }
               content="회원가입"
             />
           </FormProvider>
         </div>
       </div>
+
+      {noActionModalData && (
+        <SpartaReactionModal
+          isOpen={modalToggles[NO_ACTION_MODAL_ID]}
+          onClose={onClickModalToggleHandlers[NO_ACTION_MODAL_ID]}
+          modalId={NO_ACTION_MODAL_ID}
+          title={noActionModalData.title || ""}
+          content={noActionModalData.content || ""}
+          btn1={{
+            text: noActionModalData?.btn1?.text || "",
+            onClick: noActionModalData?.btn1?.onClick || (() => {}),
+          }}
+          type={noActionModalData.type}
+        />
+      )}
     </div>
   );
 };

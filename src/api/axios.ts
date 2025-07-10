@@ -11,11 +11,12 @@ export const retrieveAccessToken = async () => {
     const response = await sparta_games.post("/accounts/api/refresh/", {
       refresh: refreshToken,
     });
-    sessionStorage.setItem("accessToken", response.data.access);
-    sessionStorage.setItem("refreshToken", response.data.refresh);
+
+    sessionStorage.setItem("accessToken", response.data.data.access);
+    sessionStorage.setItem("refreshToken", response.data.data.refresh);
     return {
-      accessToken: response.data.access,
-      refreshToken: response.data.refresh,
+      accessToken: response.data.data.access,
+      refreshToken: response.data.data.refresh,
     };
   } catch (error) {
     sessionStorage.removeItem("refreshToken");

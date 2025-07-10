@@ -9,7 +9,7 @@ import { userStore } from "../share/store/userStore";
 import useModalToggles from "../hook/useModalToggles";
 import UserStatusPopover from "./headerComponents/UserStatusPopover";
 import SpartaModal from "../spartaDesignSystem/SpartaModal";
-import Login from "./HomeComponents/Login";
+import Login from "./homeComponents/Login";
 import SpartaReactionModal from "../spartaDesignSystem/SpartaReactionModal";
 import type { TSpartaReactionModalProps } from "../spartaDesignSystem/SpartaReactionModal";
 import { useState } from "react";
@@ -47,17 +47,17 @@ const Header = () => {
       },
       type: "alert",
     },
-    community: {
-      title: "개발예정 기능",
-      content: "커뮤니티 기능은 개발 예정입니다.",
-      btn1: {
-        text: "확인했습니다",
-        onClick: () => {
-          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-        },
-      },
-      type: "error",
-    },
+    // community: {
+    //   title: "개발예정 기능",
+    //   content: "커뮤니티 기능은 개발 예정입니다.",
+    //   btn1: {
+    //     text: "확인했습니다",
+    //     onClick: () => {
+    //       onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+    //     },
+    //   },
+    //   type: "error",
+    // },
     logout: {
       title: "로그아웃",
       content: "정말 로그아웃 하시겠습니까?",
@@ -100,8 +100,9 @@ const Header = () => {
     {
       text: "커뮤니티",
       onClick: () => {
-        setNoActionModalData(noActionData.community);
-        onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+        navigate("/community/team-building");
+        // setNoActionModalData(noActionData.community);
+        // onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
       },
     },
   ];
@@ -137,11 +138,11 @@ const Header = () => {
   ];
 
   return (
-    <header className="max-w-[1440px] flex justify-between items-center py-5 px-[30px] w-full h-20">
+    <header className="max-w-[1440px] flex justify-between items-center py-5 w-full h-20">
       {/* 제목 */}
       <section className="flex items-center gap-4">
         <img src={logo} alt="스파르타 게임 아이콘" className="w-12 h-12 rounded-full" />
-        <Link to={userData && userData.is_staff ? "/admin/dashboard" : "/"}>
+        <Link to={userData && userData.data.is_staff ? "/admin/dashboard" : "/"}>
           <h1>
             <img src={titleImage} />
           </h1>
@@ -150,7 +151,7 @@ const Header = () => {
       {/* 메뉴 */}
       <section className="flex items-center gap-10 text-heading-24 font-normal font-DungGeunMo text-white">
         {/* 검색 */}
-        {!userData?.is_staff && (
+        {!userData?.data.is_staff && (
           <img
             src={balloon}
             alt="검색 아이콘"
@@ -159,7 +160,7 @@ const Header = () => {
           />
         )}
         {/* 카테고리 */}
-        {!userData?.is_staff && (
+        {!userData?.data.is_staff && (
           <div className="relative">
             <p onClick={onClickModalToggleHandlers.category} className="cursor-pointer hover:text-primary-500">
               카테고리
@@ -173,7 +174,7 @@ const Header = () => {
           </div>
         )}
         {/* 일반 유저 , 어드민 메뉴 */}
-        {userData && userData.is_staff
+        {userData && userData.data.is_staff
           ? adminUserMenu.map((menu, index) => (
               <div key={index} onClick={menu.onClick} className="cursor-pointer hover:text-primary-500">
                 <p>{menu.text}</p>
@@ -186,11 +187,11 @@ const Header = () => {
             ))}
 
         {/* 유저 액션 */}
-        {!userData?.is_staff && (
+        {!userData?.data.is_staff && (
           <div className="cursor-pointer relative" ref={modalRefs.userStatus}>
-            {userData ? (
-              <p onClick={onClickModalToggleHandlers.userStatus} className="hover:text-primary-500">
-                마이페이지
+            {userData?.data ? (
+              <p onClick={onClickModalToggleHandlers.userStatus} className="text-primary-500">
+                {userData.data.nickname}
               </p>
             ) : (
               <p onClick={onClickModalToggleHandlers[LOGIN_MODAL_ID]} className="hover:text-primary-500">
@@ -201,7 +202,7 @@ const Header = () => {
             {modalToggles.userStatus && (
               <UserStatusPopover
                 isLogin={!!userData}
-                userId={userData?.user_pk}
+                userId={userData?.data.user_id}
                 modalRef={modalRefs.userStatus}
                 onClickModalToggleHandler={onClickModalToggleHandlers.userStatus}
                 loginHandler={() => onClickModalToggleHandlers[LOGIN_MODAL_ID]()}
@@ -218,6 +219,7 @@ const Header = () => {
       <SpartaModal
         isOpen={modalToggles[LOGIN_MODAL_ID]}
         onClose={onClickModalToggleHandlers[LOGIN_MODAL_ID]}
+        closeOnClickOutside={false}
         modalId={LOGIN_MODAL_ID}
       >
         <Login onClose={onClickModalToggleHandlers[LOGIN_MODAL_ID]} />

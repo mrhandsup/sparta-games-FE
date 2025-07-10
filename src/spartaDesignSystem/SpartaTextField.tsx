@@ -48,6 +48,14 @@ type Props = {
    * 버튼 컨텐츠
    */
   btnContent?: React.ReactNode;
+  /**
+   * 인풋 우측 아이콘
+   */
+  rightIcon?: string;
+  /**
+   * 아이콘 클릭시 이벤트
+   */
+  onRightIconClick?: () => void;
 };
 
 const SpartaTextField = ({
@@ -61,6 +69,8 @@ const SpartaTextField = ({
   onClear,
   passwordType,
   btnContent,
+  rightIcon,
+  onRightIconClick,
 }: Props) => {
   const subLabelBranch = () => {
     if (error && !pass) {
@@ -78,7 +88,7 @@ const SpartaTextField = ({
     } else if (!error && pass) {
       return "text-primary-500";
     } else {
-      return "text-gray-500";
+      return "text-gray-100";
     }
   };
 
@@ -88,17 +98,20 @@ const SpartaTextField = ({
     } else if (!error && pass) {
       return "border-primary-500";
     } else {
-      return "border-gray-500";
+      return "border-gray-400";
     }
   };
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
-
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex gap-2 items-baseline">
+      <div
+        className={`flex gap-2 items-baseline ${
+          subLabel?.error && subLabel?.error?.length > 23 ? "flex-col" : undefined
+        }`}
+      >
         <label
-          className={`text-gray-100 ${
+          className={`text-gray-50 ${
             type === "large" ? "text-heading-24" : type === "medium" ? "text-title-18" : "text-title-16"
           }`}
         >
@@ -115,7 +128,7 @@ const SpartaTextField = ({
             {...inputProps}
             className={`w-full py-3 px-4 border border-solid ${inputBorderBranch()} rounded-md ${
               type === "small" ? "text-body-16" : "text-body-18"
-            } text-gray-200 bg-transparent ${onClear ? "pr-10" : ""}`}
+            } text-gray-50 bg-transparent ${onClear ? "pr-10" : ""} ${inputProps?.className || ""}`}
             type={!passwordType || showPassword ? "text" : "password"}
           />
           {!inputProps.disabled && onClear && !passwordType && (
@@ -140,8 +153,18 @@ const SpartaTextField = ({
               )}{" "}
             </button>
           )}
+
+          {rightIcon && (
+            <button
+              type="button"
+              onClick={onRightIconClick}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-200 transition-colors"
+            >
+              <img src={rightIcon} alt="날짜 선택" className="w-5 h-5" />
+            </button>
+          )}
         </div>
-        {btnContent && <div className="w-[20%]">{btnContent}</div>}
+        {btnContent && <div className="w-[20%] ">{btnContent}</div>}
       </div>
     </div>
   );

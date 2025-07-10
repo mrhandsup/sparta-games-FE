@@ -83,31 +83,38 @@ export const approveRegisterGame = async (id: number) => {
  */
 export const downloadZip = async (id: number) => {
   try {
-    const res = await sparta_games_auth.post(`/directs/api/list/${id}/dzip/`, {
-      responseType: "blob",
-    });
+    const response = await sparta_games_auth.post(
+      `/directs/api/list/${id}/dzip/`,
+      {}, // POST body는 비어있음
+      {
+        responseType: "blob", // 바이너리 데이터로 받기 위해 필요
+      },
+    );
 
-    // Blob 객체 생성
-    const blob = new Blob([res.data], { type: "application/zip" });
+    // Content-Disposition 헤더에서 파일명 추출
+    const contentDisposition = response.headers["content-disposition"];
+    const filename = contentDisposition
+      ? decodeURIComponent(contentDisposition.split("filename=")[1].replace(/"/g, ""))
+      : "download.zip";
 
-    // Blob URL 생성
+    // Blob 객체 생성 및 다운로드 URL 생성
+    const blob = new Blob([response.data], { type: "application/zip" });
     const url = window.URL.createObjectURL(blob);
 
-    // 임시 링크 생성 및 클릭 이벤트 트리거
+    // 다운로드 링크 생성 및 클릭
     const link = document.createElement("a");
     link.href = url;
-    // Content-Disposition 헤더에서 파일명을 가져오거나, 기본 파일명 사용
-    link.download = "download.zip"; // 또는 서버에서 전달받은 파일명 사용
+    link.download = filename;
     document.body.appendChild(link);
     link.click();
 
     // cleanup
-    document.body.removeChild(link);
     window.URL.revokeObjectURL(url);
+    document.body.removeChild(link);
 
-    return res.data;
+    return true;
   } catch (error) {
-    console.error(error);
+    console.error("ZIP 다운로드 실패:", error);
     throw error;
   }
 };

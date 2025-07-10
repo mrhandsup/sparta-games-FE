@@ -117,8 +117,8 @@ const ResetPassword = (props: Props) => {
       message: "비밀번호는 최대 32자까지 가능합니다",
     },
     pattern: {
-      value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,32}$/,
-      message: "8~32자의 영문 대소문자, 숫자를 포함해야 합니다",
+      value: /^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=[\]{};':"\\|,.<>/?]).{8,32}$/,
+      message: "8~32자의 영문 소문자, 숫자, 특수문자를 포함해야 합니다",
     },
   };
 
@@ -164,7 +164,7 @@ const ResetPassword = (props: Props) => {
     } else if (res?.status === 400) {
       setNoActionModalData({
         title: "이메일 인증 실패",
-        content: res.data.error,
+        content: res.data.message,
         btn1: {
           text: "확인했습니다",
           onClick: () => {
@@ -187,7 +187,7 @@ const ResetPassword = (props: Props) => {
     } else if (res?.status === 400) {
       setNoActionModalData({
         title: "비밀번호 변경 실패",
-        content: res.data.error,
+        content: res.data.message,
         btn1: {
           text: "확인했습니다",
           onClick: () => {

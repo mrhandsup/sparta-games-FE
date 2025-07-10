@@ -5,6 +5,7 @@ import useModalToggles from "../../hook/useModalToggles";
 import { deleteGameList } from "../../api/game";
 import SpartaReactionModal from "../../spartaDesignSystem/SpartaReactionModal";
 import { userStore } from "../../share/store/userStore";
+import { useQueryClient } from "@tanstack/react-query";
 
 type Props = {
   gamePk: number | undefined;
@@ -19,6 +20,7 @@ const DeleteCheck = ({ gamePk, onClose }: Props) => {
   const { userData } = userStore();
 
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const requiredPhrase = "게임을 삭제하겠습니다";
   const isPhraseCorrect = inputValue === requiredPhrase;
@@ -34,6 +36,7 @@ const DeleteCheck = ({ gamePk, onClose }: Props) => {
 
     if (res?.status === 200) {
       onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+      queryClient.invalidateQueries({ queryKey: ["myGameList"] });
     }
   };
 
@@ -68,7 +71,7 @@ const DeleteCheck = ({ gamePk, onClose }: Props) => {
           type="text"
           value={inputValue}
           onChange={handleInputChange}
-          placeholder="게임을 삭제하겠습니다다"
+          placeholder="게임을 삭제하겠습니다"
         />
       </div>
 
@@ -96,7 +99,7 @@ const DeleteCheck = ({ gamePk, onClose }: Props) => {
           text: "확인했습니다.",
           onClick: () => {
             onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-            navigate(`/my-page/${userData?.user_pk}`);
+            navigate(`/my-page/${userData?.data.user_id}`);
           },
         }}
         type={"error"}

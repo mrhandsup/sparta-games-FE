@@ -1,12 +1,12 @@
 import { create } from "zustand";
 import { jwtDecode } from "jwt-decode";
 import { getUserData } from "../../api/user";
-import { TUser } from "../../types";
+import { TUserData, TUserDataResponse } from "../../types";
 
 type Store = {
-  userData?: TUser;
-  setUser: (accessToken?: string) => Promise<TUser | undefined>;
-  setUserData: (key: keyof TUser, value: any) => void;
+  userData?: TUserDataResponse;
+  setUser: (accessToken?: string) => Promise<TUserDataResponse | undefined>;
+  setUserData: (key: keyof TUserData, value: any) => void;
   logout: () => void;
 };
 
@@ -19,9 +19,9 @@ export const userStore = create<Store>()((set) => ({
     try {
       const decoded_jwt = jwtDecode<{ user_id: number }>(accessToken);
       const userData = await getUserData(decoded_jwt.user_id);
-      console.log(userData);
       set({ userData: userData });
-      if (userData?.is_staff) {
+
+      if (userData?.data?.is_staff) {
         sessionStorage.setItem("isAdmin", "true");
       }
       return userData;
@@ -30,13 +30,16 @@ export const userStore = create<Store>()((set) => ({
       set({ userData: undefined });
     }
   },
-  setUserData: (key: keyof TUser, value: any) => {
+  setUserData: (key: keyof TUserData, value: any) => {
     set((state) => {
       if (!state.userData) return state;
       return {
         userData: {
           ...state.userData,
-          [key]: value,
+          data: {
+            ...state.userData.data,
+            [key]: value,
+          },
         },
       };
     });

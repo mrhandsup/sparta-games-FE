@@ -19,7 +19,7 @@ type Props = {
   gamePk: number;
   modalToggle: boolean;
   onClickModalToggleHandler: () => void;
-  myReview: TReviewData | undefined;
+  myReview: TReviewData | null;
   isRegister: boolean;
 };
 
@@ -71,6 +71,7 @@ const ReviewRegisterModal = ({ gamePk, modalToggle, onClickModalToggleHandler, m
 
   const onClickReviewEditHandler = () => {
     const difficulty = convertDifficulty(selectedDifficulty, false) as number;
+
     eventHandler.onSubmitReviewEditHandler(
       myReview?.id,
       myReview?.game_id,
@@ -113,7 +114,7 @@ const ReviewRegisterModal = ({ gamePk, modalToggle, onClickModalToggleHandler, m
     <>
       <Modal open={modalToggle} disableScrollLock={true}>
         <Box className="fixed left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 border border-solid border-primary-500 rounded-xl bg-gray-800 outline-none">
-          <div className="flex flex-col gap-4 p-5 w-[900px]">
+          <div className="flex flex-col gap-4 p-8 w-[1000px]">
             <div className="flex justify-between items-center">
               <p className="text-3xl font-DungGeunMo text-primary-500">{isRegister ? "리뷰등록" : "리뷰수정"}</p>
               <img
@@ -190,6 +191,7 @@ const ReviewRegisterModal = ({ gamePk, modalToggle, onClickModalToggleHandler, m
               colorType={
                 !form.formState.isValid || ratingValue === null || selectedDifficulty === "" ? "grey" : "primary"
               }
+              disabled={editorContent?.length > 300}
             />
           </div>
         </Box>

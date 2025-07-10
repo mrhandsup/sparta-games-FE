@@ -1,35 +1,35 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useState } from "react";
+import { useState } from "react";
 import { getUserRecentGameList, getUserLikedGameList } from "../../api/user";
-import { TListResponse } from "../../types";
+import { TGameDataResponse } from "../../types";
 import log from "../../assets/Log.svg";
 import SpartaPagination from "../../spartaDesignSystem/SpartaPagination";
 import { Link } from "react-router-dom";
-import GameCard from "../HomeComponents/GameCard";
+import GameCard from "../homeComponents/GameCard";
 
 type Props = {
   user_name: string;
-  user_pk: number;
+  user_id: number;
   recent: boolean;
 };
 
-const MypageLogModal = ({ user_name, user_pk, recent }: Props) => {
+const MypageLogModal = ({ user_name, user_id, recent }: Props) => {
   const [page, setPage] = useState<number>(1);
-  const myRecentGameData = useQuery<TListResponse>({
-    queryKey: ["myRecentGameList", user_pk, page],
-    queryFn: () => getUserRecentGameList(user_pk, page),
+  const myRecentGameData = useQuery<TGameDataResponse>({
+    queryKey: ["myRecentGameList", user_id, page],
+    queryFn: () => getUserRecentGameList(user_id, page),
   });
 
-  const myLikedData = useQuery<TListResponse>({
-    queryKey: ["myLikesList", user_pk, page],
-    queryFn: () => getUserLikedGameList(user_pk, page),
+  const myLikedData = useQuery<TGameDataResponse>({
+    queryKey: ["myLikesList", user_id, page],
+    queryFn: () => getUserLikedGameList(user_id, page),
   });
 
-  const recentGameData = myRecentGameData.data && myRecentGameData.data?.results;
-  const recentGameCount = myRecentGameData.data && myRecentGameData.data?.count;
+  const recentGameData = myRecentGameData.data && myRecentGameData.data?.data;
+  const recentGameCount = myRecentGameData.data && myRecentGameData.data?.pagination.count;
 
-  const likedData = myLikedData.data && myLikedData.data?.results;
-  const likedCount = myLikedData.data && myLikedData.data?.count;
+  const likedData = myLikedData.data && myLikedData.data?.data;
+  const likedCount = myLikedData.data && myLikedData.data?.pagination.count;
 
   const data = recent ? recentGameData : likedData;
 
@@ -38,13 +38,13 @@ const MypageLogModal = ({ user_name, user_pk, recent }: Props) => {
       <div className="flex items-center gap-4 justify-start ">
         <img src={log} />
         <p className="font-DungGeunMo text-heading-32 text-white font-[400]">
-          [{user_name}]의 {recent ? "Playlist" : "Bookmark"}
+          {user_name}의 {recent ? "Playlist" : "Bookmark"}
         </p>
       </div>
       <div className="flex gap-3">
         {data?.map((item, idx) => (
           <div key={idx} className="cursor-pointer">
-            <Link to={`/game-detail?id=${item.pk}`}>
+            <Link to={`/game-detail?id=${item.id}`}>
               <GameCard item={item} />
             </Link>
           </div>

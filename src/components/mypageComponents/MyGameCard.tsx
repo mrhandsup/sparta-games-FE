@@ -3,7 +3,6 @@ import StarRating from "../common/StarRating";
 import GameChip from "../common/chipComponents/GameChip";
 import SpartaButton from "../../spartaDesignSystem/SpartaButton";
 import { useNavigate } from "react-router-dom";
-import DOMPurify from "dompurify";
 import removeHTMLTags from "../../util/removeHTMLTags";
 
 type Props = { item?: TGameData & { register_state: number } };
@@ -45,7 +44,7 @@ const MyGameCard = ({ item }: Props) => {
   };
 
   return (
-    <section key={item?.pk} className={`relative flex w-full`}>
+    <section key={item?.id} className={`relative flex w-full`}>
       <img
         src={
           import.meta.env.VITE_DEPLOYMENT_MODE === "dev"
@@ -57,16 +56,16 @@ const MyGameCard = ({ item }: Props) => {
       />
       {/* 카테고리 */}
       <div className="absolute top-0 left-0 bg-gray-700 rounded-tl-md rounded-br-lg font-DungGeunMo text-white py-1.5 px-4 w-fit font-light">
-        {item?.category_name[0]}
+        {item?.category_data[0].name}
       </div>
       <div className="ml-4 w-[55%] flex flex-col justify-between">
         <div className={` bg-gray-800 text-white  rounded-b-lg`}>
           <div className="text-title-22  font-DungGeunMo text-ellipsis overflow-hidden truncate font-[400]">
-            [{item?.title ? item?.title : "test"}]
+            {item?.title ? item?.title : "test"}
           </div>
           <div className="w-full text-sm font-normal flex items-center justify-between my-1">
             <p className="text-title-14 text-gray-200 truncate max-w-[55%] font-DungGeunMo font-[400]">
-              [{item?.maker_name || "Maker"}]
+              {item?.maker_data.nickname || "Maker"}
             </p>
             <div className="flex items-center gap-1.5">
               <p className="text-primary-400 font-DungGeunMo text-[18px] pt-0.5 font-[400]">{item?.star.toFixed(1)}</p>
@@ -74,8 +73,8 @@ const MyGameCard = ({ item }: Props) => {
             </div>
           </div>
           <div className="flex gap-1">
-            {item?.chip_names?.map((chip) => (
-              <GameChip key={chip} chipName={chip} size="large" />
+            {item?.chips?.map((chip) => (
+              <GameChip key={chip.id} chipName={chip.name} size="large" />
             ))}
           </div>
           <div className="flex flex-col justify-between">
@@ -99,7 +98,7 @@ const MyGameCard = ({ item }: Props) => {
             <SpartaButton
               content={getRegisterStateConfig()?.detailContent}
               onClick={() => {
-                navigate(`/game-detail?id=${item?.pk}`);
+                navigate(`/game-detail?id=${item?.id}`);
               }}
               size="small"
               colorType={getRegisterStateConfig().colorType}

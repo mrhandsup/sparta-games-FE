@@ -13,11 +13,14 @@ type Props = {
 const ReviewDetail = ({ review, convertDifficulty, onClose }: Props) => {
   const gameDifficulty: ("EASY" | "NORMAL" | "HARD")[] = ["EASY", "NORMAL", "HARD"];
 
+  console.log("review", review);
   return (
     <div className="fixed left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 border border-solid border-primary-500 rounded-xl bg-gray-800 outline-none">
-      <div className="flex flex-col gap-4 p-5 w-[900px]">
+      <div className="flex flex-col gap-4 p-6 w-[900px]">
         <div className="flex justify-between items-center">
-          <p className="text-2xl font-DungGeunMo text-primary-500">{[review?.author_name]} 의 리뷰</p>
+          <p className="text-2xl font-DungGeunMo text-primary-500">
+            {[review?.author_data.nickname]} <span className="text-white">님의 리뷰</span>
+          </p>
           <img onClick={onClose} className="w-7 h-7 cursor-pointer" src={closeBtn} alt="닫기" />
         </div>
 
@@ -50,7 +53,8 @@ const ReviewDetail = ({ review, convertDifficulty, onClose }: Props) => {
             />
           </div>
         </div>
-        <p className="min-h-60 text-base font-Pretendard text-white">{review?.content}</p>
+        <hr className="border-t border-gray-700" />
+        <p className="mt-2 min-h-60 break-words text-xl leading-8 text-white">{review?.content}</p>
       </div>
     </div>
   );

@@ -232,6 +232,10 @@ input:focus {
   @apply italic;
 }
 
+.ql-editor s {
+  @apply line-through;
+}
+
 .ql-editor h1 {
   @apply text-3xl font-bold;
 }
@@ -246,4 +250,53 @@ input:focus {
 
 .ql-editor.ql-blank::before {
   @apply text-gray-100 font-normal;
+}
+
+.ql-editor ol {
+  @apply list-decimal pl-6;
+}
+
+.ql-editor ul {
+  @apply list-disc pl-6;
+}
+
+.ql-editor li {
+  @apply list-disc pl-6;
+}
+
+.ql-editor .ql-align-center {
+  @apply text-center;
+}
+
+.ql-editor .ql-align-right {
+  @apply text-right;
+}
+
+.ql-editor .ql-align-justify {
+  @apply text-justify;
+}
+
+.ql-editor .ql-indent-1 {
+  @apply pl-[54px];
+}
+.ql-editor .ql-indent-2 {
+  @apply pl-[108px];
+}
+.ql-editor .ql-indent-3 {
+  @apply pl-[162px];
+}
+.ql-editor .ql-indent-4 {
+  @apply pl-[216px];
+}
+.ql-editor .ql-indent-5 {
+  @apply pl-[270px];
+}
+.ql-editor .ql-indent-6 {
+  @apply pl-[324px];
+}
+.ql-editor .ql-indent-7 {
+  @apply pl-[378px];
+}
+.ql-editor .ql-indent-8 {
+  @apply pl-[432px];
 }

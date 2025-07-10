@@ -47,10 +47,10 @@ const AdminGameLog = () => {
     queryFn: getGameCategory,
   });
 
-  const totalCount = (adminGameList.data && adminGameList.data.count) || 0;
+  const totalCount = (adminGameList?.data?.pagination !== null && adminGameList?.data?.pagination.count) || 0;
 
   const checkAll = () => {
-    setCategory(data?.map((item) => item.pk) || []);
+    setCategory(data?.data.map((item) => item.id) || []);
   };
 
   const selectGame = (pk: number) => {
@@ -78,16 +78,16 @@ const AdminGameLog = () => {
             <p>{totalCount}</p>
           </div>
           <div className="flex flex-col px-6">
-            {data?.map((item, idx) => (
+            {data?.data.map((item, idx) => (
               <div key={idx} className="text-left text-body-18 mb-1 flex items-center gap-2 justify-between py-2">
                 <p>{item.name}</p>
                 <Switch
-                  checked={category.includes(item.pk)}
+                  checked={category.includes(item.id)}
                   onChange={(e) => {
                     if (e.target.checked) {
-                      setCategory([...category, item.pk]);
+                      setCategory([...category, item.id]);
                     } else {
-                      setCategory(category.filter((i) => i !== item.pk));
+                      setCategory(category.filter((i) => i !== item.id));
                     }
                   }}
                 />
@@ -124,7 +124,7 @@ const AdminGameLog = () => {
                 colorType="grey"
                 type={state == undefined ? "filled" : "standard"}
                 size="small"
-                width="w-[60px]"
+                customStyle="w-[60px]"
                 onClick={() => setState(undefined)}
               />
               <SpartaButton
@@ -132,14 +132,14 @@ const AdminGameLog = () => {
                 colorType="alert"
                 type={state == 0 ? "filled" : "standard"}
                 size="small"
-                width="w-[60px]"
+                customStyle="w-[60px]"
                 onClick={() => setState(0)}
               />
               <SpartaButton
                 content="승인"
                 colorType="primary"
                 size="small"
-                width="w-[60px]"
+                customStyle="w-[60px]"
                 type={state == 1 ? "filled" : "standard"}
                 onClick={() => setState(1)}
               />
@@ -148,15 +148,15 @@ const AdminGameLog = () => {
                 colorType="error"
                 type={state == 2 ? "filled" : "standard"}
                 size="small"
-                width="w-[60px]"
+                customStyle="w-[60px]"
                 onClick={() => setState(2)}
               />
             </div>
           </div>
-          {adminGameList.data?.results?.game_register_list.map((item: TGameAdminData, idx: number) => (
+          {adminGameList?.data?.data.map((item: TGameAdminData, idx: number) => (
             <AdminListItem key={idx} idx={idx} item={item} onClickShowMore={selectGame} isDetail />
           ))}
-          {!adminGameList.data?.results?.game_register_list.length && (
+          {!adminGameList?.data?.data.length && (
             <p className="text-white font-DungGeunMo text-heading-28 flex items-center justify-center w-full py-24">
               검색 결과가 없습니다.
             </p>
@@ -172,7 +172,7 @@ const AdminGameLog = () => {
           title="게임 로그"
           closeOnClickOutside
         >
-          <AdminLogsModal game_pk={selectedGame} />
+          <AdminLogsModal game_id={selectedGame} />
         </SpartaModal>
       )}
     </div>

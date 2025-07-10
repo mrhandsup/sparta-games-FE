@@ -1,18 +1,3 @@
-const CATEGORY = [
-  "Action",
-  "Arcade",
-  "FPS",
-  "Platform",
-  "Rhythm",
-  "Survival",
-  "Adventure",
-  "Casual",
-  "Horror",
-  "Puzzle",
-  "RPG",
-  "Test",
-];
-
 type selectConfig = {
   label: string;
   value: string | boolean;
@@ -64,74 +49,37 @@ const GAME_CATEGORY: selectConfig[] = [
   },
 ];
 
-const USER_TECH: selectConfig[] = [
-  {
-    label: "Director(PM/PO)",
-    value: "DIR",
-  },
-  {
-    label: "2D Graphic",
-    value: "2DG",
-  },
-  {
-    label: "Concept Art",
-    value: "CA",
-  },
-  {
-    label: "UX/UI",
-    value: "UXUI",
-  },
-  {
-    label: "Artist",
-    value: "ART",
-  },
-  {
-    label: "3D Graphic",
-    value: "3DG",
-  },
-  {
-    label: "Modeler",
-    value: "MDL",
-  },
-  {
-    label: "Frontend",
-    value: "FE",
-  },
-  {
-    label: "Backend",
-    value: "BE",
-  },
-  {
-    label: "All",
-    value: "All",
-  },
-  {
-    label: "관심분야 없음",
-    value: "NONE",
-  },
-];
-
-const USER_TYPE: selectConfig[] = [
-  {
-    label: "플레이어",
-    value: false,
-  },
-  {
-    label: "메이커",
-    value: true,
-  },
-];
-
 const GAME_CHIP = {
   "Daily Top": "🔥 인기 급상승",
   "Review Top": "💬 평가가 많은",
   "Bookmark Top": "🔖 북마크 많은",
   "Long Play": "🕹️ 오래 플레이",
   "New Game": "🆕 새로 등록된",
+  "Project Purpose": "🔥 취업용 포트폴리오",
   NORMAL: "🟧 NORMAL",
   EASY: "🟩 EASY",
   HARD: "🟥 HARD",
 };
 
-export { CATEGORY, USER_TECH, GAME_CATEGORY, USER_TYPE, GAME_CHIP };
+const EDITOR_FORMATS = [
+  "header",
+  "bold",
+  "italic",
+  "underline",
+  "strike",
+  "blockquote",
+  "list",
+  "bullet",
+  "indent",
+  "link",
+  "image",
+  "align",
+  "color",
+  "background",
+  "float",
+  "height",
+  "width",
+];
+
+export { GAME_CATEGORY, GAME_CHIP, EDITOR_FORMATS };
 export type { selectConfig };

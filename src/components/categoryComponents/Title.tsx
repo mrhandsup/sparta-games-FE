@@ -24,7 +24,7 @@ const Title = ({ category }: { category: string }) => {
       } ease-in-out duration-200 bg-cover`}
       style={{ backgroundImage: `url(${getImageUrl(category)})` }}
     >
-      <div className="font-DungGeunMo text-[64px] text-white">[{category}]</div>
+      <div className="font-DungGeunMo text-[64px] text-white">{category}</div>
     </section>
   );
 };

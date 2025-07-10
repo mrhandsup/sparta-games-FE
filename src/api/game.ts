@@ -42,7 +42,6 @@ export const putGameList = async (formData: FormData, gamePk: number | undefined
  */
 export const deleteGameList = async (gamePk: number | undefined) => {
   try {
-    console.log("gamePk:", gamePk);
     const res = await sparta_games_auth.delete(`/games/api/list/${gamePk}/`);
 
     return res;

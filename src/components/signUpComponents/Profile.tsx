@@ -1,7 +1,7 @@
 import SpartaTextField from "../../spartaDesignSystem/SpartaTextField";
 import { useFormContext } from "react-hook-form";
 import SpartaChipSelect from "../../spartaDesignSystem/SpartaChipSelect";
-import { GAME_CATEGORY, USER_TECH } from "../../constant/constant";
+import { GAME_CATEGORY } from "../../constant/constant";
 
 const Profile = () => {
   const {
@@ -26,7 +26,7 @@ const Profile = () => {
     },
     pattern: {
       value: /^[a-zA-Z0-9가-힣]*$/,
-      message: "닉네임은 4~10자 이하 영/한/숫자만 사용 가능합니다.",
+      message: "닉네임은 10자 이하 영/한/숫자만 사용 가능합니다.",
     },
   };
 
@@ -38,43 +38,30 @@ const Profile = () => {
         type="medium"
         register={register("nickname", nicknameValidation)}
         subLabel={{
-          default: "4~10자 이하 영/한/숫자 사용 가능합니다.",
+          default: "4자 이상 10자 이하 영/한/숫자 사용 가능합니다.",
           error: errors.nickname?.message as string,
           pass: nickname && !errors.nickname ? "사용 가능한 닉네임입니다" : "",
         }}
         inputProps={{
           placeholder: "닉네임을 입력해주세요",
+          className: "text-white placeholder-white",
         }}
         pass={nickname && !errors.nickname}
         error={!!errors.nickname}
       />
       <SpartaChipSelect
-        label="관심 게임 분야"
+        label="추천받을 게임분야"
         options={GAME_CATEGORY}
-        error={!!errors.game_category}
         control={control}
         name="game_category"
-        pass={watch("game_category").length > 0}
         subLabel={{
-          default: "관심있는 게임 분야를 선택해주세요",
+          default: "추천받을 게임분야를 3개까지 선택할 수 있어요",
           error: "태그를 하나 이상 선택해주세요",
           pass: "태그가 선택되었습니다",
         }}
         multiple
         maxCount={3}
-      />
-      <SpartaChipSelect
-        label="관심 기술 분야"
-        options={USER_TECH}
-        control={control}
-        error={!!errors.user_tech}
-        pass={watch("user_tech").length > 0}
-        name="user_tech"
-        subLabel={{
-          default: "관심있는 기술 분야를 선택해주세요.",
-          error: "태그를 하나 이상 선택해주세요",
-          pass: "태그가 선택되었습니다",
-        }}
+        placeHolderText="게임분야를 선택해주세요"
       />
     </>
   );

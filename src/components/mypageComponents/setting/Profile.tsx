@@ -1,15 +1,13 @@
 import { useState } from "react";
-import log from "../../../assets/Log.svg";
 
 import { userStore } from "../../../share/store/userStore";
-import { convertToConfigObjects } from "../../../util/convertToConfigObjects";
-
-import { USER_TECH } from "../../../constant/constant";
-
 import useModalToggles from "../../../hook/useModalToggles";
+
 import SpartaModal from "../../../spartaDesignSystem/SpartaModal";
 import ProfileModal from "./ProfileModal";
 import SpartaReactionModal, { TSpartaReactionModalProps } from "../../../spartaDesignSystem/SpartaReactionModal";
+
+import log from "../../../assets/highlightIcon.svg";
 
 const Profile = () => {
   //* Hooks
@@ -69,29 +67,21 @@ const Profile = () => {
         <div className="flex justify-between items-center">
           <label className="text-gray-100">닉네임</label>
           <input
-            value={userData?.nickname}
+            value={userData?.data.nickname}
             className="py-3 px-4 bg-gray-700 border border-solid border-white rounded-md w-[50%] text-white"
             disabled
           />
         </div>
-        <div className="flex justify-between ">
-          <label className="text-gray-100">관심게임분야</label>
+        <div className="flex justify-between items-center">
+          <label className="text-gray-100">추천받을 게임분야</label>
           <div className="w-[50%]">
             <div className="flex gap-2 items-center p-2 border-gray-200 border-2 rounded-md border-solid bg-gray-700">
-              {userData?.game_category.map((category, idx) => (
+              {userData?.data.game_category.map((category, idx) => (
                 <span key={idx} className="font-DungGeunMo text-body-20 bg-white px-2 py-1  rounded-md w-fit">
                   {category}
                 </span>
               ))}
             </div>
-          </div>
-        </div>
-        <div className="flex justify-between items-center">
-          <label className="text-gray-100">관심기술분야</label>
-          <div className="flex gap-2 items-center p-2 border-gray-200 border-2 rounded-md border-solid bg-gray-700 w-[50%]">
-            <span className="font-DungGeunMo text-body-20 bg-white px-2 py-1  rounded-md w-fit">
-              {userData?.user_tech && convertToConfigObjects(USER_TECH, [userData.user_tech])[0].label}
-            </span>
           </div>
         </div>
       </div>

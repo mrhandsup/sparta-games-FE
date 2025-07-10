@@ -12,6 +12,7 @@ export type TSpartaReactionModalProps = Pick<TModalProps, "type" | "isOpen" | "m
   content: string;
   btn1: btnConfig;
   btn2?: btnConfig;
+  closeOnClickOutside?: boolean;
 };
 
 const SpartaReactionModal = ({
@@ -22,6 +23,7 @@ const SpartaReactionModal = ({
   btn2,
   isOpen,
   modalId,
+  closeOnClickOutside,
   onClose,
 }: TSpartaReactionModalProps) => {
   const titleColor =
@@ -34,7 +36,13 @@ const SpartaReactionModal = ({
       : "text-white";
 
   return (
-    <SpartaModal isOpen={isOpen} onClose={onClose} modalId={modalId} type={type}>
+    <SpartaModal
+      isOpen={isOpen}
+      onClose={onClose}
+      modalId={modalId}
+      closeOnClickOutside={closeOnClickOutside}
+      type={type}
+    >
       <div className="min-w-80 flex flex-col items-center gap-4">
         <div className={`text-[18px] font-medium ${titleColor} font-DungGeunMo`}>{title}</div>
         <div
