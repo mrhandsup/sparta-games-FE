@@ -1,4 +1,7 @@
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+
+import { getTeamBuildProfileByUserId } from "../../../../api/teambuilding";
 
 import SpartaButton from "../../../../spartaDesignSystem/SpartaButton";
 import SpartaModal from "../../../../spartaDesignSystem/SpartaModal";
@@ -7,7 +10,7 @@ import useModalToggles from "../../../../hook/useModalToggles";
 
 import DeleteCheck from "./DeleteCheck";
 
-import { TTeamBuildProfileListItem, TUserData } from "../../../../types";
+import { TTeamBuildProfileUserResponse, TUserData } from "../../../../types";
 
 import defaultProfile from "../../../../assets/common/defaultProfile.svg";
 import portfolioImage from "../../../../assets/portfolioImage.png";
@@ -18,22 +21,28 @@ import notionImage from "../../../../assets/notionImage.png";
 type MyPageProps = {
   user: TUserData;
   isMyPage: boolean;
-  profileData?: TTeamBuildProfileListItem;
 };
 
 type TeamBuildingProfileProps = {
-  profileData?: TTeamBuildProfileListItem;
   user?: TUserData;
   isMyPage?: boolean | null;
 };
 
 type Props = MyPageProps | TeamBuildingProfileProps;
 
-export default function ProfileDetail({ user, profileData, isMyPage }: Props) {
+export default function ProfileDetail({ user, isMyPage }: Props) {
   const navigate = useNavigate();
 
   const GAME_DELETE_CHECK_ID = "gameDeleteCheckId";
   const { modalToggles, onClickModalToggleHandlers } = useModalToggles([GAME_DELETE_CHECK_ID]);
+
+  const { data: teamBuildprofileResponse } = useQuery<TTeamBuildProfileUserResponse>({
+    queryKey: ["teamBuildProfile", user?.user_id],
+    queryFn: () => getTeamBuildProfileByUserId(user?.user_id),
+    retry: 1,
+  });
+
+  const profileData = teamBuildprofileResponse?.data;
 
   const purpose =
     profileData?.purpose === "PORTFOLIO"

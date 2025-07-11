@@ -24,7 +24,7 @@ const UserStatusPopover = ({
     >
       {isLogin ? (
         <div className="flex flex-col items-center gap-6 w-fit">
-          <Link to={`/my-page/${userId}`}>
+          <Link to={`/my-page/${userId}?tab=log`}>
             <p className="hover:text-primary-500 w-fit">마이페이지</p>
           </Link>
           <div onClick={logoutHandler}>
