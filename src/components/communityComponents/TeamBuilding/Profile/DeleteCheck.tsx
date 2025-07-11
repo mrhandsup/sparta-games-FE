@@ -93,7 +93,7 @@ export default function DeleteCheck({ onClose }: Props) {
           text: "확인했습니다.",
           onClick: () => {
             onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-            window.location.reload();
+            onClose();
           },
         }}
         type={"error"}

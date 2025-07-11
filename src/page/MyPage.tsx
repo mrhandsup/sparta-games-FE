@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+
+import { getUserData } from "../api/user";
+
 import Logs from "../components/mypageComponents/Logs";
 import Setting from "../components/mypageComponents/Settting";
-import { userStore } from "../share/store/userStore";
 import ProfileHeader from "../components/mypageComponents/ProfileHeader";
 import MyGame from "../components/mypageComponents/MyGame";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { getUserData } from "../api/user";
-import { useQuery } from "@tanstack/react-query";
-import { TTeamBuildProfileUserResponse, TUserDataResponse } from "../types";
 import ProfileDetail from "../components/communityComponents/TeamBuilding/Profile/ProfileDetail";
-import { getTeamBuildProfileByUserId } from "../api/teambuilding";
+
+import { userStore } from "../share/store/userStore";
+import { TUserDataResponse } from "../types";
 
 const MyPage = () => {
   const [navigation, setNavigation] = useState<"log" | "teambuilding" | "develop" | "setting">("log");
@@ -36,6 +38,10 @@ const MyPage = () => {
       window.alert("잘못된 접근입니다.");
       navigate("/", { replace: true });
     }
+
+    if (!tabParam) {
+      navigate(`?tab=log`, { replace: true });
+    }
   }, [id, userData, navigate]);
 
   const { data, isError } = useQuery<TUserDataResponse>({
@@ -45,14 +51,7 @@ const MyPage = () => {
     retry: 1,
   });
 
-  const { data: teamBuildprofileResponse } = useQuery<TTeamBuildProfileUserResponse>({
-    queryKey: ["teamBuildProfile", Number(id)],
-    queryFn: () => getTeamBuildProfileByUserId(Number(id)),
-    retry: false,
-  });
-
   const user = isMyPage ? userData?.data : data?.data;
-  const profileData = teamBuildprofileResponse?.data;
 
   useEffect(() => {
     if (isError) {
@@ -71,6 +70,11 @@ const MyPage = () => {
     }
   }, [id, userData, isError]);
 
+  const handleTabChange = (tab: typeof navigation) => {
+    setNavigation(tab);
+    navigate(`?tab=${tab}`, { replace: true });
+  };
+
   return (
     user && (
       <div className="w-full">
@@ -82,18 +86,17 @@ const MyPage = () => {
                   className={`w-full h-12 rounded-xl text-heading-20 
             ${navigation === "log" ? navigationButtonConfig.clicked : navigationButtonConfig.unClicked}
               `}
-                  onClick={() => setNavigation("log")}
+                  onClick={() => handleTabChange("log")}
                 >
                   활동목록
                 </button>
               )}
 
-              {/* TODO: 팀빌딩 프로필 설정에 따른 해당 메뉴 표시 유무 분기 처리 */}
               <button
                 className={`w-full h-12 rounded-xl text-heading-20  ${
                   navigation === "teambuilding" ? navigationButtonConfig.clicked : navigationButtonConfig.unClicked
                 }`}
-                onClick={() => setNavigation("teambuilding")}
+                onClick={() => handleTabChange("teambuilding")}
               >
                 팀빌딩 프로필
               </button>
@@ -102,7 +105,7 @@ const MyPage = () => {
                 className={`w-full h-12 rounded-xl text-heading-20  ${
                   navigation === "develop" ? navigationButtonConfig.clicked : navigationButtonConfig.unClicked
                 }`}
-                onClick={() => setNavigation("develop")}
+                onClick={() => handleTabChange("develop")}
               >
                 개발목록
               </button>
@@ -111,7 +114,7 @@ const MyPage = () => {
                   className={`w-full h-12 rounded-xl  text-heading-20  ${
                     navigation === "setting" ? navigationButtonConfig.clicked : navigationButtonConfig.unClicked
                   }`}
-                  onClick={() => setNavigation("setting")}
+                  onClick={() => handleTabChange("setting")}
                 >
                   정보설정
                 </button>
@@ -122,7 +125,7 @@ const MyPage = () => {
               {navigation === "log" ? (
                 <Logs user={user} />
               ) : navigation === "teambuilding" && user ? (
-                <ProfileDetail user={user} isMyPage={isMyPage} profileData={profileData} />
+                <ProfileDetail user={user} isMyPage={isMyPage} />
               ) : navigation === "develop" ? (
                 <MyGame user={user} isMyPage={isMyPage} />
               ) : (
