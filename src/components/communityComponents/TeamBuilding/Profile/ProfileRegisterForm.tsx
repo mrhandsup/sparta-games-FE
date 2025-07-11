@@ -293,6 +293,7 @@ export default function ProfileRegisterForm() {
             modalId={SUCCESS_MODAL_ID}
             title={noActionModalData.title || ""}
             content={noActionModalData.content || ""}
+            closeOnClickOutside={false}
             btn1={{
               text: noActionModalData?.btn1?.text || "확인",
               onClick: noActionModalData?.btn1?.onClick || (() => onClickModalToggleHandlers[SUCCESS_MODAL_ID]()),
