@@ -323,7 +323,7 @@ export default function ProfileDetail({ user, isMyPage }: Props) {
         closeOnClickOutside
         type="primary"
       >
-        <TeamBuildLogModal userTeamBuildPost={userTeamBuildPost} count={userTeamBuildPostCount} />
+        <TeamBuildLogModal userTeamBuildPost={userTeamBuildPost} isMyPage={isMyPage} />
       </SpartaModal>
     </>
   );

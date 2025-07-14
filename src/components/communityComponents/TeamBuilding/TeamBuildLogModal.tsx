@@ -10,10 +10,10 @@ import { getUserTeambuildPosts } from "../../../api/user";
 
 type Props = {
   userTeamBuildPost: TTeamBuildPostListItem[];
-  count: number | undefined;
+  isMyPage?: boolean | null;
 };
 
-export default function TeamBuildLogModal({ userTeamBuildPost, count }: Props) {
+export default function TeamBuildLogModal({ userTeamBuildPost, isMyPage }: Props) {
   const COUNT_PER_PAGE = 4;
 
   const { id } = useParams();
@@ -21,10 +21,11 @@ export default function TeamBuildLogModal({ userTeamBuildPost, count }: Props) {
 
   const { data } = useQuery<TTeamBuildPostResponse>({
     queryKey: ["userteamBuildingPost", Number(id), page],
-    queryFn: () => getUserTeambuildPosts(Number(id), COUNT_PER_PAGE, page),
+    queryFn: () => getUserTeambuildPosts(Number(id), COUNT_PER_PAGE, page, isMyPage),
   });
 
   const teambuildPosts = data?.data.teambuild_posts;
+  const dataTotalCount = data?.pagination.count;
 
   return (
     <div className="flex flex-col gap-6 overflow-hidden w-[1168px]">
@@ -34,7 +35,7 @@ export default function TeamBuildLogModal({ userTeamBuildPost, count }: Props) {
           {userTeamBuildPost[0]?.author_data.nickname}의 팀빌딩 게시글
         </p>
       </div>
-      <div className="flex gap-3">
+      <div className="grid grid-cols-4 gap-5">
         {teambuildPosts?.map((post, idx) => (
           <div key={idx} className="cursor-pointer">
             <Link to={`/community/team-building/team-recruit/${post.id}`}>
@@ -44,7 +45,11 @@ export default function TeamBuildLogModal({ userTeamBuildPost, count }: Props) {
         ))}
       </div>
 
-      <SpartaPagination dataTotalCount={count} countPerPage={4} onChangePage={(e, page) => setPage(page)} />
+      <SpartaPagination
+        dataTotalCount={dataTotalCount}
+        countPerPage={COUNT_PER_PAGE}
+        onChangePage={(e, page) => setPage(page)}
+      />
     </div>
   );
 }

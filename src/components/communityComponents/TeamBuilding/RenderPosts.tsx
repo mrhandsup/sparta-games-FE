@@ -27,7 +27,7 @@ export default function RenderPosts({
   if (searchPosts?.length === 0) {
     return <div className="col-span-4 text-center text-white text-2xl font-DungGeunMo">{noSearchResultsMessage}</div>;
   }
-  console.log("posts", posts);
+
   return searchKeyword !== ""
     ? searchPosts?.map((post) =>
         cardType === "teamBuild" ? (
