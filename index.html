@@ -4,7 +4,23 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sparta Games</title>
+
+    <script type="text/javascript">
+      (function (w, d, a) {
+        w.beusablerumclient = {
+          load: function (src) {
+            var b = d.createElement("script");
+            b.src = src;
+            b.async = true;
+            b.type = "text/javascript";
+            d.getElementsByTagName("head")[0].appendChild(b);
+          },
+        };
+        w.beusablerumclient.load(a + "?url=" + encodeURIComponent(d.URL));
+      })(window, document, "//rum.beusable.net/load/b240207e103601u296");
+    </script>
   </head>
+
   <body class="h-full">
     <div id="root" class="h-full"></div>
     <script type="module" src="/src/main.tsx"></script>
