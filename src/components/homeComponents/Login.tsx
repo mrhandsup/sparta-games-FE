@@ -91,7 +91,7 @@ function Login({ onClose }: Props) {
 
   const [isLocalLogin, setIsLocalLogin] = useState(false);
 
-  const redirectPath = window.location.pathname;
+  const redirectPath = window.location.pathname + window.location.search;
 
   return (
     <>
