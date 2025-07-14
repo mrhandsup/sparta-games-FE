@@ -47,17 +47,17 @@ const Header = () => {
       },
       type: "alert",
     },
-    community: {
-      title: "개발예정 기능",
-      content: "팀 빌딩 기능은 개발 예정입니다.",
-      btn1: {
-        text: "확인했습니다",
-        onClick: () => {
-          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-        },
-      },
-      type: "error",
-    },
+    // community: {
+    //   title: "개발예정 기능",
+    //   content: "팀 빌딩 기능은 개발 예정입니다.",
+    //   btn1: {
+    //     text: "확인했습니다",
+    //     onClick: () => {
+    //       onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+    //     },
+    //   },
+    //   type: "error",
+    // },
     logout: {
       title: "로그아웃",
       content: "정말 로그아웃 하시겠습니까?",
@@ -87,7 +87,7 @@ const Header = () => {
   // 비로그인, 일반유저 메뉴 config
   const generalUserMenu = [
     {
-      text: "게임 업로드",
+      text: "게임업로드",
       onClick: () => {
         if (userData) {
           navigate("/game-upload");
@@ -98,9 +98,9 @@ const Header = () => {
       },
     },
     {
-      text: "팀 빌딩",
+      text: "팀빌딩",
       onClick: () => {
-        // navigate("/community/team-building");
+        navigate("/community/team-building");
         setNoActionModalData(noActionData.community);
         onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
       },
