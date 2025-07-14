@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
 import { getTeamBuildProfileByUserId } from "../../../../api/teambuilding";
@@ -10,13 +10,18 @@ import useModalToggles from "../../../../hook/useModalToggles";
 
 import DeleteCheck from "./DeleteCheck";
 
-import { TTeamBuildProfileUserResponse, TUserData } from "../../../../types";
+import { TTeamBuildPostResponse, TTeamBuildProfileUserResponse, TUserData } from "../../../../types";
 
 import defaultProfile from "../../../../assets/common/defaultProfile.svg";
 import portfolioImage from "../../../../assets/portfolioImage.png";
 import linkImage from "../../../../assets/linkImage.png";
 import githubImage from "../../../../assets/githubImage.png";
 import notionImage from "../../../../assets/notionImage.png";
+import { getUserTeambuildPosts } from "../../../../api/user";
+import RenderPosts from "../RenderPosts";
+
+import { AiFillCaretRight } from "react-icons/ai";
+import TeamBuildLogModal from "../TeamBuildLogModal";
 
 type MyPageProps = {
   user: TUserData;
@@ -31,18 +36,28 @@ type TeamBuildingProfileProps = {
 type Props = MyPageProps | TeamBuildingProfileProps;
 
 export default function ProfileDetail({ user, isMyPage }: Props) {
+  const { id } = useParams();
+
   const navigate = useNavigate();
 
   const GAME_DELETE_CHECK_ID = "gameDeleteCheckId";
-  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([GAME_DELETE_CHECK_ID]);
+  const TEAM_BUILD_LOG_MODAL = "teamBuildLogModal";
+  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([GAME_DELETE_CHECK_ID, TEAM_BUILD_LOG_MODAL]);
+
+  const { data: userTeamBuildPostResponse } = useQuery<TTeamBuildPostResponse>({
+    queryKey: ["userteamBuildingPost", Number(id)],
+    queryFn: () => getUserTeambuildPosts(Number(id)),
+  });
 
   const { data: teamBuildprofileResponse } = useQuery<TTeamBuildProfileUserResponse>({
-    queryKey: ["teamBuildProfile", user?.user_id],
-    queryFn: () => getTeamBuildProfileByUserId(user?.user_id),
+    queryKey: ["teamBuildProfile", Number(id)],
+    queryFn: () => getTeamBuildProfileByUserId(Number(id)),
     retry: 1,
   });
 
   const profileData = teamBuildprofileResponse?.data;
+  const userTeamBuildPost = userTeamBuildPostResponse?.data.teambuild_posts;
+  const userTeamBuildPostCount = userTeamBuildPostResponse?.pagination.count;
 
   const purpose =
     profileData?.purpose === "PORTFOLIO"
@@ -74,7 +89,36 @@ export default function ProfileDetail({ user, isMyPage }: Props) {
 
   return (
     <>
-      <div className="bg-gray-800 rounded-xl px-11 py-14 flex flex-col gap-6 w-full">
+      <div className="flex flex-col gap-6 w-full p-11 mb-8 bg-gray-800 rounded-xl">
+        <div className={`${userTeamBuildPostCount === 0 ? "hidden" : "flex"} items-center justify-between`}>
+          <p className="font-DungGeunMo text-heading-24 text-white font-normal">
+            {profileData?.author_data.nickname}님의 팀빌딩 게시글
+          </p>
+
+          {userTeamBuildPostCount && userTeamBuildPostCount > 3 && (
+            <AiFillCaretRight
+              className="w-8 h-8 text-white cursor-pointer"
+              onClick={() => {
+                onClickModalToggleHandlers[TEAM_BUILD_LOG_MODAL]();
+              }}
+            />
+          )}
+        </div>
+
+        <div className="grid grid-cols-3 gap-5">
+          <RenderPosts
+            posts={userTeamBuildPost}
+            searchPosts={undefined}
+            searchKeyword=""
+            userData={undefined}
+            noPostsMessage="아직 등록된 팀빌딩 모집글이 없습니다."
+            noSearchResultsMessage="검색 결과가 없습니다."
+            cardType="teamBuild"
+          />
+        </div>
+      </div>
+
+      <div className="bg-gray-800 rounded-xl p-11 flex flex-col gap-6 w-full">
         {/* 내 팀빌팅 프로필이 없는 경우 */}
         {!profileData && isMyPage && (
           <>
@@ -270,6 +314,16 @@ export default function ProfileDetail({ user, isMyPage }: Props) {
         closeOnClickOutside={false}
       >
         <DeleteCheck onClose={onClickModalToggleHandlers[GAME_DELETE_CHECK_ID]} />
+      </SpartaModal>
+
+      <SpartaModal
+        modalId={TEAM_BUILD_LOG_MODAL}
+        isOpen={modalToggles[TEAM_BUILD_LOG_MODAL]}
+        onClose={onClickModalToggleHandlers[TEAM_BUILD_LOG_MODAL]}
+        closeOnClickOutside
+        type="primary"
+      >
+        <TeamBuildLogModal userTeamBuildPost={userTeamBuildPost} count={userTeamBuildPostCount} />
       </SpartaModal>
     </>
   );

@@ -49,11 +49,7 @@ export default function TeamBuildingProfile() {
             {/* <ProfileHeader user={user} isMyPage={isMyPage} setNavigation={setNavigation} /> */}
 
             <div className="max-w-[1440px] mx-auto">
-              {navigation === "teambuilding" ? (
-                <ProfileDetail profileData={profileData?.data} />
-              ) : (
-                <ProfileUserGame postDetail={profileData?.data} />
-              )}
+              {navigation === "teambuilding" ? <ProfileDetail /> : <ProfileUserGame postDetail={profileData?.data} />}
             </div>
           </div>
         </div>
