@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
-import { getTeamBuildProfileByUserId } from "../../../../api/teambuilding";
+import { getTeamBuild, getTeamBuildProfileByUserId } from "../../../../api/teambuilding";
 
 import SpartaButton from "../../../../spartaDesignSystem/SpartaButton";
 import SpartaModal from "../../../../spartaDesignSystem/SpartaModal";
@@ -10,7 +10,7 @@ import useModalToggles from "../../../../hook/useModalToggles";
 
 import DeleteCheck from "./DeleteCheck";
 
-import { TTeamBuildProfileUserResponse, TUserData } from "../../../../types";
+import { TTeamBuildPostResponse, TTeamBuildProfileUserResponse, TUserData } from "../../../../types";
 
 import defaultProfile from "../../../../assets/common/defaultProfile.svg";
 import portfolioImage from "../../../../assets/portfolioImage.png";
@@ -36,6 +36,11 @@ export default function ProfileDetail({ user, isMyPage }: Props) {
   const GAME_DELETE_CHECK_ID = "gameDeleteCheckId";
   const { modalToggles, onClickModalToggleHandlers } = useModalToggles([GAME_DELETE_CHECK_ID]);
 
+  const { data: teamBuildPostResponse } = useQuery<TTeamBuildPostResponse>({
+    queryKey: ["teamBuilding"],
+    queryFn: () => getTeamBuild(user?.user_id),
+  });
+
   const { data: teamBuildprofileResponse } = useQuery<TTeamBuildProfileUserResponse>({
     queryKey: ["teamBuildProfile", user?.user_id],
     queryFn: () => getTeamBuildProfileByUserId(user?.user_id),
@@ -44,6 +49,7 @@ export default function ProfileDetail({ user, isMyPage }: Props) {
 
   const profileData = teamBuildprofileResponse?.data;
 
+  console.log("teamBuildPostResponse", teamBuildPostResponse);
   const purpose =
     profileData?.purpose === "PORTFOLIO"
       ? "포트폴리오"
@@ -74,6 +80,12 @@ export default function ProfileDetail({ user, isMyPage }: Props) {
 
   return (
     <>
+      <div className="bg-gray-800 rounded-xl px-11 py-14 flex flex-col gap-6 w-full">
+        <div className="flex items-start">
+          <p className="font-DungGeunMo text-heading-32 text-white font-normal">{user?.nickname}의 팀빌딩 게시글</p>
+        </div>
+      </div>
+
       <div className="bg-gray-800 rounded-xl px-11 py-14 flex flex-col gap-6 w-full">
         {/* 내 팀빌팅 프로필이 없는 경우 */}
         {!profileData && isMyPage && (

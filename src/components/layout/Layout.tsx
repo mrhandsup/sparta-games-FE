@@ -17,7 +17,7 @@ const Layout = () => {
       </div>
       <div
         className={`${
-          pathname === "/" || pathname === "/community/team-building" ? "min-w-[1440px]" : "max-w-[1440px]"
+          pathname === "/" || pathname === "/community/team-building" ? "min-w-[1440px]" : "max-w-[1180px]"
         } relative flex flex-col mx-auto  h-full font-Pretendard`}
       >
         <Outlet />
