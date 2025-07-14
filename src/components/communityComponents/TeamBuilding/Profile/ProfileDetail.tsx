@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
 import { getTeamBuild, getTeamBuildProfileByUserId } from "../../../../api/teambuilding";
@@ -31,25 +31,26 @@ type TeamBuildingProfileProps = {
 type Props = MyPageProps | TeamBuildingProfileProps;
 
 export default function ProfileDetail({ user, isMyPage }: Props) {
+  const { id } = useParams();
+
   const navigate = useNavigate();
 
   const GAME_DELETE_CHECK_ID = "gameDeleteCheckId";
   const { modalToggles, onClickModalToggleHandlers } = useModalToggles([GAME_DELETE_CHECK_ID]);
 
-  const { data: teamBuildPostResponse } = useQuery<TTeamBuildPostResponse>({
-    queryKey: ["teamBuilding"],
-    queryFn: () => getTeamBuild(user?.user_id),
-  });
+  // const { data: teamBuildPostResponse } = useQuery<TTeamBuildPostResponse>({
+  //   queryKey: ["teamBuilding"],
+  //   queryFn: () => getTeamBuild(user?.user_id),
+  // });
 
   const { data: teamBuildprofileResponse } = useQuery<TTeamBuildProfileUserResponse>({
-    queryKey: ["teamBuildProfile", user?.user_id],
-    queryFn: () => getTeamBuildProfileByUserId(user?.user_id),
+    queryKey: ["teamBuildProfile", Number(id)],
+    queryFn: () => getTeamBuildProfileByUserId(Number(id)),
     retry: 1,
   });
 
   const profileData = teamBuildprofileResponse?.data;
 
-  console.log("teamBuildPostResponse", teamBuildPostResponse);
   const purpose =
     profileData?.purpose === "PORTFOLIO"
       ? "포트폴리오"
@@ -78,6 +79,7 @@ export default function ProfileDetail({ user, isMyPage }: Props) {
   const carrer =
     profileData?.career === "STUDENT" ? "대학생" : profileData?.career === "JOBSEEKER" ? "취준생" : "현직자";
 
+  console.log("profileData", profileData, user);
   return (
     <>
       <div className="bg-gray-800 rounded-xl px-11 py-14 flex flex-col gap-6 w-full">
