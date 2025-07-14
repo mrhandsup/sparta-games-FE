@@ -27,7 +27,7 @@ export default function ProfileUserGame({ postDetail }: Props) {
       <div className="flex  items-center gap-4 w-full mb-3 h-12">
         <img src={log} />
         <p className="font-DungGeunMo text-heading-32 text-white font-[400]">
-          {postDetail?.author_data.nickname}의 개발중인 게임
+          {postDetail?.author_data.nickname}님의 개발중인 게임
         </p>
       </div>
       {/* 만든 게임 */}

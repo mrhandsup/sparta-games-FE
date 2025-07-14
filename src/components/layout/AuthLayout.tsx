@@ -14,7 +14,6 @@ const AuthLayout = () => {
         setUser(token);
       } else {
         navigate("/");
-        window.alert("해당 페이지는 로그인 후 접근 가능합니다.");
       }
     }
   }, [userData, navigate, setUser]);

@@ -99,6 +99,28 @@ export const getUserRecentGameList = async (userId: number, page?: number) => {
 };
 
 /**
+ * 유저가 등록한 팀빌딩 게시글 조회
+ */
+export const getUserTeambuildPosts = async (
+  userId: number,
+  limit?: number,
+  page?: number,
+  isMyPage?: boolean | null,
+) => {
+  const client = isMyPage ? sparta_games_auth : sparta_games;
+
+  try {
+    const res = await client.get(
+      `/users/api/${userId}/teambuildposts/?limit=${limit ? limit : 3}&page=${page ? page : 1}`,
+    );
+    return res.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+/**
  * 패스워드 수정
  */
 export const updatePassword = async (
