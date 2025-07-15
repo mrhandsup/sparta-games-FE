@@ -1,5 +1,5 @@
 import Note from "../components/gameUploadComponents/Note";
-import Form from "../components/gameUploadComponents/Form";
+import GameUploadForm from "../components/gameUploadComponents/GameUploadForm";
 
 import pixelMeteor from "../assets/gameDetail/ReviewEdit.svg";
 import { useLocation } from "react-router-dom";
@@ -34,8 +34,8 @@ const GameUpload = () => {
 
   return (
     <main>
-      <div className="flex gap-3 my-10 mx-auto w-fit text-[32px] leading-[125%] text-white font-DungGeunMo">
-        <img className="w-8 h-8" src={pixelMeteor} />
+      <div className="flex items-center gap-3 my-8 mx-auto w-fit text-[24px] leading-[125%] text-white font-DungGeunMo">
+        <img className="w-6 h-6" src={pixelMeteor} />
         <p>스파르타 게임즈에 게임을 등록합니다</p>
       </div>
       {isEditMode ? (
@@ -47,7 +47,7 @@ const GameUpload = () => {
       ) : (
         <Note state={note} onClickHandler={onClickNoteToggleHandler} />
       )}
-      <Form note={note} previousGameData={previousGameData} isEditMode={isEditMode} />
+      <GameUploadForm note={note} previousGameData={previousGameData} isEditMode={isEditMode} />
     </main>
   );
 };

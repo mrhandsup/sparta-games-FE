@@ -36,21 +36,21 @@ const Home = () => {
         </div>
         <div className="relative flex flex-col mx-auto max-w-[1440px] min-w-[1440px] font-Pretendard">
           <GameCardList data={gameListData?.data.trending_games} noNavigation>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-4">
               <img src={pixelMeteor} />
-              <p className="font-DungGeunMo text-[32px] font-[400] text-white">인기 급상승</p>
+              <p className="font-DungGeunMo text-[24px] font-[400] text-white">인기급상승 게임</p>
             </div>
           </GameCardList>
           <GameCardList data={gameListData?.data.recent} noNavigation>
             <div className="flex items-center gap-3">
               <img src={pixelPaperPlane} />
-              <p className="font-DungGeunMo text-heading-32 font-[400] text-white">새롭게 등록된 게임</p>
+              <p className="font-DungGeunMo text-[24px] font-[400] text-white">새롭게 등록된 게임</p>
             </div>
           </GameCardList>
           <GameCardList data={gameListData?.data.updated} noNavigation>
             <div className="flex items-center gap-3">
               <img src={pixel100Badge} />
-              <p className="font-DungGeunMo text-heading-32 font-[400] text-white">업데이트된 게임</p>
+              <p className="font-DungGeunMo text-[24px] font-[400] text-white">업데이트 된 게임</p>
             </div>
           </GameCardList>
           {gameListData.data.rand1.game_list.length > 0 && (
@@ -63,7 +63,7 @@ const Home = () => {
                   className="w-[32px] h-[32px] "
                   style={{ backgroundImage: `url(${getIconUrl(gameListData?.data.rand1.category_name)})` }}
                 />
-                <p className="font-DungGeunMo text-heading-32 font-[400] text-white">
+                <p className="font-DungGeunMo text-[24px] font-[400] text-white">
                   {gameListData?.data.rand1.category_name}
                 </p>
               </div>
@@ -79,7 +79,7 @@ const Home = () => {
                   className="w-[32px] h-[32px] "
                   style={{ backgroundImage: `url(${getIconUrl(gameListData?.data.rand2.category_name)})` }}
                 />
-                <p className="font-DungGeunMo font-[400] text-heading-32 text-white">
+                <p className="font-DungGeunMo font-[400] text-[24px] text-white">
                   {gameListData?.data.rand2.category_name}
                 </p>
               </div>

@@ -13,9 +13,9 @@ type Props = {
 
 const GameMediaFields = ({ watch, register, formState, onChangeFileHandler, previousGameData }: Props) => {
   return (
-    <div className="flex flex-col gap-[26px] w-[30%]">
+    <div className="flex flex-col gap-[26px] w-[33%]">
       <div className="flex flex-col gap-2">
-        <div className="flex items-end gap-2 text-heading-20 text-white">
+        <div className="flex items-center gap-1 text-base font-semibold text-white">
           플레이 영상<span className="text-body-14 text-alert-default">*선택</span>
         </div>
 
@@ -32,19 +32,19 @@ const GameMediaFields = ({ watch, register, formState, onChangeFileHandler, prev
               }
             },
           })}
-          className="py-4 px-4 border border-solid border-white bg-gray-700 rounded-md"
+          className="py-4 px-4 h-[47px] border border-solid border-white bg-gray-700 rounded-md text-base placeholder:text-gray-100"
         />
         {formState.errors.video && <p className="text-red-500 text-base font-bold">{formState.errors.video.message}</p>}
       </div>
 
-      <div className="flex flex-col gap-2">
-        <div className="flex items-end gap-2 text-heading-20 text-white">
+      <div className="flex flex-col gap-1.5">
+        <div className="flex items-center gap-1 text-base font-semibold text-white">
           스틸컷 업로드<span className="text-body-14 text-alert-default">*선택</span>
         </div>
 
         {Array.from({ length: 5 }, (_, index) => (
           <div key={index} className="flex gap-2">
-            <div className="py-4 px-4 w-full bg-gray-700 border border-solid border-white rounded-md resize-none whitespace-nowrap overflow-hidden text-ellipsis">
+            <div className="py-3 px-4 w-full h-[47px] bg-gray-700 border border-solid border-white rounded-md resize-none whitespace-nowrap overflow-hidden text-ellipsis text-base">
               {watch(`stillCut.${index}`)?.length > 0
                 ? decodeURIComponent(watch(`stillCut.${index}`)[0]?.name)
                 : previousGameData?.screenshot[index]
@@ -58,7 +58,7 @@ const GameMediaFields = ({ watch, register, formState, onChangeFileHandler, prev
                 previousGameData?.screenshot[index] || watch(`stillCut.${index}`)?.length > 0
                   ? "bg-alert-default"
                   : "bg-gray-100"
-              } text-black rounded-sm text-title-18 whitespace-nowrap cursor-pointer`}
+              } text-black rounded-sm text-title-16 font-bold whitespace-nowrap cursor-pointer`}
             >
               {previousGameData?.screenshot[index] || watch(`stillCut.${index}`)?.length > 0 ? (
                 <p className="px-5">수정하기</p>

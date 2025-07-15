@@ -20,13 +20,13 @@ const CategoryModal = ({ modalRef, onClickModalToggleHandler }: props) => {
     <div
       ref={modalRef}
       onClick={onClickModalToggleHandler}
-      className="absolute top-14 flex gap-5 py-5 px-8 bg-gray-800 border border-solid border-primary-500 rounded-[20px] "
+      className="absolute top-10  flex gap-5 py-5 px-2 bg-gray-800 border border-solid border-primary-500 rounded-[20px] "
     >
-      <div className="flex items-center gap-5 flex-wrap w-[250px]">
+      <div className="flex items-center gap-3 flex-wrap w-[200px]">
         {categoryList &&
           categoryList.map((item, idx) => (
             <Link key={idx} to={`/category?category=${item.name}`}>
-              <p className="hover:text-primary-500 w-[110px] text-center">{item.name}</p>
+              <p className="hover:text-primary-500 w-[94px] text-center">{item.name}</p>
             </Link>
           ))}
       </div>

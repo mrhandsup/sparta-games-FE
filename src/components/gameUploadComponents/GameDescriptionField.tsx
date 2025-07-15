@@ -21,8 +21,8 @@ const GameDescriptionField = ({ watch, setValue }: Props) => {
   };
 
   return (
-    <div className="flex flex-col gap-[10px] mb-8 formContent">
-      <div className="flex items-end gap-2 text-heading-20 text-white">
+    <div className="flex flex-col gap-2 mb-8 formContent">
+      <div className="flex items-center gap-2 text-base font-semibold text-white">
         게임설명 <p className="text-body-14 text-primary-500">*필수</p>
       </div>
 

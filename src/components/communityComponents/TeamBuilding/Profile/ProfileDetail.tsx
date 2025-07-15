@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
-import { getTeamBuildProfileByUserId } from "../../../../api/teambuilding";
+import { getTeamBuild, getTeamBuildProfileByUserId } from "../../../../api/teambuilding";
 
 import SpartaButton from "../../../../spartaDesignSystem/SpartaButton";
 import SpartaModal from "../../../../spartaDesignSystem/SpartaModal";
@@ -87,6 +87,7 @@ export default function ProfileDetail({ user, isMyPage }: Props) {
   const carrer =
     profileData?.career === "STUDENT" ? "대학생" : profileData?.career === "JOBSEEKER" ? "취준생" : "현직자";
 
+  console.log("profileData", profileData, user);
   return (
     <>
       <div className="flex flex-col gap-6 w-full p-11 mb-8 bg-gray-800 rounded-xl">

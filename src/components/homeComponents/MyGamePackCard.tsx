@@ -28,7 +28,7 @@ const MyGameCard = ({ item }: Props) => {
           WebkitMaskImage: "linear-gradient(to right, black 75%, transparent 100%)",
         }}
       />
-      <div className="w-[50%] px-10">
+      <div className="w-[50%] ps-10 pr-[130px]">
         <p className="text-title-18 font-DungGeunMo text-primary-400">
           {item?.is_liked
             ? `[${userData?.data.nickname}] 님이 즐겨찾기한 게임`

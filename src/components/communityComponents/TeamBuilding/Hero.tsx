@@ -18,18 +18,19 @@ const Hero = () => {
     <>
       {/* 로그인 전 */}
       {!userData && (
-        <section className="flex items-center gap-[60px] w-full h-[475px] bg-gray-800 max-w-[1440px] mx-auto">
-          <img src={heroImage} />
-          <div className="flex flex-col justify-center gap-4 items-center w-[50%] ps-12">
+        <section className="flex items-center max-w-[1440px] h-[475px] bg-gray-800 mx-auto">
+          <img src={heroImage} className="h-full object-contain" />
+
+          <div className="flex flex-col items-center gap-4 w-[50%] ps-10 pr-[115px]">
             <h2 className="font-DungGeunMo text-heading-32 text-primary-500 font-normal">★ 팀 빌딩 커뮤니티 ★</h2>
 
-            <div className="flex flex-col items-center text-body-18 my-5 text-white">
+            <div className="flex flex-col items-center text-base my-5 text-white">
               <p>팀빌딩 커뮤니티에서는 참여할 프로젝트를 살펴보거나</p>
               <p>함께 게임을 만들 팀원을 구할 수 있습니다.</p>
               <p>로그인해 자신의 프로필을 등록하면 더 좋은 프로젝트를 만날 수 있을거에요!</p>
             </div>
 
-            <div className="w-full">
+            <div className="w-full flex justify-end">
               <SpartaButton
                 content="로그인"
                 type="filled"

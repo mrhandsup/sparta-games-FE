@@ -35,7 +35,7 @@ type Props = {
   isEditMode: boolean;
 };
 
-const Form = ({ note, previousGameData, isEditMode }: Props) => {
+const GameUploadForm = ({ note, previousGameData, isEditMode }: Props) => {
   const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
   const MAX_FILE_SIZE = 500 * 1024 * 1024;
   const GAME_UPLOAD_CHECK_ID = "gameUploadCheckId";
@@ -343,4 +343,4 @@ const Form = ({ note, previousGameData, isEditMode }: Props) => {
   );
 };
 
-export default Form;
+export default GameUploadForm;
