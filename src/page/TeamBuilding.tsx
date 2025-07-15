@@ -109,7 +109,7 @@ export default function TeamBuilding() {
     enabled: selectedTab === "profileRegister",
   });
 
-  const teamBuildPosts = data?.data.team_build_posts;
+  const teamBuildPosts = data?.data.teambuild_posts;
   const recommendedPosts = data?.data.recommended_posts;
   const teamBuildProfilePosts = profileData?.data;
 

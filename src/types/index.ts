@@ -98,7 +98,7 @@ export type TTeamBuildPostResponse = {
   status: "success" | "fail" | "error";
   message: string | null;
   data: {
-    team_build_posts: TTeamBuildPostListItem[];
+    teambuild_posts: TTeamBuildPostListItem[];
     recommended_posts: TTeamBuildRecommenedPostListItem[];
   };
   pagination: {
