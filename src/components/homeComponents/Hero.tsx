@@ -68,7 +68,7 @@ const Hero = () => {
       )}
       {/* 로그인 후 && 북마크 게임 x */}
       {userData && data?.data?.length == 0 && (
-        <section className="flex flex-col items-center  w-full h-[475px]  text-white  justify-center relative gap-4  max-w-[1440px] mx-auto">
+        <section className="flex flex-col items-center w-full h-[475px] text-white justify-center relative gap-4 max-w-[1440px] mx-auto">
           <div className="absolute bg-hero-image bg-cover bg-center opacity-20 justify-center w-full h-full"></div>
           <p className="font-DungGeunMo text-heading-28 text-primary-400 mb-24">[User Name]의 Game Pack</p>
           <p className="font-DungGeunMo text-heading-40 text-primary-400 mb-3">아직 북마크한 게임이 없습니다.</p>
@@ -78,7 +78,7 @@ const Hero = () => {
       )}
       {/* 로그인 후 && 북마크 게임 o */}
       {userData && gameData && gameData?.length !== 0 && (
-        <section className="flex flex-col items-center w-full h-[475px]  text-white justify-center gap-4 mb-10 bg-red-500  max-w-[1440px] mx-auto">
+        <section className="flex flex-col items-center w-full h-[475px] text-white justify-center gap-4 mb-10 bg-red-500  max-w-[1440px] mx-auto">
           <Swiper
             className="heroSwiper"
             ref={swiperRef}

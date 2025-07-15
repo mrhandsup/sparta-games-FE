@@ -16,14 +16,14 @@ type Props = {
 
 const GameUploadFields = ({ watch, register, control, isUploading, onChangeFileHandler, previousGameData }: Props) => {
   return (
-    <div className="flex flex-col gap-5 w-[70%]">
+    <div className="flex flex-col gap-4 w-[65%]">
       <div className="flex flex-col gap-2">
-        <div className="flex items-end gap-2 text-heading-20 text-white">
+        <div className="flex items-center gap-2 text-base font-semibold text-white">
           썸네일 업로드<span className="text-body-14 text-primary-500">*필수</span>
         </div>
 
         <div className="flex gap-2">
-          <div className="py-4 px-4 w-full bg-gray-700 border border-solid border-white rounded-md resize-none whitespace-nowrap overflow-hidden text-ellipsis">
+          <div className="py-3 px-4 w-full h-[47px] bg-gray-700 border border-solid border-white rounded-md resize-none whitespace-nowrap overflow-hidden text-ellipsis text-base">
             {watch("thumbnail")?.length > 0
               ? watch("thumbnail")[0]?.name
               : previousGameData?.thumbnail
@@ -35,7 +35,7 @@ const GameUploadFields = ({ watch, register, control, isUploading, onChangeFileH
             htmlFor="gameThumbnail"
             className={`flex justify-center items-center ${
               watch("thumbnail")?.length > 0 || previousGameData?.thumbnail ? "bg-primary-500" : "bg-gray-100"
-            }  text-black rounded-sm text-title-18 whitespace-nowrap cursor-pointer`}
+            }  text-black rounded-sm text-title-16 font-bold whitespace-nowrap cursor-pointer`}
           >
             {watch("thumbnail")?.length > 0 || previousGameData?.thumbnail ? (
               <p className="px-5">수정하기</p>
@@ -55,12 +55,12 @@ const GameUploadFields = ({ watch, register, control, isUploading, onChangeFileH
       </div>
 
       <div className="flex flex-col gap-2">
-        <div className="flex items-end gap-2 text-heading-20 text-white">
+        <div className="flex items-center gap-2 text-base font-semibold text-white">
           파일업로드 <span className="text-body-14 text-primary-500">*필수</span>
         </div>
 
         <div className="flex gap-2">
-          <div className="py-4 px-4 w-full bg-gray-700 border border-solid border-white rounded-md resize-none whitespace-nowrap overflow-hidden text-ellipsis">
+          <div className="py-3 px-4 w-full h-[47px] bg-gray-700 border border-solid border-white rounded-md resize-none whitespace-nowrap overflow-hidden text-ellipsis text-base">
             {!watch("gameFile")
               ? "파일을 불러오는 중입니다. 잠시만 기다려주세요."
               : isUploading
@@ -78,7 +78,7 @@ const GameUploadFields = ({ watch, register, control, isUploading, onChangeFileH
               (!isUploading && watch("gameFile")?.length > 0) || previousGameData?.gamefile
                 ? "bg-primary-500"
                 : "bg-gray-100"
-            } text-black rounded-sm text-title-18 whitespace-nowrap cursor-pointer`}
+            } text-black rounded-sm text-title-16 font-bold whitespace-nowrap cursor-pointer`}
           >
             {(!isUploading && watch("gameFile")?.length > 0) || previousGameData?.gamefile ? (
               <p className="px-5">수정하기</p>
@@ -98,7 +98,7 @@ const GameUploadFields = ({ watch, register, control, isUploading, onChangeFileH
       </div>
 
       <div className="flex flex-col gap-2">
-        <div className="flex items-end gap-2 text-heading-20 text-white">
+        <div className="flex items-center gap-2 text-base font-semibold text-white">
           제목 <span className="text-body-14 text-primary-500">*필수</span>
         </div>
 
@@ -107,12 +107,12 @@ const GameUploadFields = ({ watch, register, control, isUploading, onChangeFileH
           placeholder="게임 제목을 입력해주세요."
           defaultValue={previousGameData?.title}
           {...register("title", { required: "필수" })}
-          className="py-4 px-4 w-full bg-gray-700 border border-solid border-white rounded-md"
+          className="py-4 px-4 w-full h-[47px] bg-gray-700 border border-solid border-white rounded-md text-base placeholder:text-gray-100"
         />
       </div>
 
-      <div className="flex flex-col gap-2">
-        <div className="flex items-end gap-2 text-heading-20 text-white">
+      <div className="flex flex-col">
+        <div className="flex items-center gap-2 text-base font-semibold text-white">
           장르선택 <span className="text-body-14 text-primary-500">*필수</span>
         </div>
 
@@ -122,6 +122,7 @@ const GameUploadFields = ({ watch, register, control, isUploading, onChangeFileH
             options={GAME_CATEGORY}
             control={control}
             {...register("category", { required: "필수" })}
+            placeHolderText={"장르를 선택해주세요."}
           />
         </div>
       </div>

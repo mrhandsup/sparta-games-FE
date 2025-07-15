@@ -38,9 +38,7 @@ const Note = ({ onClickHandler, state }: Props) => {
               </div>
             </div>
           ) : (
-            <p className="text-lg font-medium text-[#FF5C5C]">
-              게임 업로드 전, 아래 유의사항을 반드시 확인하여 주세요.
-            </p>
+            <p className="text-lg font-bold text-[#FF5C5C]">게임 업로드 전, 아래 유의사항을 반드시 확인하여 주세요.</p>
           )}
           <ol className="text-title-18 text-white leading-[130%]">
             <li className="relative">
@@ -57,7 +55,10 @@ const Note = ({ onClickHandler, state }: Props) => {
             <hr className="w-full h-[1px] bg-gray-500 my-2" />
             <li className="relative">
               2. 이러한 가치를 전달하기 위해, 아래와 지침을 통해 Player와 Maker에게 좋은 서비스를 제공하고자 합니다.
-              <br /> 지침을 준수하지 않은 경우, 서비스 관리자에 의해 게임이 삭제되거나 활동이 제한될 수 있습니다.
+              <br />{" "}
+              <span className="ms-5">
+                지침을 준수하지 않은 경우, 서비스 관리자에 의해 게임이 삭제되거나 활동이 제한될 수 있습니다.
+              </span>
               <ol className="list-alpha ml-12 text-body-18">
                 <li>정상적인 게임 플레이가 어려울 정도로 미개발된 상태인 경우</li>
                 <li>광과민성 발작을 일으킬 수 있는 지나친 이펙트 효과가 사용된 경우</li>

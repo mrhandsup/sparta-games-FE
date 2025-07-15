@@ -203,7 +203,6 @@ const Header = () => {
               <UserStatusPopover
                 isLogin={!!userData}
                 userId={userData?.data.user_id}
-                modalRef={modalRefs.userStatus}
                 onClickModalToggleHandler={onClickModalToggleHandlers.userStatus}
                 loginHandler={() => onClickModalToggleHandlers[LOGIN_MODAL_ID]()}
                 logoutHandler={() => {
