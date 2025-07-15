@@ -138,25 +138,25 @@ const Header = () => {
   ];
 
   return (
-    <header className="max-w-[1440px] flex justify-between items-center py-5 w-full h-20">
+    <header className="max-w-[1180px] flex justify-between items-center py-5 w-full h-20">
       {/* 제목 */}
       <section className="flex items-center gap-2">
-        <img src={logo} alt="스파르타 게임 아이콘" className="w-12 h-12 rounded-full" />
+        <img src={logo} alt="메인 로고 아이콘" className="w-10 h-10 rounded-full" />
         <Link to={userData && userData.data.is_staff ? "/admin/dashboard" : "/"}>
           <h1>
-            <img src={titleImage} />
+            <img src={titleImage} alt="메인 로고 타이틀" className="w-52" />
           </h1>
         </Link>
       </section>
       {/* 메뉴 */}
-      <section className="flex items-center gap-6 text-heading-24 font-normal font-DungGeunMo text-white">
+      <section className="flex items-center gap-4 text-lg font-normal font-DungGeunMo text-white">
         {/* 검색 */}
         {!userData?.data.is_staff && (
           <img
             src={balloon}
             alt="검색 아이콘"
             onClick={() => onClickModalToggleHandlers[SEARCH_MODAL_ID]()}
-            className="cursor-pointer hover:text-primary-500"
+            className="w-6 h-6 cursor-pointer hover:text-primary-500"
           />
         )}
         {/* 카테고리 */}
