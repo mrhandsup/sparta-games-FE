@@ -80,7 +80,7 @@ const GameDetail = () => {
           <img src={loading} className="w-[300px] h-[300px]" alt="로딩 중" />
         </div>
       ) : (
-        <main>
+        <main className="max-w-[1440px] mx-auto ">
           <div className="flex justify-between mt-10 items-center font-DungGeunMo text-[24px] text-gray-300">
             <Link to={`/category?category=${gameCategory}`} className="flex gap-3">
               <CaretLeft />
