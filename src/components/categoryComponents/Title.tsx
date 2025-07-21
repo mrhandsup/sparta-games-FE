@@ -21,10 +21,10 @@ const Title = ({ category }: { category: string }) => {
     <section
       className={`sticky top-20 z-10 flex w-full pb-5 ${
         isScrollActive ? "justify-start items-center mb-[325px] h-[150px]" : "justify-center items-end h-[475px]"
-      } ease-in-out duration-200 bg-cover`}
+      } ease-in-out duration-200 bg-cover bg-center`}
       style={{ backgroundImage: `url(${getImageUrl(category)})` }}
     >
-      <div className="font-DungGeunMo text-[64px] text-white">{category}</div>
+      <div className="w-[1180px] mx-auto font-DungGeunMo text-[64px] text-white">{category}</div>
     </section>
   );
 };
