@@ -1,5 +1,9 @@
 export default function removeHTMLTags(html: string) {
-  // 정규 표현식을 사용하여 모든 HTML 태그 제거
-  const newHtml = html.replace(/<\/?[^>]+(>|$)/g, "");
-  return newHtml;
+  // 1. &nbsp;를 공백으로 변환
+  const withoutNbsp = html.replace(/&nbsp;/g, " ");
+
+  // 2. HTML 태그 제거
+  const cleanText = withoutNbsp.replace(/<\/?[^>]+(>|$)/g, "");
+
+  return cleanText;
 }

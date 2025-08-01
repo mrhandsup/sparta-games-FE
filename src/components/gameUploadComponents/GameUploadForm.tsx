@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import { postGameList, putGameList } from "../../api/game";
@@ -42,7 +42,7 @@ const GameUploadForm = ({ note, previousGameData, isEditMode }: Props) => {
   const EDIT_SUCCESS_ID = "editSuccessId";
   const NO_ACTION_MODAL_ID = "noActionModal";
 
-  const { register, watch, control, setValue, formState, handleSubmit, trigger, getValues, resetField } =
+  const { register, watch, control, setValue, formState, handleSubmit, trigger, getValues, resetField, reset } =
     useForm<TGameUploadInput>({
       mode: "onChange",
     });
@@ -68,6 +68,13 @@ const GameUploadForm = ({ note, previousGameData, isEditMode }: Props) => {
 
   const [gameUploadResponse, setGameUploadResponse] = useState<number | undefined>(0);
   const [screenShotIds, setScreenShotIds] = useState<number[]>([]);
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    if (pathname === "/game-upload") {
+      reset();
+    }
+  }, [pathname]);
 
   useEffect(() => {
     register("content", {
@@ -82,7 +89,9 @@ const GameUploadForm = ({ note, previousGameData, isEditMode }: Props) => {
   useEffect(() => {
     if (previousGameData) {
       setValue("category", previousGameData.category[0].name);
+      setValue("title", previousGameData.title);
       setValue("content", previousGameData.content);
+      setValue("video", previousGameData?.youtube_url);
     }
   }, [previousGameData, setValue]);
 
