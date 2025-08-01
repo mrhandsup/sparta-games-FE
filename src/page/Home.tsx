@@ -34,7 +34,7 @@ const Home = () => {
         <div className="bg-gray-800 w-full">
           <Hero />
         </div>
-        <div className="relative flex flex-col mx-auto max-w-[1440px] min-w-[1440px] font-Pretendard">
+        <div className="relative flex flex-col font-Pretendard">
           <GameCardList data={gameListData?.data.trending_games} noNavigation>
             <div className="flex items-center gap-4">
               <img src={pixelMeteor} />
