@@ -22,7 +22,6 @@ const GameMediaFields = ({ watch, register, formState, onChangeFileHandler, prev
         <input
           type="text"
           placeholder="유튜브에서 전체/일부공개 설정 후 링크 삽입"
-          defaultValue={previousGameData?.youtube_url}
           {...register("video", {
             validate: (value) => {
               if (!value) return true;

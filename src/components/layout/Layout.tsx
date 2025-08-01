@@ -17,7 +17,7 @@ const Layout = () => {
       </div>
       <div
         className={`${
-          pathname === "/game-upload" ? "max-w-[1180px]" : "min-w-[1440px]"
+          pathname.includes("game-detail") || pathname.includes("my-page") ? "min-w-[1440px]" : "max-w-[1180px]"
         } relative flex flex-col mx-auto  h-full font-Pretendard`}
       >
         <Outlet />

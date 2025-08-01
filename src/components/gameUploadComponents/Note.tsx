@@ -22,7 +22,7 @@ const Note = ({ onClickHandler, state }: Props) => {
   };
 
   return (
-    <section className="px]">
+    <section>
       <div
         className={`overflow-hidden transition-all duration-500 
           ${isExpanded && allChecked ? "max-h-0 opacity-0" : "max-h-[500px] opacity-100"}

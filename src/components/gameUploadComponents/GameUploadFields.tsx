@@ -105,7 +105,6 @@ const GameUploadFields = ({ watch, register, control, isUploading, onChangeFileH
         <input
           type="text"
           placeholder="게임 제목을 입력해주세요."
-          defaultValue={previousGameData?.title}
           {...register("title", { required: "필수" })}
           className="py-4 px-4 w-full h-[47px] bg-gray-700 border border-solid border-white rounded-md text-base placeholder:text-gray-100"
         />
