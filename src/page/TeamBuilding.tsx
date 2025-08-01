@@ -183,7 +183,7 @@ export default function TeamBuilding() {
             </div>
           </div>
           {recommendedPosts?.length === 0 ? (
-            <div className="py-10 font-DungGeunMo text-[40px] text-center text-white">
+            <div className="py-10 font-DungGeunMo text-[30px] text-center text-white">
               아직 등록된 게시글이 없습니다!
             </div>
           ) : (

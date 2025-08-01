@@ -10,6 +10,11 @@ const Layout = () => {
     window.scrollTo(0, 0);
   }, [pathname]);
 
+  const fullLayOutPath =
+    pathname === "/" ||
+    pathname === "/community/team-building" ||
+    pathname.includes("game-detail") ||
+    pathname.includes("my-page");
   return (
     <>
       <div className="sticky top-0 z-20 bg-gray-800 flex align-middle justify-center ">
@@ -17,7 +22,7 @@ const Layout = () => {
       </div>
       <div
         className={`${
-          pathname.includes("game-detail") || pathname.includes("my-page") ? "min-w-[1440px]" : "max-w-[1180px]"
+          fullLayOutPath ? "min-w-[1440px]" : "max-w-[1180px]"
         } relative flex flex-col mx-auto  h-full font-Pretendard`}
       >
         <Outlet />
