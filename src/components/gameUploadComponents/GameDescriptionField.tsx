@@ -1,21 +1,19 @@
-import { UseFormSetValue, UseFormWatch } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import ReactQuill from "react-quill";
 import { TGameUploadInput } from "../../types";
 import "react-quill/dist/quill.snow.css";
 
-type Props = {
-  watch: UseFormWatch<TGameUploadInput>;
-  setValue: UseFormSetValue<TGameUploadInput>;
-};
-const GameDescriptionField = ({ watch, setValue }: Props) => {
+const GameDescriptionField = () => {
+  const { watch, setValue } = useFormContext<TGameUploadInput>();
+
   const editorContent = watch("content");
 
   const handleEditorChange = (editorState: string) => {
-    // react-quill 내용 작성 중, 내용 모두 지울 경우 생기는 <p></br></p> 태그 제거하여 빈 문자열로 설정
-    const plainText = editorState.replace(/<(.|\n)*?>/g, "").trim();
+    const tempContainer = document.createElement("div");
+    tempContainer.innerHTML = editorState;
 
-    // 내용이 없을 경우 빈 문자열로 설정해서 isValid가 false가 되도록 함
-    const cleanedContent = plainText === "" ? "" : editorState;
+    const isEmptyContent = tempContainer.innerHTML.trim() === "<p><br></p>";
+    const cleanedContent = isEmptyContent ? "" : editorState;
 
     setValue("content", cleanedContent, { shouldValidate: true });
   };

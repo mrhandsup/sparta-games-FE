@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 
 import { postGameList, putGameList } from "../../api/game";
 
@@ -42,10 +42,15 @@ const GameUploadForm = ({ note, previousGameData, isEditMode }: Props) => {
   const EDIT_SUCCESS_ID = "editSuccessId";
   const NO_ACTION_MODAL_ID = "noActionModal";
 
-  const { register, watch, control, setValue, formState, handleSubmit, trigger, getValues, resetField, reset } =
-    useForm<TGameUploadInput>({
-      mode: "onChange",
-    });
+  const methods = useForm<TGameUploadInput>({
+    mode: "onChange",
+    defaultValues: {
+      thumbnail: previousGameData?.thumbnail || "",
+      gameFile: previousGameData?.gamefile || "",
+    },
+  });
+
+  const { register, setValue, handleSubmit, trigger, getValues, resetField, reset } = methods;
 
   const navigate = useNavigate();
   const { userData } = userStore();
@@ -72,7 +77,11 @@ const GameUploadForm = ({ note, previousGameData, isEditMode }: Props) => {
 
   useEffect(() => {
     if (pathname === "/game-upload") {
-      reset();
+      reset({
+        thumbnail: "",
+        gameFile: "",
+        title: "",
+      });
     }
   }, [pathname]);
 
@@ -88,11 +97,13 @@ const GameUploadForm = ({ note, previousGameData, isEditMode }: Props) => {
 
   useEffect(() => {
     if (previousGameData) {
-      setValue("category", previousGameData.category[0].name);
-      setValue("title", previousGameData.title);
-      setValue("content", previousGameData.content);
+      setValue("category", previousGameData.category[0].name, { shouldValidate: true });
+      setValue("title", previousGameData.title, { shouldValidate: true });
+      setValue("content", previousGameData.content, { shouldValidate: true });
       setValue("video", previousGameData?.youtube_url);
     }
+
+    trigger();
   }, [previousGameData, setValue]);
 
   useEffect(() => {
@@ -156,7 +167,6 @@ const GameUploadForm = ({ note, previousGameData, isEditMode }: Props) => {
     const urlArr: string[] = [];
     const fileInput = document.getElementById(inputId) as HTMLInputElement;
 
-    // JSZip을 활용하여 업로드한 파일이 WebGL 파일인지 유효성 검사
     if (
       inputId === "gameFile" &&
       (files[0].type === "application/zip" ||
@@ -166,10 +176,23 @@ const GameUploadForm = ({ note, previousGameData, isEditMode }: Props) => {
       setIsUploading(true);
       const zip = await JSZip.loadAsync(files[0]);
       const fileNames = Object.keys(zip.files);
+      const indexPath = Object.keys(zip.files).find((path) => path.endsWith("index.html"));
+      // 업로드한 파일이 WebGL 파일인지(gz 확장자를 가진 파일이 있는지) 확인
       const gzFilesInBuild = fileNames.filter((name) => name.endsWith(".gz"));
+
+      // WebGl로 빌드된 파일이 루트 폴더에 위치하는지 확인
+      const depth = indexPath && indexPath.split("/").filter(Boolean).length - 1;
 
       if (gzFilesInBuild.length === 0) {
         setNoActionModalData(noActionData.gameFileUploadWarning);
+        onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+        fileInput.value = "";
+        resetField(inputId as "gameFile");
+        setIsUploading(false);
+      }
+
+      if (depth && depth > 0) {
+        setNoActionModalData(noActionData.gameFileDepthWarning);
         onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
         fileInput.value = "";
         resetField(inputId as "gameFile");
@@ -266,37 +289,28 @@ const GameUploadForm = ({ note, previousGameData, isEditMode }: Props) => {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmitHandler)}>
-        <div className="flex gap-10 my-10 text-gray-300 text-body-18">
-          <GameUploadFields
-            watch={watch}
-            register={register}
-            control={control}
-            isUploading={isUploading}
-            onChangeFileHandler={onChangeFileHandler}
-            previousGameData={previousGameData}
+      <FormProvider {...methods}>
+        <form onSubmit={handleSubmit(onSubmitHandler)}>
+          <div className="flex gap-10 my-10 text-gray-300 text-body-18">
+            <GameUploadFields
+              isUploading={isUploading}
+              onChangeFileHandler={onChangeFileHandler}
+              previousGameData={previousGameData}
+            />
+
+            <GameMediaFields onChangeFileHandler={onChangeFileHandler} previousGameData={previousGameData} />
+          </div>
+
+          <GameDescriptionField />
+
+          <GameSubmitButton
+            note={note}
+            isEditMode={isEditMode}
+            openUploadCheckModal={onClickModalToggleHandlers[GAME_UPLOAD_CHECK_ID]}
+            onEditRequest={() => onEditHandler(previousGameData?.id)}
           />
-
-          <GameMediaFields
-            watch={watch}
-            register={register}
-            formState={formState}
-            onChangeFileHandler={onChangeFileHandler}
-            previousGameData={previousGameData}
-          />
-        </div>
-
-        <GameDescriptionField watch={watch} setValue={setValue} />
-
-        <GameSubmitButton
-          formState={formState}
-          note={note}
-          isEditMode={isEditMode}
-          openUploadCheckModal={onClickModalToggleHandlers[GAME_UPLOAD_CHECK_ID]}
-          onEditRequest={() => onEditHandler(previousGameData?.id)}
-        />
-      </form>
-
+        </form>
+      </FormProvider>
       {noActionModalData && (
         <SpartaReactionModal
           isOpen={modalToggles[NO_ACTION_MODAL_ID]}
@@ -323,7 +337,6 @@ const GameUploadForm = ({ note, previousGameData, isEditMode }: Props) => {
           gameUploadResponse={gameUploadResponse}
           onSubmitHandler={onSubmitHandler}
           onClose={onClickModalToggleHandlers[GAME_UPLOAD_CHECK_ID]}
-          isEditMode={isEditMode}
         />
       </SpartaModal>
 
@@ -341,7 +354,7 @@ const GameUploadForm = ({ note, previousGameData, isEditMode }: Props) => {
             className="w-full rounded-md transition-colors duration-200 box-border h-10 text-title-16 font-normal bg-alert-default hover:bg-alert-hover"
             onClick={() => {
               onClickModalToggleHandlers[EDIT_SUCCESS_ID]();
-              navigate(`/my-page/${userData?.data.user_id}`);
+              navigate(`/my-page/${userData?.data.user_id}?tab=develop`);
             }}
           >
             확인

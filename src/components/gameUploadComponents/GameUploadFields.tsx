@@ -1,4 +1,4 @@
-import { Control, UseFormRegister, UseFormWatch } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 import { GAME_CATEGORY } from "../../constant/constant";
 import SpartaChipSelect from "../../spartaDesignSystem/SpartaChipSelect";
 import { TGamePlayData, TGameUploadInput } from "../../types";
@@ -6,52 +6,60 @@ import { ChangeEvent } from "react";
 import { extractFileName } from "../../util/extractFileName";
 
 type Props = {
-  watch: UseFormWatch<TGameUploadInput>;
-  register: UseFormRegister<TGameUploadInput>;
-  control: Control<TGameUploadInput>;
   isUploading: boolean;
   onChangeFileHandler: (e: ChangeEvent<HTMLInputElement>) => Promise<void>;
   previousGameData: TGamePlayData | undefined;
 };
 
-const GameUploadFields = ({ watch, register, control, isUploading, onChangeFileHandler, previousGameData }: Props) => {
+const GameUploadFields = ({ isUploading, onChangeFileHandler, previousGameData }: Props) => {
+  const { control, register } = useFormContext<TGameUploadInput>();
+
   return (
-    <div className="flex flex-col gap-4 w-[65%]">
+    <div className="flex flex-col gap-4 w-[65%] max-w-[756px]">
       <div className="flex flex-col gap-2">
         <div className="flex items-center gap-2 text-base font-semibold text-white">
           썸네일 업로드<span className="text-body-14 text-primary-500">*필수</span>
         </div>
 
-        <div className="flex gap-2">
-          <div className="py-3 px-4 w-full h-[47px] bg-gray-700 border border-solid border-white rounded-md resize-none whitespace-nowrap overflow-hidden text-ellipsis text-base">
-            {watch("thumbnail")?.length > 0
-              ? watch("thumbnail")[0]?.name
-              : previousGameData?.thumbnail
-              ? extractFileName("thumbnail", previousGameData?.thumbnail)
-              : "1000px*800px이하의 이미지 파일을 권장합니다."}
-          </div>
+        <Controller
+          name="thumbnail"
+          control={control}
+          render={({ field }) => {
+            const value = field.value;
+            return (
+              <div className="flex gap-2">
+                <div className="py-3 px-4 w-full h-[47px] bg-gray-700 border border-solid border-white rounded-md resize-none whitespace-nowrap overflow-hidden text-ellipsis text-base">
+                  {value instanceof FileList
+                    ? value[0]?.name
+                    : value
+                    ? extractFileName("thumbnail", value as string)
+                    : "1000px*800px 이하의 이미지 파일을 권장합니다."}
+                </div>
 
-          <label
-            htmlFor="gameThumbnail"
-            className={`flex justify-center items-center ${
-              watch("thumbnail")?.length > 0 || previousGameData?.thumbnail ? "bg-primary-500" : "bg-gray-100"
-            }  text-black rounded-sm text-title-16 font-bold whitespace-nowrap cursor-pointer`}
-          >
-            {watch("thumbnail")?.length > 0 || previousGameData?.thumbnail ? (
-              <p className="px-5">수정하기</p>
-            ) : (
-              <p className="px-7">업로드</p>
-            )}
-          </label>
+                <label
+                  htmlFor="gameThumbnail"
+                  className={`flex justify-center items-center ${
+                    value ? "bg-primary-500" : "bg-gray-100"
+                  }  text-black rounded-sm text-title-16 font-bold whitespace-nowrap cursor-pointer`}
+                >
+                  <p className={`${value ? "px-5" : "px-7"}`}>{value ? "수정하기" : "업로드"}</p>
+                </label>
 
-          <input
-            id="gameThumbnail"
-            type="file"
-            accept="image/*"
-            {...register("thumbnail", { onChange: onChangeFileHandler, required: "필수" })}
-            className="hidden"
-          />
-        </div>
+                <input
+                  id="gameThumbnail"
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const files = e.target.files;
+                    field.onChange(files);
+                    onChangeFileHandler(e); // 기존의 핸들러도 호출
+                  }}
+                  className="hidden"
+                />
+              </div>
+            );
+          }}
+        />
       </div>
 
       <div className="flex flex-col gap-2">
@@ -59,42 +67,52 @@ const GameUploadFields = ({ watch, register, control, isUploading, onChangeFileH
           파일업로드 <span className="text-body-14 text-primary-500">*필수</span>
         </div>
 
-        <div className="flex gap-2">
-          <div className="py-3 px-4 w-full h-[47px] bg-gray-700 border border-solid border-white rounded-md resize-none whitespace-nowrap overflow-hidden text-ellipsis text-base">
-            {!watch("gameFile")
-              ? "파일을 불러오는 중입니다. 잠시만 기다려주세요."
-              : isUploading
-              ? "파일을 검사중입니다."
-              : watch("gameFile")?.length > 0
-              ? (watch("gameFile")[0] as File)?.name
-              : previousGameData?.gamefile
-              ? decodeURIComponent(extractFileName("gameFile", previousGameData?.gamefile)!)
-              : "500mb 이하 Zip파일로 업로드 해주세요."}
-          </div>
+        <Controller
+          name="gameFile"
+          control={control}
+          render={({ field }) => (
+            <div className="flex gap-2">
+              <div className="py-3 px-4 w-full h-[47px] bg-gray-700 border border-solid border-white rounded-md resize-none whitespace-nowrap overflow-hidden text-ellipsis text-base">
+                {isUploading
+                  ? "파일을 검사중입니다."
+                  : field.value?.length > 0 && typeof field.value === "object"
+                  ? field.value[0]?.name
+                  : previousGameData?.gamefile
+                  ? decodeURIComponent(extractFileName("gameFile", previousGameData?.gamefile)!)
+                  : "500mb 이하 Zip파일로 업로드 해주세요."}
+              </div>
 
-          <label
-            htmlFor="gameFile"
-            className={`flex justify-center items-center ${
-              (!isUploading && watch("gameFile")?.length > 0) || previousGameData?.gamefile
-                ? "bg-primary-500"
-                : "bg-gray-100"
-            } text-black rounded-sm text-title-16 font-bold whitespace-nowrap cursor-pointer`}
-          >
-            {(!isUploading && watch("gameFile")?.length > 0) || previousGameData?.gamefile ? (
-              <p className="px-5">수정하기</p>
-            ) : (
-              <p className="px-7">업로드</p>
-            )}
-          </label>
+              <label
+                htmlFor="gameFile"
+                className={`flex justify-center items-center ${
+                  (!isUploading && field.value?.length > 0) || previousGameData?.gamefile
+                    ? "bg-primary-500"
+                    : "bg-gray-100"
+                } text-black rounded-sm text-title-16 font-bold whitespace-nowrap cursor-pointer`}
+              >
+                {(!isUploading && field.value?.length > 0) || previousGameData?.gamefile ? (
+                  <p className="px-5">수정하기</p>
+                ) : (
+                  <p className="px-7">업로드</p>
+                )}
+              </label>
 
-          <input
-            id="gameFile"
-            type="file"
-            accept=".zip, .7z"
-            {...register("gameFile", { onChange: onChangeFileHandler, required: "필수" })}
-            className="hidden"
-          />
-        </div>
+              <input
+                id="gameFile"
+                type="file"
+                accept=".zip, .7z"
+                className="hidden"
+                onChange={(e) => {
+                  const files = e.target.files;
+                  if (files && files.length > 0) {
+                    field.onChange(files);
+                    onChangeFileHandler(e);
+                  }
+                }}
+              />
+            </div>
+          )}
+        />
       </div>
 
       <div className="flex flex-col gap-2">
