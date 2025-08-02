@@ -1,19 +1,18 @@
-import { FormState, UseFormRegister, UseFormWatch } from "react-hook-form";
+import { FormState, useFormContext, UseFormRegister, UseFormWatch } from "react-hook-form";
 import { TGamePlayData, TGameUploadInput } from "../../types";
 import { ChangeEvent } from "react";
 import { extractFileName } from "../../util/extractFileName";
 
 type Props = {
-  watch: UseFormWatch<TGameUploadInput>;
-  register: UseFormRegister<TGameUploadInput>;
-  formState: FormState<TGameUploadInput>;
   onChangeFileHandler: (e: ChangeEvent<HTMLInputElement>) => Promise<void>;
   previousGameData: TGamePlayData | undefined;
 };
 
-const GameMediaFields = ({ watch, register, formState, onChangeFileHandler, previousGameData }: Props) => {
+const GameMediaFields = ({ onChangeFileHandler, previousGameData }: Props) => {
+  const { watch, register, formState } = useFormContext<TGameUploadInput>();
+
   return (
-    <div className="flex flex-col gap-[26px] w-[33%]">
+    <div className="flex flex-col gap-[26px] w-[33%] max-w-[384px]">
       <div className="flex flex-col gap-2">
         <div className="flex items-center gap-1 text-base font-semibold text-white">
           플레이 영상<span className="text-body-14 text-alert-default">*선택</span>

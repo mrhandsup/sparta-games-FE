@@ -1,4 +1,4 @@
-import { Control, UseFormRegister, UseFormWatch } from "react-hook-form";
+import { Control, useFormContext, UseFormRegister, UseFormWatch } from "react-hook-form";
 import { GAME_CATEGORY } from "../../constant/constant";
 import SpartaChipSelect from "../../spartaDesignSystem/SpartaChipSelect";
 import { TGamePlayData, TGameUploadInput } from "../../types";
@@ -6,17 +6,15 @@ import { ChangeEvent } from "react";
 import { extractFileName } from "../../util/extractFileName";
 
 type Props = {
-  watch: UseFormWatch<TGameUploadInput>;
-  register: UseFormRegister<TGameUploadInput>;
-  control: Control<TGameUploadInput>;
   isUploading: boolean;
   onChangeFileHandler: (e: ChangeEvent<HTMLInputElement>) => Promise<void>;
   previousGameData: TGamePlayData | undefined;
 };
 
-const GameUploadFields = ({ watch, register, control, isUploading, onChangeFileHandler, previousGameData }: Props) => {
+const GameUploadFields = ({ isUploading, onChangeFileHandler, previousGameData }: Props) => {
+  const { control, watch, register } = useFormContext<TGameUploadInput>();
   return (
-    <div className="flex flex-col gap-4 w-[65%]">
+    <div className="flex flex-col gap-4 w-[65%] max-w-[756px]">
       <div className="flex flex-col gap-2">
         <div className="flex items-center gap-2 text-base font-semibold text-white">
           썸네일 업로드<span className="text-body-14 text-primary-500">*필수</span>

@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 
 import { postGameList, putGameList } from "../../api/game";
 
@@ -42,10 +42,11 @@ const GameUploadForm = ({ note, previousGameData, isEditMode }: Props) => {
   const EDIT_SUCCESS_ID = "editSuccessId";
   const NO_ACTION_MODAL_ID = "noActionModal";
 
-  const { register, watch, control, setValue, formState, handleSubmit, trigger, getValues, resetField, reset } =
-    useForm<TGameUploadInput>({
-      mode: "onChange",
-    });
+  const methods = useForm<TGameUploadInput>({
+    mode: "onChange",
+  });
+
+  const { register, setValue, formState, handleSubmit, trigger, getValues, resetField, reset } = methods;
 
   const navigate = useNavigate();
   const { userData } = userStore();
@@ -166,10 +167,22 @@ const GameUploadForm = ({ note, previousGameData, isEditMode }: Props) => {
       setIsUploading(true);
       const zip = await JSZip.loadAsync(files[0]);
       const fileNames = Object.keys(zip.files);
+      const indexPath = Object.keys(zip.files).find((path) => path.endsWith("index.html"));
       const gzFilesInBuild = fileNames.filter((name) => name.endsWith(".gz"));
 
+      const depth = indexPath && indexPath.split("/").filter(Boolean).length - 1;
+
+      console.log("depth", depth);
       if (gzFilesInBuild.length === 0) {
         setNoActionModalData(noActionData.gameFileUploadWarning);
+        onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+        fileInput.value = "";
+        resetField(inputId as "gameFile");
+        setIsUploading(false);
+      }
+
+      if (depth && depth > 0) {
+        setNoActionModalData(noActionData.gameFileDepthWarning);
         onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
         fileInput.value = "";
         resetField(inputId as "gameFile");
@@ -266,37 +279,29 @@ const GameUploadForm = ({ note, previousGameData, isEditMode }: Props) => {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmitHandler)}>
-        <div className="flex gap-10 my-10 text-gray-300 text-body-18">
-          <GameUploadFields
-            watch={watch}
-            register={register}
-            control={control}
-            isUploading={isUploading}
-            onChangeFileHandler={onChangeFileHandler}
-            previousGameData={previousGameData}
-          />
+      <FormProvider {...methods}>
+        <form onSubmit={handleSubmit(onSubmitHandler)}>
+          <div className="flex gap-10 my-10 text-gray-300 text-body-18">
+            <GameUploadFields
+              isUploading={isUploading}
+              onChangeFileHandler={onChangeFileHandler}
+              previousGameData={previousGameData}
+            />
 
-          <GameMediaFields
-            watch={watch}
-            register={register}
+            <GameMediaFields onChangeFileHandler={onChangeFileHandler} previousGameData={previousGameData} />
+          </div>
+
+          <GameDescriptionField />
+
+          <GameSubmitButton
             formState={formState}
-            onChangeFileHandler={onChangeFileHandler}
-            previousGameData={previousGameData}
+            note={note}
+            isEditMode={isEditMode}
+            openUploadCheckModal={onClickModalToggleHandlers[GAME_UPLOAD_CHECK_ID]}
+            onEditRequest={() => onEditHandler(previousGameData?.id)}
           />
-        </div>
-
-        <GameDescriptionField watch={watch} setValue={setValue} />
-
-        <GameSubmitButton
-          formState={formState}
-          note={note}
-          isEditMode={isEditMode}
-          openUploadCheckModal={onClickModalToggleHandlers[GAME_UPLOAD_CHECK_ID]}
-          onEditRequest={() => onEditHandler(previousGameData?.id)}
-        />
-      </form>
-
+        </form>
+      </FormProvider>
       {noActionModalData && (
         <SpartaReactionModal
           isOpen={modalToggles[NO_ACTION_MODAL_ID]}

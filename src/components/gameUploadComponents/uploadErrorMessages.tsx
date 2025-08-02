@@ -50,4 +50,14 @@ export const uploadErrorMessages = (onClick: () => void): { [key: string]: Parti
     },
     type: "alert",
   },
+
+  gameFileDepthWarning: {
+    title: "확인해주세요!",
+    content: "WebGL로 빌드된 파일은 루트 폴더에 있어야 정상적으로 처리됩니다.",
+    btn1: {
+      text: "확인",
+      onClick: onClick,
+    },
+    type: "alert",
+  },
 });
