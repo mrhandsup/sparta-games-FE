@@ -1,4 +1,4 @@
-import { FormState, useFormContext, UseFormRegister, UseFormWatch } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import { TGamePlayData, TGameUploadInput } from "../../types";
 import { ChangeEvent } from "react";
 import { extractFileName } from "../../util/extractFileName";

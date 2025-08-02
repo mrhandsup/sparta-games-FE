@@ -198,8 +198,8 @@ export type TGameUploadInput = {
   title: string;
   category: string;
   content: string;
-  gameFile: File[];
-  thumbnail: File[];
+  gameFile: File[] | string;
+  thumbnail: File[] | string;
   stillCut: File[][];
   video: string;
 };

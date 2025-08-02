@@ -44,9 +44,13 @@ const GameUploadForm = ({ note, previousGameData, isEditMode }: Props) => {
 
   const methods = useForm<TGameUploadInput>({
     mode: "onChange",
+    defaultValues: {
+      thumbnail: previousGameData?.thumbnail || "",
+      gameFile: previousGameData?.gamefile || "",
+    },
   });
 
-  const { register, setValue, formState, handleSubmit, trigger, getValues, resetField, reset } = methods;
+  const { register, setValue, handleSubmit, trigger, getValues, resetField, reset } = methods;
 
   const navigate = useNavigate();
   const { userData } = userStore();
@@ -73,7 +77,11 @@ const GameUploadForm = ({ note, previousGameData, isEditMode }: Props) => {
 
   useEffect(() => {
     if (pathname === "/game-upload") {
-      reset();
+      reset({
+        thumbnail: "",
+        gameFile: "",
+        title: "",
+      });
     }
   }, [pathname]);
 
@@ -89,11 +97,13 @@ const GameUploadForm = ({ note, previousGameData, isEditMode }: Props) => {
 
   useEffect(() => {
     if (previousGameData) {
-      setValue("category", previousGameData.category[0].name);
-      setValue("title", previousGameData.title);
-      setValue("content", previousGameData.content);
+      setValue("category", previousGameData.category[0].name, { shouldValidate: true });
+      setValue("title", previousGameData.title, { shouldValidate: true });
+      setValue("content", previousGameData.content, { shouldValidate: true });
       setValue("video", previousGameData?.youtube_url);
     }
+
+    trigger();
   }, [previousGameData, setValue]);
 
   useEffect(() => {
@@ -157,7 +167,6 @@ const GameUploadForm = ({ note, previousGameData, isEditMode }: Props) => {
     const urlArr: string[] = [];
     const fileInput = document.getElementById(inputId) as HTMLInputElement;
 
-    // JSZip을 활용하여 업로드한 파일이 WebGL 파일인지 유효성 검사
     if (
       inputId === "gameFile" &&
       (files[0].type === "application/zip" ||
@@ -168,11 +177,12 @@ const GameUploadForm = ({ note, previousGameData, isEditMode }: Props) => {
       const zip = await JSZip.loadAsync(files[0]);
       const fileNames = Object.keys(zip.files);
       const indexPath = Object.keys(zip.files).find((path) => path.endsWith("index.html"));
+      // 업로드한 파일이 WebGL 파일인지(gz 확장자를 가진 파일이 있는지) 확인
       const gzFilesInBuild = fileNames.filter((name) => name.endsWith(".gz"));
 
+      // WebGl로 빌드된 파일이 루트 폴더에 위치하는지 확인
       const depth = indexPath && indexPath.split("/").filter(Boolean).length - 1;
 
-      console.log("depth", depth);
       if (gzFilesInBuild.length === 0) {
         setNoActionModalData(noActionData.gameFileUploadWarning);
         onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
@@ -294,7 +304,6 @@ const GameUploadForm = ({ note, previousGameData, isEditMode }: Props) => {
           <GameDescriptionField />
 
           <GameSubmitButton
-            formState={formState}
             note={note}
             isEditMode={isEditMode}
             openUploadCheckModal={onClickModalToggleHandlers[GAME_UPLOAD_CHECK_ID]}
@@ -328,7 +337,6 @@ const GameUploadForm = ({ note, previousGameData, isEditMode }: Props) => {
           gameUploadResponse={gameUploadResponse}
           onSubmitHandler={onSubmitHandler}
           onClose={onClickModalToggleHandlers[GAME_UPLOAD_CHECK_ID]}
-          isEditMode={isEditMode}
         />
       </SpartaModal>
 
@@ -346,7 +354,7 @@ const GameUploadForm = ({ note, previousGameData, isEditMode }: Props) => {
             className="w-full rounded-md transition-colors duration-200 box-border h-10 text-title-16 font-normal bg-alert-default hover:bg-alert-hover"
             onClick={() => {
               onClickModalToggleHandlers[EDIT_SUCCESS_ID]();
-              navigate(`/my-page/${userData?.data.user_id}`);
+              navigate(`/my-page/${userData?.data.user_id}?tab=develop`);
             }}
           >
             확인

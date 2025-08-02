@@ -15,10 +15,9 @@ type Props = {
   gameUploadResponse: number | undefined;
   onSubmitHandler: SubmitHandler<TGameUploadInput>;
   onClose: () => void;
-  isEditMode: boolean;
 };
 
-const UploadCheck = ({ gameUploadResponse, handleSubmit, onSubmitHandler, onClose, isEditMode }: Props) => {
+const UploadCheck = ({ gameUploadResponse, handleSubmit, onSubmitHandler, onClose }: Props) => {
   const GAME_UPLOAD_SUCCESS_ID = "gameUploadSuccessModal";
 
   const { userData } = userStore();
@@ -99,7 +98,7 @@ const UploadCheck = ({ gameUploadResponse, handleSubmit, onSubmitHandler, onClos
           isPhraseCorrect && !isLoading ? "bg-primary-500" : "bg-gray-400"
         } text-center font-bold`}
       >
-        {isPhraseCorrect && !isEditMode ? (
+        {isPhraseCorrect ? (
           <button
             onClick={onClickUploadGame}
             className={`w-full curo ${isLoading ? "cursor-wait" : "cursor-pointer"}`}
@@ -130,7 +129,7 @@ const UploadCheck = ({ gameUploadResponse, handleSubmit, onSubmitHandler, onClos
               잠시만 기다려주세요🙂
             </span>
             <button
-              onClick={() => navigate(`/my-page/${userData?.data.user_id}`)}
+              onClick={() => navigate(`/my-page/${userData?.data.user_id}?tab=develop`)}
               className="w-full py-3 bg-primary-500 font-extrabold"
             >
               확인
