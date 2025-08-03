@@ -83,7 +83,7 @@ const DeleteCheck = ({ gamePk, onClose }: Props) => {
             문구가 확인되었습니다. 게임 삭제를 진행합니다.
           </button>
         ) : (
-          <button disabled={true} className="w-full">
+          <button disabled className="w-full">
             문구를 올바르게 입력해주세요.
           </button>
         )}

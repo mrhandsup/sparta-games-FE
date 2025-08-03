@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { getGameDetail } from "../api/game";
@@ -22,6 +22,7 @@ import DeleteCheck from "../components/gameUploadComponents/DeleteCehck";
 
 import loading from "../assets/common/loading.gif";
 import CaretLeft from "../assets/CaretLeft";
+import SpartaPhraseCheckModal from "../spartaDesignSystem/SpartaPhraseCheckModal";
 
 const GameDetail = () => {
   const GAME_EDIT_CHECK_ID = "gameEditCheckId";
@@ -34,6 +35,7 @@ const GameDetail = () => {
     NO_ACTION_MODAL_ID,
   ]);
 
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const gameDetailId = Number(searchParams.get("id"));
 
@@ -125,11 +127,34 @@ const GameDetail = () => {
         modalId={GAME_EDIT_CHECK_ID}
         closeOnClickOutside={false}
       >
-        <EditCheck
+        {/* <EditCheck
           gamePk={gameDetailId}
           gamePlayData={gamePlayData?.data}
           onClose={onClickModalToggleHandlers[GAME_EDIT_CHECK_ID]}
-        />
+        /> */}
+        <SpartaPhraseCheckModal
+          title="수정하기 전 확인해주세요!"
+          requiredPhrase="게임을 수정하겠습니다"
+          buttonEnabledText="문구가 확인되었습니다. 게임 수정을 진행합니다."
+          onClose={onClickModalToggleHandlers[GAME_EDIT_CHECK_ID]}
+          onClickEvent={() => {
+            navigate(`/game-edit/${gameDetailId}`, { state: { gameData: gamePlayData?.data, isEditMode: true } });
+          }}
+          modalPurpose="edit"
+        >
+          <div className="text-white flex flex-col gap-2">
+            <li>
+              게임파일을 재업로드 할 시 <span className="text-alert-default">재검수</span>가 진행되어 시간이 소요됩니다.
+            </li>
+            <li className="ms-4">이외 기본적인 제목, 게임설명 수정 시 검수과정 없이 바로 업데이트가 진행됩니다.</li>
+            <li className=" ms-4">
+              일부 PC환경에서 썸네일과 스틸컷 파일이 불러와지지 않는 오류가 있으며, 현재 해결중에 있습니다.
+            </li>
+            <li>
+              수정을 하시기 위해서는 <b className="text-alert-default">‘게임을 수정하겠습니다'</b>를 입력해주세요!
+            </li>
+          </div>
+        </SpartaPhraseCheckModal>
       </SpartaModal>
 
       <SpartaModal
