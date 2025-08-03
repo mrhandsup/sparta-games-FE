@@ -52,7 +52,7 @@ const GameUploadFields = ({ isUploading, onChangeFileHandler, previousGameData }
                   onChange={(e) => {
                     const files = e.target.files;
                     field.onChange(files);
-                    onChangeFileHandler(e); // 기존의 핸들러도 호출
+                    onChangeFileHandler(e);
                   }}
                   className="hidden"
                 />
