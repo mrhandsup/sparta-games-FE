@@ -1,14 +1,12 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { getTeamBuild, getTeamBuildProfileByUserId } from "../../../../api/teambuilding";
+import { deleteTeamBuildProfile, getTeamBuildProfileByUserId } from "../../../../api/teambuilding";
 
 import SpartaButton from "../../../../spartaDesignSystem/SpartaButton";
 import SpartaModal from "../../../../spartaDesignSystem/SpartaModal";
 
 import useModalToggles from "../../../../hook/useModalToggles";
-
-import DeleteCheck from "./DeleteCheck";
 
 import { TTeamBuildPostResponse, TTeamBuildProfileUserResponse, TUserData } from "../../../../types";
 
@@ -22,6 +20,9 @@ import RenderPosts from "../RenderPosts";
 
 import { AiFillCaretRight } from "react-icons/ai";
 import TeamBuildLogModal from "../TeamBuildLogModal";
+import SpartaReactionModal from "../../../../spartaDesignSystem/SpartaReactionModal";
+import { userStore } from "../../../../share/store/userStore";
+import SpartaPhraseCheckModal from "../../../../spartaDesignSystem/SpartaPhraseCheckModal";
 
 type MyPageProps = {
   user: TUserData;
@@ -36,13 +37,25 @@ type TeamBuildingProfileProps = {
 type Props = MyPageProps | TeamBuildingProfileProps;
 
 export default function ProfileDetail({ user, isMyPage }: Props) {
+  const GAME_DELETE_CHECK_ID = "gameDeleteCheckId";
+  const TEAM_BUILD_LOG_MODAL = "teamBuildLogModal";
+  const PROFILE_DELETE_SUCCESS_ID = "profileDelteSuccessModal";
+  const NO_ACTION_MODAL_ID = "noActionModal";
+
   const { id } = useParams();
 
   const navigate = useNavigate();
 
-  const GAME_DELETE_CHECK_ID = "gameDeleteCheckId";
-  const TEAM_BUILD_LOG_MODAL = "teamBuildLogModal";
-  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([GAME_DELETE_CHECK_ID, TEAM_BUILD_LOG_MODAL]);
+  const { userData } = userStore();
+
+  const queryClient = useQueryClient();
+
+  const { modalToggles, onClickModalToggleHandlers } = useModalToggles([
+    GAME_DELETE_CHECK_ID,
+    PROFILE_DELETE_SUCCESS_ID,
+    TEAM_BUILD_LOG_MODAL,
+    NO_ACTION_MODAL_ID,
+  ]);
 
   const { data: userTeamBuildPostResponse } = useQuery<TTeamBuildPostResponse>({
     queryKey: ["userteamBuildingPost", Number(id)],
@@ -58,6 +71,15 @@ export default function ProfileDetail({ user, isMyPage }: Props) {
   const profileData = teamBuildprofileResponse?.data;
   const userTeamBuildPost = userTeamBuildPostResponse?.data.teambuild_posts;
   const userTeamBuildPostCount = userTeamBuildPostResponse?.pagination.count;
+
+  const onClickProfileDelete = async () => {
+    const res = await deleteTeamBuildProfile(userData?.data.user_id);
+
+    if (res?.status === "success") {
+      onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+      queryClient.removeQueries({ queryKey: ["teamBuildProfile", userData?.data.user_id] });
+    }
+  };
 
   const purpose =
     profileData?.purpose === "PORTFOLIO"
@@ -87,7 +109,6 @@ export default function ProfileDetail({ user, isMyPage }: Props) {
   const carrer =
     profileData?.career === "STUDENT" ? "대학생" : profileData?.career === "JOBSEEKER" ? "취준생" : "현직자";
 
-  console.log("profileData", profileData, user);
   return (
     <>
       <div className="flex flex-col gap-6 w-full p-11 mb-8 bg-gray-800 rounded-xl">
@@ -308,14 +329,20 @@ export default function ProfileDetail({ user, isMyPage }: Props) {
         커리어 프로필 삭제하기
       </p>
 
-      <SpartaModal
+      <SpartaPhraseCheckModal
         isOpen={modalToggles[GAME_DELETE_CHECK_ID]}
-        onClose={onClickModalToggleHandlers[GAME_DELETE_CHECK_ID]}
         modalId={GAME_DELETE_CHECK_ID}
-        closeOnClickOutside={false}
+        onClose={onClickModalToggleHandlers[GAME_DELETE_CHECK_ID]}
+        onClickEvent={onClickProfileDelete}
+        modalPurpose="profileDelete"
       >
-        <DeleteCheck onClose={onClickModalToggleHandlers[GAME_DELETE_CHECK_ID]} />
-      </SpartaModal>
+        <ul className="list-disc pl-5 leading-6 text-white">
+          <li>일부만 수정하고 싶으신 경우, 수정 기능을 이용해주세요!</li>
+          <li>
+            수정을 하시기 위해서는 <b className="text-error-default ">‘프로필을 삭제하겠습니다’</b>를 입력해주세요!
+          </li>
+        </ul>
+      </SpartaPhraseCheckModal>
 
       <SpartaModal
         modalId={TEAM_BUILD_LOG_MODAL}
@@ -326,6 +353,22 @@ export default function ProfileDetail({ user, isMyPage }: Props) {
       >
         <TeamBuildLogModal userTeamBuildPost={userTeamBuildPost} isMyPage={isMyPage} />
       </SpartaModal>
+
+      <SpartaReactionModal
+        isOpen={modalToggles[NO_ACTION_MODAL_ID]}
+        onClose={onClickModalToggleHandlers[NO_ACTION_MODAL_ID]}
+        modalId={NO_ACTION_MODAL_ID}
+        title="팀빌딩 프로필 삭제 완료"
+        content="팀빌딩 프로필을 성공적으로 삭제했습니다."
+        btn1={{
+          text: "확인했습니다.",
+          onClick: () => {
+            onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+            onClickModalToggleHandlers[GAME_DELETE_CHECK_ID]();
+          },
+        }}
+        type={"error"}
+      />
     </>
   );
 }

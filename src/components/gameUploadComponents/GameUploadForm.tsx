@@ -14,7 +14,6 @@ import { checkFileExtension, checkFileSize, checkFileType } from "../../util/fil
 
 import { TGamePlayData, TGameUploadInput } from "../../types";
 
-import UploadCheck from "./UploadCheck";
 import GameUploadFields from "./GameUploadFields";
 import GameMediaFields from "./GameMediaFields";
 import GameDescriptionField from "./GameDescriptionField";
@@ -376,56 +375,29 @@ const GameUploadForm = ({ note, previousGameData, isEditMode }: Props) => {
         />
       )}
 
-      <SpartaModal
+      <SpartaPhraseCheckModal
         isOpen={modalToggles[GAME_UPLOAD_CHECK_ID]}
-        onClose={onClickModalToggleHandlers[GAME_UPLOAD_CHECK_ID]}
         modalId={GAME_UPLOAD_CHECK_ID}
-        closeOnClickOutside={false}
-      >
-        <SpartaPhraseCheckModal
-          title="게임을 등록하기 전에 확인해주세요!"
-          requiredPhrase="즐거운 게임세상 스파르타게임즈!"
-          buttonEnabledText="문구가 확인되었습니다. 게임 등록을 진행합니다."
-          isPending={createGameMutation.isPending}
-          onClose={onClickModalToggleHandlers[GAME_UPLOAD_CHECK_ID]}
-          onClickEvent={() => {
-            handleSubmit((data) => {
-              const formData = createFormData(data);
-              createGameMutation.mutate(formData);
-            })(); // ← () 꼭 필요함
-          }}
-          modalPurpose="upload"
-        >
-          <div className="">
-            <ul className="font-Pretendard text-white">
-              <li className="flex items-center gap-2 text-sm">
-                <span>·</span> 최대 7일까지 검수기간이 걸릴 수 있습니다.
-              </li>
-              <li className="flex items-center gap-2 text-sm">
-                <span>·</span> 검수가 통과될 시 즉시 홈페이지에서 노출됩니다.
-              </li>
-              <li className="flex items-center gap-2 text-sm">
-                <span>·</span> 검수 중 수정이 진행될 경우, 새롭게 검수가 진행될 수 있으니 다시한번 확인해주시기
-                바랍니다.
-              </li>
-              <li className="flex items-center gap-2 text-sm">
-                <span>·</span> 등록를 희망하신다면,{" "}
-                <b className="text-primary-500">‘즐거운 게임세상 스파르타게임즈!’</b>
-                라고 입력해주시기 바랍니다.
-              </li>
-            </ul>
-          </div>
-        </SpartaPhraseCheckModal>
-        {/* <UploadCheck
-          handleSubmit={handleSubmit}
-          onSubmitHandler={(data) => {
+        isPending={createGameMutation.isPending}
+        onClose={onClickModalToggleHandlers[GAME_UPLOAD_CHECK_ID]}
+        onClickEvent={async () => {
+          await handleSubmit((data) => {
             const formData = createFormData(data);
             createGameMutation.mutate(formData);
-          }}
-          onClose={onClickModalToggleHandlers[GAME_UPLOAD_CHECK_ID]}
-          isPending={createGameMutation.isPending}
-        /> */}
-      </SpartaModal>
+          })();
+        }}
+        modalPurpose="upload"
+      >
+        <ul className="list-disc pl-5 leading-6 text-white">
+          <li>최대 7일까지 검수기간이 걸릴 수 있습니다.</li>
+          <li>검수가 통과될 시 즉시 홈페이지에서 노출됩니다.</li>
+          <li>검수 중 수정이 진행될 경우, 새롭게 검수가 진행될 수 있으니 다시한번 확인해주시기 바랍니다.</li>
+          <li>
+            등록를 희망하신다면, <b className="text-primary-500">‘즐거운 게임세상 스파르타게임즈!’</b>
+            라고 입력해주시기 바랍니다.
+          </li>
+        </ul>
+      </SpartaPhraseCheckModal>
     </>
   );
 };
