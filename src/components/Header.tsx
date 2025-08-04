@@ -1,19 +1,24 @@
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import titleImage from "../assets/titleImage.svg";
-import logo from "../assets/common/logo.svg";
-import balloon from "../assets/headerImage/balloon.svg";
-import CategoryModal from "./headerComponents/CategoryModal";
-
 import { userStore } from "../share/store/userStore";
+
 import useModalToggles from "../hook/useModalToggles";
 import UserStatusPopover from "./headerComponents/UserStatusPopover";
 import SpartaModal from "../spartaDesignSystem/SpartaModal";
 import Login from "./homeComponents/Login";
 import SpartaReactionModal from "../spartaDesignSystem/SpartaReactionModal";
-import type { TSpartaReactionModalProps } from "../spartaDesignSystem/SpartaReactionModal";
-import { useState } from "react";
 import Search from "./headerComponents/SearchModal";
+
+import type { TSpartaReactionModalProps } from "../spartaDesignSystem/SpartaReactionModal";
+
+import titleImage from "../assets/titleImage.svg";
+import logo from "../assets/common/logo.svg";
+import balloon from "../assets/headerImage/balloon.svg";
+import notifyImage from "../assets/headerImage/notify.svg";
+import CategoryModal from "./headerComponents/CategoryModal";
+import gameUploadImage from "../assets/headerImage/gameUpload.svg";
+import bookmarkImage from "../assets/gameDetail/bookmark.svg";
 
 const Header = () => {
   const LOGIN_MODAL_ID = "loginModal";
@@ -47,17 +52,31 @@ const Header = () => {
       },
       type: "alert",
     },
-    // community: {
-    //   title: "개발예정 기능",
-    //   content: "팀 빌딩 기능은 개발 예정입니다.",
-    //   btn1: {
-    //     text: "확인했습니다",
-    //     onClick: () => {
-    //       onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-    //     },
-    //   },
-    //   type: "error",
-    // },
+
+    community: {
+      title: "개발예정 기능",
+      content: "알림 기능은 개발 예정입니다.",
+      btn1: {
+        text: "확인했습니다",
+        onClick: () => {
+          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+        },
+      },
+      type: "error",
+    },
+
+    bookmark: {
+      title: "잠시만요!",
+      content: "즐겨찾기 이동은 로그인 후에 이용해주세요.",
+      btn1: {
+        text: "확인했습니다",
+        onClick: () => {
+          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+        },
+      },
+      type: "alert",
+    },
+
     logout: {
       title: "로그아웃",
       content: "정말 로그아웃 하시겠습니까?",
@@ -81,31 +100,6 @@ const Header = () => {
   const [noActionModalData, setNoActionModalData] = useState<Partial<TSpartaReactionModalProps>>(
     noActionData.gameupload,
   );
-
-  //임시 로그인 "example@example.com", "examplepasswordA1"
-
-  // 비로그인, 일반유저 메뉴 config
-  const generalUserMenu = [
-    {
-      text: "게임업로드",
-      onClick: () => {
-        if (userData) {
-          navigate("/game-upload");
-        } else {
-          setNoActionModalData(noActionData.gameupload);
-          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-        }
-      },
-    },
-    {
-      text: "팀빌딩",
-      onClick: () => {
-        navigate("/community/team-building");
-        setNoActionModalData(noActionData.community);
-        onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-      },
-    },
-  ];
 
   // 어드민 메뉴 config
   const adminUserMenu = [
@@ -138,28 +132,18 @@ const Header = () => {
   ];
 
   return (
-    <header className="max-w-[1180px] flex justify-between items-center py-5 w-full h-20">
+    <header className="max-w-[1180px] flex justify-between items-center w-full h-[60px]">
       {/* 제목 */}
-      <section className="flex items-center gap-2">
-        <img src={logo} alt="메인 로고 아이콘" className="w-10 h-10 rounded-full" />
-        <Link to={userData && userData.data.is_staff ? "/admin/dashboard" : "/"}>
-          <h1>
-            <img src={titleImage} alt="메인 로고 타이틀" className="w-52" />
-          </h1>
-        </Link>
-      </section>
-      {/* 메뉴 */}
-      <section className="flex items-center gap-4 text-lg font-normal font-DungGeunMo text-white">
-        {/* 검색 */}
-        {!userData?.data.is_staff && (
-          <img
-            src={balloon}
-            alt="검색 아이콘"
-            onClick={() => onClickModalToggleHandlers[SEARCH_MODAL_ID]()}
-            className="w-6 h-6 cursor-pointer hover:text-primary-500"
-          />
-        )}
-        {/* 카테고리 */}
+      <section className="flex items-center gap-5 font-DungGeunMo text-lg text-white">
+        <div className="flex items-center gap-2">
+          <img src={logo} alt="메인 로고 아이콘" className="w-10 h-10 rounded-full" />
+          <Link to={userData && userData.data.is_staff ? "/admin/dashboard" : "/"}>
+            <h1>
+              <img src={titleImage} alt="메인 로고 타이틀" className="w-52" />
+            </h1>
+          </Link>
+        </div>
+
         {!userData?.data.is_staff && (
           <div className="relative">
             <p onClick={onClickModalToggleHandlers.category} className="cursor-pointer hover:text-primary-500">
@@ -173,44 +157,102 @@ const Header = () => {
             )}
           </div>
         )}
-        {/* 일반 유저 , 어드민 메뉴 */}
-        {userData && userData.data.is_staff
-          ? adminUserMenu.map((menu, index) => (
-              <div key={index} onClick={menu.onClick} className="cursor-pointer hover:text-primary-500">
-                <p>{menu.text}</p>
-              </div>
-            ))
-          : generalUserMenu.map((menu, index) => (
-              <div key={index} onClick={menu.onClick} className="cursor-pointer hover:text-primary-500">
-                <p>{menu.text}</p>
-              </div>
-            ))}
 
-        {/* 유저 액션 */}
+        <div
+          onClick={() => {
+            navigate("/community/team-building");
+          }}
+          className="cursor-pointer hover:text-primary-500"
+        >
+          <p>팀빌딩</p>
+        </div>
+      </section>
+      {/* 메뉴 */}
+      <section className="flex items-center gap-4 text-lg font-normal font-DungGeunMo text-white">
+        {/* 일반 유저 , 어드민 메뉴 */}
+        {userData && userData.data.is_staff ? (
+          adminUserMenu.map((menu, index) => (
+            <div key={index} onClick={menu.onClick} className="cursor-pointer hover:text-primary-500">
+              <p>{menu.text}</p>
+            </div>
+          ))
+        ) : (
+          <div
+            onClick={() => {
+              if (userData) {
+                navigate("/game-upload");
+              } else {
+                setNoActionModalData(noActionData.gameupload);
+                onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+              }
+            }}
+            className="cursor-pointer hover:text-primary-500"
+          >
+            <div className="flex gap-2">
+              <img className="w-6 h-6" src={gameUploadImage} alt="게임 업로드 이미지" />
+              <p>게임 업로드</p>
+            </div>
+          </div>
+        )}
+        <span className="text-gray-400 text-xl">•</span>
+        {/* 검색 */} {/* 유저 액션 */}
         {!userData?.data.is_staff && (
-          <div className="cursor-pointer relative" ref={modalRefs.userStatus}>
-            {userData?.data ? (
-              <p onClick={onClickModalToggleHandlers.userStatus} className="text-primary-500">
-                {userData.data.nickname}
-              </p>
-            ) : (
-              <p onClick={onClickModalToggleHandlers[LOGIN_MODAL_ID]} className="hover:text-primary-500">
-                로그인
-              </p>
-            )}
-            {/* 유저액션 팝오버 */}
-            {modalToggles.userStatus && (
-              <UserStatusPopover
-                isLogin={!!userData}
-                userId={userData?.data.user_id}
-                onClickModalToggleHandler={onClickModalToggleHandlers.userStatus}
-                loginHandler={() => onClickModalToggleHandlers[LOGIN_MODAL_ID]()}
-                logoutHandler={() => {
-                  setNoActionModalData(noActionData.logout);
+          <div className="flex gap-4">
+            <img
+              src={balloon}
+              alt="검색 아이콘"
+              onClick={() => onClickModalToggleHandlers[SEARCH_MODAL_ID]()}
+              className="w-6 h-6 cursor-pointer hover:text-primary-500"
+            />
+
+            <img
+              src={notifyImage}
+              alt="알림 아이콘"
+              onClick={() => {
+                setNoActionModalData(noActionData.community);
+                onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+              }}
+              className="w-6 h-6 cursor-pointer hover:text-primary-500"
+            />
+
+            <img
+              src={bookmarkImage}
+              alt="즐겨찾기 아이콘"
+              onClick={() => {
+                if (userData) {
+                  navigate(`/my-page/${userData?.data.user_id}?tab=log`);
+                } else {
+                  setNoActionModalData(noActionData.bookmark);
                   onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-                }}
-              />
-            )}
+                }
+              }}
+              className="w-6 h-6 cursor-pointer hover:text-primary-500"
+            />
+
+            <div className="cursor-pointer relative" ref={modalRefs.userStatus}>
+              {userData?.data ? (
+                <p onClick={onClickModalToggleHandlers.userStatus} className="text-primary-500 text-[20px]">
+                  {userData.data.nickname}
+                </p>
+              ) : (
+                <p onClick={onClickModalToggleHandlers[LOGIN_MODAL_ID]} className="hover:text-primary-500 text-[20px]">
+                  로그인
+                </p>
+              )}
+              {/* 유저액션 팝오버 */}
+              {modalToggles.userStatus && (
+                <UserStatusPopover
+                  isLogin={!!userData}
+                  userId={userData?.data.user_id}
+                  onClickModalToggleHandler={onClickModalToggleHandlers.userStatus}
+                  loginHandler={() => onClickModalToggleHandlers[LOGIN_MODAL_ID]()}
+                  logoutHandler={() => {
+                    setNoActionModalData(noActionData.logout);
+                    onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+                  }}
+                />
+              )}
+            </div>
           </div>
         )}
       </section>

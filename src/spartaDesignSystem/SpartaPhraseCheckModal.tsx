@@ -10,7 +10,7 @@ type Props = {
   modalId: string;
   isPending?: boolean; // 로딩 중인지 여부 (게임 업로드 용)
   onClose: () => void;
-  onClickEvent: () => void | Promise<void>; // 모달 확인 버튼 눌렀을 때 동작
+  onClickEvent: () => void | Promise<void>; // // 모달의 확인 버튼 클릭 시 실행될 함수. 비동기 API 호출 함수일 경우 async/await로 감싸서 넘겨줄 것
   children: React.ReactNode;
   modalPurpose: "upload" | "edit" | "delete" | "profileDelete";
   closeOnClickOutside?: boolean;
