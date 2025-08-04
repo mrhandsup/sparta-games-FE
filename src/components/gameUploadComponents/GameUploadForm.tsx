@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 
 import { postGameList, putGameList } from "../../api/game";
 
@@ -14,16 +14,19 @@ import { checkFileExtension, checkFileSize, checkFileType } from "../../util/fil
 
 import { TGamePlayData, TGameUploadInput } from "../../types";
 
-import UploadCheck from "./UploadCheck";
 import GameUploadFields from "./GameUploadFields";
 import GameMediaFields from "./GameMediaFields";
 import GameDescriptionField from "./GameDescriptionField";
-import GameSubmitButton from "./GameSubmitButton";
+
 import { uploadErrorMessages } from "./uploadErrorMessages";
 
 import JSZip from "jszip";
 
 import "./Form.css";
+import { useMutation } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import SpartaButton from "../../spartaDesignSystem/SpartaButton";
+import SpartaPhraseCheckModal from "../../spartaDesignSystem/SpartaPhraseCheckModal";
 
 type Props = {
   note: {
@@ -39,6 +42,7 @@ const GameUploadForm = ({ note, previousGameData, isEditMode }: Props) => {
   const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
   const MAX_FILE_SIZE = 500 * 1024 * 1024;
   const GAME_UPLOAD_CHECK_ID = "gameUploadCheckId";
+  const GAME_UPLOAD_SUCCESS_ID = "gameUploadSuccessModal";
   const EDIT_SUCCESS_ID = "editSuccessId";
   const NO_ACTION_MODAL_ID = "noActionModal";
 
@@ -50,7 +54,7 @@ const GameUploadForm = ({ note, previousGameData, isEditMode }: Props) => {
     },
   });
 
-  const { register, setValue, handleSubmit, trigger, getValues, resetField, reset } = methods;
+  const { register, setValue, formState, handleSubmit, trigger, resetField, reset } = methods;
 
   const navigate = useNavigate();
   const { userData } = userStore();
@@ -59,6 +63,7 @@ const GameUploadForm = ({ note, previousGameData, isEditMode }: Props) => {
 
   const { modalToggles, onClickModalToggleHandlers } = useModalToggles([
     GAME_UPLOAD_CHECK_ID,
+    GAME_UPLOAD_SUCCESS_ID,
     EDIT_SUCCESS_ID,
     NO_ACTION_MODAL_ID,
   ]);
@@ -71,7 +76,6 @@ const GameUploadForm = ({ note, previousGameData, isEditMode }: Props) => {
     noActionData.fileUploadWarning,
   );
 
-  const [gameUploadResponse, setGameUploadResponse] = useState<number | undefined>(0);
   const [screenShotIds, setScreenShotIds] = useState<number[]>([]);
   const { pathname } = useLocation();
 
@@ -254,43 +258,80 @@ const GameUploadForm = ({ note, previousGameData, isEditMode }: Props) => {
         formData.append("old_screenshots", String(id));
       });
     }
-
     return formData;
   };
 
-  const onSubmitHandler: SubmitHandler<TGameUploadInput> = async (data) => {
+  const onSubmit = async (data: TGameUploadInput) => {
     const formData = createFormData(data);
-    const res = await postGameList(formData);
-    setGameUploadResponse(res?.status);
-  };
 
-  const onEditHandler = async (gamePk: number | undefined) => {
-    const formData = createFormData(getValues());
-    const res = await putGameList(formData, gamePk);
-
-    if (res?.status === 400) {
-      setNoActionModalData({
-        title: "확인해주세요!",
-        content: `${res.data.message}`,
-        btn1: {
-          text: "확인",
-          onClick: () => {
-            onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-          },
-        },
-        type: "error",
-      });
-      onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-    } else if (res?.status === 200) {
-      setNoActionModalData(noActionData.editConfirm);
-      onClickModalToggleHandlers[EDIT_SUCCESS_ID]();
+    if (!isEditMode) {
+      createGameMutation.mutate(formData);
+    } else {
+      updateGameMutation.mutate({ formData, gamePk: previousGameData?.id });
     }
   };
+
+  const createGameMutation = useMutation({
+    mutationFn: postGameList,
+    onSuccess: () => {
+      setNoActionModalData({
+        title: "등록이 완료되었습니다.",
+        content:
+          "검수 진행결과는 마이페이지 - 개발목록에서 확인 가능합니다.<br />검수 승인이 완료되는 즉시 유저들에게 게임이 공개되며, 2일 이내로 소요될 예정입니다.<br />잠시만 기다려주세요🙂",
+        btn1: {
+          text: "확인했습니다.",
+          onClick: () => {
+            onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+            navigate(`/my-page/${userData?.data.user_id}?tab=develop`);
+          },
+        },
+        type: "primary",
+      });
+
+      onClickModalToggleHandlers[GAME_UPLOAD_CHECK_ID]();
+      onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+    },
+    onError: (error: AxiosError) => {
+      if (error.response && error.response.status === 400) {
+        window.alert(`${(error.response?.data as { message?: string })?.message}`);
+      } else {
+        window.alert("알 수 없는 오류가 발생했습니다. 잠시후에 다시 시도해주세요.");
+      }
+    },
+  });
+
+  const updateGameMutation = useMutation({
+    mutationFn: ({ formData, gamePk }: { formData: FormData; gamePk: number | undefined }) =>
+      putGameList(formData, gamePk),
+    onSuccess: () => {
+      setNoActionModalData({
+        title: "글 수정 완료",
+        content: "글 수정이 완료됐습니다!",
+        btn1: {
+          text: "확인했습니다.",
+          onClick: () => {
+            onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+            navigate(`/my-page/${userData?.data.user_id}?tab=develop`);
+          },
+        },
+        type: "alert",
+      });
+
+      onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+    },
+    onError: (error: AxiosError) => {
+      if (error.response && error.response.status === 400) {
+        window.alert(`${(error.response?.data as { message?: string })?.message}`);
+      } else {
+        window.alert("알 수 없는 오류가 발생했습니다. 잠시후에 다시 시도해주세요.");
+      }
+    },
+  });
 
   return (
     <>
       <FormProvider {...methods}>
-        <form onSubmit={handleSubmit(onSubmitHandler)}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex gap-10 my-10 text-gray-300 text-body-18">
             <GameUploadFields
               isUploading={isUploading}
@@ -302,12 +343,20 @@ const GameUploadForm = ({ note, previousGameData, isEditMode }: Props) => {
           </div>
 
           <GameDescriptionField />
-
-          <GameSubmitButton
-            note={note}
-            isEditMode={isEditMode}
-            openUploadCheckModal={onClickModalToggleHandlers[GAME_UPLOAD_CHECK_ID]}
-            onEditRequest={() => onEditHandler(previousGameData?.id)}
+          <SpartaButton
+            onClick={!isEditMode ? onClickModalToggleHandlers[GAME_UPLOAD_CHECK_ID] : undefined}
+            content={
+              !isEditMode && note[1] && note[2] && note[3] && formState.isValid
+                ? "승인요청"
+                : isEditMode && formState.isValid
+                ? "수정요청"
+                : "필수 값을 입력한 후 승인요청을 할 수 있습니다."
+            }
+            disabled={!formState.isValid}
+            type="filled"
+            btnType={!isEditMode ? "button" : "submit"}
+            size="medium"
+            customStyle="mb-10 w-full h-14"
           />
         </form>
       </FormProvider>
@@ -326,41 +375,29 @@ const GameUploadForm = ({ note, previousGameData, isEditMode }: Props) => {
         />
       )}
 
-      <SpartaModal
+      <SpartaPhraseCheckModal
         isOpen={modalToggles[GAME_UPLOAD_CHECK_ID]}
-        onClose={onClickModalToggleHandlers[GAME_UPLOAD_CHECK_ID]}
         modalId={GAME_UPLOAD_CHECK_ID}
-        closeOnClickOutside={false}
+        isPending={createGameMutation.isPending}
+        onClose={onClickModalToggleHandlers[GAME_UPLOAD_CHECK_ID]}
+        onClickEvent={async () => {
+          await handleSubmit((data) => {
+            const formData = createFormData(data);
+            createGameMutation.mutate(formData);
+          })();
+        }}
+        modalPurpose="upload"
       >
-        <UploadCheck
-          handleSubmit={handleSubmit}
-          gameUploadResponse={gameUploadResponse}
-          onSubmitHandler={onSubmitHandler}
-          onClose={onClickModalToggleHandlers[GAME_UPLOAD_CHECK_ID]}
-        />
-      </SpartaModal>
-
-      <SpartaModal
-        isOpen={modalToggles[EDIT_SUCCESS_ID]}
-        onClose={onClickModalToggleHandlers[EDIT_SUCCESS_ID]}
-        modalId={EDIT_SUCCESS_ID}
-        closeOnClickOutside={false}
-        type={"alert"}
-      >
-        <div className="min-w-80 flex flex-col items-center gap-4">
-          <div className="text-[18px] font-medium text-alert-default font-DungGeunMo">수정 완료</div>
-          <div className="text-[16px] font-light leading-7 my-2 text-white text-center"> 수정이 완료되었습니다.</div>
-          <button
-            className="w-full rounded-md transition-colors duration-200 box-border h-10 text-title-16 font-normal bg-alert-default hover:bg-alert-hover"
-            onClick={() => {
-              onClickModalToggleHandlers[EDIT_SUCCESS_ID]();
-              navigate(`/my-page/${userData?.data.user_id}?tab=develop`);
-            }}
-          >
-            확인
-          </button>
-        </div>
-      </SpartaModal>
+        <ul className="list-disc pl-5 leading-6 text-white">
+          <li>최대 7일까지 검수기간이 걸릴 수 있습니다.</li>
+          <li>검수가 통과될 시 즉시 홈페이지에서 노출됩니다.</li>
+          <li>검수 중 수정이 진행될 경우, 새롭게 검수가 진행될 수 있으니 다시한번 확인해주시기 바랍니다.</li>
+          <li>
+            등록를 희망하신다면, <b className="text-primary-500">‘즐거운 게임세상 스파르타게임즈!’</b>
+            라고 입력해주시기 바랍니다.
+          </li>
+        </ul>
+      </SpartaPhraseCheckModal>
     </>
   );
 };

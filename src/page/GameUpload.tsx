@@ -9,7 +9,6 @@ import { useState } from "react";
 const GameUpload = () => {
   const location = useLocation();
 
-  // EditCheck 컴포넌트에서 받은 state 값
   const previousGameData = (location.state as { gameData?: TGamePlayData })?.gameData;
   const isEditMode = location.state?.isEditMode;
 

@@ -9,7 +9,7 @@ import CardList from "./CardList";
 import { getUserTeambuildPosts } from "../../../api/user";
 
 type Props = {
-  userTeamBuildPost: TTeamBuildPostListItem[];
+  userTeamBuildPost: TTeamBuildPostListItem[] | undefined;
   isMyPage?: boolean | null;
 };
 
@@ -32,7 +32,7 @@ export default function TeamBuildLogModal({ userTeamBuildPost, isMyPage }: Props
       <div className="flex items-center gap-4 justify-start ">
         <img src={log} />
         <p className="font-DungGeunMo text-heading-32 text-white font-[400]">
-          {userTeamBuildPost[0]?.author_data.nickname}의 팀빌딩 게시글
+          {userTeamBuildPost && userTeamBuildPost[0]?.author_data.nickname}의 팀빌딩 게시글
         </p>
       </div>
       <div className="grid grid-cols-4 gap-5">

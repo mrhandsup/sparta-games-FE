@@ -84,7 +84,7 @@ const GameCardList = ({
           )}
         </p>
       )}
-      <div className={`flex ${!containerClassName && "w-[1180px] h-[408px] mx-auto mt-2"} gap-4`}>
+      <div className={`flex ${!containerClassName ? "w-[1180px] h-[408px] mx-auto mt-2" : "w-full"} gap-4`}>
         {slicingData?.length != 0 && slicingData ? (
           slicingData.map((item) => (
             <Link to={`/game-detail?id=${item.id}`}>
@@ -92,7 +92,7 @@ const GameCardList = ({
             </Link>
           ))
         ) : (
-          <div className="h-[208px] min-w-[880px] flex items-center justify-center mx-auto">
+          <div className="h-[208px] w-full flex items-center justify-center mx-auto">
             <p className="text-white text-heading-20">{emptyText}</p>
           </div>
         )}
