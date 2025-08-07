@@ -24,6 +24,7 @@ const GameUploadFields = ({ isUploading, onChangeFileHandler, previousGameData }
         <Controller
           name="thumbnail"
           control={control}
+          rules={{ required: true }}
           render={({ field }) => {
             const value = field.value;
             return (
@@ -70,6 +71,7 @@ const GameUploadFields = ({ isUploading, onChangeFileHandler, previousGameData }
         <Controller
           name="gameFile"
           control={control}
+          rules={{ required: true }}
           render={({ field }) => (
             <div className="flex gap-2">
               <div className="py-3 px-4 w-full h-[47px] bg-gray-700 border border-solid border-white rounded-md resize-none whitespace-nowrap overflow-hidden text-ellipsis text-base">
