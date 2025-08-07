@@ -328,8 +328,6 @@ const GameUploadForm = ({ note, previousGameData, isEditMode }: Props) => {
     },
   });
 
-  console.log("formState.isValid", formState.isValid);
-
   return (
     <>
       <FormProvider {...methods}>

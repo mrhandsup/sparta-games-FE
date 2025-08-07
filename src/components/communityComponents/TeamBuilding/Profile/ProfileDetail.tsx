@@ -112,7 +112,11 @@ export default function ProfileDetail({ user, isMyPage }: Props) {
   return (
     <>
       <div className="flex flex-col gap-6 w-full p-11 mb-8 bg-gray-800 rounded-xl">
-        <div className={`${userTeamBuildPostCount === 0 ? "hidden" : "flex"} items-center justify-between`}>
+        <div
+          className={`${
+            userTeamBuildPostCount === 0 || userTeamBuildPostCount === undefined ? "hidden" : "flex"
+          } items-center justify-between`}
+        >
           <p className="font-DungGeunMo text-heading-24 text-white font-normal">
             {profileData?.author_data.nickname}님의 팀빌딩 게시글
           </p>
@@ -219,7 +223,13 @@ export default function ProfileDetail({ user, isMyPage }: Props) {
                   <span className="w-44 font-bold">구인 포지션</span>
                   <span>{profileData?.my_role}</span>
                 </div>
-                <div className={`${profileData?.game_genre.length === 0 ? "hidden" : "flex"} items-center`}>
+                <div
+                  className={`${
+                    profileData?.game_genre.length === 0 || profileData?.game_genre.length === undefined
+                      ? "hidden"
+                      : "flex"
+                  } items-center`}
+                >
                   <span className="w-44 font-bold">관심 게임개발장르</span>
                   <div className="flex gap-2 font-DungGeunMo">
                     {profileData?.game_genre.length > 0 &&
