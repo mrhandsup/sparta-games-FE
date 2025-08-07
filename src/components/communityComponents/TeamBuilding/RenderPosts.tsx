@@ -20,11 +20,12 @@ export default function RenderPosts({
   noSearchResultsMessage,
   cardType,
 }: TabContentProps) {
-  if (posts?.length === 0) {
+  console.log("posts?.length", posts?.length);
+  if (posts?.length === 0 || posts?.length === undefined) {
     return <div className="col-span-4 text-center text-white text-2xl font-DungGeunMo">{noPostsMessage}</div>;
   }
 
-  if (searchPosts?.length === 0) {
+  if (searchPosts?.length === 0 || searchPosts?.length === undefined) {
     return <div className="col-span-4 text-center text-white text-2xl font-DungGeunMo">{noSearchResultsMessage}</div>;
   }
 
