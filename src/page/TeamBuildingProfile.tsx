@@ -25,9 +25,9 @@ export default function TeamBuildingProfile() {
 
   return (
     <div className="w-full">
-      <div className="relative flex flex-col mx-auto max-w-[1440px] min-w-[1440px]">
-        <div className="flex gap-9 py-11 w-[83%] mx-auto">
-          <div className="bg-gray-800 w-[13%] p-2 rounded-xl h-fit">
+      <div className="relative flex flex-col mx-auto">
+        <div className="flex gap-9 py-11">
+          <div className="bg-gray-800 w-[15%] p-2 rounded-xl h-fit">
             <button
               className={`w-full h-12 rounded-xl text-heading-20  ${
                 navigation === "teambuilding" ? navigationButtonConfig.clicked : navigationButtonConfig.unClicked
@@ -45,7 +45,7 @@ export default function TeamBuildingProfile() {
               개발목록
             </button>
           </div>
-          <div className="w-[79%]">
+          <div className="w-[85%]">
             {/* <ProfileHeader user={user} isMyPage={isMyPage} setNavigation={setNavigation} /> */}
 
             <div className="max-w-[1440px] mx-auto">

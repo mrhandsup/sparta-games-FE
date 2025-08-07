@@ -79,8 +79,8 @@ const MyPage = () => {
     user && (
       <div className="w-full">
         <div className="relative flex flex-col">
-          <div className="flex gap-9 py-11 w-[83%] mx-auto">
-            <div className="bg-gray-800 w-[13%] p-2 rounded-xl h-fit">
+          <div className="flex gap-9 py-11 w-[1180px] mx-auto">
+            <div className="bg-gray-800 w-[15%] p-2 rounded-xl h-fit">
               {isMyPage && (
                 <button
                   className={`w-full h-12 rounded-xl text-heading-20 
@@ -120,7 +120,7 @@ const MyPage = () => {
                 </button>
               )}
             </div>
-            <div className="w-[79%]">
+            <div className="w-[85%]">
               <ProfileHeader user={user} isMyPage={isMyPage} setNavigation={setNavigation} />
               {navigation === "log" ? (
                 <Logs user={user} />
