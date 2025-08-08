@@ -168,32 +168,35 @@ const GameUploadForm = ({ note, previousGameData, isEditMode }: Props) => {
   const onChangeFileHandler = async (e: ChangeEvent<HTMLInputElement>) => {
     const inputId = e.target.id;
     const files = [...e.target.files!];
-    const urlArr: string[] = [];
+    const fileName = files[0].name.toLowerCase();
     const fileInput = document.getElementById(inputId) as HTMLInputElement;
+    const urlArr: string[] = [];
 
-    if (
-      inputId === "gameFile" &&
-      (files[0].type === "application/zip" ||
-        files[0].type === "application/x-zip-compressed" ||
-        files[0].type === "application/x-7z-compressed")
-    ) {
+    if (inputId === "gameFile") {
       setIsUploading(true);
-      const zip = await JSZip.loadAsync(files[0]);
-      const fileNames = Object.keys(zip.files);
-      const indexPath = Object.keys(zip.files).find((path) => path.endsWith("index.html"));
-      // 업로드한 파일이 WebGL 파일인지(gz 확장자를 가진 파일이 있는지) 확인
-      const gzFilesInBuild = fileNames.filter((name) => name.endsWith(".gz"));
 
-      // WebGl로 빌드된 파일이 루트 폴더에 위치하는지 확인
-      const depth = indexPath && indexPath.split("/").filter(Boolean).length - 1;
-
-      if (gzFilesInBuild.length === 0) {
-        setNoActionModalData(noActionData.gameFileUploadWarning);
+      if (!fileName.endsWith(".zip")) {
+        setNoActionModalData(noActionData.onlyZipFilehWarning);
         onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
         fileInput.value = "";
         resetField(inputId as "gameFile");
         setIsUploading(false);
+
+        return;
       }
+
+      const zip = await JSZip.loadAsync(files[0]);
+      const fileObjects = Object.keys(zip.files);
+      const indexPath = Object.keys(zip.files).find((path) => path.endsWith("index.html"));
+
+      const hasIndexHtml = fileObjects.some((path) => path === "index.html");
+      const hasBuildFolder = fileObjects.some((path) => path.startsWith("Build/"));
+      const hasTemplateDataFolder = fileObjects.some((path) => path.startsWith("TemplateData/"));
+
+      const isValidWebGL = hasIndexHtml && hasBuildFolder && hasTemplateDataFolder;
+
+      // WebGl로 빌드된 파일이 루트 폴더에 위치하는지 확인
+      const depth = indexPath && indexPath.split("/").filter(Boolean).length - 1;
 
       if (depth && depth > 0) {
         setNoActionModalData(noActionData.gameFileDepthWarning);
@@ -201,6 +204,16 @@ const GameUploadForm = ({ note, previousGameData, isEditMode }: Props) => {
         fileInput.value = "";
         resetField(inputId as "gameFile");
         setIsUploading(false);
+
+        return;
+      } else if (!isValidWebGL) {
+        setNoActionModalData(noActionData.gameFileUploadWarning);
+        onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+        fileInput.value = "";
+        resetField(inputId as "gameFile");
+        setIsUploading(false);
+
+        return;
       }
     }
 
