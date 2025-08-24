@@ -254,7 +254,7 @@ export default function ProfileRegisterForm() {
             {currentStep === 0 && <PorfileRegisterFormBasic profileData={profileData} isEditMode={isEditMode} />}
             {currentStep === 1 && <ProfileRegisterFormProject />}
             <SpartaButton
-              disabled={currentStep === 0 ? !isStepOneValid : !formState.isValid}
+              disabled={currentStep === 0 ? !isStepOneValid : !formState.isValid || isPending}
               onClick={currentStep === 0 ? goToNextStep : onSubmitProfileRegister}
               content={currentStep === 0 ? "다음" : !isEditMode ? "글 등록하기" : "글 수정하기"}
               type="filled"

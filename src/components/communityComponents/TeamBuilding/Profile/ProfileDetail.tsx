@@ -23,6 +23,7 @@ import TeamBuildLogModal from "../TeamBuildLogModal";
 import SpartaReactionModal from "../../../../spartaDesignSystem/SpartaReactionModal";
 import { userStore } from "../../../../share/store/userStore";
 import SpartaPhraseCheckModal from "../../../../spartaDesignSystem/SpartaPhraseCheckModal";
+import { useState } from "react";
 
 type MyPageProps = {
   user: TUserData;
@@ -42,13 +43,12 @@ export default function ProfileDetail({ user, isMyPage }: Props) {
   const PROFILE_DELETE_SUCCESS_ID = "profileDelteSuccessModal";
   const NO_ACTION_MODAL_ID = "noActionModal";
 
+  const [isPending, setIsPending] = useState(false);
   const { id } = useParams();
-
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const { userData } = userStore();
-
-  const queryClient = useQueryClient();
 
   const { modalToggles, onClickModalToggleHandlers } = useModalToggles([
     GAME_DELETE_CHECK_ID,
@@ -73,6 +73,8 @@ export default function ProfileDetail({ user, isMyPage }: Props) {
   const userTeamBuildPostCount = userTeamBuildPostResponse?.pagination?.count;
 
   const onClickProfileDelete = async () => {
+    setIsPending(true);
+
     const res = await deleteTeamBuildProfile(userData?.data.user_id);
 
     if (res?.status === "success") {
@@ -342,6 +344,7 @@ export default function ProfileDetail({ user, isMyPage }: Props) {
       <SpartaPhraseCheckModal
         isOpen={modalToggles[GAME_DELETE_CHECK_ID]}
         modalId={GAME_DELETE_CHECK_ID}
+        isPending={isPending}
         onClose={onClickModalToggleHandlers[GAME_DELETE_CHECK_ID]}
         onClickEvent={onClickProfileDelete}
         modalPurpose="profileDelete"
@@ -378,6 +381,7 @@ export default function ProfileDetail({ user, isMyPage }: Props) {
           },
         }}
         type={"error"}
+        closeOnClickOutside={false}
       />
     </>
   );

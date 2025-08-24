@@ -253,6 +253,8 @@ export default function RecruitDetail() {
                   ? deleteRecruitMutation.isPending
                   : noActionModalData.title === noActionData.closeRecruit.title
                   ? closeRecruitMutation.isPending
+                  : noActionModalData.title === "댓글 삭제"
+                  ? deleteCommentsMutation.isPending
                   : false,
             }}
             btn2={
