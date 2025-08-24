@@ -47,7 +47,7 @@ function App() {
   if (isMobileWeb() && !is_mobile_user_first_time) {
     return (
       <div className="relative min-w-fit min-h-full bg-gray-700 flex flex-col items-center justify-center px-10">
-        <img src={dino} alt="publ" className="p-10" />
+        <img src={dino} alt="loading" className="p-10" />
         <SpartaButton onClick={onClickOkDino} content="스파르타 게임즈 접속" type="filled" />
       </div>
     );

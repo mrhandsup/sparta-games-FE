@@ -143,7 +143,7 @@ export default function SpartaPhraseCheckModal({
               className={`w-full ${isPending ? "cursor-wait" : "cursor-pointer"}`}
               disabled={isPending}
             >
-              {isPending ? "등록이 진행 중입니다." : textDict[modalPurpose]["btnConfirmText"]}
+              {isPending ? "처리 중입니다." : textDict[modalPurpose]["btnConfirmText"]}
             </button>
           ) : (
             <button disabled className="w-full">

@@ -174,8 +174,8 @@ export default function RecruitForm() {
               <RecruitFormDescription />
               <SpartaButton
                 btnType="button"
-                disabled={!formState.isValid}
-                content={!isEditMode ? "글 등록하기" : "글 수정하기"}
+                disabled={isPending || !formState.isValid}
+                content={isPending ? "처리 중입니다." : !isEditMode ? "글 등록하기" : "글 수정하기"}
                 type="filled"
                 onClick={() => {
                   if (!isPending) handleSubmit(onSubmit)();

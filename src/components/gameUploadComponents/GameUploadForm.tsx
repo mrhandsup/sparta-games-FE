@@ -341,6 +341,8 @@ const GameUploadForm = ({ note, previousGameData, isEditMode }: Props) => {
     },
   });
 
+  console.log("updateGameMutation.isPending", updateGameMutation.isPending);
+  console.log("!formState.isValid", !formState.isValid);
   return (
     <>
       <FormProvider {...methods}>
@@ -365,7 +367,7 @@ const GameUploadForm = ({ note, previousGameData, isEditMode }: Props) => {
                 ? "수정요청"
                 : "필수 값을 입력한 후 승인요청을 할 수 있습니다."
             }
-            disabled={!formState.isValid}
+            disabled={!isEditMode ? !formState.isValid : updateGameMutation.isPending || !formState.isValid}
             type="filled"
             btnType={!isEditMode ? "button" : "submit"}
             size="medium"

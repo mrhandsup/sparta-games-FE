@@ -5,6 +5,7 @@ import type { TModalProps } from "./SpartaModal";
 type btnConfig = {
   text: string;
   onClick: () => void;
+  disabled?: boolean;
 };
 
 export type TSpartaReactionModalProps = Pick<TModalProps, "type" | "isOpen" | "modalId" | "onClose"> & {
@@ -52,7 +53,14 @@ const SpartaReactionModal = ({
         {btn2 && (
           <SpartaButton content={btn2.text} onClick={btn2.onClick} type={"filled"} colorType="grey" size="small" />
         )}
-        <SpartaButton content={btn1.text} onClick={btn1.onClick} type={"filled"} colorType={type} size="small" />
+        <SpartaButton
+          disabled={btn1.disabled}
+          content={btn1.text}
+          onClick={btn1.onClick}
+          type={"filled"}
+          colorType={type}
+          size="small"
+        />
       </div>
     </SpartaModal>
   );
