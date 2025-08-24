@@ -248,6 +248,12 @@ export default function RecruitDetail() {
             btn1={{
               text: noActionModalData?.btn1?.text || "",
               onClick: noActionModalData?.btn1?.onClick || (() => {}),
+              disabled:
+                noActionModalData.title === noActionData.deleteRecruiConfirm.title
+                  ? deleteRecruitMutation.isPending
+                  : noActionModalData.title === noActionData.closeRecruit.title
+                  ? closeRecruitMutation.isPending
+                  : false,
             }}
             btn2={
               noActionModalData?.btn2 && {

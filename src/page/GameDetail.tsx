@@ -41,6 +41,8 @@ const GameDetail = () => {
 
   const { userData } = userStore();
 
+  const [isPending, setIsPending] = useState(false);
+
   const {
     data: gamePlayData,
     isLoading,
@@ -120,6 +122,8 @@ const GameDetail = () => {
   }, [gameDetailId]);
 
   const onClickRemoveGame = async (gamePk: number | undefined) => {
+    setIsPending(true);
+
     const res = await deleteGameList(gamePk);
 
     if (res?.status === 200) {
@@ -128,6 +132,8 @@ const GameDetail = () => {
       queryClient.invalidateQueries({ queryKey: ["myGameList"] });
     }
   };
+
+  console.log("isPending", isPending);
 
   return (
     <>
@@ -201,6 +207,7 @@ const GameDetail = () => {
       <SpartaPhraseCheckModal
         isOpen={modalToggles[GAME_DELETE_CHECK_ID]}
         modalId={GAME_DELETE_CHECK_ID}
+        isPending={isPending}
         onClose={onClickModalToggleHandlers[GAME_DELETE_CHECK_ID]}
         onClickEvent={() => {
           onClickRemoveGame(gameDetailId);
