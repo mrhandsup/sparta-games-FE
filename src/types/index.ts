@@ -17,6 +17,14 @@ export type TApiResponse<TData> = {
   error_code: string | null;
 };
 
+export type TAlarmList = {
+  id: number;
+  message: string;
+  noti_type: string;
+  is_read: boolean;
+  create_dt: string;
+};
+
 export type TTeamBuildSearchedPosts = {
   search_teambuild_posts: TTeamBuildPostListItem[];
 };
