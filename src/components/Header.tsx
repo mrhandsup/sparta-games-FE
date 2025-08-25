@@ -19,6 +19,7 @@ import notifyImage from "../assets/headerImage/notify.svg";
 import CategoryModal from "./headerComponents/CategoryModal";
 import gameUploadImage from "../assets/headerImage/gameUpload.svg";
 import bookmarkImage from "../assets/gameDetail/bookmark.svg";
+import AlarmModal from "./headerComponents/AlarmModal";
 
 const Header = () => {
   const LOGIN_MODAL_ID = "loginModal";
@@ -28,6 +29,7 @@ const Header = () => {
   // 모달
   const { modalToggles, modalRefs, onClickModalToggleHandlers } = useModalToggles([
     "category",
+    "alarm",
     "userStatus",
     LOGIN_MODAL_ID,
     NO_ACTION_MODAL_ID,
@@ -53,17 +55,17 @@ const Header = () => {
       type: "alert",
     },
 
-    community: {
-      title: "개발예정 기능",
-      content: "알림 기능은 개발 예정입니다.",
-      btn1: {
-        text: "확인했습니다",
-        onClick: () => {
-          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-        },
-      },
-      type: "error",
-    },
+    // community: {
+    //   title: "개발예정 기능",
+    //   content: "알림 기능은 개발 예정입니다.",
+    //   btn1: {
+    //     text: "확인했습니다",
+    //     onClick: () => {
+    //       onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+    //     },
+    //   },
+    //   type: "error",
+    // },
 
     bookmark: {
       title: "잠시만요!",
@@ -145,16 +147,11 @@ const Header = () => {
         </div>
 
         {!userData?.data.is_staff && (
-          <div className="relative">
+          <div className="relative" ref={modalRefs.category}>
             <p onClick={onClickModalToggleHandlers.category} className="cursor-pointer hover:text-primary-500">
               카테고리
             </p>
-            {modalToggles.category && (
-              <CategoryModal
-                modalRef={modalRefs.category}
-                onClickModalToggleHandler={onClickModalToggleHandlers.category}
-              />
-            )}
+            {modalToggles.category && <CategoryModal onClickModalToggleHandler={onClickModalToggleHandlers.category} />}
           </div>
         )}
 
@@ -205,15 +202,15 @@ const Header = () => {
               className="w-6 h-6 cursor-pointer hover:text-primary-500"
             />
 
-            <img
-              src={notifyImage}
-              alt="알림 아이콘"
-              onClick={() => {
-                setNoActionModalData(noActionData.community);
-                onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-              }}
-              className="w-6 h-6 cursor-pointer hover:text-primary-500"
-            />
+            <div className="relative" ref={modalRefs.alarm}>
+              <img
+                src={notifyImage}
+                alt="알람 아이콘"
+                onClick={onClickModalToggleHandlers.alarm}
+                className="w-6 h-6 cursor-pointer hover:text-primary-500"
+              />
+              {modalToggles.alarm && <AlarmModal onClickModalToggleHandler={onClickModalToggleHandlers.alarm} />}
+            </div>
 
             <img
               src={bookmarkImage}
