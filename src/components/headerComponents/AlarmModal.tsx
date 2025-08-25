@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import moreAlarm from "../../assets/common/arrow/triangleArrowBottom.svg";
-import { getAlarm } from "../../api/alarm";
+import { getAlarm, patchReadAlarm } from "../../api/alarm";
 import { TAlarmList, TApiResponse } from "../../types";
 import { getTimeAgoInHours } from "../../util/getTimeAgoInHours";
 import { useEffect, useState } from "react";
@@ -15,7 +15,7 @@ const AlarmModal = ({ onClickModalToggleHandler }: props) => {
 
   const { data, isFetching } = useQuery<TApiResponse<TAlarmList[]>>({
     queryKey: ["alarm"],
-    queryFn: () => getAlarm(), // 처음엔 기본 URL 호출
+    queryFn: () => getAlarm(),
   });
 
   const alarmCount = data?.pagination?.count;
@@ -39,6 +39,16 @@ const AlarmModal = ({ onClickModalToggleHandler }: props) => {
     }
   };
 
+  const handleAlarmClick = async (alarmId: number) => {
+    try {
+      await patchReadAlarm(alarmId);
+
+      setAlarms((prev) => prev.map((alarm) => (alarm.id === alarmId ? { ...alarm, is_read: true } : alarm)));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <div
       onClick={(e) => {
@@ -56,9 +66,10 @@ const AlarmModal = ({ onClickModalToggleHandler }: props) => {
           {alarms?.map((alarm, index) => (
             <div
               key={alarm.id}
+              onClick={() => handleAlarmClick(alarm.id)}
               className={`pb-4 text-sm border-solid border-gray-700 cursor-pointer ${
                 index !== alarms.length - 1 ? "border-b" : ""
-              }`}
+              } ${alarm.is_read && "text-gray-400"} `}
             >
               <div className="flex justify-between items-center mb-1">
                 <p>{alarm.noti_type}</p>

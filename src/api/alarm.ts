@@ -13,3 +13,17 @@ export const getAlarm = async (url?: string) => {
     throw error;
   }
 };
+
+/**
+ * 알림 읽음 처리
+ */
+
+export const patchReadAlarm = async (id: number) => {
+  try {
+    const res = await sparta_games_auth.patch(`/commons/api/alarm/${id}/read/`);
+    return res.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
