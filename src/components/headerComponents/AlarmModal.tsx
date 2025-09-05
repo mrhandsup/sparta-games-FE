@@ -5,11 +5,9 @@ import { TAlarmList, TApiResponse } from "../../types";
 import { getTimeAgoInHours } from "../../util/getTimeAgoInHours";
 import { useEffect, useState } from "react";
 
-type props = {
-  onClickModalToggleHandler: () => void;
-};
+type props = {};
 
-const AlarmModal = ({ onClickModalToggleHandler }: props) => {
+const AlarmModal = () => {
   const [alarms, setAlarms] = useState<TAlarmList[]>([]);
   const [nextUrl, setNextUrl] = useState<string | null>(null); // 다음 페이지 URL
 
@@ -53,7 +51,6 @@ const AlarmModal = ({ onClickModalToggleHandler }: props) => {
     <div
       onClick={(e) => {
         e.stopPropagation();
-        onClickModalToggleHandler;
       }}
       className="absolute top-10 right-0 flex gap-5 py-5 px-2 w-[360px] h-[712px] overflow-y-auto bg-gray-800 border border-solid border-primary-500 shadow-primary rounded-[20px]"
     >

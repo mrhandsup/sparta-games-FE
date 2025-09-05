@@ -5,7 +5,6 @@ import { FormProvider, useForm } from "react-hook-form";
 import { postGameList, putGameList } from "../../api/game";
 
 import SpartaReactionModal, { TSpartaReactionModalProps } from "../../spartaDesignSystem/SpartaReactionModal";
-import SpartaModal from "../../spartaDesignSystem/SpartaModal";
 import useModalToggles from "../../hook/useModalToggles";
 
 import { userStore } from "../../share/store/userStore";

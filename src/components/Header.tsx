@@ -20,6 +20,7 @@ import CategoryModal from "./headerComponents/CategoryModal";
 import gameUploadImage from "../assets/headerImage/gameUpload.svg";
 import bookmarkImage from "../assets/gameDetail/bookmark.svg";
 import AlarmModal from "./headerComponents/AlarmModal";
+import { useNotifications } from "../hook/useNotifications";
 
 const Header = () => {
   const LOGIN_MODAL_ID = "loginModal";
@@ -38,6 +39,8 @@ const Header = () => {
 
   // 유저 정보
   const { userData, logout } = userStore();
+
+  const { alarms } = useNotifications();
 
   const navigate = useNavigate();
 
@@ -202,16 +205,17 @@ const Header = () => {
               className="w-6 h-6 cursor-pointer hover:text-primary-500"
             />
 
-            <div className="relative" ref={modalRefs.alarm}>
-              <img
-                src={notifyImage}
-                alt="알람 아이콘"
-                onClick={onClickModalToggleHandlers.alarm}
-                className="w-6 h-6 cursor-pointer hover:text-primary-500"
-              />
-              {modalToggles.alarm && <AlarmModal onClickModalToggleHandler={onClickModalToggleHandlers.alarm} />}
-            </div>
-
+            {userData && (
+              <div className="relative" ref={modalRefs.alarm}>
+                <img
+                  src={notifyImage}
+                  alt="알람 아이콘"
+                  onClick={onClickModalToggleHandlers.alarm}
+                  className="w-6 h-6 cursor-pointer hover:text-primary-500"
+                />
+                {modalToggles.alarm && <AlarmModal />}
+              </div>
+            )}
             <img
               src={bookmarkImage}
               alt="즐겨찾기 아이콘"
