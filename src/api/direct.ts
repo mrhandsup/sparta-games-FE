@@ -69,7 +69,6 @@ export const rejectRegisterGame = async (id: number, content: string) => {
  * 게임 등록 승인
  */
 export const approveRegisterGame = async (id: number) => {
-  console.log("id", id);
   try {
     const res = await sparta_games_auth.post(`/directs/api/list/${id}/register/`);
     return res.data;

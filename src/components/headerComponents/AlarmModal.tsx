@@ -10,9 +10,10 @@ import { useNavigate } from "react-router-dom";
 
 type props = {
   modalClose: () => void;
+  handleAlarmClick: (alarmId: number) => void;
 };
 
-const AlarmModal = ({ modalClose }: props) => {
+const AlarmModal = ({ modalClose, handleAlarmClick }: props) => {
   const [alarms, setAlarms] = useState<TAlarmList[]>([]);
   const [nextUrl, setNextUrl] = useState<string | null>(null); // 다음 페이지 URL
 
@@ -44,15 +45,15 @@ const AlarmModal = ({ modalClose }: props) => {
     }
   };
 
-  const handleAlarmClick = async (alarmId: number) => {
-    try {
-      await patchReadAlarm(alarmId);
+  // const handleAlarmClick = async (alarmId: number) => {
+  //   try {
+  //     await patchReadAlarm(alarmId);
 
-      setAlarms((prev) => prev.map((alarm) => (alarm.id === alarmId ? { ...alarm, is_read: true } : alarm)));
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  //     setAlarms((prev) => prev.map((alarm) => (alarm.id === alarmId ? { ...alarm, is_read: true } : alarm)));
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
 
   return (
     <div

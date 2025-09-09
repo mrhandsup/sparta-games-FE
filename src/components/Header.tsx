@@ -41,8 +41,7 @@ const Header = () => {
   // 유저 정보
   const { userData, logout } = userStore();
 
-  const { alarms, unreadCount } = useNotifications();
-  console.log("alarms", alarms, unreadCount);
+  const { handleAlarmClick, unreadCount } = useNotifications();
   const navigate = useNavigate();
 
   // 단순 모달 데이터 config
@@ -217,7 +216,9 @@ const Header = () => {
                 {unreadCount > 0 && (
                   <span className="absolute -top-[3px] -right-[3px] w-[5px] h-[5px] rounded-full bg-primary-500" />
                 )}
-                {modalToggles.alarm && <AlarmModal modalClose={onClickModalToggleHandlers.alarm} />}
+                {modalToggles.alarm && (
+                  <AlarmModal modalClose={onClickModalToggleHandlers.alarm} handleAlarmClick={handleAlarmClick} />
+                )}
               </div>
             )}
             <img

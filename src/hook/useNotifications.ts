@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { TAlarmList } from "../types";
 import { userStore } from "../share/store/userStore";
+import { patchReadAlarm } from "../api/alarm";
 
 export const useNotifications = () => {
   const [alarms, setAlarms] = useState<TAlarmList[]>([]);
@@ -35,8 +36,17 @@ export const useNotifications = () => {
     }
   }, [userData]);
 
+  const handleAlarmClick = async (alarmId: number) => {
+    try {
+      await patchReadAlarm(alarmId);
+      setAlarms((prev) => prev.map((alarm) => (alarm.id === alarmId ? { ...alarm, is_read: true } : alarm)));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   // 읽지 않은 알람 개수 계산
   const unreadCount = alarms.filter((alarm) => !alarm.is_read).length;
 
-  return { alarms, unreadCount };
+  return { handleAlarmClick, unreadCount };
 };
