@@ -133,8 +133,6 @@ const GameDetail = () => {
     }
   };
 
-  console.log("isPending", isPending);
-
   return (
     <>
       {isLoading ? (

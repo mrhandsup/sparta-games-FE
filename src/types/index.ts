@@ -19,6 +19,7 @@ export type TApiResponse<TData> = {
 
 export type TAlarmList = {
   id: number;
+  content_id: number;
   message: string;
   noti_type: string;
   is_read: boolean;

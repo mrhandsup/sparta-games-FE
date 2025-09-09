@@ -9,6 +9,8 @@ import SpartaModal from "../spartaDesignSystem/SpartaModal";
 import Login from "./homeComponents/Login";
 import SpartaReactionModal from "../spartaDesignSystem/SpartaReactionModal";
 import Search from "./headerComponents/SearchModal";
+import AlarmModal from "./headerComponents/AlarmModal";
+import { useNotifications } from "../hook/useNotifications";
 
 import type { TSpartaReactionModalProps } from "../spartaDesignSystem/SpartaReactionModal";
 
@@ -16,11 +18,10 @@ import titleImage from "../assets/titleImage.svg";
 import logo from "../assets/common/logo.svg";
 import balloon from "../assets/headerImage/balloon.svg";
 import notifyImage from "../assets/headerImage/notify.svg";
+import unReadNotifyImage from "../assets/headerImage/unReadNotify.svg";
 import CategoryModal from "./headerComponents/CategoryModal";
 import gameUploadImage from "../assets/headerImage/gameUpload.svg";
 import bookmarkImage from "../assets/gameDetail/bookmark.svg";
-import AlarmModal from "./headerComponents/AlarmModal";
-import { useNotifications } from "../hook/useNotifications";
 
 const Header = () => {
   const LOGIN_MODAL_ID = "loginModal";
@@ -40,8 +41,8 @@ const Header = () => {
   // 유저 정보
   const { userData, logout } = userStore();
 
-  const { alarms } = useNotifications();
-
+  const { alarms, unreadCount } = useNotifications();
+  console.log("alarms", alarms, unreadCount);
   const navigate = useNavigate();
 
   // 단순 모달 데이터 config
@@ -208,12 +209,15 @@ const Header = () => {
             {userData && (
               <div className="relative" ref={modalRefs.alarm}>
                 <img
-                  src={notifyImage}
+                  src={unreadCount > 0 ? unReadNotifyImage : notifyImage}
                   alt="알람 아이콘"
                   onClick={onClickModalToggleHandlers.alarm}
                   className="w-6 h-6 cursor-pointer hover:text-primary-500"
                 />
-                {modalToggles.alarm && <AlarmModal />}
+                {unreadCount > 0 && (
+                  <span className="absolute -top-[3px] -right-[3px] w-[5px] h-[5px] rounded-full bg-primary-500" />
+                )}
+                {modalToggles.alarm && <AlarmModal modalClose={onClickModalToggleHandlers.alarm} />}
               </div>
             )}
             <img

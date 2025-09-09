@@ -340,8 +340,6 @@ const GameUploadForm = ({ note, previousGameData, isEditMode }: Props) => {
     },
   });
 
-  console.log("updateGameMutation.isPending", updateGameMutation.isPending);
-  console.log("!formState.isValid", !formState.isValid);
   return (
     <>
       <FormProvider {...methods}>

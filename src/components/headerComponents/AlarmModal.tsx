@@ -1,15 +1,22 @@
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import moreAlarm from "../../assets/common/arrow/triangleArrowBottom.svg";
+
 import { getAlarm, patchReadAlarm } from "../../api/alarm";
 import { TAlarmList, TApiResponse } from "../../types";
 import { getTimeAgoInHours } from "../../util/getTimeAgoInHours";
-import { useEffect, useState } from "react";
 
-type props = {};
+import moreAlarm from "../../assets/common/arrow/triangleArrowBottom.svg";
+import { useNavigate } from "react-router-dom";
 
-const AlarmModal = () => {
+type props = {
+  modalClose: () => void;
+};
+
+const AlarmModal = ({ modalClose }: props) => {
   const [alarms, setAlarms] = useState<TAlarmList[]>([]);
   const [nextUrl, setNextUrl] = useState<string | null>(null); // 다음 페이지 URL
+
+  const navigate = useNavigate();
 
   const { data, isFetching } = useQuery<TApiResponse<TAlarmList[]>>({
     queryKey: ["alarm"],
@@ -52,7 +59,7 @@ const AlarmModal = () => {
       onClick={(e) => {
         e.stopPropagation();
       }}
-      className="absolute top-10 right-0 flex gap-5 py-5 px-2 w-[360px] h-[712px] overflow-y-auto bg-gray-800 border border-solid border-primary-500 shadow-primary rounded-[20px]"
+      className="absolute top-10 right-0 flex gap-5 py-5 px-2 w-[360px] h-[740px] overflow-y-auto bg-gray-800 border border-solid border-primary-500 shadow-primary rounded-[20px]"
     >
       <div className="w-full py-2 px-6">
         <h2 className="mb-6 text-xl text-white">
@@ -63,13 +70,20 @@ const AlarmModal = () => {
           {alarms?.map((alarm, index) => (
             <div
               key={alarm.id}
-              onClick={() => handleAlarmClick(alarm.id)}
+              onClick={() => {
+                handleAlarmClick(alarm.id);
+
+                modalClose();
+                navigate(`/game-detail?id=${alarm.content_id}`);
+              }}
               className={`pb-4 text-sm border-solid border-gray-700 cursor-pointer ${
                 index !== alarms.length - 1 ? "border-b" : ""
               } ${alarm.is_read && "text-gray-400"} `}
             >
               <div className="flex justify-between items-center mb-1">
-                <p>{alarm.noti_type}</p>
+                <p className={alarm.message.includes("반려") ? "text-error-default" : "text-primary-500"}>
+                  {alarm.noti_type}
+                </p>
                 <span>{getTimeAgoInHours(alarm.create_dt)}</span>
               </div>
               <p className="font-Pretendard">{alarm.message}</p>
@@ -80,7 +94,7 @@ const AlarmModal = () => {
             <button
               onClick={fetchNextPage}
               disabled={isFetching}
-              className="flex items-center justify-center gap-2 w-full px-4 py-2 border border-gray-100 rounded-lg
+              className="flex items-center justify-center gap-2 w-full px-4 py-2 mb-8 border border-gray-100 rounded-lg
               text-sm text-gray-200 hover:bg-gray-800 transition"
             >
               <span className="font-Pretendard">알림 더보기</span>

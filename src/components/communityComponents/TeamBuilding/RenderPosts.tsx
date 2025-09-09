@@ -20,7 +20,6 @@ export default function RenderPosts({
   noSearchResultsMessage,
   cardType,
 }: TabContentProps) {
-  console.log("posts?.length", posts?.length);
   if (posts?.length === 0 || posts?.length === undefined) {
     return <div className="col-span-4 text-center text-white text-2xl font-DungGeunMo">{noPostsMessage}</div>;
   }
