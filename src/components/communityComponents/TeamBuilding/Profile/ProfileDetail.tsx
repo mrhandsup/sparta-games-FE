@@ -69,7 +69,7 @@ export default function ProfileDetail({ user, isMyPage }: Props) {
   });
 
   const profileData = teamBuildprofileResponse?.data;
-  const userTeamBuildPost = userTeamBuildPostResponse?.data?.teambuild_posts;
+  const userTeamBuildPost = userTeamBuildPostResponse?.data?.teambuild_posts ?? [];
   const userTeamBuildPostCount = userTeamBuildPostResponse?.pagination?.count;
 
   const onClickProfileDelete = async () => {
