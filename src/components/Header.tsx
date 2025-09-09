@@ -9,6 +9,8 @@ import SpartaModal from "../spartaDesignSystem/SpartaModal";
 import Login from "./homeComponents/Login";
 import SpartaReactionModal from "../spartaDesignSystem/SpartaReactionModal";
 import Search from "./headerComponents/SearchModal";
+import AlarmModal from "./headerComponents/AlarmModal";
+import { useNotifications } from "../hook/useNotifications";
 
 import type { TSpartaReactionModalProps } from "../spartaDesignSystem/SpartaReactionModal";
 
@@ -16,6 +18,7 @@ import titleImage from "../assets/titleImage.svg";
 import logo from "../assets/common/logo.svg";
 import balloon from "../assets/headerImage/balloon.svg";
 import notifyImage from "../assets/headerImage/notify.svg";
+import unReadNotifyImage from "../assets/headerImage/unReadNotify.svg";
 import CategoryModal from "./headerComponents/CategoryModal";
 import gameUploadImage from "../assets/headerImage/gameUpload.svg";
 import bookmarkImage from "../assets/gameDetail/bookmark.svg";
@@ -28,6 +31,7 @@ const Header = () => {
   // 모달
   const { modalToggles, modalRefs, onClickModalToggleHandlers } = useModalToggles([
     "category",
+    "alarm",
     "userStatus",
     LOGIN_MODAL_ID,
     NO_ACTION_MODAL_ID,
@@ -37,6 +41,7 @@ const Header = () => {
   // 유저 정보
   const { userData, logout } = userStore();
 
+  const { handleAlarmClick, unreadCount } = useNotifications();
   const navigate = useNavigate();
 
   // 단순 모달 데이터 config
@@ -53,17 +58,17 @@ const Header = () => {
       type: "alert",
     },
 
-    community: {
-      title: "개발예정 기능",
-      content: "알림 기능은 개발 예정입니다.",
-      btn1: {
-        text: "확인했습니다",
-        onClick: () => {
-          onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-        },
-      },
-      type: "error",
-    },
+    // community: {
+    //   title: "개발예정 기능",
+    //   content: "알림 기능은 개발 예정입니다.",
+    //   btn1: {
+    //     text: "확인했습니다",
+    //     onClick: () => {
+    //       onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
+    //     },
+    //   },
+    //   type: "error",
+    // },
 
     bookmark: {
       title: "잠시만요!",
@@ -145,16 +150,11 @@ const Header = () => {
         </div>
 
         {!userData?.data.is_staff && (
-          <div className="relative">
+          <div className="relative" ref={modalRefs.category}>
             <p onClick={onClickModalToggleHandlers.category} className="cursor-pointer hover:text-primary-500">
               카테고리
             </p>
-            {modalToggles.category && (
-              <CategoryModal
-                modalRef={modalRefs.category}
-                onClickModalToggleHandler={onClickModalToggleHandlers.category}
-              />
-            )}
+            {modalToggles.category && <CategoryModal onClickModalToggleHandler={onClickModalToggleHandlers.category} />}
           </div>
         )}
 
@@ -205,16 +205,22 @@ const Header = () => {
               className="w-6 h-6 cursor-pointer hover:text-primary-500"
             />
 
-            <img
-              src={notifyImage}
-              alt="알림 아이콘"
-              onClick={() => {
-                setNoActionModalData(noActionData.community);
-                onClickModalToggleHandlers[NO_ACTION_MODAL_ID]();
-              }}
-              className="w-6 h-6 cursor-pointer hover:text-primary-500"
-            />
-
+            {userData && (
+              <div className="relative" ref={modalRefs.alarm}>
+                <img
+                  src={unreadCount > 0 ? unReadNotifyImage : notifyImage}
+                  alt="알람 아이콘"
+                  onClick={onClickModalToggleHandlers.alarm}
+                  className="w-6 h-6 cursor-pointer hover:text-primary-500"
+                />
+                {unreadCount > 0 && (
+                  <span className="absolute -top-[3px] -right-[3px] w-[5px] h-[5px] rounded-full bg-primary-500" />
+                )}
+                {modalToggles.alarm && (
+                  <AlarmModal modalClose={onClickModalToggleHandlers.alarm} handleAlarmClick={handleAlarmClick} />
+                )}
+              </div>
+            )}
             <img
               src={bookmarkImage}
               alt="즐겨찾기 아이콘"

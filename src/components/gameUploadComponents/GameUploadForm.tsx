@@ -5,7 +5,6 @@ import { FormProvider, useForm } from "react-hook-form";
 import { postGameList, putGameList } from "../../api/game";
 
 import SpartaReactionModal, { TSpartaReactionModalProps } from "../../spartaDesignSystem/SpartaReactionModal";
-import SpartaModal from "../../spartaDesignSystem/SpartaModal";
 import useModalToggles from "../../hook/useModalToggles";
 
 import { userStore } from "../../share/store/userStore";
@@ -341,8 +340,6 @@ const GameUploadForm = ({ note, previousGameData, isEditMode }: Props) => {
     },
   });
 
-  console.log("updateGameMutation.isPending", updateGameMutation.isPending);
-  console.log("!formState.isValid", !formState.isValid);
   return (
     <>
       <FormProvider {...methods}>

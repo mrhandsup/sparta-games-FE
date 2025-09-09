@@ -5,10 +5,9 @@ import { TCategoryListResponse } from "../../types";
 
 type props = {
   onClickModalToggleHandler: () => void;
-  modalRef: React.RefObject<HTMLDivElement>;
 };
 
-const CategoryModal = ({ modalRef, onClickModalToggleHandler }: props) => {
+const CategoryModal = ({ onClickModalToggleHandler }: props) => {
   const { data } = useQuery<TCategoryListResponse>({
     queryKey: ["gameCategory"],
     queryFn: getGameCategory,
@@ -18,9 +17,8 @@ const CategoryModal = ({ modalRef, onClickModalToggleHandler }: props) => {
 
   return (
     <div
-      ref={modalRef}
       onClick={onClickModalToggleHandler}
-      className="absolute top-10  flex gap-5 py-5 px-2 bg-gray-800 border border-solid border-primary-500 rounded-[20px] "
+      className="absolute top-10  flex gap-5 py-5 px-2 bg-gray-800 border border-solid border-primary-500 shadow-primary rounded-[20px] "
     >
       <div className="flex items-center gap-3 flex-wrap w-[200px]">
         {categoryList &&
