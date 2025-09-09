@@ -9,11 +9,17 @@ export const useNotifications = () => {
 
   const { userData } = userStore();
 
+  const baseUrl = import.meta.env.VITE_PROXY_HOST;
+
+  const protocol = baseUrl.startsWith("https") ? "wss" : "ws";
+  const wsUrl = new URL("ws/notifications/", baseUrl);
+  wsUrl.protocol = protocol;
+
   useEffect(() => {
     if (!userData) return;
 
     const token = sessionStorage.getItem("accessToken");
-    const socket = new WebSocket("ws://localhost:8000/ws/notifications/", ["access_token", token!]);
+    const socket = new WebSocket(wsUrl.toString(), ["access_token", token!]);
     socketRef.current = socket;
 
     socket.onopen = () => {

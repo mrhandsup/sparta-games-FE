@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
-import { getAlarm, patchReadAlarm } from "../../api/alarm";
+import { getAlarm } from "../../api/alarm";
 import { TAlarmList, TApiResponse } from "../../types";
 import { getTimeAgoInHours } from "../../util/getTimeAgoInHours";
 
@@ -44,16 +44,6 @@ const AlarmModal = ({ modalClose, handleAlarmClick }: props) => {
       console.error("다음 알람 불러오기 실패:", err);
     }
   };
-
-  // const handleAlarmClick = async (alarmId: number) => {
-  //   try {
-  //     await patchReadAlarm(alarmId);
-
-  //     setAlarms((prev) => prev.map((alarm) => (alarm.id === alarmId ? { ...alarm, is_read: true } : alarm)));
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
 
   return (
     <div
